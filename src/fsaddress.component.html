@@ -1,0 +1,31 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Address" aria-label="Address" [formControl]="addressCtrl">
+    </mat-form-field>
+    <mat-form-field class="example-half-width">
+        <input matInput placeholder="City" aria-label="City" [formControl]="cityCtrl">
+    </mat-form-field>
+    <mat-form-field class="example-half-width">
+        <input matInput placeholder="Zip" type="number" aria-label="Zip" [formControl]="zipCtrl">
+    </mat-form-field>
+    <mat-form-field class="example-half-width">
+        <input matInput placeholder="Country" aria-label="Country" [matAutocomplete]="countryAuto" [formControl]="countryCtrl">
+        <mat-autocomplete #countryAuto="matAutocomplete">
+            <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name">
+                <img style="vertical-align:middle;" aria-hidden src="{{country.flag}}" height="25" />
+                <span>{{ country.name }}</span>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="example-half-width">
+        <input matInput placeholder="State" aria-label="State" [matAutocomplete]="stateAuto" [formControl]="stateCtrl">
+        <mat-autocomplete #stateAuto="matAutocomplete">
+            <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
+                <img style="vertical-align:middle;" aria-hidden src="{{state.flag}}" height="25" />
+                <span>{{ state.name }}</span>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</form>
+<div id="map"></div>
+
