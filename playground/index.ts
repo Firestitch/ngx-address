@@ -1,23 +1,27 @@
-/**
- * This is only for local test
- */
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { Component } from '@angular/core';
+import { NgModule, Component, ViewEncapsulation } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
-import { SampleModule }  from 'fs-address';
+import { FsAddressModule }  from '@firestitch/address';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
-  selector: 'app',
-  template: `<sample-component></sample-component>`
+  selector: 'app-root',
+  templateUrl: 'template.html',
+  styleUrls: [ 'styles.css' ],
+  encapsulation: ViewEncapsulation.None
 })
-class AppComponent {}
+class AppComponent {
+  public address: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  private config = { address1: { required: true }};
+  constructor() { }
+}
 
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [ AppComponent ],
-  imports: [ BrowserModule, SampleModule ]
+  imports: [ BrowserModule, FsAddressModule, BrowserAnimationsModule ],
+  providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
 })
 class AppModule {}
 

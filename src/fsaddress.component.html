@@ -12,7 +12,6 @@
         <input matInput placeholder="Country" aria-label="Country" [matAutocomplete]="countryAuto" [formControl]="countryCtrl">
         <mat-autocomplete #countryAuto="matAutocomplete">
             <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name">
-                <img style="vertical-align:middle;" aria-hidden src="{{country.flag}}" height="25" />
                 <span>{{ country.name }}</span>
             </mat-option>
         </mat-autocomplete>

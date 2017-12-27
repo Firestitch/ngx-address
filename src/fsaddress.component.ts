@@ -1,12 +1,12 @@
-import { FsGoogleMapsService } from './google-maps.service';
+//import { FsGoogleMapsService } from './google-maps.service';
 import { FormControl } from '@angular/forms';
 import { FsAddressService, FsAddress } from './fsaddress.service';
-import { Component, AfterViewInit, Output, Input, OnInit } from '@angular/core';
+import { Component, AfterViewInit, Output, Input, OnInit, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { } from '@types/googlemaps';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'fs-address',
@@ -14,13 +14,16 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
   styleUrls: ['./fsaddress.component.scss']
 })
   export class FsAddressComponent implements OnInit, AfterViewInit {
-  //interesting pattern of BehaviorSubject from RxJS. There are promises, which return value once. There are Observables, which return value multiple times and have interesting features. There is BehaviorSubject, which IS a value, but which you can subscribe for. I'm using this BehaviorSubject for two-way data binding between this and parent component - basically, with this one I emit all the collected data out of the component. Adds flexibility and beauty of structure :)
+  // interesting pattern of BehaviorSubject from RxJS. There are promises, which return value once.
+  // There are Observables, which return value multiple times and have interesting features. There is
+  // BehaviorSubject, which IS a value, but which you can subscribe for. I'm using this BehaviorSubject
+  // for two-way data binding between this and parent component - basically, with this one I emit all th
+  // collected data out of the component. Adds flexibility and beauty of structure :)
   @Input() location: BehaviorSubject<FsAddress> = new BehaviorSubject<FsAddress>({});
-  @Input() key: string;
   private service: FsAddressService;
-  addressCtrl: FormControl = new FormControl();;
-  cityCtrl: FormControl = new FormControl();;
-  zipCtrl: FormControl = new FormControl();;
+  addressCtrl: FormControl = new FormControl();
+  cityCtrl: FormControl = new FormControl();
+  zipCtrl: FormControl = new FormControl();
 
   countryCtrl: FormControl;
   stateCtrl: FormControl;
@@ -28,11 +31,14 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
   filteredCountries: Observable<any[]>;
 
   private googleMapsUrl;
+  private GoogleMapKey;
 
 
   /*
-    For now I've just mocked the countries and states. In my vision, it would be the best to use google maps library for autocompletion and many-many other functions, if we are to make more map-oriented components.
-    If we do, I'll exctract google maps functionality and API calls into one functional module to be used in every component and work on it more closely.
+    For now I've just mocked the countries and states. In my vision, it would be the best to use 
+    google maps library for autocompletion and many-many other functions, if we are to make more map-oriented components.
+    If we do, I'll exctract google maps functionality and API calls into one functional module to be 
+    used in every component and work on it more closely.
     If we don't, I'll just import some JSONs downloaded from public websites for countries/states/areas autocompletion.
   */
   states: any[] = [
@@ -66,15 +72,16 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
   addresses: any[] = [];
 
 
-  constructor(
-    private fsGoogleMapsService: FsGoogleMapsService
-  ) {
-    
+  constructor(@Inject('GoogleMapKey') GoogleMapKey) {
+    this.GoogleMapKey = GoogleMapKey;
+    if (!GoogleMapKey) {
+      throw new Error('GoogleMapKey injector invalid');
+    }
   }
 
   ngOnInit() {
     this.service = new FsAddressService();
-    this.googleMapsUrl = 'https://maps.googleapis.com/maps/api/js?key=' + this.key;
+    this.googleMapsUrl = 'https://maps.googleapis.com/maps/api/js?key=' + this.GoogleMapKey;
     this.countryCtrl = new FormControl();
     this.stateCtrl = new FormControl();
 
@@ -91,7 +98,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
   }
 
   searchAddress(address: string) {
-    let formattedAddress = "";
+    let formattedAddress = '';
     this.service.getGeocode(address).subscribe(
       (res: google.maps.GeocoderResult) => {
         formattedAddress = res[0].formatted_address;
@@ -113,18 +120,19 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
     // })
   }
 
-  // just a small beautiful feature to fill in all the fields whenever we have address put in. Whenever any element is "touched" (e.g. we've changed the ZIP code), it wont change anymore when putting in the address
+  // just a small beautiful feature to fill in all the fields whenever we have address put in.
+  // Whenever any element is "touched" (e.g. we've changed the ZIP code), it wont change anymore when putting in the address
   setUpFields(location: FsAddress) {
-    if(location.country && !this.countryCtrl.touched) { //&& !this.countryCtrl.value) {
+    if (location.country && !this.countryCtrl.touched) { //&& !this.countryCtrl.value) {
       this.countryCtrl.patchValue(location.country.long)
     }
-    if(location.city && !this.cityCtrl.touched) { // && !this.cityCtrl.value) {
+    if (location.city && !this.cityCtrl.touched) { // && !this.cityCtrl.value) {
       this.cityCtrl.patchValue(location.city)
     }
-    if(location.zip && !this.zipCtrl.touched) { // && !this.zipCtrl.value) {
+    if (location.zip && !this.zipCtrl.touched) { // && !this.zipCtrl.value) {
       this.zipCtrl.patchValue(location.zip)
     }
-    if(location.state && !this.stateCtrl.touched) { // && !this.stateCtrl.value) {
+    if (location.state && !this.stateCtrl.touched) { // && !this.stateCtrl.value) {
       this.stateCtrl.patchValue(location.state)
     } else this.stateCtrl.patchValue('')
 
@@ -135,7 +143,10 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
     // this.doMapInitLogic();
   }
 
-  // we could have used some external google maps library, as it was used in fs-boilerplate 1.x, but I had really no need in it for this case, and I would like to avoid using 3rd-party libraries as much as I could while making this project. I love 3rd party libraries, but we ARE the 3rd party library people are going to use, so I'd like to keep it as native and simple as possible with as lesser layers as possible
+  // we could have used some external google maps library, as it was used in fs-boilerplate 1.x,
+  // but I had really no need in it for this case, and I would like to avoid using 3rd-party libraries
+  // as much as I could while making this project. I love 3rd party libraries, but we ARE the 3rd party
+  // library people are going to use, so I'd like to keep it as native and simple as possible with as lesser layers as possible
   addMapsScript() {
     if (!document.querySelectorAll(`[src="${this.googleMapsUrl}"]`).length) {
       document.body.appendChild(Object.assign(
@@ -150,7 +161,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
   }
 
   doMapInitLogic() {
-    this.service.init(this.key);
+    this.service.init();
   }
 
 

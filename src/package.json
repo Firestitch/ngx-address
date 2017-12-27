@@ -1,13 +1,13 @@
 {
   "name": "@firestitch/address",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/fs-address"
   },
   "author": {
-    "name": "Maksim Sergeev",
-    "email": "sergeev.maxs@gmail.com"
+    "name": "Firestitch",
+    "email": "admin@firestitch.com"
   },
   "keywords": [
     "angular"
@@ -16,13 +16,17 @@
   "bugs": {
     "url": "https://github.com/Firestitch/fs-address/issues"
   },
-  "main": "fs-address.umd.js",
-  "module": "fs-address.js",
-  "jsnext:main": "fs-address.js",
-  "typings": "fs-address.d.ts",
+  "main": "address.umd.js",
+  "module": "address.js",
+  "jsnext:main": "address.js",
+  "typings": "address.d.ts",
   "peerDependencies": {
     "@angular/core": "^4.0.0",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
+  },
+  "dependencies": {
+    "@angular/material": "^5.0.1",
+    "@types/googlemaps": "^3.2.0"
   }
 }
