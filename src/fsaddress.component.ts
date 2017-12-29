@@ -1,78 +1,58 @@
-//import { FsGoogleMapsService } from './google-maps.service';
+// import { FsGoogleMapsService } from './google-maps.service';
 import { FormControl } from '@angular/forms';
-import { FsAddressService, FsAddress } from './fsaddress.service';
-import { Component, AfterViewInit, Output, Input, OnInit, Inject } from '@angular/core';
+// import { FsAddressService, FsAddress } from './fsaddress.service';
+import { Component, AfterViewInit, Output, Input, OnInit, OnDestroy, Inject, ViewChild } from '@angular/core';
+import { FsUtil, FsArray } from '@firestitch/common';
 import { Observable } from 'rxjs/Observable';
-import { } from '@types/googlemaps';
+// import { } from '@types/googlemaps';
+// import * as GoogleMapsLoader from 'google-maps';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { GoogleMapsAPIWrapper, MapsAPILoader, AgmMap, AgmMarker, MarkerManager } from '@agm/core';
+import { COUNTRIES } from './countries';
+declare var google: any;
+
+export interface FsAddress {
+  country?: string
+  state?: string,
+  region?: string,
+  address?: string,
+  city?: string,
+  zip?: string,
+  lat?: string | number,
+  lng?: string | number
+}
 
 @Component({
   selector: 'fs-address',
   templateUrl: './fsaddress.component.html',
   styleUrls: ['./fsaddress.component.scss']
 })
-  export class FsAddressComponent implements OnInit, AfterViewInit {
-  // interesting pattern of BehaviorSubject from RxJS. There are promises, which return value once.
-  // There are Observables, which return value multiple times and have interesting features. There is
-  // BehaviorSubject, which IS a value, but which you can subscribe for. I'm using this BehaviorSubject
-  // for two-way data binding between this and parent component - basically, with this one I emit all th
-  // collected data out of the component. Adds flexibility and beauty of structure :)
-  @Input() location: BehaviorSubject<FsAddress> = new BehaviorSubject<FsAddress>({});
-  private service: FsAddressService;
-  addressCtrl: FormControl = new FormControl();
-  cityCtrl: FormControl = new FormControl();
-  zipCtrl: FormControl = new FormControl();
+export class FsAddressComponent implements OnInit, OnDestroy {
 
-  countryCtrl: FormControl;
-  stateCtrl: FormControl;
-  filteredStates: Observable<any[]>;
-  filteredCountries: Observable<any[]>;
+  @ViewChild(AgmMap) agmMap;
+  @ViewChild(AgmMarker) agmMarker;
+  @Input() fsAddress: FsAddress = {};
+  @Input() fsAddressConfig = null;
+  private GoogleMapKey: string;
+  regions = [];
+  countries = {
+    domestic: [],
+    international: []
+  };
+  zipLabel = '';
+  regionLabel = '';
+  center = null;
+  searched = false;
+  searchedAddress = '';
+  map = null;
+  mapOptions = null;
+  marker = null;
+  mapReady$;
 
-  private googleMapsUrl;
-  private GoogleMapKey;
-
-
-  /*
-    For now I've just mocked the countries and states. In my vision, it would be the best to use 
-    google maps library for autocompletion and many-many other functions, if we are to make more map-oriented components.
-    If we do, I'll exctract google maps functionality and API calls into one functional module to be 
-    used in every component and work on it more closely.
-    If we don't, I'll just import some JSONs downloaded from public websites for countries/states/areas autocompletion.
-  */
-  states: any[] = [
-    {
-      name: 'Arkansas',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg'
-    },
-    {
-      name: 'California',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg'
-    },
-    {
-      name: 'Florida',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg'
-    },
-    {
-      name: 'Texas',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg'
-    }
-  ];
-  countries: any[] = [
-    {
-      name: 'USA',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg'
-    },
-    {
-      name: 'Canada',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg'
-    }
-  ];
-  addresses: any[] = [];
-
-
-  constructor(@Inject('GoogleMapKey') GoogleMapKey) {
+  constructor(@Inject('GoogleMapKey') GoogleMapKey, private fsUtil: FsUtil,
+  private fsArray: FsArray, private _wrapper: GoogleMapsAPIWrapper, private markerManager: MarkerManager) {
     this.GoogleMapKey = GoogleMapKey;
     if (!GoogleMapKey) {
       throw new Error('GoogleMapKey injector invalid');
@@ -80,103 +60,181 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   }
 
   ngOnInit() {
-    this.service = new FsAddressService();
-    this.googleMapsUrl = 'https://maps.googleapis.com/maps/api/js?key=' + this.GoogleMapKey;
-    this.countryCtrl = new FormControl();
-    this.stateCtrl = new FormControl();
-
-    this.filteredCountries = this.countryCtrl.valueChanges
-      .startWith(null)
-      .map(country => country ? this.filterCountries(country) : this.countries.slice());
-    this.filteredStates = this.stateCtrl.valueChanges
-      .startWith(null)
-      .map(state => state ? this.filterStates(state) : this.states.slice());
-
-    this.addressCtrl.valueChanges.subscribe(address => {
-      this.searchAddress(address);
-    })
-  }
-
-  searchAddress(address: string) {
-    let formattedAddress = '';
-    this.service.getGeocode(address).subscribe(
-      (res: google.maps.GeocoderResult) => {
-        formattedAddress = res[0].formatted_address;
-
-        this.location.next(this.service.parseAddress(res[0]));
-        this.setUpFields(this.service.parseAddress(res[0]));
-        this.service.setMarker(res[0].geometry.location);
-      }, err => {
-
-      })
-
-
-    // this one is for autocompletion and many other awesome gmaps functions, commented by now as it has to be worked on more
-
-    // this.fsGoogleMapsService.getAddresssPredictions(address).subscribe(res => {
-    //   console.log('predictions res', res);
-    // }, err => {
-    //   console.log('predictions err', err);
-    // })
-  }
-
-  // just a small beautiful feature to fill in all the fields whenever we have address put in.
-  // Whenever any element is "touched" (e.g. we've changed the ZIP code), it wont change anymore when putting in the address
-  setUpFields(location: FsAddress) {
-    if (location.country && !this.countryCtrl.touched) { //&& !this.countryCtrl.value) {
-      this.countryCtrl.patchValue(location.country.long)
+    // Example ready event. Allow to use google object and map instance
+    if (this.agmMap) {
+      this.mapReady$ = this.agmMap.mapReady.subscribe(map => {
+        // console.log(google);
+        // console.log(map);
+        this.agmMap.triggerResize();
+      });
     }
-    if (location.city && !this.cityCtrl.touched) { // && !this.cityCtrl.value) {
-      this.cityCtrl.patchValue(location.city)
+
+    this.fsAddressConfig = Object.assign({}, {
+      cords: {
+        lat: 43.6379967,
+        lng: -79.3819992
+      },
+      address2: true,
+      disabled: false,
+      domestics: ['CA', 'US'],
+      map: true
+      }, this.fsAddressConfig);
+
+      this.fsAddress.lat = this.fsAddress.lat || '';
+      this.fsAddress.lng = this.fsAddress.lng || '';
+
+      this.map = {
+        center: {
+          latitude: this.fsAddress.lat || this.fsAddressConfig.cords.lat,
+          longitude: this.fsAddress.lng || this.fsAddressConfig.cords.lng
+        },
+        zoom: 13
+      };
+
+      this.mapOptions = Object.assign({
+          scrollwheel: false,
+          streetViewControl: false,
+          mapTypeControlOptions: { mapTypeIds: [] }
+        },
+        this.mapOptions || {}
+      );
+
+      this.marker = {
+        id: 0,
+        coords: { latitude: this.fsAddress.lat, longitude: this.fsAddress.lng },
+        options: { draggable: true },
+        events: {
+          dragend: marker => {
+            this.fsAddress.lat = marker.coords.lat;
+            this.fsAddress.lng = marker.coords.lng;
+          }
+        }
+      };
+
+      for (const item of ['address', 'address2', 'city', 'region', 'country', 'zip']) {
+
+        let option = this.fsAddressConfig[item];
+
+          if (this.fsUtil.isBoolean(option)) {
+              option = { show: this.fsAddressConfig[item] };
+          }
+
+          if (!this.fsUtil.isObject(this.fsAddressConfig[item])) {
+              option = {};
+          }
+
+          if (!option.id) {
+              option.id = 'input_' + this.fsUtil.guid();
+          }
+
+          if (!option.name) {
+              option.name = item;
+          }
+
+          this.fsAddressConfig[item] = option;
+      };
+
+      let countries = [];
+      if (this.fsAddressConfig.countries) {
+          for (let code of this.fsAddressConfig.countries) {
+
+              let country = this.fsArray.filter(COUNTRIES, { code: code })[0];
+
+              if (country) {
+                  countries.push(country);
+              }
+          } ;
+
+      } else {
+          countries = COUNTRIES.slice();
+      }
+
+      if (this.fsAddressConfig.domestics) {
+
+        this.countries.international = countries;
+
+        for (let i = this.fsAddressConfig.domestics.length - 1; i >= 0; i--) {
+
+          let item = this.fsArray.remove(this.countries.international, { code: this.fsAddressConfig.domestics[i] })[0];
+
+          if (item) {
+            this.countries.domestic.unshift(item);
+          }
+        }
+
+      } else {
+        this.countries.domestic = countries;
+      }
+
+      if (!this.fsAddress.country && this.countries.domestic[0]) {
+        this.fsAddress.country = this.countries.domestic[0].code;
+      }
+
+      if (this.fsAddress[this.fsAddressConfig.country.name]) {
+        this.changeCountry();
+      }
+
+      if (	this.fsAddress[this.fsAddressConfig.address.name] ||
+        this.fsAddress[this.fsAddressConfig.address2.name] ||
+        this.fsAddress[this.fsAddressConfig.city.name] ||
+        this.fsAddress[this.fsAddressConfig.region.name] ||
+        this.fsAddress[this.fsAddressConfig.zip.name]) {
+          this.fsAddress.lat = 9999;
+          this.fsAddress.lng = 9999;
+          this.search();
+      }
+  }
+
+  recenter() {
+    this.map.center = { latitude: this.fsAddress.lat, longitude: this.fsAddress.lng };
+    this.marker.coords.latitude = this.fsAddress.lat;
+    this.marker.coords.longitude = this.fsAddress.lng;
+    this.agmMap.triggerResize()
+    .then(() =>  this.agmMap._mapsWrapper.setCenter({lat: this.fsAddress.lat, lng: this.fsAddress.lng}));
+  }
+
+  changeCountry() {
+    const country = this.fsArray.filter(COUNTRIES, { code: this.fsAddress[this.fsAddressConfig.country.name] })[0];
+    this.regions = country ? country.regions : [];
+    this.zipLabel = country && country.code == 'CA' ? 'Postal Code' : 'Zip';
+    this.regionLabel = country && country.code == 'CA' ? 'Province' : 'State';
+  }
+
+  search() {
+    let geocoder = new google.maps.Geocoder();
+    let country = this.fsArray.filter(COUNTRIES, { code: this.fsAddress.country })[0] || {};
+    let parts = [	this.fsAddress[this.fsAddressConfig.address.name],
+                  this.fsAddress[this.fsAddressConfig.city.name],
+                  this.fsAddress[this.fsAddressConfig.region.name],
+                  country.name
+          ];
+    this.searchedAddress = parts.join(', ');
+    geocoder.geocode( { 'address': this.searchedAddress  }, (results, status) => {
+      this.searched = true;
+
+      if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+        let location = results[0].geometry.location;
+        this.fsAddress.lat = location.lat();
+        this.fsAddress.lng = location.lng();
+        this.map.center = { latitude: parseFloat(location.lat()), longitude: parseFloat(location.lng()) };
+
+        this.marker.coords.latitude = location.lat();
+        this.marker.coords.longitude = location.lng();
+
+        if (this.agmMap) {
+          this.agmMap.triggerResize();
+        }
+
+      } else {
+        this.fsAddress.lat = null;
+        this.fsAddress.lng = null;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.agmMap) {
+      this.mapReady$.unsubscribe();
     }
-    if (location.zip && !this.zipCtrl.touched) { // && !this.zipCtrl.value) {
-      this.zipCtrl.patchValue(location.zip)
-    }
-    if (location.state && !this.stateCtrl.touched) { // && !this.stateCtrl.value) {
-      this.stateCtrl.patchValue(location.state)
-    } else this.stateCtrl.patchValue('')
-
   }
-
-  ngAfterViewInit() {
-    this.addMapsScript();
-    // this.doMapInitLogic();
-  }
-
-  // we could have used some external google maps library, as it was used in fs-boilerplate 1.x,
-  // but I had really no need in it for this case, and I would like to avoid using 3rd-party libraries
-  // as much as I could while making this project. I love 3rd party libraries, but we ARE the 3rd party
-  // library people are going to use, so I'd like to keep it as native and simple as possible with as lesser layers as possible
-  addMapsScript() {
-    if (!document.querySelectorAll(`[src="${this.googleMapsUrl}"]`).length) {
-      document.body.appendChild(Object.assign(
-        document.createElement('script'), {
-          type: 'text/javascript',
-          src: this.googleMapsUrl,
-          onload: () => this.doMapInitLogic()
-        }));
-    } else {
-      this.doMapInitLogic();
-    }
-  }
-
-  doMapInitLogic() {
-    this.service.init();
-  }
-
-
-  autocompleteAddressess(addressList: string) {
-
-  }
-
-  filterStates(name: string) {
-    return this.states.filter(state =>
-      state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
-  }
-
-  filterCountries(name: string) {
-    return this.countries.filter(country =>
-      country.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
-  }
-
 }

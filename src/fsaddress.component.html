@@ -1,30 +1,68 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width">
-        <input matInput placeholder="Address" aria-label="Address" [formControl]="addressCtrl">
+<div fxLayout="row">
+    <mat-form-field fxFlex>
+        <input matInput [(ngModel)]="fsAddress[fsAddressConfig.address.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.address.required" name="{{ fsAddressConfig.address.id }}" placeholder="Address" aria-label="Address" (change)="search()">
     </mat-form-field>
-    <mat-form-field class="example-half-width">
-        <input matInput placeholder="City" aria-label="City" [formControl]="cityCtrl">
+    <mat-form-field fxFlex [hidden]="!fsAddressConfig.address2.show">
+        <input matInput [(ngModel)]="fsAddress[fsAddressConfig.address2.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.address2.required" name="{{ fsAddressConfig.address2.id }}" placeholder="Address 2" aria-label="Address 2" (change)="search()">
+        <mat-hint>Apartment, suite, unit, building, floor, etc.</mat-hint>
     </mat-form-field>
-    <mat-form-field class="example-half-width">
-        <input matInput placeholder="Zip" type="number" aria-label="Zip" [formControl]="zipCtrl">
+</div>
+
+<div fxLayout="row">
+    <mat-form-field fxFlex>
+        <input matInput [(ngModel)]="fsAddress[fsAddressConfig.city.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.city.required" name="{{ fsAddressConfig.city.id }}" placeholder="City" aria-label="City" (change)="search()">
     </mat-form-field>
-    <mat-form-field class="example-half-width">
-        <input matInput placeholder="Country" aria-label="Country" [matAutocomplete]="countryAuto" [formControl]="countryCtrl">
-        <mat-autocomplete #countryAuto="matAutocomplete">
-            <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name">
+    <mat-form-field fxFlex>
+        <input matInput [(ngModel)]="fsAddress[fsAddressConfig.zip.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.zip.required" name="{{ fsAddressConfig.zip.id }}" placeholder="{{ zipLabel }}" (change)="search()">
+    </mat-form-field>
+</div>
+
+<div fxLayout="row">
+    <mat-form-field fxFlex>
+        <mat-select [(ngModel)]="fsAddress[fsAddressConfig.country.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.country.required" name="{{ fsAddressConfig.zip.id }}" placeholder="Country" aria-label="Country" (ngModelChange)="changeCountry()" (change)="search()">
+            <mat-option *ngFor="let country of countries.domestic" [value]="country.code">
                 <span>{{ country.name }}</span>
             </mat-option>
-        </mat-autocomplete>
+            <ng-container *ngIf="countries.international.length">
+                <mat-option *ngFor="let country of countries.international" [value]="country.code">
+                    <span>{{ country.name }}</span>
+                </mat-option>
+            </ng-container>
+        </mat-select>
     </mat-form-field>
-    <mat-form-field class="example-half-width">
-        <input matInput placeholder="State" aria-label="State" [matAutocomplete]="stateAuto" [formControl]="stateCtrl">
-        <mat-autocomplete #stateAuto="matAutocomplete">
-            <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
-                <img style="vertical-align:middle;" aria-hidden src="{{state.flag}}" height="25" />
-                <span>{{ state.name }}</span>
+    <mat-form-field fxFlex>
+        <mat-select [(ngModel)]="fsAddress[fsAddressConfig.region.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.region.required" name="{{ fsAddressConfig.region.id }}" placeholder="{{ regionLabel }}" (change)="search()">
+            <mat-option *ngFor="let region of regions" [value]="region.code">
+                <span>{{ region.name }}</span>
             </mat-option>
-        </mat-autocomplete>
+        </mat-select>
     </mat-form-field>
-</form>
-<div id="map"></div>
+</div>
 
+<div class="map-container" [hidden]="!fsAddressConfig.map">
+
+    <button mat-button class="center" 
+    *ngIf="(fsAddress.lat && fsAddress.lng) && (marker.coords.latitude && marker.coords.longitude)" 
+    (click)="recenter()">Center Map using Address</button>
+
+    <agm-map 
+    [latitude]="map.center.latitude" 
+    [longitude]="map.center.longitude"
+    [zoom]="map.zoom"
+    [scrollwheel]="mapOptions.scrollwheel"
+    [streetViewControl]="mapOptions.streetViewControl"
+    [mapTypeControlOptions]="mapOptions.mapTypeControlOptions"
+    >
+        <agm-marker 
+        [latitude]="marker.coords.latitude" 
+        [longitude]="marker.coords.longitude"
+        [markerDraggable]="marker.options.draggable"
+        (dragEnd)="marker.events.dragend($event)"
+        ></agm-marker>
+    </agm-map>
+
+    <div class="address-incomplete" fxLayout="row" fxLayoutAlign="center center" *ngIf="!fsAddress.lat && !fsAddress.lng">
+        <div *ngIf="!searched">Please populate the address above to locate it on the map</div>
+        <div *ngIf="searched">Could not find address "{{ searchedAddress }}"</div>
+    </div>
+</div>

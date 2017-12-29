@@ -4,6 +4,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { FsAddressModule }  from '@firestitch/address';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { FormsModule } from '@angular/forms';
+import { FsFormModule } from '@firestitch/form';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +14,33 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   encapsulation: ViewEncapsulation.None
 })
 class AppComponent {
-  public address: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  private config = { address1: { required: true }};
+  address = {
+    address1: '',
+    lat: null,
+    lng: null
+  };
+
+  private config = {
+    countries: ['CA', 'US'],
+    address2: { show: true },
+    address: {required: true, name: 'address1'},
+    city: {required: true},
+    region: {required: true},
+    zip: {required: true },
+    country: {required: true}
+  };
+
   constructor() { }
+
+  save() {
+
+  }
 }
 
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [ AppComponent ],
-  imports: [ BrowserModule, FsAddressModule, BrowserAnimationsModule ],
+  imports: [ BrowserModule, FsAddressModule, BrowserAnimationsModule, FormsModule, FsFormModule ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
 })
 class AppModule {}

@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { } from 'googlemaps';
 
+/*
 export interface FsAddress {
     country?: {
         long?: string,
@@ -12,9 +13,10 @@ export interface FsAddress {
     city?: string,
     zip?: string
 }
-
+*/
 @Injectable()
 export class FsAddressService {
+    /*
     public geocoder: google.maps.Geocoder;
     public mapElem: any;
     public map: any;
@@ -88,5 +90,5 @@ export class FsAddressService {
             });
         })
     }
-
+    */
 }

@@ -25,6 +25,7 @@
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
       '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
       '@angular/flex-layout': 'npm:@angular/flex-layout/bundles/flex-layout.umd.js',
+      '@angular/flex-layout': 'npm:@angular/flex-layout/bundles/flex-layout.umd.js',
       '@angular/common/http': 'npm:@angular/common/bundles/common-http.umd.js',
       '@angular/animations': 'npm:@angular/animations/bundles/animations.umd.js',
       '@angular/animations/browser': 'npm:@angular/animations/bundles/animations-browser.umd.js',
@@ -43,10 +44,14 @@
       '@angular/cdk/table': 'npm:@angular/cdk/bundles/cdk-table.umd.js',
       '@angular/cdk/stepper': 'npm:@angular/cdk/bundles/cdk-stepper.umd.js',
       '@angular/cdk/coercion': 'npm:@angular/cdk/bundles/cdk-coercion.umd.js',
+      '@types/googlemaps': 'npm:@types/googlemaps/index.d.ts',
+      '@agm/core': 'npm:@agm/core/core.umd.js',
       'rxjs': 'npm:rxjs',
       'tslib': 'npm:tslib/tslib.js',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-      '@firestitch/address': '../dist/address.umd.js'
+      '@firestitch/address': '../dist/address.umd.js',
+      '@firestitch/form': 'npm:@firestitch/form/form.umd.js',
+      '@firestitch/common': 'npm:@firestitch/common/common.umd.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
