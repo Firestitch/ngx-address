@@ -32,8 +32,8 @@ class AppComponent {
 
   constructor() { }
 
-  save() {
-
+  save(form) {
+    console.log(form);
   }
 }
 

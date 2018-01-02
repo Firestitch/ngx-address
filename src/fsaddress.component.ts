@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { GoogleMapsAPIWrapper, MapsAPILoader, AgmMap, AgmMarker, MarkerManager } from '@agm/core';
 import { COUNTRIES } from './countries';
+import { NgForm, ControlContainer} from '@angular/forms';
 declare var google: any;
 
 export interface FsAddress {
@@ -23,7 +24,9 @@ export interface FsAddress {
 @Component({
   selector: 'fs-address',
   templateUrl: './fsaddress.component.html',
-  styleUrls: ['./fsaddress.component.scss']
+  styleUrls: ['./fsaddress.component.scss'],
+  // HACK: allow access from the parent form to inputs in child component
+  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ]
 })
 export class FsAddressComponent implements OnInit, OnDestroy {
 
