@@ -167,17 +167,17 @@ export class FsAddressComponent implements OnInit, OnDestroy {
           // console.log(google);
           // console.log(map);
           this.agmMap.triggerResize();
-        });
 
-        if (	this.fsAddress[this.fsAddressConfig.address.name] ||
-          this.fsAddress[this.fsAddressConfig.address2.name] ||
-          this.fsAddress[this.fsAddressConfig.city.name] ||
-          this.fsAddress[this.fsAddressConfig.region.name] ||
-          this.fsAddress[this.fsAddressConfig.zip.name]) {
-            this.fsAddress.lat = 9999;
-            this.fsAddress.lng = 9999;
-            this.search();
-        }
+          if (this.fsAddress[this.fsAddressConfig.address.name] ||
+            this.fsAddress[this.fsAddressConfig.address2.name] ||
+            this.fsAddress[this.fsAddressConfig.city.name] ||
+            this.fsAddress[this.fsAddressConfig.region.name] ||
+            this.fsAddress[this.fsAddressConfig.zip.name]) {
+              this.fsAddress.lat = 9999;
+              this.fsAddress.lng = 9999;
+              this.search();
+          }
+        });
       }
   }
 
