@@ -20,7 +20,7 @@
 
     <div fxLayout="row">
         <mat-form-field fxFlex>
-            <mat-select [(ngModel)]="fsAddress[fsAddressConfig.country.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.country.required" name="{{ fsAddressConfig.zip.id }}" placeholder="Country" aria-label="Country" (ngModelChange)="changeCountry()" (change)="search()">
+            <mat-select [(ngModel)]="fsAddress[fsAddressConfig.country.name]" [attr.disabled]="fsAddressConfig.disabled" [fsFormRequired]="fsAddressConfig.country.required" name="{{ fsAddressConfig.country.id }}" placeholder="Country" aria-label="Country" (ngModelChange)="changeCountry()" (change)="search()">
                 <mat-option *ngFor="let country of countries.domestic" [value]="country.code">
                     <span>{{ country.name }}</span>
                 </mat-option>
