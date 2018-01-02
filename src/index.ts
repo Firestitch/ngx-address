@@ -3,17 +3,25 @@ import { MatInputModule, MatAutocompleteModule, MatSelectModule, MatButtonModule
 import { FsAddressComponent } from './fsaddress.component';
 import { JsonpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, Injectable, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FsAddressService } from './fsaddress.service';
 import { FsFormModule } from '@firestitch/form';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
-// import { FsGoogleMapsService } from './google-maps.service';
-// import { } from 'googlemaps';
+import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager, LAZY_MAPS_API_CONFIG, LazyMapsAPILoaderConfigLiteral } from '@agm/core';
 
-export * from './fsaddress.service';
 export * from './fsaddress.component';
+
+@Injectable()
+export class FsAddressConfig implements LazyMapsAPILoaderConfigLiteral {
+  apiKey: string = null;
+  constructor(@Inject('GoogleMapKey') GoogleMapKey) {
+    this.apiKey = GoogleMapKey;
+
+    if (!GoogleMapKey) {
+      throw new Error('GoogleMapKey injector invalid');
+    }
+  }
+};
 
 @NgModule({
   imports: [
@@ -27,18 +35,15 @@ export * from './fsaddress.component';
     FlexLayoutModule,
     MatSelectModule,
     MatButtonModule,
-    // @TODO replace from here
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk'
-    })
+    AgmCoreModule.forRoot()
 ],
 declarations: [
     FsAddressComponent
 ],
 providers: [
-    FsAddressService,
     GoogleMapsAPIWrapper,
-    MarkerManager
+    MarkerManager,
+    { provide: LAZY_MAPS_API_CONFIG, useClass: FsAddressConfig }
 ],
 exports: [
     FsAddressComponent
@@ -48,7 +53,7 @@ export class FsAddressModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: FsAddressModule,
-      providers: [FsAddressService]
+      providers: []
     };
   }
 }

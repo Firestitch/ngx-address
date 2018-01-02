@@ -1,11 +1,7 @@
-// import { FsGoogleMapsService } from './google-maps.service';
 import { FormControl } from '@angular/forms';
-// import { FsAddressService, FsAddress } from './fsaddress.service';
 import { Component, AfterViewInit, Output, Input, OnInit, OnDestroy, Inject, ViewChild } from '@angular/core';
 import { FsUtil, FsArray } from '@firestitch/common';
 import { Observable } from 'rxjs/Observable';
-// import { } from '@types/googlemaps';
-// import * as GoogleMapsLoader from 'google-maps';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -51,13 +47,8 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   marker = null;
   mapReady$;
 
-  constructor(@Inject('GoogleMapKey') GoogleMapKey, private fsUtil: FsUtil,
-  private fsArray: FsArray, private _wrapper: GoogleMapsAPIWrapper, private markerManager: MarkerManager) {
-    this.GoogleMapKey = GoogleMapKey;
-    if (!GoogleMapKey) {
-      throw new Error('GoogleMapKey injector invalid');
-    }
-  }
+  constructor(private fsUtil: FsUtil, private fsArray: FsArray,
+    private _wrapper: GoogleMapsAPIWrapper, private markerManager: MarkerManager) { }
 
   ngOnInit() {
     // Example ready event. Allow to use google object and map instance
