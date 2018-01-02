@@ -32,6 +32,10 @@ class AppComponent {
 
   constructor() { }
 
+  change(address) {
+    console.log('Changed', address);
+  }
+
   save(form) {
     console.log(form);
   }

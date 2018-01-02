@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { Component, AfterViewInit, Output, Input, OnInit, OnDestroy, Inject, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, Output, Input, OnInit, OnDestroy, Inject, ViewChild, EventEmitter } from '@angular/core';
 import { FsUtil, FsArray } from '@firestitch/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -34,6 +34,8 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   @ViewChild(AgmMarker) agmMarker;
   @Input() fsAddress: FsAddress = {};
   @Input() fsAddressConfig = null;
+  @Output() onChange = new EventEmitter<any>();
+
   private GoogleMapKey: string;
   regions = [];
   countries = {
@@ -224,6 +226,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
         this.fsAddress.lng = null;
       }
     });
+    this.onChange.emit(this.fsAddress);
   }
 
   ngOnDestroy() {
