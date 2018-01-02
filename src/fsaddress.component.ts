@@ -56,15 +56,6 @@ export class FsAddressComponent implements OnInit, OnDestroy {
     private _wrapper: GoogleMapsAPIWrapper, private markerManager: MarkerManager) { }
 
   ngOnInit() {
-    // Example ready event. Allow to use google object and map instance
-    if (this.agmMap) {
-      this.mapReady$ = this.agmMap.mapReady.subscribe(map => {
-        // console.log(google);
-        // console.log(map);
-        this.agmMap.triggerResize();
-      });
-    }
-
     this.fsAddressConfig = Object.assign({}, {
       cords: {
         lat: 43.6379967,
@@ -170,16 +161,23 @@ export class FsAddressComponent implements OnInit, OnDestroy {
         this.changeCountry();
       }
 
-      if (	this.fsAddress[this.fsAddressConfig.address.name] ||
-        this.fsAddress[this.fsAddressConfig.address2.name] ||
-        this.fsAddress[this.fsAddressConfig.city.name] ||
-        this.fsAddress[this.fsAddressConfig.region.name] ||
-        this.fsAddress[this.fsAddressConfig.zip.name]) {
-          this.fsAddress.lat = 9999;
-          this.fsAddress.lng = 9999;
-          setTimeout(() => {
+      // Example ready event. Allow to use google object and map instance
+      if (this.agmMap) {
+        this.mapReady$ = this.agmMap.mapReady.subscribe(map => {
+          // console.log(google);
+          // console.log(map);
+          this.agmMap.triggerResize();
+        });
+
+        if (	this.fsAddress[this.fsAddressConfig.address.name] ||
+          this.fsAddress[this.fsAddressConfig.address2.name] ||
+          this.fsAddress[this.fsAddressConfig.city.name] ||
+          this.fsAddress[this.fsAddressConfig.region.name] ||
+          this.fsAddress[this.fsAddressConfig.zip.name]) {
+            this.fsAddress.lat = 9999;
+            this.fsAddress.lng = 9999;
             this.search();
-          });
+        }
       }
   }
 
