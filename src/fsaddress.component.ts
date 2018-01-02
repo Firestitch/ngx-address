@@ -177,7 +177,9 @@ export class FsAddressComponent implements OnInit, OnDestroy {
         this.fsAddress[this.fsAddressConfig.zip.name]) {
           this.fsAddress.lat = 9999;
           this.fsAddress.lng = 9999;
-          this.search();
+          setTimeout(() => {
+            this.search();
+          });
       }
   }
 
