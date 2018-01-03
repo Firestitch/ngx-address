@@ -43,6 +43,7 @@
     <div class="map-container" [hidden]="!fsAddressConfig.map">
 
         <button mat-button class="center" 
+        type="button"
         *ngIf="(fsAddress.lat && fsAddress.lng) && (marker.coords.latitude && marker.coords.longitude)" 
         (click)="recenter()">Center Map using Address</button>
 
