@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { Component, AfterViewInit, Output, Input, OnInit, OnDestroy, Inject, ViewChild, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, Output, Input, OnInit, OnDestroy, Inject, ViewChild, EventEmitter, Pipe, PipeTransform } from '@angular/core';
 import { FsUtil, FsArray } from '@firestitch/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -233,5 +233,48 @@ export class FsAddressComponent implements OnInit, OnDestroy {
     if (this.agmMap) {
       this.mapReady$.unsubscribe();
     }
+  }
+}
+
+
+@Component({
+  selector: 'fs-address-format',
+  template: `
+  <ng-template ngFor let-key [ngForOf]="fsOptions | keys">
+    <span class="{{ key }}" *ngIf="fsAddress[fsOptions[key]['name']]">{{ fsAddress[fsOptions[key]['name']] }}</span>
+  </ng-template>`,
+  styles: [
+  `span::after { content: ", "; }`,
+  `span:last-child:after { content: ""; }`
+  ],
+})
+export class FsAddressFormatComponent implements OnInit {
+
+  @Input() fsAddress = {};
+  @Input() fsOptions = {};
+
+  constructor(private fsUtil: FsUtil) {}
+
+  ngOnInit() {
+    this.fsUtil.each(['address', 'address2', 'city', 'region', 'country', 'zip'], item => {
+      if (!this.fsUtil.isObject(this.fsOptions[item])) {
+        this.fsOptions[item] = {};
+      }
+
+      if (!this.fsOptions[item].name) {
+        this.fsOptions[item].name = item;
+      }
+    });
+  }
+}
+
+@Pipe({name: 'keys'})
+export class KeysPipe implements PipeTransform {
+  transform(value, args: string[]): any {
+    let keys = [];
+    for (let key in value) {
+      keys.push(key);
+    }
+    return keys;
   }
 }

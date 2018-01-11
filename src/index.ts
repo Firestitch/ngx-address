@@ -1,6 +1,6 @@
 import { MatInputModule, MatAutocompleteModule, MatSelectModule, MatButtonModule } from '@angular/material';
 
-import { FsAddressComponent } from './fsaddress.component';
+import { FsAddressComponent, FsAddressFormatComponent, KeysPipe } from './fsaddress.component';
 import { JsonpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, ModuleWithProviders, Injectable, Inject } from '@angular/core';
@@ -38,7 +38,9 @@ export class FsAddressConfig implements LazyMapsAPILoaderConfigLiteral {
     AgmCoreModule.forRoot()
 ],
 declarations: [
-    FsAddressComponent
+    FsAddressComponent,
+    FsAddressFormatComponent,
+    KeysPipe
 ],
 providers: [
     GoogleMapsAPIWrapper,
@@ -46,7 +48,8 @@ providers: [
     { provide: LAZY_MAPS_API_CONFIG, useClass: FsAddressConfig }
 ],
 exports: [
-    FsAddressComponent
+    FsAddressComponent,
+    FsAddressFormatComponent
 ]
 })
 export class FsAddressModule {
