@@ -1,1 +1,7 @@
-<fs-component></fs-component>
+<form (ngSubmit)="save(form)" #form="ngForm" fsForm>
+  <fs-address [(address)]="address" [(config)]="config" (change)="change($event)"></fs-address>
+  <button mat-button type="submit">Save</button>
+</form>
+
+<h2>Formatted Address</h2>
+<fs-address-format [address]="address" [config]="{ address: { name: 'address1' } }"></fs-address-format>

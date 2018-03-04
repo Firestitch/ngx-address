@@ -2,8 +2,32 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'first-example',
-  templateUrl: 'first-example.component.html',
-  styleUrls: [ 'first-example.component.css' ]
+  templateUrl: 'first-example.component.html'
 })
 export class FirstExampleComponent {
+  address = {
+    address1: '',
+    lat: null,
+    lng: null
+  };
+
+  private config = {
+    countries: ['CA', 'US'],
+    address2: { show: true },
+    address: {required: true, name: 'address1'},
+    city: {required: true},
+    region: {required: true},
+    zip: {required: true },
+    country: {required: true}
+  };
+
+  constructor() { }
+
+  change(address) {
+    console.log('Changed', address);
+  }
+
+  save(form) {
+    console.log(form);
+  }
 }
