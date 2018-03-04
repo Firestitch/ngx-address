@@ -1,5 +1,0 @@
-<form (ngSubmit)="save(form)" #form="ngForm" fsForm [fsFormBinding]="form">
-    <fs-address [(fsAddress)]="address" [(fsAddressConfig)]="config" (onChange)="change($event)"></fs-address>
-    <button mat-button type="submit">Save</button>
-</form>
-<fs-address-format [fsAddress]="address" [fsOptions]="{ address: { name: 'address1' } }"></fs-address-format>
