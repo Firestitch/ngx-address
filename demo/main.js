@@ -98,7 +98,7 @@ var FsAddressFormatComponent = (function () {
     FsAddressFormatComponent = __decorate([
         core_1.Component({
             selector: 'fs-address-format',
-            template: "\n    <div *ngFor=\"let key of configKeys\">\n      <span class=\"{{key}}\" *ngIf=\"address[config[key]['name']]\">{{address[config[key]['name']]}}</span>\n    </div>",
+            template: "\n    <ng-container *ngFor=\"let key of configKeys\">\n      <span class=\"{{key}}\" *ngIf=\"address[config[key]['name']]\">{{address[config[key]['name']]}}</span>\n    </ng-container>",
             styles: [
                 "span::after { content: \", \"; }",
                 "span:last-child:after { content: \"\"; }"

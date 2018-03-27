@@ -366,9 +366,9 @@
 
             <tr>
                 <td class="col-md-3">template</td>
-                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div *ngFor&#x3D;&quot;let key of configKeys&quot;&gt;
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;ng-container *ngFor&#x3D;&quot;let key of configKeys&quot;&gt;
   &lt;span class&#x3D;&quot;{{key}}&quot; *ngIf&#x3D;&quot;address[config[key][&#x27;name&#x27;]]&quot;&gt;{{address[config[key][&#x27;name&#x27;]]}}&lt;/span&gt;
-&lt;/div&gt;</code></pre></td>
+&lt;/ng-container&gt;</code></pre></td>
             </tr>
 
 
@@ -717,7 +717,7 @@
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div *ngFor="let key of configKeys">  <span class="{{key}}" *ngIf="address[config[key][\'name\']]">{{address[config[key][\'name\']]}}</span></div></div>'
+        var COMPONENT_TEMPLATE = '<div><ng-container *ngFor="let key of configKeys">  <span class="{{key}}" *ngIf="address[config[key][\'name\']]">{{address[config[key][\'name\']]}}</span></ng-container></div>'
     var COMPONENTS = [{'name': 'FsAddressComponent', 'selector': 'fs-address'},{'name': 'FsAddressFormatComponent', 'selector': 'fs-address-format'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'FsAddressFormatComponent'};
