@@ -4,4 +4,5 @@
 </form>
 
 <h2>Formatted Address</h2>
-<fs-address-format [address]="address" [config]="{ address: { name: 'address1' } }"></fs-address-format>
+<span *ngIf="parts.length">Address:</span>
+<fs-address-format [address]="address" [config]="{ address: { name: 'address1' } }" (change)="changeFormat($event)"></fs-address-format>

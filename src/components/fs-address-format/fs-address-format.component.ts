@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FsUtil } from '@firestitch/common';
+import { Component, Input, Output,
+  EventEmitter, KeyValueDiffers, OnInit, DoCheck } from '@angular/core';
+import { each, isArrayLikeObject } from 'lodash';
 
 @Component({
   selector: 'fs-address-format',
@@ -12,17 +13,34 @@ import { FsUtil } from '@firestitch/common';
   `span:last-child:after { content: ""; }`
   ],
 })
-export class FsAddressFormatComponent implements OnInit {
+export class FsAddressFormatComponent implements OnInit, DoCheck {
 
-  @Input() address = {};
+  @Input()
+  set address(address) {
+    this._address = address;
+    if (!this._addressDiffer && address) {
+      this._addressDiffer = this.differs.find(address).create();
+    }
+  }
+
+  get address() {
+    return this._address;
+  }
+
   @Input() config = {};
+  @Output() change = new EventEmitter<any>();
+
   public configKeys = [];
 
-  constructor(private fsUtil: FsUtil) {}
+  private _address = {};
+  private _addressDiffer = null;
+  private _defaultKeys = ['address', 'address2', 'city', 'region', 'zip', 'country'];
+
+  constructor(private differs: KeyValueDiffers) { }
 
   ngOnInit() {
-    this.fsUtil.each(['address', 'address2', 'city', 'region', 'zip', 'country'], item => {
-      if (!this.fsUtil.isObject(this.config[item])) {
+    each(this._defaultKeys, item => {
+      if (!isArrayLikeObject(this.config[item])) {
         this.config[item] = {};
       }
 
@@ -32,5 +50,21 @@ export class FsAddressFormatComponent implements OnInit {
     });
 
     this.configKeys = Object.keys(this.config);
+  }
+
+  ngDoCheck() {
+    if (this._addressDiffer) {
+      const changes = this._addressDiffer.diff(this.address);
+      if (changes) {
+        const parts = [];
+
+        each(this.configKeys, key => {
+          if (this.address[this.config[key]['name']]) {
+            parts.push(this.address[this.config[key]['name']]);
+          }
+        });
+        this.change.emit(parts);
+      }
+    }
   }
 }

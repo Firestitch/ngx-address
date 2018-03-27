@@ -333,6 +333,7 @@
     </p>
     <p class="comment">
                 <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                <code><a href="https://angular.io/api/core/DoCheck" target="_blank" >DoCheck</a></code>
     </p>
 
 
@@ -404,6 +405,9 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#ngDoCheck">ngDoCheck</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnInit">ngOnInit</a>
                             </li>
                         </ul>
@@ -426,6 +430,34 @@
                         </ul>
                     </td>
                 </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#change">change</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Accessors</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#address">address</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -436,7 +468,7 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <code>constructor(fsUtil: FsUtil)</code>
+                            <code>constructor(differs: <a href="https://angular.io/api/core/KeyValueDiffers" target="_blank">KeyValueDiffers</a>)</code>
                         </td>
                     </tr>
     
@@ -455,9 +487,9 @@
                                             </thead>
                                             <tbody>
                                                     <tr>
-                                                      <td>fsUtil</td>
+                                                      <td>differs</td>
                                                       <td>
-                                                                <code>FsUtil</code>
+                                                                <code><a href="https://angular.io/api/core/KeyValueDiffers" target="_blank" >KeyValueDiffers</a></code>
                                                       </td>
                                                       <td>
                                                       </td>
@@ -482,9 +514,6 @@
                             <code>address</code>
                         </td>
                         <td class="col-md-10">
-                            <p>
-                              <em>Default value: </em><code>{}</code>
-                            </p>
                         </td>
                     </tr>
                 </tbody>
@@ -506,6 +535,23 @@
             </table>
     </section>
 
+    <section>
+        <h3 id="outputs">Outputs</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <a name="change"></a>
+                            <code>change</code>
+                        </td>
+                        <td class="col-md-10">
+                            <em><code>$event</code> type:</em>    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
 
 
 
@@ -514,6 +560,38 @@
             <h3 id="methods">
                 Methods
             </h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <a name="ngDoCheck"></a>
+                            <span class="name">
+                                <b>
+                                ngDoCheck
+                                </b>
+                                <a href="#ngDoCheck"><span class="fa fa-link"></span></a>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>ngDoCheck()</code>
+                        </td>
+                    </tr>
+    
+    
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
@@ -584,6 +662,33 @@
             </table>
     </section>
 
+    <section>
+        <h3 id="accessors">
+            Accessors
+        </h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <a name="address"></a>
+                            <span class="name"><b>address</b><a href="#address"><span class="fa fa-link"></span></a></span>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="accessor"><b>get</b><code>address()</code></span>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="accessor"><b>set</b><code>address(address: )</code></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
 </div>
 
 

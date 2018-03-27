@@ -1,6 +1,10 @@
 import { FormControl } from '@angular/forms';
-import { Component, Output, Input, OnInit, OnDestroy, ViewChild, EventEmitter, Pipe, PipeTransform } from '@angular/core';
-import { FsUtil, FsArray } from '@firestitch/common';
+import { Component, Output, Input, OnInit, OnDestroy, ViewChild,
+  EventEmitter, Pipe, PipeTransform } from '@angular/core';
+import { guid } from '@firestitch/common/util';
+import { filter } from '@firestitch/common/array';
+import { remove } from '@firestitch/common/array';
+import { isBoolean, isArrayLikeObject } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -52,8 +56,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   marker = null;
   mapReady$;
 
-  constructor(private fsUtil: FsUtil, private fsArray: FsArray,
-    private _wrapper: GoogleMapsAPIWrapper, private markerManager: MarkerManager) { }
+  constructor(private _wrapper: GoogleMapsAPIWrapper, private markerManager: MarkerManager) { }
 
   ngOnInit() {
     this.config = Object.assign({}, {
@@ -102,16 +105,16 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
         let option = this.config[item];
 
-          if (this.fsUtil.isBoolean(option)) {
+          if (isBoolean(option)) {
               option = { show: this.config[item] };
           }
 
-          if (!this.fsUtil.isObject(this.config[item])) {
+          if (!isArrayLikeObject(this.config[item])) {
               option = {};
           }
 
           if (!option.id) {
-              option.id = 'input_' + this.fsUtil.guid();
+              option.id = 'input_' + guid();
           }
 
           if (!option.name) {
@@ -125,7 +128,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
       if (this.config.countries) {
           for (let code of this.config.countries) {
 
-              let country = this.fsArray.filter(COUNTRIES, { code: code })[0];
+              let country = filter(COUNTRIES, { code: code })[0];
 
               if (country) {
                   countries.push(country);
@@ -142,7 +145,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
         for (let i = this.config.domestics.length - 1; i >= 0; i--) {
 
-          let item = this.fsArray.remove(this.countries.international, { code: this.config.domestics[i] })[0];
+          let item = remove(this.countries.international, { code: this.config.domestics[i] })[0];
 
           if (item) {
             this.countries.domestic.unshift(item);
@@ -164,8 +167,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
       // Example ready event. Allow to use google object and map instance
       if (this.agmMap) {
         this.mapReady$ = this.agmMap.mapReady.subscribe(map => {
-          // console.log(google);
-          // console.log(map);
+
           this.agmMap.triggerResize();
 
           if (this.address[this.config.address.name] ||
@@ -190,7 +192,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   }
 
   changeCountry() {
-    const country = this.fsArray.filter(COUNTRIES, { code: this.address[this.config.country.name] })[0];
+    const country = filter(COUNTRIES, { code: this.address[this.config.country.name] })[0];
     this.regions = country ? country.regions : [];
     this.zipLabel = country && country.code == 'CA' ? 'Postal Code' : 'Zip';
     this.regionLabel = country && country.code == 'CA' ? 'Province' : 'State';
@@ -198,14 +200,14 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
   search() {
     let geocoder = new google.maps.Geocoder();
-    let country = this.fsArray.filter(COUNTRIES, { code: this.address.country })[0] || {};
+    let country = filter(COUNTRIES, { code: this.address.country })[0] || {};
     let parts = [	this.address[this.config.address.name],
                   this.address[this.config.city.name],
                   this.address[this.config.region.name],
                   country.name
           ];
     this.searchedAddress = parts.join(', ');
-    geocoder.geocode( { 'address': this.searchedAddress  }, (results, status) => {
+    geocoder.geocode( { address: this.searchedAddress  }, (results, status) => {
       this.searched = true;
 
       if (status == google.maps.GeocoderStatus.OK && results.length > 0) {

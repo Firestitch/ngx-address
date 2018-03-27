@@ -8,7 +8,7 @@ exports = module.exports = __webpack_require__("../node_modules/css-loader/lib/c
 
 
 // module
-exports.push([module.i, "agm-map {\n  width: 100%;\n  height: 400px;\n  background-color: grey;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n.map-container {\n  position: relative;\n}\n\n.map-container .address-incomplete {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  background: #fff;\n  border: 1px solid #efefef;\n  height: 100%;\n  line-height: 100%;\n  opacity: 0.87;\n  font-size: larger;\n  padding: 40px;\n  text-align: center;\n}\n\n.map-container .center {\n  position: absolute;\n  right: 20px;\n  top: 20px;\n  right: 5px;\n  top: 5px;\n  z-index: 5;\n  background-color: #fff;\n}\n\n", "", {"version":3,"sources":["C:/Projects/fs-address/src/components/fs-address/C:/Projects/fs-address/src/components/fs-address/src/components/fs-address/fs-address.component.scss","C:/Projects/fs-address/src/components/fs-address/C:/Projects/fs-address/fs-address.component.scss","C:/Projects/fs-address/src/components/fs-address/C:/Projects/fs-address/src/components/fs-address/fs-address.component.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,cAAA;EACA,uBAAA;CCCH;;ACCD;EFCW,yBAAA;CCEV;;ADAD;EACI,mBAAA;CCGH;;ADDG;EACI,mBAAA;EACA,OAAA;EACA,UAAA;EACA,QAAA;EACA,YAAA;EACA,iBAAA;EACA,0BAAA;EACA,aAAA;EACA,kBAAA;EACA,cAAA;EACA,kBAAA;EACA,cAAA;EACA,mBAAA;CCIP;;ADpBD;EAoBQ,mBAAA;EACA,YAAA;EACA,UAAA;EACA,WAAA;EACA,SAAA;EACA,WAAA;EACA,uBAAA;CCIP","file":"fs-address.component.scss","sourcesContent":["agm-map {\r\n    width: 100%;\r\n    height: 400px;\r\n    background-color: grey;\r\n}\r\n\r\n[hidden] { display: none !important; }\r\n\r\n.map-container {\r\n    position: relative;\r\n\r\n    .address-incomplete {\r\n        position: absolute;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        width: 100%;\r\n        background: #fff;\r\n        border: 1px solid #efefef;\r\n        height: 100%;\r\n        line-height: 100%;\r\n        opacity: 0.87;\r\n        font-size: larger;\r\n        padding: 40px;\r\n        text-align: center;\r\n    }\r\n\r\n    .center {\r\n        position: absolute;\r\n        right: 20px;\r\n        top: 20px;\r\n        right: 5px;\r\n        top: 5px;\r\n        z-index: 5;\r\n        background-color: #fff;    \r\n    }\r\n}\r\n","agm-map {\n  width: 100%;\n  height: 400px;\n  background-color: grey;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n.map-container {\n  position: relative;\n}\n\n.map-container .address-incomplete {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  background: #fff;\n  border: 1px solid #efefef;\n  height: 100%;\n  line-height: 100%;\n  opacity: 0.87;\n  font-size: larger;\n  padding: 40px;\n  text-align: center;\n}\n\n.map-container .center {\n  position: absolute;\n  right: 20px;\n  top: 20px;\n  right: 5px;\n  top: 5px;\n  z-index: 5;\n  background-color: #fff;\n}\n\n","agm-map {\n  width: 100%;\n  height: 400px;\n  background-color: grey; }\n\n[hidden] {\n  display: none !important; }\n\n.map-container {\n  position: relative; }\n  .map-container .address-incomplete {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    background: #fff;\n    border: 1px solid #efefef;\n    height: 100%;\n    line-height: 100%;\n    opacity: 0.87;\n    font-size: larger;\n    padding: 40px;\n    text-align: center; }\n  .map-container .center {\n    position: absolute;\n    right: 20px;\n    top: 20px;\n    right: 5px;\n    top: 5px;\n    z-index: 5;\n    background-color: #fff; }\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jb21wb25lbnRzL2ZzLWFkZHJlc3MvZnMtYWRkcmVzcy5jb21wb25lbnQuc2NzcyJdLCJzb3VyY2VzQ29udGVudCI6WyJhZ20tbWFwIHtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gICAgaGVpZ2h0OiA0MDBweDtcclxuICAgIGJhY2tncm91bmQtY29sb3I6IGdyZXk7XHJcbn1cclxuXHJcbltoaWRkZW5dIHsgZGlzcGxheTogbm9uZSAhaW1wb3J0YW50OyB9XHJcblxyXG4ubWFwLWNvbnRhaW5lciB7XHJcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcblxyXG4gICAgLmFkZHJlc3MtaW5jb21wbGV0ZSB7XHJcbiAgICAgICAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gICAgICAgIHRvcDogMDtcclxuICAgICAgICBib3R0b206IDA7XHJcbiAgICAgICAgbGVmdDogMDtcclxuICAgICAgICB3aWR0aDogMTAwJTtcclxuICAgICAgICBiYWNrZ3JvdW5kOiAjZmZmO1xyXG4gICAgICAgIGJvcmRlcjogMXB4IHNvbGlkICNlZmVmZWY7XHJcbiAgICAgICAgaGVpZ2h0OiAxMDAlO1xyXG4gICAgICAgIGxpbmUtaGVpZ2h0OiAxMDAlO1xyXG4gICAgICAgIG9wYWNpdHk6IDAuODc7XHJcbiAgICAgICAgZm9udC1zaXplOiBsYXJnZXI7XHJcbiAgICAgICAgcGFkZGluZzogNDBweDtcclxuICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbiAgICB9XHJcblxyXG4gICAgLmNlbnRlciB7XHJcbiAgICAgICAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gICAgICAgIHJpZ2h0OiAyMHB4O1xyXG4gICAgICAgIHRvcDogMjBweDtcclxuICAgICAgICByaWdodDogNXB4O1xyXG4gICAgICAgIHRvcDogNXB4O1xyXG4gICAgICAgIHotaW5kZXg6IDU7XHJcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZjsgICAgXHJcbiAgICB9XHJcbn1cclxuIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLEFBQUEsT0FBTyxDQUFDO0VBQ0osS0FBSyxFQUFFLElBQUk7RUFDWCxNQUFNLEVBQUUsS0FBSztFQUNiLGdCQUFnQixFQUFFLElBQUksR0FDekI7O0NBRUQsQUFBQSxBQUFBLE1BQUMsQUFBQSxFQUFRO0VBQUUsT0FBTyxFQUFFLGVBQWUsR0FBSzs7QUFFeEMsQUFBQSxjQUFjLENBQUM7RUFDWCxRQUFRLEVBQUUsUUFBUSxHQTJCckI7RUE1QkQsQUFHSSxjQUhVLENBR1YsbUJBQW1CLENBQUM7SUFDaEIsUUFBUSxFQUFFLFFBQVE7SUFDbEIsR0FBRyxFQUFFLENBQUM7SUFDTixNQUFNLEVBQUUsQ0FBQztJQUNULElBQUksRUFBRSxDQUFDO0lBQ1AsS0FBSyxFQUFFLElBQUk7SUFDWCxVQUFVLEVBQUUsSUFBSTtJQUNoQixNQUFNLEVBQUUsaUJBQWlCO0lBQ3pCLE1BQU0sRUFBRSxJQUFJO0lBQ1osV0FBVyxFQUFFLElBQUk7SUFDakIsT0FBTyxFQUFFLElBQUk7SUFDYixTQUFTLEVBQUUsTUFBTTtJQUNqQixPQUFPLEVBQUUsSUFBSTtJQUNiLFVBQVUsRUFBRSxNQUFNLEdBQ3JCO0VBakJMLEFBbUJJLGNBbkJVLENBbUJWLE9BQU8sQ0FBQztJQUNKLFFBQVEsRUFBRSxRQUFRO0lBQ2xCLEtBQUssRUFBRSxJQUFJO0lBQ1gsR0FBRyxFQUFFLElBQUk7SUFDVCxLQUFLLEVBQUUsR0FBRztJQUNWLEdBQUcsRUFBRSxHQUFHO0lBQ1IsT0FBTyxFQUFFLENBQUM7SUFDVixnQkFBZ0IsRUFBRSxJQUFJLEdBQ3pCIn0= */"],"sourceRoot":""}]);
+exports.push([module.i, "agm-map {\n  width: 100%;\n  height: 400px;\n  background-color: grey;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n.map-container {\n  position: relative;\n}\n\n.map-container .address-incomplete {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  background: #fff;\n  border: 1px solid #efefef;\n  height: 100%;\n  line-height: 100%;\n  opacity: 0.87;\n  font-size: larger;\n  padding: 40px;\n  text-align: center;\n}\n\n.map-container .center {\n  position: absolute;\n  right: 20px;\n  top: 20px;\n  right: 5px;\n  top: 5px;\n  z-index: 5;\n  background-color: #fff;\n}\n\n", "", {"version":3,"sources":["/Users/mendor/work/fs-address/src/components/fs-address/src/components/fs-address/fs-address.component.scss","/Users/mendor/work/fs-address/fs-address.component.scss","/Users/mendor/work/fs-address/src/components/fs-address/fs-address.component.scss"],"names":[],"mappings":"AAAA;EACI,YAAA;EACA,cAAA;EACA,uBAAA;CCCH;;ACCD;EFCW,yBAAA;CCEV;;ADAD;EACI,mBAAA;CCGH;;ADDG;EACI,mBAAA;EACA,OAAA;EACA,UAAA;EACA,QAAA;EACA,YAAA;EACA,iBAAA;EACA,0BAAA;EACA,aAAA;EACA,kBAAA;EACA,cAAA;EACA,kBAAA;EACA,cAAA;EACA,mBAAA;CCIP;;ADpBD;EAoBQ,mBAAA;EACA,YAAA;EACA,UAAA;EACA,WAAA;EACA,SAAA;EACA,WAAA;EACA,uBAAA;CCIP","file":"fs-address.component.scss","sourcesContent":["agm-map {\n    width: 100%;\n    height: 400px;\n    background-color: grey;\n}\n\n[hidden] { display: none !important; }\n\n.map-container {\n    position: relative;\n\n    .address-incomplete {\n        position: absolute;\n        top: 0;\n        bottom: 0;\n        left: 0;\n        width: 100%;\n        background: #fff;\n        border: 1px solid #efefef;\n        height: 100%;\n        line-height: 100%;\n        opacity: 0.87;\n        font-size: larger;\n        padding: 40px;\n        text-align: center;\n    }\n\n    .center {\n        position: absolute;\n        right: 20px;\n        top: 20px;\n        right: 5px;\n        top: 5px;\n        z-index: 5;\n        background-color: #fff;    \n    }\n}\n","agm-map {\n  width: 100%;\n  height: 400px;\n  background-color: grey;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n.map-container {\n  position: relative;\n}\n\n.map-container .address-incomplete {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  background: #fff;\n  border: 1px solid #efefef;\n  height: 100%;\n  line-height: 100%;\n  opacity: 0.87;\n  font-size: larger;\n  padding: 40px;\n  text-align: center;\n}\n\n.map-container .center {\n  position: absolute;\n  right: 20px;\n  top: 20px;\n  right: 5px;\n  top: 5px;\n  z-index: 5;\n  background-color: #fff;\n}\n\n","agm-map {\n  width: 100%;\n  height: 400px;\n  background-color: grey; }\n\n[hidden] {\n  display: none !important; }\n\n.map-container {\n  position: relative; }\n  .map-container .address-incomplete {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    background: #fff;\n    border: 1px solid #efefef;\n    height: 100%;\n    line-height: 100%;\n    opacity: 0.87;\n    font-size: larger;\n    padding: 40px;\n    text-align: center; }\n  .map-container .center {\n    position: absolute;\n    right: 20px;\n    top: 20px;\n    right: 5px;\n    top: 5px;\n    z-index: 5;\n    background-color: #fff; }\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jb21wb25lbnRzL2ZzLWFkZHJlc3MvZnMtYWRkcmVzcy5jb21wb25lbnQuc2NzcyJdLCJzb3VyY2VzQ29udGVudCI6WyJhZ20tbWFwIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBoZWlnaHQ6IDQwMHB4O1xuICAgIGJhY2tncm91bmQtY29sb3I6IGdyZXk7XG59XG5cbltoaWRkZW5dIHsgZGlzcGxheTogbm9uZSAhaW1wb3J0YW50OyB9XG5cbi5tYXAtY29udGFpbmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG5cbiAgICAuYWRkcmVzcy1pbmNvbXBsZXRlIHtcbiAgICAgICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgICAgICB0b3A6IDA7XG4gICAgICAgIGJvdHRvbTogMDtcbiAgICAgICAgbGVmdDogMDtcbiAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIGJhY2tncm91bmQ6ICNmZmY7XG4gICAgICAgIGJvcmRlcjogMXB4IHNvbGlkICNlZmVmZWY7XG4gICAgICAgIGhlaWdodDogMTAwJTtcbiAgICAgICAgbGluZS1oZWlnaHQ6IDEwMCU7XG4gICAgICAgIG9wYWNpdHk6IDAuODc7XG4gICAgICAgIGZvbnQtc2l6ZTogbGFyZ2VyO1xuICAgICAgICBwYWRkaW5nOiA0MHB4O1xuICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgfVxuXG4gICAgLmNlbnRlciB7XG4gICAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgICAgcmlnaHQ6IDIwcHg7XG4gICAgICAgIHRvcDogMjBweDtcbiAgICAgICAgcmlnaHQ6IDVweDtcbiAgICAgICAgdG9wOiA1cHg7XG4gICAgICAgIHotaW5kZXg6IDU7XG4gICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNmZmY7ICAgIFxuICAgIH1cbn1cbiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxBQUFBLE9BQU8sQ0FBQztFQUNKLEtBQUssRUFBRSxJQUFJO0VBQ1gsTUFBTSxFQUFFLEtBQUs7RUFDYixnQkFBZ0IsRUFBRSxJQUFJLEdBQ3pCOztDQUVELEFBQUEsQUFBQSxNQUFDLEFBQUEsRUFBUTtFQUFFLE9BQU8sRUFBRSxlQUFlLEdBQUs7O0FBRXhDLEFBQUEsY0FBYyxDQUFDO0VBQ1gsUUFBUSxFQUFFLFFBQVEsR0EyQnJCO0VBNUJELEFBR0ksY0FIVSxDQUdWLG1CQUFtQixDQUFDO0lBQ2hCLFFBQVEsRUFBRSxRQUFRO0lBQ2xCLEdBQUcsRUFBRSxDQUFDO0lBQ04sTUFBTSxFQUFFLENBQUM7SUFDVCxJQUFJLEVBQUUsQ0FBQztJQUNQLEtBQUssRUFBRSxJQUFJO0lBQ1gsVUFBVSxFQUFFLElBQUk7SUFDaEIsTUFBTSxFQUFFLGlCQUFpQjtJQUN6QixNQUFNLEVBQUUsSUFBSTtJQUNaLFdBQVcsRUFBRSxJQUFJO0lBQ2pCLE9BQU8sRUFBRSxJQUFJO0lBQ2IsU0FBUyxFQUFFLE1BQU07SUFDakIsT0FBTyxFQUFFLElBQUk7SUFDYixVQUFVLEVBQUUsTUFBTSxHQUNyQjtFQWpCTCxBQW1CSSxjQW5CVSxDQW1CVixPQUFPLENBQUM7SUFDSixRQUFRLEVBQUUsUUFBUTtJQUNsQixLQUFLLEVBQUUsSUFBSTtJQUNYLEdBQUcsRUFBRSxJQUFJO0lBQ1QsS0FBSyxFQUFFLEdBQUc7SUFDVixHQUFHLEVBQUUsR0FBRztJQUNSLE9BQU8sRUFBRSxDQUFDO0lBQ1YsZ0JBQWdCLEVBQUUsSUFBSSxHQUN6QiJ9 */"],"sourceRoot":""}]);
 
 // exports
 
@@ -31,18 +31,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js");
-var common_1 = __webpack_require__("../node_modules/@firestitch/common/common.umd.js");
+var lodash_1 = __webpack_require__("../node_modules/lodash/lodash.js");
 var FsAddressFormatComponent = (function () {
-    function FsAddressFormatComponent(fsUtil) {
-        this.fsUtil = fsUtil;
-        this.address = {};
+    function FsAddressFormatComponent(differs) {
+        this.differs = differs;
         this.config = {};
+        this.change = new core_1.EventEmitter();
         this.configKeys = [];
+        this._address = {};
+        this._addressDiffer = null;
+        this._defaultKeys = ['address', 'address2', 'city', 'region', 'zip', 'country'];
     }
+    Object.defineProperty(FsAddressFormatComponent.prototype, "address", {
+        get: function () {
+            return this._address;
+        },
+        set: function (address) {
+            this._address = address;
+            if (!this._addressDiffer && address) {
+                this._addressDiffer = this.differs.find(address).create();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     FsAddressFormatComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.fsUtil.each(['address', 'address2', 'city', 'region', 'zip', 'country'], function (item) {
-            if (!_this.fsUtil.isObject(_this.config[item])) {
+        lodash_1.each(this._defaultKeys, function (item) {
+            if (!lodash_1.isArrayLikeObject(_this.config[item])) {
                 _this.config[item] = {};
             }
             if (!_this.config[item].name) {
@@ -51,14 +67,34 @@ var FsAddressFormatComponent = (function () {
         });
         this.configKeys = Object.keys(this.config);
     };
+    FsAddressFormatComponent.prototype.ngDoCheck = function () {
+        var _this = this;
+        if (this._addressDiffer) {
+            var changes = this._addressDiffer.diff(this.address);
+            if (changes) {
+                var parts_1 = [];
+                lodash_1.each(this.configKeys, function (key) {
+                    if (_this.address[_this.config[key]['name']]) {
+                        parts_1.push(_this.address[_this.config[key]['name']]);
+                    }
+                });
+                this.change.emit(parts_1);
+            }
+        }
+    };
     __decorate([
         core_1.Input(),
-        __metadata("design:type", Object)
-    ], FsAddressFormatComponent.prototype, "address", void 0);
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], FsAddressFormatComponent.prototype, "address", null);
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
     ], FsAddressFormatComponent.prototype, "config", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", Object)
+    ], FsAddressFormatComponent.prototype, "change", void 0);
     FsAddressFormatComponent = __decorate([
         core_1.Component({
             selector: 'fs-address-format',
@@ -68,7 +104,7 @@ var FsAddressFormatComponent = (function () {
                 "span:last-child:after { content: \"\"; }"
             ],
         }),
-        __metadata("design:paramtypes", [common_1.FsUtil])
+        __metadata("design:paramtypes", [core_1.KeyValueDiffers])
     ], FsAddressFormatComponent);
     return FsAddressFormatComponent;
 }());
@@ -439,16 +475,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js");
-var common_1 = __webpack_require__("../node_modules/@firestitch/common/common.umd.js");
+var util_1 = __webpack_require__("../node_modules/@firestitch/common/util/index.js");
+var array_1 = __webpack_require__("../node_modules/@firestitch/common/array/index.js");
+var array_2 = __webpack_require__("../node_modules/@firestitch/common/array/index.js");
+var lodash_1 = __webpack_require__("../node_modules/lodash/lodash.js");
 __webpack_require__("../node_modules/rxjs/add/operator/startWith.js");
 __webpack_require__("../node_modules/rxjs/add/operator/map.js");
 var core_2 = __webpack_require__("../node_modules/@agm/core/index.js");
 var countries_1 = __webpack_require__("../src/components/fs-address/countries.ts");
 var forms_1 = __webpack_require__("../node_modules/@angular/forms/esm2015/forms.js");
 var FsAddressComponent = (function () {
-    function FsAddressComponent(fsUtil, fsArray, _wrapper, markerManager) {
-        this.fsUtil = fsUtil;
-        this.fsArray = fsArray;
+    function FsAddressComponent(_wrapper, markerManager) {
         this._wrapper = _wrapper;
         this.markerManager = markerManager;
         this.address = {};
@@ -508,14 +545,14 @@ var FsAddressComponent = (function () {
         for (var _i = 0, _a = ['address', 'address2', 'city', 'region', 'country', 'zip']; _i < _a.length; _i++) {
             var item = _a[_i];
             var option = this.config[item];
-            if (this.fsUtil.isBoolean(option)) {
+            if (lodash_1.isBoolean(option)) {
                 option = { show: this.config[item] };
             }
-            if (!this.fsUtil.isObject(this.config[item])) {
+            if (!lodash_1.isArrayLikeObject(this.config[item])) {
                 option = {};
             }
             if (!option.id) {
-                option.id = 'input_' + this.fsUtil.guid();
+                option.id = 'input_' + util_1.guid();
             }
             if (!option.name) {
                 option.name = item;
@@ -527,7 +564,7 @@ var FsAddressComponent = (function () {
         if (this.config.countries) {
             for (var _b = 0, _c = this.config.countries; _b < _c.length; _b++) {
                 var code = _c[_b];
-                var country = this.fsArray.filter(countries_1.COUNTRIES, { code: code })[0];
+                var country = array_1.filter(countries_1.COUNTRIES, { code: code })[0];
                 if (country) {
                     countries.push(country);
                 }
@@ -540,7 +577,7 @@ var FsAddressComponent = (function () {
         if (this.config.domestics) {
             this.countries.international = countries;
             for (var i = this.config.domestics.length - 1; i >= 0; i--) {
-                var item = this.fsArray.remove(this.countries.international, { code: this.config.domestics[i] })[0];
+                var item = array_2.remove(this.countries.international, { code: this.config.domestics[i] })[0];
                 if (item) {
                     this.countries.domestic.unshift(item);
                 }
@@ -558,8 +595,6 @@ var FsAddressComponent = (function () {
         // Example ready event. Allow to use google object and map instance
         if (this.agmMap) {
             this.mapReady$ = this.agmMap.mapReady.subscribe(function (map) {
-                // console.log(google);
-                // console.log(map);
                 _this.agmMap.triggerResize();
                 if (_this.address[_this.config.address.name] ||
                     _this.address[_this.config.address2.name] ||
@@ -582,7 +617,7 @@ var FsAddressComponent = (function () {
             .then(function () { return _this.agmMap._mapsWrapper.setCenter({ lat: _this.address.lat, lng: _this.address.lng }); });
     };
     FsAddressComponent.prototype.changeCountry = function () {
-        var country = this.fsArray.filter(countries_1.COUNTRIES, { code: this.address[this.config.country.name] })[0];
+        var country = array_1.filter(countries_1.COUNTRIES, { code: this.address[this.config.country.name] })[0];
         this.regions = country ? country.regions : [];
         this.zipLabel = country && country.code == 'CA' ? 'Postal Code' : 'Zip';
         this.regionLabel = country && country.code == 'CA' ? 'Province' : 'State';
@@ -590,14 +625,14 @@ var FsAddressComponent = (function () {
     FsAddressComponent.prototype.search = function () {
         var _this = this;
         var geocoder = new google.maps.Geocoder();
-        var country = this.fsArray.filter(countries_1.COUNTRIES, { code: this.address.country })[0] || {};
+        var country = array_1.filter(countries_1.COUNTRIES, { code: this.address.country })[0] || {};
         var parts = [this.address[this.config.address.name],
             this.address[this.config.city.name],
             this.address[this.config.region.name],
             country.name
         ];
         this.searchedAddress = parts.join(', ');
-        geocoder.geocode({ 'address': this.searchedAddress }, function (results, status) {
+        geocoder.geocode({ address: this.searchedAddress }, function (results, status) {
             _this.searched = true;
             if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
                 var location_1 = results[0].geometry.location;
@@ -650,8 +685,7 @@ var FsAddressComponent = (function () {
             // HACK: allow access from the parent form to inputs in child component
             viewProviders: [{ provide: forms_1.ControlContainer, useExisting: forms_1.NgForm }]
         }),
-        __metadata("design:paramtypes", [common_1.FsUtil, common_1.FsArray,
-            core_2.GoogleMapsAPIWrapper, core_2.MarkerManager])
+        __metadata("design:paramtypes", [core_2.GoogleMapsAPIWrapper, core_2.MarkerManager])
     ], FsAddressComponent);
     return FsAddressComponent;
 }());
@@ -676,7 +710,7 @@ var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js"
 var common_1 = __webpack_require__("../node_modules/@angular/common/esm2015/common.js");
 var forms_1 = __webpack_require__("../node_modules/@angular/forms/esm2015/forms.js");
 var form_1 = __webpack_require__("../node_modules/@firestitch/form/package/index.js");
-var common_2 = __webpack_require__("../node_modules/@firestitch/common/common.umd.js");
+var common_2 = __webpack_require__("../node_modules/@firestitch/common/index.js");
 var fs_address_component_1 = __webpack_require__("../src/components/fs-address/fs-address.component.ts");
 var fs_address_format_component_1 = __webpack_require__("../src/components/fs-address-format/fs-address-format.component.ts");
 var http_1 = __webpack_require__("../node_modules/@angular/http/esm2015/http.js");
@@ -814,7 +848,7 @@ webpackEmptyAsyncContext.id = "../tools lazy recursive";
 /***/ "../tools/components/examples/examples.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"example-title\">{{title}}</div>\r\n<mat-tab-group>\r\n  <mat-tab label=\"Examples\">\r\n      <div class=\"examples-body\">\r\n        <ng-content></ng-content>\r\n      </div>\r\n  </mat-tab>\r\n  <mat-tab label=\"Docs\" *ngIf=\"loaded\">\r\n    <div class=\"iframe-container\">\r\n      <iframe class=\"iframe-example ng-star-inserted\" [src]=\"submoduleUrl\"></iframe>\r\n    </div>\r\n  </mat-tab>\r\n</mat-tab-group>\r\n"
+module.exports = "<div class=\"example-title\">{{title}}</div>\n<mat-tab-group>\n  <mat-tab label=\"Examples\">\n      <div class=\"examples-body\">\n        <ng-content></ng-content>\n      </div>\n  </mat-tab>\n  <mat-tab label=\"Docs\" *ngIf=\"loaded\">\n    <div class=\"iframe-container\">\n      <iframe class=\"iframe-example ng-star-inserted\" [src]=\"submoduleUrl\"></iframe>\n    </div>\n  </mat-tab>\n</mat-tab-group>\n"
 
 /***/ }),
 
@@ -913,7 +947,7 @@ exports.AppComponent = AppComponent;
 /***/ "./app/components/first-example/first-example.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"save(form)\" #form=\"ngForm\" fsForm>\n  <fs-address [(address)]=\"address\" [(config)]=\"config\" (change)=\"change($event)\"></fs-address>\n  <button mat-button type=\"submit\">Save</button>\n</form>\n\n<h2>Formatted Address</h2>\n<fs-address-format [address]=\"address\" [config]=\"{ address: { name: 'address1' } }\"></fs-address-format>\n"
+module.exports = "<form (ngSubmit)=\"save(form)\" #form=\"ngForm\" fsForm>\n  <fs-address [(address)]=\"address\" [(config)]=\"config\" (change)=\"change($event)\"></fs-address>\n  <button mat-button type=\"submit\">Save</button>\n</form>\n\n<h2>Formatted Address</h2>\n<span *ngIf=\"parts.length\">Address:</span>\n<fs-address-format [address]=\"address\" [config]=\"{ address: { name: 'address1' } }\" (change)=\"changeFormat($event)\"></fs-address-format>\n"
 
 /***/ }),
 
@@ -940,6 +974,7 @@ var FirstExampleComponent = (function () {
             lat: null,
             lng: null
         };
+        this.parts = [];
         this.config = {
             countries: ['CA', 'US'],
             address2: { show: true },
@@ -952,6 +987,12 @@ var FirstExampleComponent = (function () {
     }
     FirstExampleComponent.prototype.change = function (address) {
         console.log('Changed', address);
+    };
+    FirstExampleComponent.prototype.changeFormat = function (parts) {
+        var _this = this;
+        setTimeout(function () {
+            _this.parts = parts;
+        });
     };
     FirstExampleComponent.prototype.save = function (form) {
         console.log(form);

@@ -11,6 +11,8 @@ export class FirstExampleComponent {
     lng: null
   };
 
+  parts = [];
+
   private config = {
     countries: ['CA', 'US'],
     address2: { show: true },
@@ -25,6 +27,12 @@ export class FirstExampleComponent {
 
   change(address) {
     console.log('Changed', address);
+  }
+
+  changeFormat(parts) {
+    setTimeout(() => {
+      this.parts = parts;
+    });
   }
 
   save(form) {
