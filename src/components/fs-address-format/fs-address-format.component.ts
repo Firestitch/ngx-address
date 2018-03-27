@@ -5,9 +5,9 @@ import { each, isArrayLikeObject } from 'lodash';
 @Component({
   selector: 'fs-address-format',
   template: `
-    <div *ngFor="let key of configKeys">
+    <ng-container *ngFor="let key of configKeys">
       <span class="{{key}}" *ngIf="address[config[key]['name']]">{{address[config[key]['name']]}}</span>
-    </div>`,
+    </ng-container>`,
   styles: [
   `span::after { content: ", "; }`,
   `span:last-child:after { content: ""; }`
