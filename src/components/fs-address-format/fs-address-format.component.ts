@@ -63,7 +63,9 @@ export class FsAddressFormatComponent implements OnInit, DoCheck {
             parts.push(this.address[this.config[key]['name']]);
           }
         });
-        this.change.emit(parts);
+        setTimeout(() => {
+          this.change.emit(parts);
+        });
       }
     }
   }

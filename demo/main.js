@@ -78,7 +78,9 @@ var FsAddressFormatComponent = (function () {
                         parts_1.push(_this.address[_this.config[key]['name']]);
                     }
                 });
-                this.change.emit(parts_1);
+                setTimeout(function () {
+                    _this.change.emit(parts_1);
+                });
             }
         }
     };
