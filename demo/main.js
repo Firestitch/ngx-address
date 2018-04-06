@@ -728,7 +728,12 @@ var FsAddressModule = (function () {
     FsAddressModule.forRoot = function () {
         return {
             ngModule: FsAddressModule_1,
-            providers: []
+            providers: [
+                {
+                    provide: countries_1.COUNTRIES,
+                    useValue: countries_1.COUNTRIES
+                }
+            ]
         };
     };
     FsAddressModule = FsAddressModule_1 = __decorate([
@@ -749,8 +754,7 @@ var FsAddressModule = (function () {
             ],
             exports: [
                 fs_address_component_1.FsAddressComponent,
-                fs_address_format_component_1.FsAddressFormatComponent,
-                countries_1.COUNTRIES
+                fs_address_format_component_1.FsAddressFormatComponent
             ],
             entryComponents: [],
             declarations: [

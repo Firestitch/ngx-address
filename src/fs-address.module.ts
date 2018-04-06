@@ -35,8 +35,7 @@ import { COUNTRIES } from './components/fs-address/countries';
   ],
   exports: [
     FsAddressComponent,
-    FsAddressFormatComponent,
-    COUNTRIES
+    FsAddressFormatComponent
   ],
   entryComponents: [
   ],
@@ -54,7 +53,12 @@ export class FsAddressModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: FsAddressModule,
-      providers: []
+      providers: [
+        {
+          provide: COUNTRIES,
+          useValue: COUNTRIES
+        }
+      ]
     };
   }
 }
