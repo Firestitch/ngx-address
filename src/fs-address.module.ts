@@ -16,6 +16,7 @@ import {
           MatSelectModule
         } from '@angular/material';
 import { FsAddressConfig } from './models/fsaddressconfig';
+import { COUNTRIES } from './components/fs-address/countries';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { FsAddressConfig } from './models/fsaddressconfig';
   ],
   exports: [
     FsAddressComponent,
-    FsAddressFormatComponent
+    FsAddressFormatComponent,
+    COUNTRIES
   ],
   entryComponents: [
   ],

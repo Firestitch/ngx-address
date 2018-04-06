@@ -720,6 +720,7 @@ var flex_layout_1 = __webpack_require__("../node_modules/@angular/flex-layout/es
 var core_2 = __webpack_require__("../node_modules/@agm/core/index.js");
 var material_1 = __webpack_require__("../node_modules/@angular/material/esm2015/material.js");
 var fsaddressconfig_1 = __webpack_require__("../src/models/fsaddressconfig.ts");
+var countries_1 = __webpack_require__("../src/components/fs-address/countries.ts");
 var FsAddressModule = (function () {
     function FsAddressModule() {
     }
@@ -748,7 +749,8 @@ var FsAddressModule = (function () {
             ],
             exports: [
                 fs_address_component_1.FsAddressComponent,
-                fs_address_format_component_1.FsAddressFormatComponent
+                fs_address_format_component_1.FsAddressFormatComponent,
+                countries_1.COUNTRIES
             ],
             entryComponents: [],
             declarations: [
@@ -780,6 +782,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__("../src/fs-address.module.ts"));
+__export(__webpack_require__("../src/components/fs-address/countries.ts"));
 
 
 /***/ }),
