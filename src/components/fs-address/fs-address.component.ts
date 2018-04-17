@@ -1,29 +1,16 @@
 import { FormControl } from '@angular/forms';
 import { Component, Output, Input, OnInit, OnDestroy, ViewChild,
   EventEmitter, Pipe, PipeTransform } from '@angular/core';
-import { guid } from '@firestitch/common/util';
-import { filter } from '@firestitch/common/array';
-import { remove } from '@firestitch/common/array';
-import { isBoolean, isArrayLikeObject } from 'lodash';
+import { isBoolean, isArrayLikeObject, filter, remove, uniqueId } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { GoogleMapsAPIWrapper, MapsAPILoader, AgmMap, AgmMarker, MarkerManager } from '@agm/core';
-import { COUNTRIES } from './countries';
+import { COUNTRIES } from '../../constants/countries';
 import { NgForm, ControlContainer} from '@angular/forms';
+import { FsAddress } from '../../interfaces';
 declare var google: any;
-
-export interface FsAddress {
-  country?: string
-  state?: string,
-  region?: string,
-  address?: string,
-  city?: string,
-  zip?: string,
-  lat?: string | number,
-  lng?: string | number
-}
 
 @Component({
   selector: 'fs-address',
@@ -114,7 +101,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
           }
 
           if (!option.id) {
-              option.id = 'input_' + guid();
+              option.id = 'input_' + uniqueId();
           }
 
           if (!option.name) {

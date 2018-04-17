@@ -15,8 +15,7 @@ import {
           MatInputModule,
           MatSelectModule
         } from '@angular/material';
-import { FsAddressConfig } from './models/fsaddressconfig';
-import { COUNTRIES } from './components/fs-address/countries';
+import { GoogleMapConfig } from './classes/googlemapconfig';
 
 @NgModule({
   imports: [
@@ -46,19 +45,13 @@ import { COUNTRIES } from './components/fs-address/countries';
   providers: [
     GoogleMapsAPIWrapper,
     MarkerManager,
-    { provide: LAZY_MAPS_API_CONFIG, useClass: FsAddressConfig }
+    { provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapConfig }
   ],
 })
 export class FsAddressModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: FsAddressModule,
-      providers: [
-        {
-          provide: COUNTRIES,
-          useValue: COUNTRIES
-        }
-      ]
+      ngModule: FsAddressModule
     };
   }
 }

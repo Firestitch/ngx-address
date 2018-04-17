@@ -1,7 +1,7 @@
 <div>
     <div fxLayout="row">
         <mat-form-field fxFlex>
-            <input matInput [(ngModel)]="address[config.address.name]" [attr.disabled]="config.disabled" [fsFormRequired]="config.address.required" name="{{ config.address.id }}" placeholder="Address" aria-label="Address" (change)="search()">
+            <input matInput [(ngModel)]="address[config.address.name]" [attr.disabled]="config.disabled" [fsFormRequired]="config.address.required" name="{{ config.address.id }}" placeholder="Address" aria-label="Address" (change)="search()" autocomplete="off">
         </mat-form-field>
         <mat-form-field fxFlex [hidden]="!config.address2.show">
             <input matInput [(ngModel)]="address[config.address2.name]" [attr.disabled]="config.disabled" [fsFormRequired]="config.address2.required" name="{{ config.address2.id }}" placeholder="Address 2" aria-label="Address 2" (change)="search()">
