@@ -10,8 +10,10 @@ import { FsExampleModule } from '@firestitch/example';
 import { FsExamplesComponent } from '../tools/components/examples/examples.component';
 import { FirstExampleComponent } from './app/components/first-example/first-example.component';
 import { FsAddressModule } from '../src';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { FsFormModule } from '@firestitch/form';
+
+import { AddressPickerExampleComponent } from './app/components/address-picker-example/address-picker-example.component';
+import { AddressSearchExampleComponent } from './app/components/address-search-example/address-search-example.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -21,14 +23,20 @@ import { FsFormModule } from '@firestitch/form';
     AppMaterialModule,
     FormsModule,
     FsExampleModule,
-    FsAddressModule
+    FsAddressModule,
+
+    AgmCoreModule.forRoot({libraries: ['places']}),
   ],
   entryComponents: [
   ],
   declarations: [
     AppComponent,
+    FsExamplesComponent,
+
     FirstExampleComponent,
-    FsExamplesComponent
+
+    AddressPickerExampleComponent,
+    AddressSearchExampleComponent
   ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
 })
