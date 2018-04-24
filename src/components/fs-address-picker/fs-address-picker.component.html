@@ -4,39 +4,33 @@
 
   <div class="search" *ngIf="!isEdit">
     <fs-address-search
-      [address]="addressValue"
-      (select)="selectSearch($event)"
+      [address]="address"
+      (selected)="selectSearch($event)"
     ></fs-address-search>
 
-    <div class="input-controls" *ngIf="addressDetails">
+    <div class="input-controls" *ngIf="address && address.name">
       <button
         mat-icon-button
         (click)="clear()"
       ><mat-icon>close</mat-icon></button>
       <button
         mat-icon-button
-        (click)="edit()"
+        (click)="openEdit()"
       ><mat-icon>create</mat-icon></button>
     </div>
   </div>
 
   <div *ngIf="isEdit">
     <fs-address
-      [(address)]="addressDetails"
-      [(config)]="config"
-      (change)="change($event)"
+      [address]="address"
+      [config]="config"
+      [mapOptions]="mapOptions"
+      (selected)="selectFullAddress($event)"
     ></fs-address>
     <button
       mat-button
-      (click)="save()"
-    >Save</button>
+      (click)="closeEdit()"
+    >Close Edit</button>
   </div>
 
-  <!--<form (ngSubmit)="save(form)" #form="ngForm" fsForm *ngIf="isEdit">-->
-    <!--<fs-address [(address)]="address" [(config)]="config" (change)="change($event)"></fs-address>-->
-    <!--<button mat-button type="submit">Save</button>-->
-  <!--</form>-->
-
 </div>
-
-<pre>isEdit - {{isEdit}}</pre>

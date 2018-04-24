@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
+// Interfaces
 import { IFsAddressConfig } from '../../../../src/interfaces/address-config.interface';
+import { FsAddress } from '../../../../src/interfaces/address.interface';
+import { IFsAddressMapOptions } from '../../../../src/interfaces/address-map-options.interface';
 
 @Component({
   selector: 'address-picker-example',
@@ -8,13 +12,7 @@ import { IFsAddressConfig } from '../../../../src/interfaces/address-config.inte
 })
 export class AddressPickerExampleComponent implements OnInit {
 
-  public address: string; // = "Hershey Lodge, University Drive, Hershey, PA, USA";
-
-  // public address = {
-  //   description: "Hershey's Chocolate World, Park Boulevard, Hershey, PA, USA",
-  //   id: "3d8bf452dbe8cbd511f12ae85415dc65042fa453",
-  //   place_id: "ChIJu14T-j67yIkR2eHQjYSogyM"
-  // };
+  public address: FsAddress = {};
 
   public config: IFsAddressConfig = {
     country: { required: true, isVisible: true, showOnly: ['CA', 'US'] },
@@ -23,6 +21,10 @@ export class AddressPickerExampleComponent implements OnInit {
     city: { required: true, isVisible: true },
     address: { required: true, isVisible: true },
     zip: { required: true, isVisible: true },
+  };
+
+  public mapOptions: IFsAddressMapOptions = {
+    zoom: 15
   };
 
   constructor() {}

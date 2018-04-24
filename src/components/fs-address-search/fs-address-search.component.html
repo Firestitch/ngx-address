@@ -2,8 +2,8 @@
 
   <input matInput
          placeholder="Location"
-         [ngModel]="address"
-         (ngModelChange)="getAddressPredictions($event)"
+         [ngModel]="address.name"
+         (ngModelChange)="addressChanged($event)"
          #search
          [matAutocomplete]="auto">
 

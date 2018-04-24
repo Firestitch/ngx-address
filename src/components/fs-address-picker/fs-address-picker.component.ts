@@ -1,17 +1,17 @@
 import {
-  ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output, ViewChild
+  Output
 } from '@angular/core';
-import { AgmMap, AgmMarker, MapsAPILoader } from '@agm/core';
+
+// Interfaces
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
-import set = Reflect.set;
+import { IFsAddressMapOptions } from '../../interfaces/address-map-options.interface';
+
 
 @Component({
   selector: 'fs-address-picker',
@@ -21,12 +21,12 @@ import set = Reflect.set;
 export class FsAddressPickerComponent implements OnInit, OnDestroy {
 
   // ADDRESS Two-way binding
-  public addressValue: any;
+  public addressValue: FsAddress;
   @Input() get address() {
     return this.addressValue;
   }
   @Output() addressChange = new EventEmitter();
-  set address(value: string) {
+  set address(value: FsAddress) {
     this.addressValue = value;
     this.addressChange.emit(this.addressValue);
   }
@@ -41,16 +41,25 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
     this.configValue = value;
     this.configChange.emit(this.configValue);
   }
-  @Output() select: EventEmitter<any> = new EventEmitter<any>();
+
+  // MAP OPTIONS Two-way binding
+  public mapOptionsValue: IFsAddressMapOptions;
+  @Input() get mapOptions() {
+    return this.mapOptionsValue;
+  }
+  @Output() mapOptionsChange = new EventEmitter();
+  set mapOptions(value: IFsAddressMapOptions) {
+    this.mapOptionsValue = value;
+    this.mapOptionsChange.emit(this.mapOptionsValue);
+  }
+
+  @Output() selected: EventEmitter<any> = new EventEmitter<any>();
   // BINDING END
 
   // Others
-  public addressDetails: FsAddress;
-  public isEdit: boolean = false;
+  public isEdit: boolean;
 
-  constructor(
-    private _cdRef: ChangeDetectorRef,
-  ) {
+  constructor() {
     this.isEdit = false;
   }
 
@@ -58,27 +67,31 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  public edit() {
+  public openEdit() {
     this.isEdit = true;
-    this._cdRef.detectChanges(); // TODO change to better emit of change. Without - DOM doesn't change
+  }
+
+  public closeEdit() {
+    this.isEdit = false;
   }
 
   public clear() {
-    this.addressDetails = void 0;
-    this.addressValue = void 0;
-    this._cdRef.detectChanges(); // TODO change to better emit of change. Without - DOM doesn't change
-  }
-
-  public save() {
-    this.isEdit = false;
-    this._cdRef.detectChanges(); // TODO change to better emit of change. Without - DOM doesn't change
+    this.address = {};
   }
 
   public selectSearch(event: FsAddress) {
     console.log(event);
+
     if (event) {
-      this.addressDetails = event;
-      this._cdRef.detectChanges(); // TODO change to better emit of change. Without - DOM doesn't change
+      this.address = event;
+    }
+  }
+
+  public selectFullAddress(event: FsAddress) {
+    console.log(event);
+
+    if (event) {
+      this.address = event;
     }
   }
 }

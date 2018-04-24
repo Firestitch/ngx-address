@@ -1,5 +1,6 @@
 <fs-address-picker
   [(address)]="address"
   [(config)]="config"
-  (select)="select($event)"
+  [(mapOptions)]="mapOptions"
+  (selected)="select($event)"
 ></fs-address-picker>

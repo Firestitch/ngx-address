@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -11,11 +10,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
-import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/delay';
+import { Subject } from 'rxjs/Subject';
+
 import { FsAddress } from '../../interfaces/address.interface';
 
 
@@ -26,8 +23,8 @@ import { FsAddress } from '../../interfaces/address.interface';
 })
 export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
-  @Input() address: any;
-  @Output() select: EventEmitter<any> = new EventEmitter<any>();
+  @Input() address: FsAddress = {};
+  @Output() selected: EventEmitter<any> = new EventEmitter<any>();
 
   // Address Predictions
   public predictions: google.maps.places.AutocompletePrediction[] = [];
@@ -39,22 +36,46 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   public googleAutocompleteService: google.maps.places.AutocompleteService;
   public googlePlacesService: google.maps.places.PlacesService;
 
+  // Other
+  private _changeAddressDebounce = new Subject<any>();
+
   constructor(
     private _mapsAPILoader: MapsAPILoader,
-    private _cdRef: ChangeDetectorRef,
-  ) {}
+    private _ngZone: NgZone
+  ) {
+    this._changeAddressDebounce
+      .debounceTime(300)
+      .subscribe(value => {
+        this.updatePredictions(value);
+      });
+  }
 
   public ngOnInit() {
-    this.googleMapsInit();
+    this.initAddress();
+    this.initGoogleMap();
 
-    if (this.address) {
-      this.getAddressPredictions(this.address);
+    if (this.address && this.address.name) {
+      this.updatePredictions(this.address.name);
     }
   }
 
   public ngOnDestroy() {}
 
-  private googleMapsInit() {
+  private initAddress() {
+    this.address = Object.assign({
+      name: null,
+      country: null,
+      state: null,
+      region: null,
+      address: null,
+      city: null,
+      zip: null,
+      lat: null,
+      lng: null
+    }, this.address);
+  }
+
+  private initGoogleMap() {
     this._mapsAPILoader
       .load()
       .then(() => {
@@ -63,24 +84,28 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getAddressPredictions(value) {
+  private updatePredictions(value) {
     if (value && this.googleAutocompleteService) {
 
       this.googleAutocompleteService.getPlacePredictions(
         {input: value},
         (predictions, status) => {
-          this.predictions.length = 0;
+          this._ngZone.run(() => {
+            this.predictions.length = 0;
 
-          if (status != google.maps.places.PlacesServiceStatus.OK) {
-            return;
-          }
+            if (status != google.maps.places.PlacesServiceStatus.OK) {
+              return;
+            }
 
-          this.predictions = predictions;
-
-          this._cdRef.detectChanges(); // TODO change to better emit of change. Without - DOM doesn't change
+            this.predictions = predictions;
+          });
         });
-    }
 
+    }
+  }
+
+  public addressChanged(event) {
+    this._changeAddressDebounce.next(event);
   }
 
   public selectionChange(event) {
@@ -90,44 +115,48 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
       this.googlePlacesService.getDetails(
         { placeId: place.place_id },
         (result, status) => {
-          if (status != google.maps.places.PlacesServiceStatus.OK) {
-            return;
-          }
+          this._ngZone.run(() => {
 
-          let newAddress: FsAddress = {
-            name: place && place.description,
-            lat: result.geometry.location.lat(),
-            lng: result.geometry.location.lng()
-          };
-
-          result.address_components.forEach((item) => {
-            if (item.types.some(type => type === 'country')) {
-              newAddress.country = { longName: item.long_name, shortName: item.short_name };
+            if (status != google.maps.places.PlacesServiceStatus.OK) {
+              return;
             }
 
-            if (item.types.some(type => type === 'administrative_area_level_1')) {
-              newAddress.state = { longName: item.long_name, shortName: item.short_name };
-            }
+            let newAddress: FsAddress = {
+              name: place && place.description,
+              lat: result.geometry.location.lat(),
+              lng: result.geometry.location.lng()
+            };
 
-            if (item.types.some(type => type === 'administrative_area_level_2')) {
-              newAddress.region = { longName: item.long_name, shortName: item.short_name };
-            }
+            result.address_components.forEach((item) => {
+              if (item.types.some(type => type === 'country')) {
+                newAddress.country = { longName: item.long_name, shortName: item.short_name };
+              }
 
-            if (item.types.some(type => type === 'route')) {
-              newAddress.address = item.long_name;
-            }
+              if (item.types.some(type => type === 'administrative_area_level_1')) {
+                newAddress.state = { longName: item.long_name, shortName: item.short_name };
+              }
 
-            if (item.types.some(type => type === 'postal_code')) {
-              newAddress.zip = item.long_name;
-            }
+              if (item.types.some(type => type === 'administrative_area_level_2')) {
+                newAddress.region = { longName: item.long_name, shortName: item.short_name };
+              }
+
+              if (item.types.some(type => type === 'locality')) {
+                newAddress.city = item.long_name;
+              }
+
+              if (item.types.some(type => type === 'postal_code')) {
+                newAddress.zip = item.long_name;
+              }
+            });
+
+            const streetNumber = result.address_components.find(el => el.types.some(type => type === 'street_number'));
+            const address = result.address_components.find(el => el.types.some(type => type === 'route'));
+            newAddress.address = address && streetNumber && address.long_name + ' ' + streetNumber.long_name || address && address.long_name || void 0;
+
+            this.address = newAddress;
+
+            this.selected.emit(newAddress);
           });
-
-          const streetNumber = result.address_components.find(el => el.types.some(type => type === 'street_number'));
-          const city = result.address_components.find(el => el.types.some(type => type === 'locality'));
-          newAddress.city = city && streetNumber && city.long_name + ' ' + streetNumber.long_name || city && city.long_name || void 0;
-
-          this.select.emit(newAddress);
-          this._cdRef.detectChanges(); // TODO change to better emit of change. Without - DOM doesn't change
         });
     }
   }

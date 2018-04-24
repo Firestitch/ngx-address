@@ -1,1 +1,1 @@
-export * from 'fs-address-picker.component'
+export * from './fs-address-picker.component'
