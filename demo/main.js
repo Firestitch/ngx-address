@@ -15,6 +15,45 @@ exports.push([module.i, "agm-map {\n  width: 100%;\n  height: 400px;\n  backgrou
 
 /***/ }),
 
+/***/ "../src/classes/googlemapconfig.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js");
+var GoogleMapConfig = (function () {
+    function GoogleMapConfig(apiKey) {
+        this.apiKey = null;
+        if (!apiKey) {
+            throw new Error('GoogleMapKey injector invalid');
+        }
+        this.apiKey = apiKey;
+    }
+    GoogleMapConfig = __decorate([
+        __param(0, core_1.Inject('GoogleMapKey')),
+        __metadata("design:paramtypes", [Object])
+    ], GoogleMapConfig);
+    return GoogleMapConfig;
+}());
+exports.GoogleMapConfig = GoogleMapConfig;
+;
+
+
+/***/ }),
+
 /***/ "../src/components/fs-address-format/fs-address-format.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -115,7 +154,261 @@ exports.FsAddressFormatComponent = FsAddressFormatComponent;
 
 /***/ }),
 
-/***/ "../src/components/fs-address/countries.ts":
+/***/ "../src/components/fs-address/fs-address.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n    <div fxLayout=\"row\">\n        <mat-form-field fxFlex>\n            <input matInput [(ngModel)]=\"address[config.address.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.address.required\" name=\"{{ config.address.id }}\" placeholder=\"Address\" aria-label=\"Address\" (change)=\"search()\" autocomplete=\"off\">\n        </mat-form-field>\n        <mat-form-field fxFlex [hidden]=\"!config.address2.show\">\n            <input matInput [(ngModel)]=\"address[config.address2.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.address2.required\" name=\"{{ config.address2.id }}\" placeholder=\"Address 2\" aria-label=\"Address 2\" (change)=\"search()\">\n            <mat-hint>Apartment, suite, unit, building, floor, etc.</mat-hint>\n        </mat-form-field>\n    </div>\n\n    <div fxLayout=\"row\">\n        <mat-form-field fxFlex>\n            <input matInput [(ngModel)]=\"address[config.city.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.city.required\" name=\"{{ config.city.id }}\" placeholder=\"City\" aria-label=\"City\" (change)=\"search()\">\n        </mat-form-field>\n        <mat-form-field fxFlex>\n            <input matInput [(ngModel)]=\"address[config.zip.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.zip.required\" name=\"{{ config.zip.id }}\" placeholder=\"{{ zipLabel }}\" (change)=\"search()\">\n        </mat-form-field>\n    </div>\n\n    <div fxLayout=\"row\">\n        <mat-form-field fxFlex>\n            <mat-select [(ngModel)]=\"address[config.country.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.country.required\" name=\"{{ config.country.id }}\" placeholder=\"Country\" aria-label=\"Country\" (ngModelChange)=\"changeCountry()\" (change)=\"search()\">\n                <mat-option *ngFor=\"let country of countries.domestic\" [value]=\"country.code\">\n                    <span>{{ country.name }}</span>\n                </mat-option>\n                <ng-container *ngIf=\"countries.international.length\">\n                    <mat-option *ngFor=\"let country of countries.international\" [value]=\"country.code\">\n                        <span>{{ country.name }}</span>\n                    </mat-option>\n                </ng-container>\n            </mat-select>\n        </mat-form-field>\n        <mat-form-field fxFlex>\n            <mat-select [(ngModel)]=\"address[config.region.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.region.required\" name=\"{{ config.region.id }}\" placeholder=\"{{ regionLabel }}\" (change)=\"search()\">\n                <mat-option *ngFor=\"let region of regions\" [value]=\"region.code\">\n                    <span>{{ region.name }}</span>\n                </mat-option>\n            </mat-select>\n        </mat-form-field>\n    </div>\n\n    <div class=\"map-container\" [hidden]=\"!config.map\">\n\n        <button mat-button class=\"center\"\n        type=\"button\"\n        *ngIf=\"(address.lat && address.lng) && (marker.coords.latitude && marker.coords.longitude)\"\n        (click)=\"recenter()\">Center Map using Address</button>\n\n        <agm-map\n        [latitude]=\"map.center.latitude\"\n        [longitude]=\"map.center.longitude\"\n        [zoom]=\"map.zoom\"\n        [scrollwheel]=\"mapOptions.scrollwheel\"\n        [streetViewControl]=\"mapOptions.streetViewControl\"\n        [mapTypeControlOptions]=\"mapOptions.mapTypeControlOptions\"\n        >\n            <agm-marker\n            [latitude]=\"marker.coords.latitude\"\n            [longitude]=\"marker.coords.longitude\"\n            [markerDraggable]=\"marker.options.draggable\"\n            (dragEnd)=\"marker.events.dragend($event)\"\n            ></agm-marker>\n        </agm-map>\n\n        <div class=\"address-incomplete\" fxLayout=\"row\" fxLayoutAlign=\"center center\" *ngIf=\"!address.lat && !address.lng\">\n            <div *ngIf=\"!searched\">Please populate the address above to locate it on the map</div>\n            <div *ngIf=\"searched\">Could not find address \"{{ searchedAddress }}\"</div>\n        </div>\n    </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../src/components/fs-address/fs-address.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+
+        var result = __webpack_require__("../node_modules/css-loader/index.js?{\"sourceMap\":true}!../node_modules/postcss-loader/lib/index.js?{\"sourceMap\":true}!../node_modules/resolve-url-loader/index.js?{\"sourceMap\":true}!../node_modules/sass-loader/lib/loader.js?{\"sourceMap\":true}!../src/components/fs-address/fs-address.component.scss");
+
+        if (typeof result === "string") {
+            module.exports = result;
+        } else {
+            module.exports = result.toString();
+        }
+    
+
+/***/ }),
+
+/***/ "../src/components/fs-address/fs-address.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js");
+var lodash_1 = __webpack_require__("../node_modules/lodash/lodash.js");
+__webpack_require__("../node_modules/rxjs/add/operator/startWith.js");
+__webpack_require__("../node_modules/rxjs/add/operator/map.js");
+var core_2 = __webpack_require__("../node_modules/@agm/core/index.js");
+var countries_1 = __webpack_require__("../src/constants/countries.ts");
+var forms_1 = __webpack_require__("../node_modules/@angular/forms/esm2015/forms.js");
+var FsAddressComponent = (function () {
+    function FsAddressComponent(_wrapper, markerManager) {
+        this._wrapper = _wrapper;
+        this.markerManager = markerManager;
+        this.address = {};
+        this.config = null;
+        this.change = new core_1.EventEmitter();
+        this.regions = [];
+        this.countries = {
+            domestic: [],
+            international: []
+        };
+        this.zipLabel = '';
+        this.regionLabel = '';
+        this.center = null;
+        this.searched = false;
+        this.searchedAddress = '';
+        this.map = null;
+        this.mapOptions = null;
+        this.marker = null;
+    }
+    FsAddressComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.config = Object.assign({}, {
+            cords: {
+                lat: 43.6379967,
+                lng: -79.3819992
+            },
+            address2: true,
+            disabled: false,
+            domestics: ['CA', 'US'],
+            map: true
+        }, this.config);
+        this.address.lat = this.address.lat || '';
+        this.address.lng = this.address.lng || '';
+        this.map = {
+            center: {
+                latitude: this.address.lat || this.config.cords.lat,
+                longitude: this.address.lng || this.config.cords.lng
+            },
+            zoom: 13
+        };
+        this.mapOptions = Object.assign({
+            scrollwheel: false,
+            streetViewControl: false,
+            mapTypeControlOptions: { mapTypeIds: [] }
+        }, this.mapOptions || {});
+        this.marker = {
+            id: 0,
+            coords: { latitude: this.address.lat, longitude: this.address.lng },
+            options: { draggable: true },
+            events: {
+                dragend: function (marker) {
+                    _this.address.lat = marker.coords.lat;
+                    _this.address.lng = marker.coords.lng;
+                }
+            }
+        };
+        for (var _i = 0, _a = ['address', 'address2', 'city', 'region', 'country', 'zip']; _i < _a.length; _i++) {
+            var item = _a[_i];
+            var option = this.config[item];
+            if (lodash_1.isBoolean(option)) {
+                option = { show: this.config[item] };
+            }
+            if (!lodash_1.isArrayLikeObject(this.config[item])) {
+                option = {};
+            }
+            if (!option.id) {
+                option.id = 'input_' + lodash_1.uniqueId();
+            }
+            if (!option.name) {
+                option.name = item;
+            }
+            this.config[item] = option;
+        }
+        ;
+        var countries = [];
+        if (this.config.countries) {
+            for (var _b = 0, _c = this.config.countries; _b < _c.length; _b++) {
+                var code = _c[_b];
+                var country = lodash_1.filter(countries_1.COUNTRIES, { code: code })[0];
+                if (country) {
+                    countries.push(country);
+                }
+            }
+            ;
+        }
+        else {
+            countries = countries_1.COUNTRIES.slice();
+        }
+        if (this.config.domestics) {
+            this.countries.international = countries;
+            for (var i = this.config.domestics.length - 1; i >= 0; i--) {
+                var item = lodash_1.remove(this.countries.international, { code: this.config.domestics[i] })[0];
+                if (item) {
+                    this.countries.domestic.unshift(item);
+                }
+            }
+        }
+        else {
+            this.countries.domestic = countries;
+        }
+        if (!this.address.country && this.countries.domestic[0]) {
+            this.address.country = this.countries.domestic[0].code;
+        }
+        if (this.address[this.config.country.name]) {
+            this.changeCountry();
+        }
+        // Example ready event. Allow to use google object and map instance
+        if (this.agmMap) {
+            this.mapReady$ = this.agmMap.mapReady.subscribe(function (map) {
+                _this.agmMap.triggerResize();
+                if (_this.address[_this.config.address.name] ||
+                    _this.address[_this.config.address2.name] ||
+                    _this.address[_this.config.city.name] ||
+                    _this.address[_this.config.region.name] ||
+                    _this.address[_this.config.zip.name]) {
+                    _this.address.lat = 9999;
+                    _this.address.lng = 9999;
+                    _this.search();
+                }
+            });
+        }
+    };
+    FsAddressComponent.prototype.recenter = function () {
+        var _this = this;
+        this.map.center = { latitude: this.address.lat, longitude: this.address.lng };
+        this.marker.coords.latitude = this.address.lat;
+        this.marker.coords.longitude = this.address.lng;
+        this.agmMap.triggerResize()
+            .then(function () { return _this.agmMap._mapsWrapper.setCenter({ lat: _this.address.lat, lng: _this.address.lng }); });
+    };
+    FsAddressComponent.prototype.changeCountry = function () {
+        var country = lodash_1.filter(countries_1.COUNTRIES, { code: this.address[this.config.country.name] })[0];
+        this.regions = country ? country.regions : [];
+        this.zipLabel = country && country.code == 'CA' ? 'Postal Code' : 'Zip';
+        this.regionLabel = country && country.code == 'CA' ? 'Province' : 'State';
+    };
+    FsAddressComponent.prototype.search = function () {
+        var _this = this;
+        var geocoder = new google.maps.Geocoder();
+        var country = lodash_1.filter(countries_1.COUNTRIES, { code: this.address.country })[0] || {};
+        var parts = [this.address[this.config.address.name],
+            this.address[this.config.city.name],
+            this.address[this.config.region.name],
+            country.name
+        ];
+        this.searchedAddress = parts.join(', ');
+        geocoder.geocode({ address: this.searchedAddress }, function (results, status) {
+            _this.searched = true;
+            if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+                var location_1 = results[0].geometry.location;
+                _this.address.lat = location_1.lat();
+                _this.address.lng = location_1.lng();
+                _this.map.center = { latitude: parseFloat(location_1.lat()), longitude: parseFloat(location_1.lng()) };
+                _this.marker.coords.latitude = location_1.lat();
+                _this.marker.coords.longitude = location_1.lng();
+                if (_this.agmMap) {
+                    _this.agmMap.triggerResize();
+                }
+            }
+            else {
+                _this.address.lat = null;
+                _this.address.lng = null;
+            }
+        });
+        this.change.emit(this.address);
+    };
+    FsAddressComponent.prototype.ngOnDestroy = function () {
+        if (this.agmMap) {
+            this.mapReady$.unsubscribe();
+        }
+    };
+    __decorate([
+        core_1.ViewChild(core_2.AgmMap),
+        __metadata("design:type", Object)
+    ], FsAddressComponent.prototype, "agmMap", void 0);
+    __decorate([
+        core_1.ViewChild(core_2.AgmMarker),
+        __metadata("design:type", Object)
+    ], FsAddressComponent.prototype, "agmMarker", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], FsAddressComponent.prototype, "address", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], FsAddressComponent.prototype, "config", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", Object)
+    ], FsAddressComponent.prototype, "change", void 0);
+    FsAddressComponent = __decorate([
+        core_1.Component({
+            selector: 'fs-address',
+            template: __webpack_require__("../src/components/fs-address/fs-address.component.html"),
+            styles: [__webpack_require__("../src/components/fs-address/fs-address.component.scss")],
+            // HACK: allow access from the parent form to inputs in child component
+            viewProviders: [{ provide: forms_1.ControlContainer, useExisting: forms_1.NgForm }]
+        }),
+        __metadata("design:paramtypes", [core_2.GoogleMapsAPIWrapper, core_2.MarkerManager])
+    ], FsAddressComponent);
+    return FsAddressComponent;
+}());
+exports.FsAddressComponent = FsAddressComponent;
+
+
+/***/ }),
+
+/***/ "../src/constants/countries.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -439,259 +732,16 @@ exports.COUNTRIES = [
 
 /***/ }),
 
-/***/ "../src/components/fs-address/fs-address.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div>\n    <div fxLayout=\"row\">\n        <mat-form-field fxFlex>\n            <input matInput [(ngModel)]=\"address[config.address.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.address.required\" name=\"{{ config.address.id }}\" placeholder=\"Address\" aria-label=\"Address\" (change)=\"search()\">\n        </mat-form-field>\n        <mat-form-field fxFlex [hidden]=\"!config.address2.show\">\n            <input matInput [(ngModel)]=\"address[config.address2.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.address2.required\" name=\"{{ config.address2.id }}\" placeholder=\"Address 2\" aria-label=\"Address 2\" (change)=\"search()\">\n            <mat-hint>Apartment, suite, unit, building, floor, etc.</mat-hint>\n        </mat-form-field>\n    </div>\n\n    <div fxLayout=\"row\">\n        <mat-form-field fxFlex>\n            <input matInput [(ngModel)]=\"address[config.city.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.city.required\" name=\"{{ config.city.id }}\" placeholder=\"City\" aria-label=\"City\" (change)=\"search()\">\n        </mat-form-field>\n        <mat-form-field fxFlex>\n            <input matInput [(ngModel)]=\"address[config.zip.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.zip.required\" name=\"{{ config.zip.id }}\" placeholder=\"{{ zipLabel }}\" (change)=\"search()\">\n        </mat-form-field>\n    </div>\n\n    <div fxLayout=\"row\">\n        <mat-form-field fxFlex>\n            <mat-select [(ngModel)]=\"address[config.country.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.country.required\" name=\"{{ config.country.id }}\" placeholder=\"Country\" aria-label=\"Country\" (ngModelChange)=\"changeCountry()\" (change)=\"search()\">\n                <mat-option *ngFor=\"let country of countries.domestic\" [value]=\"country.code\">\n                    <span>{{ country.name }}</span>\n                </mat-option>\n                <ng-container *ngIf=\"countries.international.length\">\n                    <mat-option *ngFor=\"let country of countries.international\" [value]=\"country.code\">\n                        <span>{{ country.name }}</span>\n                    </mat-option>\n                </ng-container>\n            </mat-select>\n        </mat-form-field>\n        <mat-form-field fxFlex>\n            <mat-select [(ngModel)]=\"address[config.region.name]\" [attr.disabled]=\"config.disabled\" [fsFormRequired]=\"config.region.required\" name=\"{{ config.region.id }}\" placeholder=\"{{ regionLabel }}\" (change)=\"search()\">\n                <mat-option *ngFor=\"let region of regions\" [value]=\"region.code\">\n                    <span>{{ region.name }}</span>\n                </mat-option>\n            </mat-select>\n        </mat-form-field>\n    </div>\n\n    <div class=\"map-container\" [hidden]=\"!config.map\">\n\n        <button mat-button class=\"center\"\n        type=\"button\"\n        *ngIf=\"(address.lat && address.lng) && (marker.coords.latitude && marker.coords.longitude)\"\n        (click)=\"recenter()\">Center Map using Address</button>\n\n        <agm-map\n        [latitude]=\"map.center.latitude\"\n        [longitude]=\"map.center.longitude\"\n        [zoom]=\"map.zoom\"\n        [scrollwheel]=\"mapOptions.scrollwheel\"\n        [streetViewControl]=\"mapOptions.streetViewControl\"\n        [mapTypeControlOptions]=\"mapOptions.mapTypeControlOptions\"\n        >\n            <agm-marker\n            [latitude]=\"marker.coords.latitude\"\n            [longitude]=\"marker.coords.longitude\"\n            [markerDraggable]=\"marker.options.draggable\"\n            (dragEnd)=\"marker.events.dragend($event)\"\n            ></agm-marker>\n        </agm-map>\n\n        <div class=\"address-incomplete\" fxLayout=\"row\" fxLayoutAlign=\"center center\" *ngIf=\"!address.lat && !address.lng\">\n            <div *ngIf=\"!searched\">Please populate the address above to locate it on the map</div>\n            <div *ngIf=\"searched\">Could not find address \"{{ searchedAddress }}\"</div>\n        </div>\n    </div>\n</div>\n"
-
-/***/ }),
-
-/***/ "../src/components/fs-address/fs-address.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-
-        var result = __webpack_require__("../node_modules/css-loader/index.js?{\"sourceMap\":true}!../node_modules/postcss-loader/lib/index.js?{\"sourceMap\":true}!../node_modules/resolve-url-loader/index.js?{\"sourceMap\":true}!../node_modules/sass-loader/lib/loader.js?{\"sourceMap\":true}!../src/components/fs-address/fs-address.component.scss");
-
-        if (typeof result === "string") {
-            module.exports = result;
-        } else {
-            module.exports = result.toString();
-        }
-    
-
-/***/ }),
-
-/***/ "../src/components/fs-address/fs-address.component.ts":
+/***/ "../src/constants/index.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js");
-var util_1 = __webpack_require__("../node_modules/@firestitch/common/util/index.js");
-var array_1 = __webpack_require__("../node_modules/@firestitch/common/array/index.js");
-var array_2 = __webpack_require__("../node_modules/@firestitch/common/array/index.js");
-var lodash_1 = __webpack_require__("../node_modules/lodash/lodash.js");
-__webpack_require__("../node_modules/rxjs/add/operator/startWith.js");
-__webpack_require__("../node_modules/rxjs/add/operator/map.js");
-var core_2 = __webpack_require__("../node_modules/@agm/core/index.js");
-var countries_1 = __webpack_require__("../src/components/fs-address/countries.ts");
-var forms_1 = __webpack_require__("../node_modules/@angular/forms/esm2015/forms.js");
-var FsAddressComponent = (function () {
-    function FsAddressComponent(_wrapper, markerManager) {
-        this._wrapper = _wrapper;
-        this.markerManager = markerManager;
-        this.address = {};
-        this.config = null;
-        this.change = new core_1.EventEmitter();
-        this.regions = [];
-        this.countries = {
-            domestic: [],
-            international: []
-        };
-        this.zipLabel = '';
-        this.regionLabel = '';
-        this.center = null;
-        this.searched = false;
-        this.searchedAddress = '';
-        this.map = null;
-        this.mapOptions = null;
-        this.marker = null;
-    }
-    FsAddressComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.config = Object.assign({}, {
-            cords: {
-                lat: 43.6379967,
-                lng: -79.3819992
-            },
-            address2: true,
-            disabled: false,
-            domestics: ['CA', 'US'],
-            map: true
-        }, this.config);
-        this.address.lat = this.address.lat || '';
-        this.address.lng = this.address.lng || '';
-        this.map = {
-            center: {
-                latitude: this.address.lat || this.config.cords.lat,
-                longitude: this.address.lng || this.config.cords.lng
-            },
-            zoom: 13
-        };
-        this.mapOptions = Object.assign({
-            scrollwheel: false,
-            streetViewControl: false,
-            mapTypeControlOptions: { mapTypeIds: [] }
-        }, this.mapOptions || {});
-        this.marker = {
-            id: 0,
-            coords: { latitude: this.address.lat, longitude: this.address.lng },
-            options: { draggable: true },
-            events: {
-                dragend: function (marker) {
-                    _this.address.lat = marker.coords.lat;
-                    _this.address.lng = marker.coords.lng;
-                }
-            }
-        };
-        for (var _i = 0, _a = ['address', 'address2', 'city', 'region', 'country', 'zip']; _i < _a.length; _i++) {
-            var item = _a[_i];
-            var option = this.config[item];
-            if (lodash_1.isBoolean(option)) {
-                option = { show: this.config[item] };
-            }
-            if (!lodash_1.isArrayLikeObject(this.config[item])) {
-                option = {};
-            }
-            if (!option.id) {
-                option.id = 'input_' + util_1.guid();
-            }
-            if (!option.name) {
-                option.name = item;
-            }
-            this.config[item] = option;
-        }
-        ;
-        var countries = [];
-        if (this.config.countries) {
-            for (var _b = 0, _c = this.config.countries; _b < _c.length; _b++) {
-                var code = _c[_b];
-                var country = array_1.filter(countries_1.COUNTRIES, { code: code })[0];
-                if (country) {
-                    countries.push(country);
-                }
-            }
-            ;
-        }
-        else {
-            countries = countries_1.COUNTRIES.slice();
-        }
-        if (this.config.domestics) {
-            this.countries.international = countries;
-            for (var i = this.config.domestics.length - 1; i >= 0; i--) {
-                var item = array_2.remove(this.countries.international, { code: this.config.domestics[i] })[0];
-                if (item) {
-                    this.countries.domestic.unshift(item);
-                }
-            }
-        }
-        else {
-            this.countries.domestic = countries;
-        }
-        if (!this.address.country && this.countries.domestic[0]) {
-            this.address.country = this.countries.domestic[0].code;
-        }
-        if (this.address[this.config.country.name]) {
-            this.changeCountry();
-        }
-        // Example ready event. Allow to use google object and map instance
-        if (this.agmMap) {
-            this.mapReady$ = this.agmMap.mapReady.subscribe(function (map) {
-                _this.agmMap.triggerResize();
-                if (_this.address[_this.config.address.name] ||
-                    _this.address[_this.config.address2.name] ||
-                    _this.address[_this.config.city.name] ||
-                    _this.address[_this.config.region.name] ||
-                    _this.address[_this.config.zip.name]) {
-                    _this.address.lat = 9999;
-                    _this.address.lng = 9999;
-                    _this.search();
-                }
-            });
-        }
-    };
-    FsAddressComponent.prototype.recenter = function () {
-        var _this = this;
-        this.map.center = { latitude: this.address.lat, longitude: this.address.lng };
-        this.marker.coords.latitude = this.address.lat;
-        this.marker.coords.longitude = this.address.lng;
-        this.agmMap.triggerResize()
-            .then(function () { return _this.agmMap._mapsWrapper.setCenter({ lat: _this.address.lat, lng: _this.address.lng }); });
-    };
-    FsAddressComponent.prototype.changeCountry = function () {
-        var country = array_1.filter(countries_1.COUNTRIES, { code: this.address[this.config.country.name] })[0];
-        this.regions = country ? country.regions : [];
-        this.zipLabel = country && country.code == 'CA' ? 'Postal Code' : 'Zip';
-        this.regionLabel = country && country.code == 'CA' ? 'Province' : 'State';
-    };
-    FsAddressComponent.prototype.search = function () {
-        var _this = this;
-        var geocoder = new google.maps.Geocoder();
-        var country = array_1.filter(countries_1.COUNTRIES, { code: this.address.country })[0] || {};
-        var parts = [this.address[this.config.address.name],
-            this.address[this.config.city.name],
-            this.address[this.config.region.name],
-            country.name
-        ];
-        this.searchedAddress = parts.join(', ');
-        geocoder.geocode({ address: this.searchedAddress }, function (results, status) {
-            _this.searched = true;
-            if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
-                var location_1 = results[0].geometry.location;
-                _this.address.lat = location_1.lat();
-                _this.address.lng = location_1.lng();
-                _this.map.center = { latitude: parseFloat(location_1.lat()), longitude: parseFloat(location_1.lng()) };
-                _this.marker.coords.latitude = location_1.lat();
-                _this.marker.coords.longitude = location_1.lng();
-                if (_this.agmMap) {
-                    _this.agmMap.triggerResize();
-                }
-            }
-            else {
-                _this.address.lat = null;
-                _this.address.lng = null;
-            }
-        });
-        this.change.emit(this.address);
-    };
-    FsAddressComponent.prototype.ngOnDestroy = function () {
-        if (this.agmMap) {
-            this.mapReady$.unsubscribe();
-        }
-    };
-    __decorate([
-        core_1.ViewChild(core_2.AgmMap),
-        __metadata("design:type", Object)
-    ], FsAddressComponent.prototype, "agmMap", void 0);
-    __decorate([
-        core_1.ViewChild(core_2.AgmMarker),
-        __metadata("design:type", Object)
-    ], FsAddressComponent.prototype, "agmMarker", void 0);
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Object)
-    ], FsAddressComponent.prototype, "address", void 0);
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Object)
-    ], FsAddressComponent.prototype, "config", void 0);
-    __decorate([
-        core_1.Output(),
-        __metadata("design:type", Object)
-    ], FsAddressComponent.prototype, "change", void 0);
-    FsAddressComponent = __decorate([
-        core_1.Component({
-            selector: 'fs-address',
-            template: __webpack_require__("../src/components/fs-address/fs-address.component.html"),
-            styles: [__webpack_require__("../src/components/fs-address/fs-address.component.scss")],
-            // HACK: allow access from the parent form to inputs in child component
-            viewProviders: [{ provide: forms_1.ControlContainer, useExisting: forms_1.NgForm }]
-        }),
-        __metadata("design:paramtypes", [core_2.GoogleMapsAPIWrapper, core_2.MarkerManager])
-    ], FsAddressComponent);
-    return FsAddressComponent;
-}());
-exports.FsAddressComponent = FsAddressComponent;
+__export(__webpack_require__("../src/constants/countries.ts"));
 
 
 /***/ }),
@@ -719,21 +769,14 @@ var http_1 = __webpack_require__("../node_modules/@angular/http/esm2015/http.js"
 var flex_layout_1 = __webpack_require__("../node_modules/@angular/flex-layout/esm2015/flex-layout.js");
 var core_2 = __webpack_require__("../node_modules/@agm/core/index.js");
 var material_1 = __webpack_require__("../node_modules/@angular/material/esm2015/material.js");
-var fsaddressconfig_1 = __webpack_require__("../src/models/fsaddressconfig.ts");
-var countries_1 = __webpack_require__("../src/components/fs-address/countries.ts");
+var googlemapconfig_1 = __webpack_require__("../src/classes/googlemapconfig.ts");
 var FsAddressModule = (function () {
     function FsAddressModule() {
     }
     FsAddressModule_1 = FsAddressModule;
     FsAddressModule.forRoot = function () {
         return {
-            ngModule: FsAddressModule_1,
-            providers: [
-                {
-                    provide: countries_1.COUNTRIES,
-                    useValue: countries_1.COUNTRIES
-                }
-            ]
+            ngModule: FsAddressModule_1
         };
     };
     FsAddressModule = FsAddressModule_1 = __decorate([
@@ -764,7 +807,7 @@ var FsAddressModule = (function () {
             providers: [
                 core_2.GoogleMapsAPIWrapper,
                 core_2.MarkerManager,
-                { provide: core_2.LAZY_MAPS_API_CONFIG, useClass: fsaddressconfig_1.FsAddressConfig }
+                { provide: core_2.LAZY_MAPS_API_CONFIG, useClass: googlemapconfig_1.GoogleMapConfig }
             ],
         })
     ], FsAddressModule);
@@ -786,46 +829,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__("../src/fs-address.module.ts"));
-__export(__webpack_require__("../src/components/fs-address/countries.ts"));
-
-
-/***/ }),
-
-/***/ "../src/models/fsaddressconfig.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js");
-var FsAddressConfig = (function () {
-    function FsAddressConfig(GoogleMapKey) {
-        this.apiKey = null;
-        this.apiKey = GoogleMapKey;
-        if (!GoogleMapKey) {
-            throw new Error('GoogleMapKey injector invalid');
-        }
-    }
-    FsAddressConfig = __decorate([
-        __param(0, core_1.Inject('GoogleMapKey')),
-        __metadata("design:paramtypes", [Object])
-    ], FsAddressConfig);
-    return FsAddressConfig;
-}());
-exports.FsAddressConfig = FsAddressConfig;
-;
+__export(__webpack_require__("../src/constants/index.ts"));
 
 
 /***/ }),
@@ -854,73 +858,10 @@ webpackEmptyAsyncContext.id = "../tools lazy recursive";
 
 /***/ }),
 
-/***/ "../tools/components/examples/examples.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"example-title\">{{title}}</div>\n<mat-tab-group>\n  <mat-tab label=\"Examples\">\n      <div class=\"examples-body\">\n        <ng-content></ng-content>\n      </div>\n  </mat-tab>\n  <mat-tab label=\"Docs\" *ngIf=\"loaded\">\n    <div class=\"iframe-container\">\n      <iframe class=\"iframe-example ng-star-inserted\" [src]=\"submoduleUrl\"></iframe>\n    </div>\n  </mat-tab>\n</mat-tab-group>\n"
-
-/***/ }),
-
-/***/ "../tools/components/examples/examples.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../node_modules/@angular/core/esm2015/core.js");
-var platform_browser_1 = __webpack_require__("../node_modules/@angular/platform-browser/esm2015/platform-browser.js");
-var FsExamplesComponent = (function () {
-    function FsExamplesComponent(sanitizer) {
-        this.sanitizer = sanitizer;
-        this.loaded = false;
-    }
-    FsExamplesComponent.prototype.ngOnInit = function () {
-        this._submoduleUrl = this.sanitizer
-            .bypassSecurityTrustResourceUrl("https://" + this.submoduleName + ".components.firestitch.com/docs");
-        this.loaded = true;
-    };
-    Object.defineProperty(FsExamplesComponent.prototype, "submoduleUrl", {
-        get: function () {
-            return this._submoduleUrl;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", String)
-    ], FsExamplesComponent.prototype, "title", void 0);
-    __decorate([
-        core_1.Input('name'),
-        __metadata("design:type", String)
-    ], FsExamplesComponent.prototype, "submoduleName", void 0);
-    FsExamplesComponent = __decorate([
-        core_1.Component({
-            selector: 'fs-examples',
-            template: __webpack_require__("../tools/components/examples/examples.component.html")
-        }),
-        __metadata("design:paramtypes", [platform_browser_1.DomSanitizer])
-    ], FsExamplesComponent);
-    return FsExamplesComponent;
-}());
-exports.FsExamplesComponent = FsExamplesComponent;
-
-
-/***/ }),
-
 /***/ "./app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<fs-examples title=\"Address Component\">\n  <fs-example title=\"Example\" componentName=\"first-example\">\n      <first-example></first-example>\n  </fs-example>\n</fs-examples>\n\n"
+module.exports = "<fs-examples title=\"Address Component\">\n  <fs-example title=\"Example\" componentName=\"first-example\">\n      <first-example></first-example>\n  </fs-example>\n</fs-examples>\n"
 
 /***/ }),
 
@@ -1153,7 +1094,6 @@ var platform_browser_1 = __webpack_require__("../node_modules/@angular/platform-
 var animations_1 = __webpack_require__("../node_modules/@angular/platform-browser/esm2015/animations.js");
 var material_module_1 = __webpack_require__("./app/material.module.ts");
 var example_1 = __webpack_require__("../node_modules/@firestitch/example/package/index.js");
-var examples_component_1 = __webpack_require__("../tools/components/examples/examples.component.ts");
 var first_example_component_1 = __webpack_require__("./app/components/first-example/first-example.component.ts");
 var src_1 = __webpack_require__("../src/index.ts");
 var PlaygroundModule = (function () {
@@ -1173,8 +1113,7 @@ var PlaygroundModule = (function () {
             entryComponents: [],
             declarations: [
                 app_component_1.AppComponent,
-                first_example_component_1.FirstExampleComponent,
-                examples_component_1.FsExamplesComponent
+                first_example_component_1.FirstExampleComponent
             ],
             providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
         })
