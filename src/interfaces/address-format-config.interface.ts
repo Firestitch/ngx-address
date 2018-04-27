@@ -1,8 +1,8 @@
 export interface IFsAddressFormatConfig {
   isLongFormat?: boolean,
   country?: boolean,
-  state?: boolean,
+  region?: boolean,
   city?: boolean,
-  address?: boolean,
+  street?: boolean,
   zip?: boolean
 }

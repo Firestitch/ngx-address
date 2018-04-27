@@ -1,12 +1,11 @@
 <fs-address
   [address]="address"
   [config]="config"
-  [mapOptions]="mapOptions"
   (selected)="select($event)"
 ></fs-address>
 
 <h2>Formatted Address</h2>
-<span *ngIf="parts.length">Address:</span>
+<span *ngIf="!!parts.length">Address:</span>
 <fs-address-format
   [(address)]="address"
   [config]="addressFormatConfig"

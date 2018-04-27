@@ -8,7 +8,7 @@
       (selected)="selectSearch($event)"
     ></fs-address-search>
 
-    <div class="input-controls" *ngIf="address && address.name">
+    <div class="input-controls" *ngIf="address && address.description">
       <button
         mat-icon-button
         (click)="clear()"
@@ -24,13 +24,8 @@
     <fs-address
       [address]="address"
       [config]="config"
-      [mapOptions]="mapOptions"
       (selected)="selectFullAddress($event)"
     ></fs-address>
-    <button
-      mat-button
-      (click)="closeEdit()"
-    >Close Edit</button>
   </div>
 
 </div>

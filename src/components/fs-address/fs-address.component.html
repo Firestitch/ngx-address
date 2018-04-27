@@ -3,9 +3,24 @@
     <mat-form-field fxFlex>
       <input
         matInput
-        [(ngModel)]="address.address"
-        [attr.disabled]="config.address.disabled"
-        [fsFormRequired]="config.address.required"
+        [(ngModel)]="address.name"
+        [attr.disabled]="config.name.disabled"
+        [fsFormRequired]="config.name.required"
+        name="location_name"
+        placeholder="Location name"
+        aria-label="Location name"
+        (change)="search()"
+        autocomplete="off">
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row">
+    <mat-form-field fxFlex>
+      <input
+        matInput
+        [(ngModel)]="address.street"
+        [attr.disabled]="config.street.disabled"
+        [fsFormRequired]="config.street.required"
         name="address"
         placeholder="Address"
         aria-label="Address"
@@ -14,7 +29,7 @@
     </mat-form-field>
   </div>
 
-  <div fxLayout="row">
+  <div fxLayoutGap="5px">
     <mat-form-field fxFlex>
       <input
         matInput
@@ -34,13 +49,14 @@
         [attr.disabled]="config.zip.disabled"
         [fsFormRequired]="config.zip.required"
         name="zip"
-        placeholder="{{ zipLabel }}"
+        aria-label="Zip"
+        [placeholder]="zipLabel"
         (change)="search()"
         autocomplete="off">
     </mat-form-field>
   </div>
 
-  <div fxLayout="row">
+  <div fxLayoutGap="5px">
     <mat-form-field fxFlex>
 
       <mat-select
@@ -64,16 +80,16 @@
     <mat-form-field fxFlex>
 
       <mat-select
-        [(ngModel)]="address.state.shortName"
-        [attr.disabled]="config.state.disabled"
-        [fsFormRequired]="config.state.required"
-        name="state"
-        placeholder="{{ stateLabel }}"
-        (change)="changeState()"
+        [(ngModel)]="address.region.shortName"
+        [attr.disabled]="config.region.disabled"
+        [fsFormRequired]="config.region.required"
+        name="region"
+        placeholder="{{ regionLabel }}"
+        (change)="changeRegion()"
         autocomplete="off">
 
-        <mat-option *ngFor="let state of states" [value]="state.code">
-          <span>{{ state.name }}</span>
+        <mat-option *ngFor="let region of regions" [value]="region.code">
+          <span>{{ region.name }}</span>
         </mat-option>
 
       </mat-select>
@@ -81,30 +97,30 @@
     </mat-form-field>
   </div>
 
-  <div class="map-container" [hidden]="!mapOptions.showMap">
+  <div class="map-container" [hidden]="!config.map.showMap">
 
     <button
       mat-button
       class="center"
       type="button"
-      *ngIf="(address.lat && address.lng) && (mapOptions.marker.coords.latitude && mapOptions.marker.coords.longitude)"
+      *ngIf="(address.lat && address.lng) && (config.map.marker.coords.latitude && config.map.marker.coords.longitude)"
       (click)="recenter()"
     >Center Map using Address</button>
 
     <agm-map
-      [latitude]="mapOptions.center.latitude"
-      [longitude]="mapOptions.center.longitude"
-      [zoom]="mapOptions.zoom"
-      [scrollwheel]="mapOptions.scrollwheel"
-      [streetViewControl]="mapOptions.streetViewControl"
-      [zoomControl]="mapOptions.zoomControl"
-      [mapTypeControlOptions]="mapOptions.mapTypeControlOptions"
+      [latitude]="config.map.center.latitude"
+      [longitude]="config.map.center.longitude"
+      [zoom]="config.map.zoom"
+      [scrollwheel]="config.map.scrollwheel"
+      [streetViewControl]="config.map.streetViewControl"
+      [zoomControl]="config.map.zoomControl"
+      [mapTypeControlOptions]="config.map.mapTypeControlOptions"
     >
       <agm-marker
-        [latitude]="mapOptions.marker.coords.latitude"
-        [longitude]="mapOptions.marker.coords.longitude"
-        [markerDraggable]="mapOptions.marker.options.draggable"
-        (dragEnd)="mapOptions.marker.events.dragend($event)"
+        [latitude]="config.map.marker.coords.latitude"
+        [longitude]="config.map.marker.coords.longitude"
+        [markerDraggable]="config.map.marker.options.draggable"
+        (dragEnd)="config.map.marker.events.dragend($event)"
       ></agm-marker>
     </agm-map>
 

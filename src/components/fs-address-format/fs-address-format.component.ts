@@ -64,13 +64,12 @@ export class FsAddressFormatComponent implements OnInit, DoCheck {
 
   private initAddress() {
     this.address = Object.assign({
-      name: null,
+      name: void 0,
       country: {},
-      state: {},
       region: {},
-      address: null,
-      city: null,
-      zip: null,
+      city: void 0,
+      street: void 0,
+      zip: void 0,
       lat: null,
       lng: null,
     }, this.address);
@@ -80,9 +79,9 @@ export class FsAddressFormatComponent implements OnInit, DoCheck {
     this.config = Object.assign({
       isLongFormat: false,
       country: true,
-      state: true,
+      region: true,
       city: true,
-      address: true,
+      street: true,
       zip: true,
     }, this.config);
   }
@@ -90,20 +89,31 @@ export class FsAddressFormatComponent implements OnInit, DoCheck {
   private changeFormattedAddress() {
     this.formattedAddress.length = 0;
 
-    for (const key in this.config) {
-      if (this.config[key] && this.address[key] && this.address[key]) {
-        if (this.address[key] instanceof Object) {
-          if (Object.keys(this.address[key]).length !== 0) {
-            this.config.isLongFormat
-              ? this.formattedAddress.push(this.address[key].longName)
-              : this.formattedAddress.push(this.address[key].shortName)
-          }
-        } else {
-          if (!!this.address[key]) {
-            this.formattedAddress.push(this.address[key]);
-          }
-        }
-      }
+    if (this.config.country && this.address.country && this.address.country.longName) {
+      this.formattedAddress.push(
+        this.config.isLongFormat ? this.address.country.longName : this.address.country.shortName
+      )
+    }
+
+    let regionZip = '';
+    if (this.config.region && this.address.region && this.address.region.longName) {
+      regionZip += this.config.isLongFormat ? this.address.region.longName : this.address.region.shortName
+    }
+
+    if (this.config.zip && this.address.zip) {
+      regionZip += ' ' + this.address.zip;
+    }
+
+    if (regionZip) {
+      this.formattedAddress.push(regionZip);
+    }
+
+    if (this.config.city && this.address.city) {
+      this.formattedAddress.push(this.address.city);
+    }
+
+    if (this.config.street && this.address.street) {
+      this.formattedAddress.push(this.address.street);
     }
   }
 }

@@ -1,15 +1,18 @@
+import { IFsAddressMapConfig } from './address-map-config.interface';
+
 export interface IFsAddressFieldSetting {
   disabled?: boolean,
   required?: boolean,
   isVisible?: boolean,
-  showOnly?: string[],
+  list?: string[],
 }
 
 export interface IFsAddressConfig {
+  name?: IFsAddressFieldSetting,
   country?: IFsAddressFieldSetting,
-  state?: IFsAddressFieldSetting,
   region?: IFsAddressFieldSetting,
   city?: IFsAddressFieldSetting,
-  address?: IFsAddressFieldSetting,
+  street?: IFsAddressFieldSetting,
   zip?: IFsAddressFieldSetting,
+  map?: IFsAddressMapConfig
 }

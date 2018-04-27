@@ -1,4 +1,4 @@
-export interface IFsAddressMapOptions {
+export interface IFsAddressMapConfig {
   showMap?: boolean,
   center?: {
     latitude?: number,

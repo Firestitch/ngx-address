@@ -5,27 +5,33 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app/app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AgmCoreModule } from '@agm/core';
+
 import { AppMaterialModule } from './app/material.module';
-import { FsExampleModule } from '@firestitch/example';
-import { FsExamplesComponent } from '../tools/components/examples/examples.component';
-import { FirstExampleComponent } from './app/components/first-example/first-example.component';
+
+import { FsExampleModule} from '@firestitch/example';
+
 import { FsAddressModule } from '../src';
 
+import { FsExamplesComponent } from '../tools/components/examples/examples.component';
+import { FullAddressExampleComponent } from './app/components/full-address-example/full-address-example.component';
 import { AddressPickerExampleComponent } from './app/components/address-picker-example/address-picker-example.component';
 import { AddressSearchExampleComponent } from './app/components/address-search-example/address-search-example.component';
-import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   bootstrap: [ AppComponent ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppMaterialModule,
     FormsModule,
-    FsExampleModule,
-    FsAddressModule,
+
+    AppMaterialModule,
 
     AgmCoreModule.forRoot({libraries: ['places']}),
+
+    FsExampleModule,
+
+    FsAddressModule,
   ],
   entryComponents: [
   ],
@@ -33,8 +39,7 @@ import { AgmCoreModule } from '@agm/core';
     AppComponent,
     FsExamplesComponent,
 
-    FirstExampleComponent,
-
+    FullAddressExampleComponent,
     AddressPickerExampleComponent,
     AddressSearchExampleComponent
   ],

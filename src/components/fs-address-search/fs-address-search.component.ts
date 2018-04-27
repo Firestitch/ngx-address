@@ -54,8 +54,8 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this.initAddress();
     this.initGoogleMap();
 
-    if (this.address && this.address.name) {
-      this.updatePredictions(this.address.name);
+    if (this.address && this.address.description) {
+      this.updatePredictions(this.address.description);
     }
   }
 
@@ -65,7 +65,6 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this.address = Object.assign({
       name: null,
       country: null,
-      state: null,
       region: null,
       address: null,
       city: null,
@@ -121,8 +120,8 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               return;
             }
 
-            let newAddress: FsAddress = {
-              name: place && place.description,
+            const newAddress: FsAddress = {
+              description: result.formatted_address,
               lat: result.geometry.location.lat(),
               lng: result.geometry.location.lng()
             };
@@ -133,10 +132,6 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               }
 
               if (item.types.some(type => type === 'administrative_area_level_1')) {
-                newAddress.state = { longName: item.long_name, shortName: item.short_name };
-              }
-
-              if (item.types.some(type => type === 'administrative_area_level_2')) {
                 newAddress.region = { longName: item.long_name, shortName: item.short_name };
               }
 
@@ -149,9 +144,15 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               }
             });
 
-            const streetNumber = result.address_components.find(el => el.types.some(type => type === 'street_number'));
-            const address = result.address_components.find(el => el.types.some(type => type === 'route'));
-            newAddress.address = address && streetNumber && address.long_name + ' ' + streetNumber.long_name || address && address.long_name || void 0;
+            const streetNumber = result.address_components
+              .find(el => el.types.some(type => type === 'street_number'));
+            const streetAddress = result.address_components
+              .find(el => el.types.some(type => type === 'route'));
+
+            newAddress.street = streetAddress && streetNumber
+              && streetAddress.long_name + ' ' + streetNumber.long_name
+              || streetAddress && streetAddress.long_name
+              || void 0;
 
             this.address = newAddress;
 

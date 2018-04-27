@@ -22,7 +22,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { COUNTRIES } from '../../constants/countries';
 import { FsAddress } from '../../interfaces';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
-import { IFsAddressMapOptions } from '../../interfaces/address-map-options.interface';
+import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 declare var google: any;
 
 
@@ -37,17 +37,16 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   @ViewChild(AgmMarker) agmMarker;
   @Input() address: FsAddress = {};
   @Input() config: IFsAddressConfig = {};
-  @Input() mapOptions: IFsAddressMapOptions = {};
   @Output() selected = new EventEmitter<any>();
 
   public isSearched = false;
   private _subMapReady: Subscription;
 
-  public countries = COUNTRIES.slice();
-  public states: { code: string, name: string, regions: any[] }[] = [];
+  public countries = COUNTRIES.slice() || [];
+  public regions: { code: string, name: string }[] = [];
 
   // Others
-  public stateLabel: string;
+  public regionLabel: string;
   public zipLabel: string;
   public searchedAddress: string;
 
@@ -60,6 +59,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
     this.initCountries();
     this.initRegions();
+    this.initZipAndStateLabels();
 
     // Example ready event. Allow to use google object and map instance
     if (this.agmMap) {
@@ -71,7 +71,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
           if (this.address.name ||
             this.address.country.longName ||
-            this.address.state.longName ||
+            this.address.region.longName ||
             this.address.city ||
             this.address.zip) {
               this.address.lat = 9999;
@@ -82,10 +82,16 @@ export class FsAddressComponent implements OnInit, OnDestroy {
       }
   }
 
+  public ngOnDestroy() {
+    if (this.agmMap) {
+      this._subMapReady.unsubscribe();
+    }
+  }
+
   public recenter() {
-    this.mapOptions.center = { latitude: this.address.lat, longitude: this.address.lng };
-    this.mapOptions.marker.coords.latitude = this.address.lat;
-    this.mapOptions.marker.coords.longitude = this.address.lng;
+    this.config.map.center = { latitude: this.address.lat, longitude: this.address.lng };
+    this.config.map.marker.coords.latitude = this.address.lat;
+    this.config.map.marker.coords.longitude = this.address.lng;
     this.agmMap.triggerResize()
       .then(() => this.agmMap._mapsWrapper.setCenter({lat: this.address.lat, lng: this.address.lng}));
   }
@@ -93,46 +99,50 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   public changeCountry() {
     const country = filter(COUNTRIES, { code: this.address.country.shortName })[0];
     this.address.country.longName = country.name;
-    this.states = country ? country.regions : [];
+    this.regions = country ? country.regions : [];
     this.zipLabel = country && country.code == 'CA' ? 'Postal Code' : 'Zip';
-    this.stateLabel = country && country.code == 'CA' ? 'Province' : 'State';
+    this.regionLabel = country && country.code == 'CA' ? 'Province' : 'State';
     this.search();
   }
 
-  public changeState() {
+  public changeRegion() {
     const country = filter(COUNTRIES, { code: this.address.country.shortName })[0];
 
     if (country && country.regions) {
-      this.address.state.longName = filter(country.regions, { code: this.address.state.shortName })[0];
+      const region = filter(country.regions, { code: this.address.region.shortName })[0];
+      this.address.region.longName = region && region.name;
     } else {
-      this.address.state.longName = this.address.state.shortName
+      this.address.region.longName = this.address.region.shortName
     }
+
     this.search();
   }
 
   public search() {
     const geocoder = new google.maps.Geocoder();
-    const country = filter(COUNTRIES, { code: this.address.country.shortName })[0] || {};
     const parts = [
-      this.address.address,
+      this.address.country.longName,
+      this.address.region.longName,
       this.address.city,
-      this.address.state.longName,
-      country.name
+      this.address.zip,
+      this.address.street,
+      this.address.name
     ];
-    this.searchedAddress = parts.join(', ');
+
+    this.searchedAddress = parts.filter(part => part).join(', ');
 
     geocoder.geocode( { address: this.searchedAddress  }, (results, status) => {
       this.isSearched = true;
 
       if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
         const location = results[0].geometry.location;
-        this.address.name = this.searchedAddress;
+        this.address.description = results[0].formatted_address;
         this.address.lat = location.lat();
         this.address.lng = location.lng();
-        this.mapOptions.center = { latitude: parseFloat(location.lat()), longitude: parseFloat(location.lng()) };
+        this.config.map.center = { latitude: parseFloat(location.lat()), longitude: parseFloat(location.lng()) };
 
-        this.mapOptions.marker.coords.latitude = location.lat();
-        this.mapOptions.marker.coords.longitude = location.lng();
+        this.config.map.marker.coords.latitude = location.lat();
+        this.config.map.marker.coords.longitude = location.lng();
 
         if (this.agmMap) {
           this.agmMap.triggerResize();
@@ -149,21 +159,14 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
   }
 
-  public ngOnDestroy() {
-    if (this.agmMap) {
-      this._subMapReady.unsubscribe();
-    }
-  }
-
   private initAddress() {
     this.address = Object.assign({
-      name: null,
+      name: void 0,
       country: {},
-      state: {},
       region: {},
-      address: null,
-      city: null,
-      zip: null,
+      street: void 0,
+      city: void 0,
+      zip: void 0,
       lat: null,
       lng: null,
     }, this.address);
@@ -171,20 +174,21 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
   private initConfig() {
     this.config = Object.assign({
+      name: { required: false, isVisible: true },
       country: { required: false, isVisible: true },
-      state: { required: true, isVisible: true },
+      region: { required: true, isVisible: true },
       city: { required: true, isVisible: true },
-      address: { required: false, isVisible: true },
+      street: { required: false, isVisible: true },
       zip: { required: true, isVisible: true },
     }, this.config);
   }
 
   private initMap() {
-    this.mapOptions = Object.assign({
+    this.config.map = Object.assign({
       showMap: true,
       center: {
-        latitude: this.address.lat || null,
-        longitude: this.address.lng || null
+        latitude: this.address.lat || 9999,
+        longitude: this.address.lng || 9999
       },
       zoom: 13,
       scrollwheel: false,
@@ -202,18 +206,23 @@ export class FsAddressComponent implements OnInit, OnDestroy {
           }
         }
       }
-      }, this.mapOptions);
+      }, this.config.map);
   }
 
   private initCountries() {
-    if (this.config.country && this.config.country.showOnly && this.config.country.showOnly.length) {
+    if (this.config.country && this.config.country.list && this.config.country.list.length) {
       this.countries.length = 0;
-      this.config.country.showOnly.forEach(el => {
+      this.config.country.list.forEach(el => {
         const country = COUNTRIES.find(countryEl => countryEl.code === el);
         if (country) {
           this.countries.push(country);
         }
       });
+    }
+
+    if (this.countries.length && (!this.address.country.shortName || !this.address.country.longName)) {
+      this.address.country.longName = this.countries[0].name;
+      this.address.country.shortName = this.countries[0].code
     }
   }
 
@@ -222,8 +231,14 @@ export class FsAddressComponent implements OnInit, OnDestroy {
       const country = COUNTRIES.find(countryEl => countryEl.code === this.address.country.shortName);
 
       if (country) {
-        this.states = country['regions'] || [];
+        this.regions = country['regions'] || [];
       }
     }
+  }
+
+  private initZipAndStateLabels() {
+    const country = filter(COUNTRIES, { code: this.address.country.shortName })[0];
+    this.zipLabel = country && country.code == 'CA' ? 'Postal Code' : 'Zip';
+    this.regionLabel = country && country.code == 'CA' ? 'Province' : 'State';
   }
 }

@@ -457,7 +457,7 @@ module.exports = "<div>\n    <div fxLayout=\"row\">\n        <mat-form-field fxF
         } else {
             module.exports = result.toString();
         }
-    
+
 
 /***/ }),
 
@@ -1009,7 +1009,7 @@ var FirstExampleComponent = (function () {
     FirstExampleComponent = __decorate([
         core_1.Component({
             selector: 'first-example',
-            template: __webpack_require__("./app/components/first-example/first-example.component.html")
+            template: __webpack_require__("./app/components/first-example/full-address-example.component.html")
         }),
         __metadata("design:paramtypes", [])
     ], FirstExampleComponent);
@@ -1154,7 +1154,7 @@ var animations_1 = __webpack_require__("../node_modules/@angular/platform-browse
 var material_module_1 = __webpack_require__("./app/material.module.ts");
 var example_1 = __webpack_require__("../node_modules/@firestitch/example/package/index.js");
 var examples_component_1 = __webpack_require__("../tools/components/examples/examples.component.ts");
-var first_example_component_1 = __webpack_require__("./app/components/first-example/first-example.component.ts");
+var first_example_component_1 = __webpack_require__("./app/components/first-example/full-address-example.component.ts");
 var src_1 = __webpack_require__("../src/index.ts");
 var PlaygroundModule = (function () {
     function PlaygroundModule() {

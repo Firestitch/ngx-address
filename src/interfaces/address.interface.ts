@@ -5,11 +5,11 @@ export interface IFsLongShort {
 
 export interface FsAddress {
   name?: string,
+  description?: string,
   country?: IFsLongShort
-  state?: IFsLongShort,
   region?: IFsLongShort,
-  address?: string,
   city?: string,
+  street?: string,
   zip?: string,
   lat?: number,
   lng?: number

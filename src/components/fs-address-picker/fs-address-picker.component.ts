@@ -10,7 +10,7 @@ import {
 // Interfaces
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
-import { IFsAddressMapOptions } from '../../interfaces/address-map-options.interface';
+import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 
 
 @Component({
@@ -40,17 +40,6 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
   set config(value: IFsAddressConfig) {
     this.configValue = value;
     this.configChange.emit(this.configValue);
-  }
-
-  // MAP OPTIONS Two-way binding
-  public mapOptionsValue: IFsAddressMapOptions;
-  @Input() get mapOptions() {
-    return this.mapOptionsValue;
-  }
-  @Output() mapOptionsChange = new EventEmitter();
-  set mapOptions(value: IFsAddressMapOptions) {
-    this.mapOptionsValue = value;
-    this.mapOptionsChange.emit(this.mapOptionsValue);
   }
 
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
