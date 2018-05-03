@@ -130,6 +130,8 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               return;
             }
 
+            newAddress.name = result.name;
+
             newAddress.lat = result.geometry.location.lat();
             newAddress.lng = result.geometry.location.lng();
 
