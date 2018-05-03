@@ -1,11 +1,16 @@
+export interface IFsLongShort {
+  longName: string;
+  shortName: string;
+}
 
 export interface FsAddress {
+  name?: string,
+  description?: string,
   country?: string
-  state?: string,
   region?: string,
-  address?: string,
   city?: string,
+  street?: string,
   zip?: string,
-  lat?: string | number,
-  lng?: string | number
+  lat?: number,
+  lng?: number
 }

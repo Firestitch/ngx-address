@@ -1,0 +1,4 @@
+
+span:not(:empty):not(:last-child):after {
+  content: ", ";
+}

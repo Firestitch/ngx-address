@@ -5,28 +5,34 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app/app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AgmCoreModule } from '@agm/core';
+
 import { AppMaterialModule } from './app/material.module';
 import { FsExampleModule } from '@firestitch/example';
-import { FirstExampleComponent } from './app/components/first-example/first-example.component';
 import { FsAddressModule } from '../src';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { FsFormModule } from '@firestitch/form';
+
+import { FullAddressExampleComponent } from './app/components/full-address-example/full-address-example.component';
+import { AddressPickerExampleComponent } from './app/components/address-picker-example/address-picker-example.component';
+import { AddressSearchExampleComponent } from './app/components/address-search-example/address-search-example.component';
 
 @NgModule({
   bootstrap: [ AppComponent ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppMaterialModule,
     FormsModule,
+    AppMaterialModule,
+    AgmCoreModule.forRoot({libraries: ['places']}),
     FsExampleModule,
-    FsAddressModule
+    FsAddressModule,
   ],
   entryComponents: [
   ],
   declarations: [
     AppComponent,
-    FirstExampleComponent
+    FullAddressExampleComponent,
+    AddressPickerExampleComponent,
+    AddressSearchExampleComponent
   ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
 })

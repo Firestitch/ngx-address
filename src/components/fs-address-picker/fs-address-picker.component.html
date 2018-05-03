@@ -1,0 +1,31 @@
+<div class="address-picker-container">
+
+  <input #search style="display: none"/>
+
+  <div class="search" *ngIf="!isEdit">
+    <fs-address-search
+      [address]="address"
+      (selected)="changed($event)"
+    ></fs-address-search>
+
+    <div class="input-controls" *ngIf="address && address.description">
+      <button
+        mat-icon-button
+        (click)="clear()"
+      ><mat-icon>close</mat-icon></button>
+      <button
+        mat-icon-button
+        (click)="openEdit()"
+      ><mat-icon>create</mat-icon></button>
+    </div>
+  </div>
+
+  <div *ngIf="isEdit">
+    <fs-address
+      [address]="address"
+      [config]="config"
+      (change)="changed($event)"
+    ></fs-address>
+  </div>
+
+</div>

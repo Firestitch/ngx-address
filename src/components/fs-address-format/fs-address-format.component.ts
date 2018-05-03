@@ -1,72 +1,68 @@
-import { Component, Input, Output,
-  EventEmitter, KeyValueDiffers, OnInit, DoCheck } from '@angular/core';
-import { each, isArrayLikeObject } from 'lodash';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  KeyValueDiffers,
+  OnInit,
+  DoCheck
+} from '@angular/core';
+import {
+  each,
+  isArrayLikeObject
+} from 'lodash';
+
+import { FsAddress } from '../../interfaces/address.interface';
+import { IFsAddressFormatConfig } from '../../interfaces/address-format-config.interface';
+
 
 @Component({
   selector: 'fs-address-format',
-  template: `
-    <ng-container *ngFor="let key of configKeys">
-      <span class="{{key}}" *ngIf="address[config[key]['name']]">{{address[config[key]['name']]}}</span>
-    </ng-container>`,
-  styles: [
-  `span::after { content: ", "; }`,
-  `span:last-child:after { content: ""; }`
-  ],
+  templateUrl: './fs-address-format.component.html',
+  styleUrls: ['./fs-address-format.component.scss']
 })
-export class FsAddressFormatComponent implements OnInit, DoCheck {
+export class FsAddressFormatComponent implements OnInit {
 
   @Input()
   set address(address) {
     this._address = address;
-    if (!this._addressDiffer && address) {
-      this._addressDiffer = this.differs.find(address).create();
-    }
   }
 
   get address() {
     return this._address;
   }
 
-  @Input() config = {};
-  @Output() change = new EventEmitter<any>();
+  @Input() config: IFsAddressFormatConfig = {};
 
-  public configKeys = [];
+  private _address: FsAddress = {};
 
-  private _address = {};
-  private _addressDiffer = null;
-  private _defaultKeys = ['address', 'address2', 'city', 'region', 'zip', 'country'];
-
-  constructor(private differs: KeyValueDiffers) { }
+  constructor() { }
 
   ngOnInit() {
-    each(this._defaultKeys, item => {
-      if (!isArrayLikeObject(this.config[item])) {
-        this.config[item] = {};
-      }
-
-      if (!this.config[item].name) {
-        this.config[item].name = item;
-      }
-    });
-
-    this.configKeys = Object.keys(this.config);
+    this.initAddress();
+    this.initConfig();
   }
 
-  ngDoCheck() {
-    if (this._addressDiffer) {
-      const changes = this._addressDiffer.diff(this.address);
-      if (changes) {
-        const parts = [];
+  private initAddress() {
+    this.address = Object.assign({
+      name: void 0,
+      country: void 0,
+      region: void 0,
+      city: void 0,
+      street: void 0,
+      zip: void 0,
+      lat: null,
+      lng: null,
+    }, this.address);
+  }
 
-        each(this.configKeys, key => {
-          if (this.address[this.config[key]['name']]) {
-            parts.push(this.address[this.config[key]['name']]);
-          }
-        });
-        setTimeout(() => {
-          this.change.emit(parts);
-        });
-      }
-    }
+  private initConfig() {
+    this.config = Object.assign({
+      country: true,
+      region: true,
+      city: true,
+      street: true,
+      zip: true,
+    }, this.config);
   }
 }

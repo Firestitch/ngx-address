@@ -55,7 +55,7 @@
     "@angular/platform-browser": "^5.2.4",
     "@angular/platform-browser-dynamic": "^5.2.4",
     "@compodoc/compodoc": "^1.0.5",
-    "@firestitch/common": "^0.2.11",
+    "@firestitch/common": "^0.2.22",
     "@firestitch/example": "^0.2.1",
     "@firestitch/iframe": "^0.1.5",
     "@types/googlemaps": "^3.30.2",
@@ -125,20 +125,18 @@
     "webpack-node-externals": "^1.6.0",
     "zone.js": "^0.8.14",
     "http-server": "^0.11.1",
-    "@firestitch/form": "^0.2.1"
+    "@firestitch/form": "^1.0.3"
   },
   "engines": {
     "node": ">=6.0.0"
   },
   "peerDependencies": {
-    "@angular/core": "^4.0.0",
-    "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4",
-    "@firestitch/common": "^0.2.11",
-    "@firestitch/form": "^0.2.4",
-    "@angular/material": "^5.0.1",
-    "@types/googlemaps": "^3.2.0",
-    "@agm/core": "^1.0.0-beta.2",
-    "lodash": "^4.17.5"
+    "rxjs": ">=5.1.0",
+    "zone.js": ">=0.8.4",
+    "@firestitch/form": ">=1.0.3",
+    "@angular/material": ">=5.0.1",
+    "@types/googlemaps": ">=3.2.0",
+    "@agm/core": ">=1.0.0-beta.2",
+    "lodash": ">=4.17.0"
   }
 }
