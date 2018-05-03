@@ -42,7 +42,7 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
     this.configChange.emit(this.configValue);
   }
 
-  @Output() selected: EventEmitter<any> = new EventEmitter<any>();
+  @Output() change: EventEmitter<any> = new EventEmitter<any>();
   // BINDING END
 
   // Others
@@ -68,17 +68,9 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
     this.address = {};
   }
 
-  public selectSearch(event: FsAddress) {
-    console.log(event);
+  public changed(event: FsAddress) {
 
-    if (event) {
-      this.address = event;
-    }
-  }
-
-  public selectFullAddress(event: FsAddress) {
-    console.log(event);
-
+    this.change.emit(event);
     if (event) {
       this.address = event;
     }

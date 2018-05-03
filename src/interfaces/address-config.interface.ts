@@ -3,7 +3,7 @@ import { IFsAddressMapConfig } from './address-map-config.interface';
 export interface IFsAddressFieldSetting {
   disabled?: boolean,
   required?: boolean,
-  isVisible?: boolean,
+  visible?: boolean,
   list?: string[],
 }
 

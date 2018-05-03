@@ -6,8 +6,8 @@ export interface IFsLongShort {
 export interface FsAddress {
   name?: string,
   description?: string,
-  country?: IFsLongShort
-  region?: IFsLongShort,
+  country?: string
+  region?: string,
   city?: string,
   street?: string,
   zip?: string,

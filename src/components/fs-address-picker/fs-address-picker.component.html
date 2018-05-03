@@ -5,7 +5,7 @@
   <div class="search" *ngIf="!isEdit">
     <fs-address-search
       [address]="address"
-      (selected)="selectSearch($event)"
+      (selected)="changed($event)"
     ></fs-address-search>
 
     <div class="input-controls" *ngIf="address && address.description">
@@ -24,7 +24,7 @@
     <fs-address
       [address]="address"
       [config]="config"
-      (selected)="selectFullAddress($event)"
+      (change)="changed($event)"
     ></fs-address>
   </div>
 

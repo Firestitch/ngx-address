@@ -1,7 +1,7 @@
 <fs-address-picker
   [(address)]="address"
   [(config)]="config"
-  (selected)="select($event)"
+  (change)="change($event)"
   #picker
 ></fs-address-picker>
 
@@ -14,9 +14,7 @@
 </p>
 
 <h2>Formatted Address</h2>
-<span *ngIf="parts.length">Address:</span>
 <fs-address-format
   [(address)]="address"
   [config]="addressFormatConfig"
-  (change)="changeFormat($event)"
 ></fs-address-format>

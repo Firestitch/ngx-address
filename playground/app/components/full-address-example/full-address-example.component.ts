@@ -12,17 +12,15 @@ import { IFsAddressFormatConfig } from '../../../../src/interfaces/address-forma
 })
 export class FullAddressExampleComponent {
 
-  public parts = [];
-
   public address: FsAddress = {};
 
   public config: IFsAddressConfig = {
-    name: { required: false, isVisible: true },
-    country: { required: true, isVisible: true, list: ['CA', 'US'] },
-    region: { required: true, isVisible: true },
-    city: { required: true, isVisible: true },
-    street: { required: true, isVisible: true },
-    zip: { required: true, isVisible: true },
+    name: { required: false, visible: true },
+    country: { required: true, visible: true, list: ['CA', 'US'] },
+    region: { required: true, visible: true },
+    city: { required: true, visible: true },
+    street: { required: true, visible: true },
+    zip: { required: true, visible: true },
     map: {}
   };
 
@@ -32,14 +30,12 @@ export class FullAddressExampleComponent {
 
   constructor() { }
 
-  public select(event) {
+  public changed(event) {
     console.log('Changed', event);
     this.address = event;
   }
 
   public changeFormat(event) {
     console.log('Parts', event);
-
-    this.parts = event && event.slice();
   }
 }

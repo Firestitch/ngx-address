@@ -18,18 +18,15 @@ export class AddressPickerExampleComponent implements OnInit {
   public address: FsAddress = {};
 
   public config: IFsAddressConfig = {
-    country: { required: true, isVisible: true, list: ['CA', 'US'] },
-    region: { required: true, isVisible: true },
-    city: { required: true, isVisible: true },
-    street: { required: true, isVisible: true },
-    zip: { required: true, isVisible: true },
+    country: { required: true, visible: true, list: ['CA', 'US'] },
+    region: { required: true, visible: true },
+    city: { required: true, visible: true },
+    street: { required: true, visible: true },
+    zip: { required: true, visible: true },
     map: { zoom: 15 }
   };
 
-  public parts = [];
-
   public addressFormatConfig: IFsAddressFormatConfig = {
-    city: false,
   };
 
   @ViewChild('picker') picker: FsAddressPickerComponent;
@@ -38,8 +35,9 @@ export class AddressPickerExampleComponent implements OnInit {
 
   public ngOnInit() {}
 
-  public select(event) {
+  public change(event) {
     console.log('Address select', event);
+    this.address = event;
   }
 
   public changeFormat(event) {

@@ -1,8 +1,4 @@
-span {
-  &::after {
-    content: ", ";
-  }
-  &:last-child:after {
-    content: "";
-  }
+
+span:not(:empty):not(:last-child):after {
+  content: ", ";
 }

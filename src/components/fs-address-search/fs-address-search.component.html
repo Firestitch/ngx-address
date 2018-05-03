@@ -4,6 +4,7 @@
          placeholder="Location"
          [ngModel]="address.description"
          (ngModelChange)="addressChanged($event)"
+         (change)="change($event);"
          #search
          [matAutocomplete]="auto">
 

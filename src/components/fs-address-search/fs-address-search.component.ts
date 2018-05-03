@@ -107,8 +107,18 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this._changeAddressDebounce.next(event);
   }
 
+  public change(event) {
+    event.stopPropagation();
+  }
+
   public selectionChange(event) {
+
     const place = this.predictions.find(el => el.description === event.option.value);
+
+    const newAddress: FsAddress = {
+      description: place.description
+    };
+
 
     if (place && this.googlePlacesService) {
       this.googlePlacesService.getDetails(
@@ -120,19 +130,16 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               return;
             }
 
-            const newAddress: FsAddress = {
-              description: result.formatted_address,
-              lat: result.geometry.location.lat(),
-              lng: result.geometry.location.lng()
-            };
+            newAddress.lat = result.geometry.location.lat();
+            newAddress.lng = result.geometry.location.lng();
 
             result.address_components.forEach((item) => {
               if (item.types.some(type => type === 'country')) {
-                newAddress.country = { longName: item.long_name, shortName: item.short_name };
+                newAddress.country = item.short_name;
               }
 
               if (item.types.some(type => type === 'administrative_area_level_1')) {
-                newAddress.region = { longName: item.long_name, shortName: item.short_name };
+                newAddress.region = item.short_name;
               }
 
               if (item.types.some(type => type === 'locality')) {
@@ -146,13 +153,22 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
             const streetNumber = result.address_components
               .find(el => el.types.some(type => type === 'street_number'));
+
+            if (streetNumber) {
+              newAddress.street = streetNumber.long_name + ' ';
+            } else {
+              const match = newAddress.description.match(/^[\d-]+/);
+              if (match) {
+                newAddress.street = match[0] + ' ';
+              }
+            }
+
             const streetAddress = result.address_components
               .find(el => el.types.some(type => type === 'route'));
 
-            newAddress.street = streetAddress && streetNumber
-              && streetAddress.long_name + ' ' + streetNumber.long_name
-              || streetAddress && streetAddress.long_name
-              || void 0;
+            if (streetAddress) {
+              newAddress.street += streetAddress.long_name;
+            }
 
             this.address = newAddress;
 

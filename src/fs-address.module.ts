@@ -37,7 +37,6 @@ import { FsAddressSearchComponent } from './components/fs-address-search/fs-addr
     JsonpModule,
     FsFormModule,
     FlexLayoutModule,
-    FsCommonModule,
     AgmCoreModule.forRoot({libraries: ['places']}),
 
     ReactiveFormsModule,
