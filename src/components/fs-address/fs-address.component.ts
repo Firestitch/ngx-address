@@ -18,11 +18,11 @@ import {
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import { Subscription } from 'rxjs/Subscription';
-
 import { COUNTRIES } from '../../constants/countries';
 import { FsAddress } from '../../interfaces';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
+import {} from '@types/googlemaps';
 declare var google: any;
 
 

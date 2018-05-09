@@ -14,7 +14,8 @@ import 'rxjs/add/operator/debounceTime';
 import { Subject } from 'rxjs/Subject';
 
 import { FsAddress } from '../../interfaces/address.interface';
-
+import {} from '@types/googlemaps';
+declare var google: any;
 
 @Component({
   selector: 'fs-address-search',
