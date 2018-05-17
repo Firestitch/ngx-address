@@ -15,6 +15,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { FsAddress } from '../../interfaces/address.interface';
 
+
 @Component({
   selector: 'fs-address-search',
   templateUrl: './fs-address-search.component.html',
@@ -26,14 +27,14 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
 
   // Address Predictions
-  public predictions: google.maps.places.AutocompletePrediction[] = [];
+  public predictions: any[] = [];
 
   @ViewChild('search')
   public searchElement: ElementRef;
 
   // Google
-  public googleAutocompleteService: google.maps.places.AutocompleteService;
-  public googlePlacesService: google.maps.places.PlacesService;
+  public googleAutocompleteService = null;
+  public googlePlacesService = null;
 
   // Other
   private _changeAddressDebounce = new Subject<any>();

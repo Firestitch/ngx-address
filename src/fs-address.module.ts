@@ -4,6 +4,9 @@ import { JsonpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import {} from '@types/googlemaps';
+declare var google: any;
+
 import {
   AgmCoreModule,
   GoogleMapsAPIWrapper,

@@ -22,8 +22,6 @@ import { COUNTRIES } from '../../constants/countries';
 import { FsAddress } from '../../interfaces';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
-import {} from '@types/googlemaps';
-declare var google: any;
 
 
 @Component({
@@ -139,7 +137,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
         this.address.description = results[0].formatted_address;
         this.address.lat = location.lat();
         this.address.lng = location.lng();
-        this.config.map.center = { latitude: parseFloat(location.lat()), longitude: parseFloat(location.lng()) };
+        this.config.map.center = { latitude: location.lat(), longitude: location.lng() };
 
         this.config.map.marker.coords.latitude = location.lat();
         this.config.map.marker.coords.longitude = location.lng();
