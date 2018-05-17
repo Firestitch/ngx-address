@@ -21,10 +21,9 @@ import { AddressSearchExampleComponent } from './app/components/address-search-e
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    AppMaterialModule,
-    AgmCoreModule.forRoot({libraries: ['places']}),
-    FsExampleModule,
     FsAddressModule,
+    AppMaterialModule,
+    FsExampleModule
   ],
   entryComponents: [
   ],
