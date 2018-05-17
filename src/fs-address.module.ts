@@ -1,12 +1,9 @@
 import { NgModule, ModuleWithProviders, Injectable, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FsFormModule } from '@firestitch/form';
-import { FsCommonModule } from '@firestitch/common';
-import { FsAddressComponent } from './components/fs-address/fs-address.component';
-import { FsAddressFormatComponent } from './components/fs-address-format/fs-address-format.component';
 import { JsonpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import {
   AgmCoreModule,
   GoogleMapsAPIWrapper,
@@ -19,10 +16,19 @@ import {
   MatInputModule,
   MatSelectModule
 } from '@angular/material';
+
+import { FsFormModule } from '@firestitch/form';
+import { FsCommonModule } from '@firestitch/common';
+
 import { GoogleMapConfig } from './classes/googlemapconfig';
 
-import { FsAddressPickerComponent } from './components/fs-address-picker/fs-address-picker.component';
-import { FsAddressSearchComponent } from './components/fs-address-search/fs-address-search.component';
+import {
+  FsAddressComponent,
+  FsAddressFormatComponent,
+  FsAddressPickerComponent,
+  FsAddressSearchComponent
+} from './components';
+
 
 @NgModule({
   imports: [
