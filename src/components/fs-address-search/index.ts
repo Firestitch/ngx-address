@@ -1,1 +1,1 @@
-export * from './fs-address-search.component'
+export * from './fs-address-search.component';
