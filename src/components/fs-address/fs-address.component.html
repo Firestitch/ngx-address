@@ -29,7 +29,7 @@
     </mat-form-field>
   </div>
 
-  <div fxLayoutGap="5px">
+  <div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
     <mat-form-field fxFlex>
       <input
         matInput
@@ -56,9 +56,8 @@
     </mat-form-field>
   </div>
 
-  <div fxLayoutGap="5px">
+  <div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
     <mat-form-field fxFlex>
-
       <mat-select
         [(ngModel)]="address.country"
         [attr.disabled]="config.country.disabled"
@@ -74,11 +73,9 @@
         </mat-option>
 
       </mat-select>
-
     </mat-form-field>
 
     <mat-form-field fxFlex>
-
       <mat-select
         [(ngModel)]="address.region"
         [attr.disabled]="config.region.disabled"
@@ -93,7 +90,6 @@
         </mat-option>
 
       </mat-select>
-
     </mat-form-field>
   </div>
 
@@ -108,6 +104,7 @@
     >Center Map using Address</button>
 
     <agm-map
+      [ngStyle.xs]="{'height': '300px'}"
       [latitude]="config.map.center.latitude"
       [longitude]="config.map.center.longitude"
       [zoom]="config.map.zoom"

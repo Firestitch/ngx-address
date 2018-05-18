@@ -130,18 +130,20 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               return;
             }
 
-            newAddress.name = result.name;
-
             newAddress.lat = result.geometry.location.lat();
             newAddress.lng = result.geometry.location.lng();
+
+            let countryLongName, regionLongName, streetShortName;
 
             result.address_components.forEach((item) => {
               if (item.types.some(type => type === 'country')) {
                 newAddress.country = item.short_name;
+                countryLongName = item.long_name;
               }
 
               if (item.types.some(type => type === 'administrative_area_level_1')) {
                 newAddress.region = item.short_name;
+                regionLongName = item.long_name;
               }
 
               if (item.types.some(type => type === 'locality')) {
@@ -158,10 +160,12 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
             if (streetNumber) {
               newAddress.street = streetNumber.long_name + ' ';
+              streetShortName = streetNumber.long_name + ' ';
             } else {
               const match = newAddress.description.match(/^[\d-]+/);
               if (match) {
                 newAddress.street = match[0] + ' ';
+                streetShortName = match[0] + ' ';
               }
             }
 
@@ -169,7 +173,26 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               .find(el => el.types.some(type => type === 'route'));
 
             if (streetAddress) {
-              newAddress.street += streetAddress.long_name;
+              if (!newAddress.street) {
+                newAddress.street = streetAddress.long_name;
+                streetShortName = streetAddress.short_name;
+              } else {
+                newAddress.street += streetAddress.long_name;
+                streetShortName += streetAddress.short_name;
+              }
+            }
+            debugger;
+            if (newAddress.country !== result.name &&
+                countryLongName !== result.name &&
+                newAddress.region !== result.name &&
+                regionLongName !== result.name &&
+                newAddress.city !== result.name &&
+                streetShortName !== result.name &&
+                newAddress.zip !== result.name &&
+                newAddress.street !== result.name) {
+              newAddress.name = result.name;
+            } else {
+              newAddress.name = '';
             }
 
             this.address = newAddress;
