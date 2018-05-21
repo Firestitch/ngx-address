@@ -58,8 +58,27 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {}
 
+  private initAddress() {
+    this.address = Object.assign({
+      name: void 0,
+      country: void 0,
+      region: void 0,
+      city: void 0,
+      street: void 0,
+      zip: void 0,
+      lat: null,
+      lng: null
+    }, this.address);
+
+    this.generateFullAddress();
+  }
+
   private generateFullAddress() {
     this.addressFullName = '';
+    if (this.address.name) {
+      this.addressFullName += this.address.name + ', ';
+    }
+
     if (this.address.street) {
       this.addressFullName += this.address.street + ', ';
     }
@@ -77,20 +96,6 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  private initAddress() {
-    this.address = Object.assign({
-      name: void 0,
-      country: void 0,
-      region: void 0,
-      city: void 0,
-      street: void 0,
-      zip: void 0,
-      lat: null,
-      lng: null
-    }, this.address);
-
-    this.generateFullAddress();
-  }
 
   private initGoogleMap() {
     this._mapsAPILoader
@@ -118,7 +123,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
               return;
             }
 
-            this.predictions = predictions;
+            this.predictions = [{description: `Just use "${value}"`, id: 1, value: value}].concat(predictions);
           });
         });
 
@@ -136,10 +141,24 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   public selectionChange(event) {
     const place = this.predictions.find(el => el.description === event.option.value);
 
+    if (place.id === 1) {
+      this.addressFullName = place.value;
+
+      const newAddress: FsAddress = {
+        description: place.description
+      };
+
+      this.selected.emit({
+        name: place.value,
+        description: place.value
+      });
+
+      return;
+    }
+
     const newAddress: FsAddress = {
       description: place.description
     };
-
 
     if (place && this.googlePlacesService) {
       this.googlePlacesService.getDetails(
