@@ -37,6 +37,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   public googlePlacesService = null;
 
   // Other
+  public addressFullName: string;
   private _changeAddressDebounce = new Subject<any>();
 
   constructor(
@@ -53,25 +54,42 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.initAddress();
     this.initGoogleMap();
-
-    if (this.address && this.address.description) {
-      this.updatePredictions(this.address.description);
-    }
   }
 
   public ngOnDestroy() {}
 
+  private generateFullAddress() {
+    this.addressFullName = '';
+    if (this.address.street) {
+      this.addressFullName += this.address.street + ', ';
+    }
+
+    if (this.address.city) {
+      this.addressFullName += this.address.city + ', ';
+    }
+
+    if (this.address.region) {
+      this.addressFullName += this.address.region + ', ';
+    }
+
+    if (this.address.country) {
+      this.addressFullName += this.address.country;
+    }
+  }
+
   private initAddress() {
     this.address = Object.assign({
-      name: null,
-      country: null,
-      region: null,
-      address: null,
-      city: null,
-      zip: null,
+      name: void 0,
+      country: void 0,
+      region: void 0,
+      city: void 0,
+      street: void 0,
+      zip: void 0,
       lat: null,
       lng: null
     }, this.address);
+
+    this.generateFullAddress();
   }
 
   private initGoogleMap() {
@@ -80,6 +98,10 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
       .then(() => {
         this.googleAutocompleteService = new google.maps.places.AutocompleteService();
         this.googlePlacesService = new google.maps.places.PlacesService(this.searchElement.nativeElement);
+
+        if (this.address && this.address.description) {
+          this.updatePredictions(this.address.description);
+        }
       });
   }
 
@@ -112,7 +134,6 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   }
 
   public selectionChange(event) {
-
     const place = this.predictions.find(el => el.description === event.option.value);
 
     const newAddress: FsAddress = {
@@ -181,7 +202,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
                 streetShortName += streetAddress.short_name;
               }
             }
-            
+
             if (newAddress.country !== result.name &&
                 countryLongName !== result.name &&
                 newAddress.region !== result.name &&
@@ -194,8 +215,9 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
             } else {
               newAddress.name = '';
             }
-
             this.address = newAddress;
+
+            this.generateFullAddress();
 
             this.selected.emit(newAddress);
           });
