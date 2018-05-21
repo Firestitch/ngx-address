@@ -236,7 +236,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   }
 
   private updateCountryRegionLabels() {
-    this.zipLabel = this.address.country === 'CA' ? 'Postal Code' : 'Zip';
+    this.zipLabel = (this.address.country === 'CA' || this.address.country === 'US' ) ? 'Zip' : 'Postal Code';
     this.regionLabel = this.address.country === 'CA' ? 'Province' : 'State';
   }
 }

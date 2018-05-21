@@ -16,7 +16,7 @@ export class FullAddressExampleComponent {
 
   public config: IFsAddressConfig = {
     name: { required: false, visible: true },
-    country: { required: true, visible: true, list: ['CA', 'US'] },
+    country: { required: true, visible: true },
     region: { required: true, visible: true },
     city: { required: true, visible: true },
     street: { required: true, visible: true },

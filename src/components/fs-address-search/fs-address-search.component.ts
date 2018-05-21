@@ -181,7 +181,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
                 streetShortName += streetAddress.short_name;
               }
             }
-            debugger;
+            
             if (newAddress.country !== result.name &&
                 countryLongName !== result.name &&
                 newAddress.region !== result.name &&
