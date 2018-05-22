@@ -14,6 +14,7 @@ import 'rxjs/add/operator/debounceTime';
 import { Subject } from 'rxjs/Subject';
 
 import { FsAddress } from '../../interfaces/address.interface';
+import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { FsAddress } from '../../interfaces/address.interface';
 export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
   @Input() address: FsAddress = {};
+  @Input() config: IFsAddressConfig = {};
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
 
   // Address Predictions
@@ -52,11 +54,23 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
+    this.initConfig();
     this.initAddress();
     this.initGoogleMap();
   }
 
   public ngOnDestroy() {}
+
+  private initConfig() {
+    this.config = Object.assign({
+      name: { required: false, visible: true },
+      country: { required: false, visible: true },
+      region: { required: true, visible: true },
+      city: { required: true, visible: true },
+      street: { required: false, visible: true },
+      zip: { required: true, visible: true },
+    }, this.config);
+  }
 
   private initAddress() {
     this.address = Object.assign({
@@ -242,5 +256,56 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
           });
         });
     }
+  }
+
+  public functionPromise(formControl, params?: any) {
+    return new Promise((resolve, reject) => {
+      const config = params.config;
+      const address = params.address;
+
+      const requiredField = [];
+      if (config.name.required && (address.name === '' || !address.name)) {
+        requiredField.push('name');
+      }
+
+      if (config.country.required && (address.country === '' || !address.country)) {
+        requiredField.push('country');
+      }
+
+      if (config.region.required && (address.region === '' || !address.region)) {
+        requiredField.push('region');
+      }
+
+      if (config.city.required && (address.city === '' || !address.city)) {
+        requiredField.push('city');
+      }
+
+      if (config.street.required && (address.street === '' || !address.street)) {
+        requiredField.push('street');
+      }
+
+      if (config.zip.required && (address.zip === '' || !address.zip)) {
+        requiredField.push('zip');
+      }
+
+      if (requiredField.length) {
+        if (requiredField.length === 1) {
+          reject(`The ${requiredField[0]} is required`);
+        } else {
+          const last = requiredField.pop();
+          reject(`The ${requiredField.join(', ')} and ${last} are required`);
+        }
+      } else {
+        resolve();
+      }
+
+      // formControl.control.patchValue(data, {emitChange: false});
+
+      // if (testValue !== 'existing@email.com') {
+      //   reject('Email should match "existing@email.com"');
+      // } else {
+      //   resolve();
+      // }
+    });
   }
 }

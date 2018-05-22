@@ -5,6 +5,7 @@
   <div class="search" *ngIf="!isEdit">
     <fs-address-search
       [address]="address"
+      [config]="config"
       (selected)="changed($event)"
     ></fs-address-search>
 

@@ -1,0 +1,20 @@
+<fs-address-picker
+  [(address)]="address"
+  [(config)]="config"
+  (change)="changeAddress($event)"
+  #picker
+></fs-address-picker>
+
+<p *ngIf="picker.isEdit">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="closeEdit()"
+  >Collapse Address Editor</button>
+</p>
+
+<h2>Formatted Address</h2>
+<fs-address-format
+  [(address)]="address"
+  [config]="addressFormatConfig"
+></fs-address-format>
