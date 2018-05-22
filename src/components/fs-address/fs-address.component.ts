@@ -171,8 +171,8 @@ export class FsAddressComponent implements OnInit, OnDestroy {
     this.config = Object.assign({
       name: { required: false, visible: true },
       country: { required: false, visible: true },
-      region: { required: true, visible: true },
-      city: { required: true, visible: true },
+      region: { required: false, visible: true },
+      city: { required: false, visible: true },
       street: { required: false, visible: true },
       zip: { required: true, visible: true },
     }, this.config);

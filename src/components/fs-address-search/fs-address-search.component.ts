@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
@@ -22,10 +23,11 @@ import { IFsAddressConfig } from '../../interfaces/address-config.interface';
   templateUrl: './fs-address-search.component.html',
   styleUrls: ['./fs-address-search.component.scss'],
 })
-export class FsAddressSearchComponent implements OnInit, OnDestroy {
+export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input() address: FsAddress = {};
   @Input() config: IFsAddressConfig = {};
+  @Input() styledView = false;
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
 
   // Address Predictions
@@ -39,7 +41,9 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   public googlePlacesService = null;
 
   // Other
-  public addressFullName: string;
+  public addressFullName: string[] = [];
+  public mainAddressPart: string;
+  public isRequired = false;
   private _changeAddressDebounce = new Subject<any>();
 
   constructor(
@@ -51,6 +55,20 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
       .subscribe(value => {
         this.updatePredictions(value);
       });
+  }
+
+  get addressFullNameString() {
+    let main = '';
+    if (this.mainAddressPart && this.mainAddressPart !== '') {
+      main = this.mainAddressPart + ',';
+    }
+    return main + this.addressFullName.join(', ');
+  }
+
+  public ngOnChanges(changes) {
+    if (changes.address) {
+      this.generateFullAddress();
+    }
   }
 
   public ngOnInit() {
@@ -65,11 +83,18 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this.config = Object.assign({
       name: { required: false, visible: true },
       country: { required: false, visible: true },
-      region: { required: true, visible: true },
-      city: { required: true, visible: true },
+      region: { required: false, visible: true },
+      city: { required: false, visible: true },
       street: { required: false, visible: true },
-      zip: { required: true, visible: true },
+      zip: { required: false, visible: true },
     }, this.config);
+
+    this.isRequired = (this.config.name.required ||
+      this.config.country.required ||
+      this.config.region.required ||
+      this.config.city.required ||
+      this.config.street.required ||
+      this.config.zip.required);
   }
 
   private initAddress() {
@@ -88,26 +113,32 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   }
 
   private generateFullAddress() {
-    this.addressFullName = '';
+    this.addressFullName = [];
     if (this.address.name) {
-      this.addressFullName += this.address.name + ', ';
+      this.addressFullName.push(this.address.name);
     }
 
     if (this.address.street) {
-      this.addressFullName += this.address.street + ', ';
+      this.addressFullName.push(this.address.street);
     }
 
     if (this.address.city) {
-      this.addressFullName += this.address.city + ', ';
+      this.addressFullName.push(this.address.city);
     }
 
     if (this.address.region) {
-      this.addressFullName += this.address.region + ', ';
+      this.addressFullName.push(this.address.region);
+    }
+
+    if (this.address.zip) {
+      this.addressFullName.push(this.address.zip);
     }
 
     if (this.address.country) {
-      this.addressFullName += this.address.country;
+      this.addressFullName.push(this.address.country);
     }
+
+    this.mainAddressPart = this.addressFullName.shift();
   }
 
 
@@ -298,14 +329,6 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
       } else {
         resolve();
       }
-
-      // formControl.control.patchValue(data, {emitChange: false});
-
-      // if (testValue !== 'existing@email.com') {
-      //   reject('Email should match "existing@email.com"');
-      // } else {
-      //   resolve();
-      // }
     });
   }
 }
