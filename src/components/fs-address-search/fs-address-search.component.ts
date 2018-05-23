@@ -27,8 +27,18 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input() address: FsAddress = {};
   @Input() config: IFsAddressConfig = {};
-  @Input() styledView = false;
+  @Input() pickerMode = false;
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
+
+  public isEdit: boolean;
+  @Input() get editMode() {
+    return this.isEdit;
+  }
+  @Output() editModeChange = new EventEmitter();
+  set editMode(value: boolean) {
+    this.isEdit = value;
+    this.editModeChange.emit(this.isEdit);
+  }
 
   // Address Predictions
   public predictions: any[] = [];
@@ -42,6 +52,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
   // Other
   public addressFullName: string[] = [];
+  public addressFullNameString = '';
   public mainAddressPart: string;
   public isRequired = false;
   private _changeAddressDebounce = new Subject<any>();
@@ -55,14 +66,6 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       .subscribe(value => {
         this.updatePredictions(value);
       });
-  }
-
-  get addressFullNameString() {
-    let main = '';
-    if (this.mainAddressPart && this.mainAddressPart !== '') {
-      main = this.mainAddressPart + ',';
-    }
-    return main + this.addressFullName.join(', ');
   }
 
   public ngOnChanges(changes) {
@@ -139,8 +142,13 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     this.mainAddressPart = this.addressFullName.shift();
-  }
 
+    this.addressFullNameString = '';
+    if (this.mainAddressPart && this.mainAddressPart !== '') {
+      this.addressFullNameString += this.mainAddressPart + ', ';
+    }
+    this.addressFullNameString += this.addressFullName.join(', ');
+  }
 
   private initGoogleMap() {
     this._mapsAPILoader
@@ -187,11 +195,11 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     const place = this.predictions.find(el => el.description === event.option.value);
 
     if (place.id === 1) {
-      this.addressFullName = place.value;
-
-      const newAddress: FsAddress = {
-        description: place.description
+      this.address = {
+        name: place.value,
       };
+
+      this.generateFullAddress();
 
       this.selected.emit({
         name: place.value,
@@ -207,7 +215,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
     if (place && this.googlePlacesService) {
       this.googlePlacesService.getDetails(
-        { placeId: place.place_id },
+        place,
         (result, status) => {
           this._ngZone.run(() => {
 
@@ -289,46 +297,55 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  public functionPromise(formControl, params?: any) {
-    return new Promise((resolve, reject) => {
-      const config = params.config;
-      const address = params.address;
+  public functionPromise() {
+    const requiredField = [];
+    if (this.config.name.required && (this.address.name === '' || !this.address.name)) {
+      requiredField.push('name');
+    }
 
-      const requiredField = [];
-      if (config.name.required && (address.name === '' || !address.name)) {
-        requiredField.push('name');
-      }
+    if (this.config.country.required && (this.address.country === '' || !this.address.country)) {
+      requiredField.push('country');
+    }
 
-      if (config.country.required && (address.country === '' || !address.country)) {
-        requiredField.push('country');
-      }
+    if (this.config.region.required && (this.address.region === '' || !this.address.region)) {
+      requiredField.push('region');
+    }
 
-      if (config.region.required && (address.region === '' || !address.region)) {
-        requiredField.push('region');
-      }
+    if (this.config.city.required && (this.address.city === '' || !this.address.city)) {
+      requiredField.push('city');
+    }
 
-      if (config.city.required && (address.city === '' || !address.city)) {
-        requiredField.push('city');
-      }
+    if (this.config.street.required && (this.address.street === '' || !this.address.street)) {
+      requiredField.push('street');
+    }
 
-      if (config.street.required && (address.street === '' || !address.street)) {
-        requiredField.push('street');
-      }
+    if (this.config.zip.required && (this.address.zip === '' || !this.address.zip)) {
+      requiredField.push('zip');
+    }
 
-      if (config.zip.required && (address.zip === '' || !address.zip)) {
-        requiredField.push('zip');
-      }
-
-      if (requiredField.length) {
-        if (requiredField.length === 1) {
-          reject(`The ${requiredField[0]} is required`);
+    return (formControl) => {
+      return new Promise((resolve, reject) => {
+        if (requiredField.length) {
+          if (requiredField.length === 1) {
+            reject(`The ${requiredField[0]} is required`);
+          } else {
+            const last = requiredField.pop();
+            reject(`The ${requiredField.join(', ')} and ${last} are required`);
+          }
         } else {
-          const last = requiredField.pop();
-          reject(`The ${requiredField.join(', ')} and ${last} are required`);
+          resolve();
         }
-      } else {
-        resolve();
-      }
-    });
+      });
+    };
+  }
+
+  public clear() {
+    this.editMode = false;
+    this.address = {};
+    this.generateFullAddress();
+  }
+
+  public edit() {
+    this.editMode = true;
   }
 }

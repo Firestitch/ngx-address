@@ -1,18 +1,17 @@
 <mat-form-field>
 
   <input matInput
-         [hidden]="styledView && mainAddressPart"
          placeholder="Location"
+         [ngClass]="{'hide': pickerMode && mainAddressPart}"
          [ngModel]="addressFullNameString"
          (ngModelChange)="addressChanged($event)"
          (change)="change($event);"
-         [fsFormRequired]="true"
-         [fsFormFunction]="functionPromise"
-         [fsFormFunctionParams]="{config: config, address: address}"
+         [fsFormRequired]="isRequired"
+         [fsFormFunction]="functionPromise()"
          #search
          [matAutocomplete]="auto">
 
-  <div [hidden]="!styledView && mainAddressPart">
+  <div [hidden]="!pickerMode && mainAddressPart">
     <div class="main">{{mainAddressPart}}</div>
     <div class="secondary">{{addressFullName.join(', ')}}</div>
   </div>
@@ -22,5 +21,8 @@
       {{option.description}}
     </mat-option>
   </mat-autocomplete>
+
+  <mat-icon class="control" matSuffix *ngIf="pickerMode && mainAddressPart" (click)="clear()">clear</mat-icon>
+  <mat-icon class="control" matSuffix *ngIf="pickerMode && mainAddressPart" (click)="edit()">mode_edit</mat-icon>
 
 </mat-form-field>

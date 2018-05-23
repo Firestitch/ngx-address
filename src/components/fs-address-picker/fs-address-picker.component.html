@@ -6,20 +6,10 @@
     <fs-address-search
       [address]="address"
       [config]="config"
-      [styledView]="true"
+      [pickerMode]="true"
+      [(editMode)]="isEdit"
       (selected)="changed($event)"
     ></fs-address-search>
-
-    <div class="input-controls" *ngIf="address && address.description">
-      <button
-        mat-icon-button
-        (click)="clear()"
-      ><mat-icon>close</mat-icon></button>
-      <button
-        mat-icon-button
-        (click)="openEdit()"
-      ><mat-icon>create</mat-icon></button>
-    </div>
   </div>
 
   <div *ngIf="isEdit">
