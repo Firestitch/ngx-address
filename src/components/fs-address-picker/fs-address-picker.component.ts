@@ -56,16 +56,8 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  public openEdit() {
-    this.isEdit = true;
-  }
-
   public closeEdit() {
     this.isEdit = false;
-  }
-
-  public clear() {
-    this.address = {};
   }
 
   public changed(event: FsAddress) {

@@ -90,6 +90,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       city: { required: false, visible: true },
       street: { required: false, visible: true },
       zip: { required: false, visible: true },
+      lat: { required: false },
+      lng: { required: false },
     }, this.config);
 
     this.isRequired = (this.config.name.required ||
@@ -321,6 +323,10 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
     if (this.config.zip.required && (this.address.zip === '' || !this.address.zip)) {
       requiredField.push('zip');
+    }
+
+    if ((this.config.lat.required || this.config.lng.required) && (!this.address.lat || !this.address.lat)) {
+      requiredField.push('position on map');
     }
 
     return (formControl) => {

@@ -14,5 +14,7 @@ export interface IFsAddressConfig {
   city?: IFsAddressFieldSetting,
   street?: IFsAddressFieldSetting,
   zip?: IFsAddressFieldSetting,
-  map?: IFsAddressMapConfig
+  map?: IFsAddressMapConfig,
+  lat?: IFsAddressFieldSetting,
+  lng?: IFsAddressFieldSetting
 }

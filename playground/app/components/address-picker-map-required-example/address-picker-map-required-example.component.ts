@@ -9,19 +9,19 @@ import { IFsAddressFormatConfig } from '../../../../src/interfaces/address-forma
 import { FsAddressPickerComponent } from '../../../../src/components/fs-address-picker/fs-address-picker.component';
 
 @Component({
-  selector: 'address-picker-required-all-example',
-  templateUrl: 'address-picker-required-all-example.component.html',
+  selector: 'address-picker-map-required-example',
+  templateUrl: 'address-picker-map-required-example.component.html',
   styles: []
 })
-export class AddressPickerRequiredAllExampleComponent implements OnInit {
+export class AddressPickerMapRequiredExampleComponent implements OnInit {
 
   public address: FsAddress = {};
   public config: IFsAddressConfig = {
-    country: { required: true, visible: true },
-    region: { required: true, visible: true },
-    city: { required: true, visible: true },
-    street: { required: true, visible: true },
-    zip: { required: true, visible: true },
+    country: { required: false, visible: true },
+    region: { required: false, visible: true },
+    city: { required: false, visible: true },
+    street: { required: false, visible: true },
+    zip: { required: false, visible: true },
     lat: { required: true },
     lng: { required: true },
     map: { zoom: 15 }

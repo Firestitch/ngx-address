@@ -174,7 +174,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
       region: { required: false, visible: true },
       city: { required: false, visible: true },
       street: { required: false, visible: true },
-      zip: { required: true, visible: true },
+      zip: { required: false, visible: true },
     }, this.config);
   }
 
@@ -231,7 +231,6 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   }
 
   private initZipAndStateLabels() {
-    const country = filter(COUNTRIES, { code: this.address.country })[0];
     this.updateCountryRegionLabels();
   }
 
