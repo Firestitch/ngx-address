@@ -299,7 +299,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  public functionPromise() {
+  public functionPromise = (() => {
     const requiredField = [];
     if (this.config.name.required && (this.address.name === '' || !this.address.name)) {
       requiredField.push('name');
@@ -329,21 +329,19 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       requiredField.push('position on map');
     }
 
-    return (formControl) => {
-      return new Promise((resolve, reject) => {
-        if (requiredField.length) {
-          if (requiredField.length === 1) {
-            reject(`The ${requiredField[0]} is required`);
-          } else {
-            const last = requiredField.pop();
-            reject(`The ${requiredField.join(', ')} and ${last} are required`);
-          }
+    return new Promise((resolve, reject) => {
+      if (requiredField.length) {
+        if (requiredField.length === 1) {
+          reject(`The ${requiredField[0]} is required`);
         } else {
-          resolve();
+          const last = requiredField.pop();
+          reject(`The ${requiredField.join(', ')} and ${last} are required`);
         }
-      });
-    };
-  }
+      } else {
+        resolve();
+      }
+    });
+  }).bind(this);
 
   public clear() {
     this.editMode = false;

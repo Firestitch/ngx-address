@@ -61,6 +61,7 @@
     "del": "^2.2.2",
     "directory-tree-webpack-plugin": "^0.2.0",
     "extract-text-webpack-plugin": "^3.0.2",
+    "filemanager-webpack-plugin": "^1.0.26",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-regex-rename": "^0.1.0",
@@ -91,6 +92,7 @@
     "protractor": "~5.1.2",
     "raw-loader": "^0.5.1",
     "replace": "^0.3.0",
+    "replace-in-file": "^3.4.0",
     "resolve-url-loader": "^2.3.0",
     "rollup": "^0.49.3",
     "run-sequence": "^1.2.2",
@@ -123,7 +125,6 @@
     "lodash": ">=4.17.0"
   },
   "dependencies": {
-    "@firestitch/form": "^1.0.5",
-    "filemanager-webpack-plugin": "^1.0.26"
+    "@firestitch/form": "^1.0.5"
   }
 }
