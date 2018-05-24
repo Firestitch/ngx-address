@@ -16,8 +16,6 @@ mat-form-field {
 }
 
 .hide {
-  display: block;
-  opacity: 0;
+  visibility: hidden;
   position: absolute;
-  z-index: -1;
 }

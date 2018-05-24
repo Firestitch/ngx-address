@@ -1,7 +1,7 @@
 {
   "name": "@firestitch/address",
   "description": "@firestitch/address",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/fs-address"
