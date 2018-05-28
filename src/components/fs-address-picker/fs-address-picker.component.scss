@@ -9,7 +9,14 @@
 }
 
 :host ::ng-deep {
-  .mat-form-field-infix {
-    padding-right: 80px;
+  .search {
+    .mat-form-field-flex {
+      flex-direction: row;
+    }
+
+    .mat-form-field-suffix {
+      align-self: flex-end;
+      padding-bottom: 4px;
+    }
   }
 }

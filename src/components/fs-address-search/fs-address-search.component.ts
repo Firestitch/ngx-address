@@ -177,8 +177,9 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
             if (status != google.maps.places.PlacesServiceStatus.OK) {
               return;
             }
+            this.predictions = predictions.slice();
 
-            this.predictions = [{description: `Just use "${value}"`, id: 1, value: value}].concat(predictions);
+            this.predictions.push({description: `Just use "${value}"`, id: 1, value: value});
           });
         });
 
