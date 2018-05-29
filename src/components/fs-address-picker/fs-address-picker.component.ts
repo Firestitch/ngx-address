@@ -8,9 +8,11 @@ import {
 } from '@angular/core';
 
 // Interfaces
-import { IFsAddressConfig } from '../../interfaces/address-config.interface';
-import { FsAddress } from '../../interfaces/address.interface';
-import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
+import {
+  IFsAddressConfig,
+  FsAddress,
+  IFsAddressFormatConfig
+} from '../../interfaces';
 
 
 @Component({
@@ -30,6 +32,7 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
     this.addressValue = value;
     this.addressChange.emit(this.addressValue);
   }
+  // BINDING END
 
   // CONFIG Two-way binding
   public configValue: IFsAddressConfig;
@@ -41,9 +44,9 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
     this.configValue = value;
     this.configChange.emit(this.configValue);
   }
-
-  @Output() change: EventEmitter<any> = new EventEmitter<any>();
   // BINDING END
+
+  @Input() addressFormatConfig: IFsAddressFormatConfig;
 
   // Others
   public isEdit: boolean;
@@ -58,13 +61,5 @@ export class FsAddressPickerComponent implements OnInit, OnDestroy {
 
   public closeEdit() {
     this.isEdit = false;
-  }
-
-  public changed(event: FsAddress) {
-
-    this.change.emit(event);
-    if (event) {
-      this.address = event;
-    }
   }
 }

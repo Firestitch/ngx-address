@@ -2,7 +2,7 @@
 
   <input matInput
          placeholder="Location"
-         [ngClass]="{'hide': pickerMode && mainAddressPart}"
+         [ngClass]="{'hide': addressFormatConfig && addressFullNameString}"
          [ngModel]="addressFullNameString"
          (ngModelChange)="addressChanged($event)"
          (change)="change($event);"
@@ -11,9 +11,11 @@
          #search
          [matAutocomplete]="auto">
 
-  <div [hidden]="!pickerMode && mainAddressPart">
-    <div class="main">{{mainAddressPart}}</div>
-    <div class="secondary">{{addressFullName.join(', ')}}</div>
+  <div [hidden]="!addressFormatConfig || !addressFullNameString">
+    <fs-address-format
+      [(address)]="address"
+      [config]="addressFormatConfig"
+    ></fs-address-format>
   </div>
 
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectionChange($event)">
@@ -22,7 +24,17 @@
     </mat-option>
   </mat-autocomplete>
 
-  <mat-icon class="control" matSuffix *ngIf="pickerMode && mainAddressPart" (click)="clear()">clear</mat-icon>
-  <mat-icon class="control" matSuffix *ngIf="pickerMode && mainAddressPart" (click)="edit()">mode_edit</mat-icon>
+  <mat-icon
+    class="control"
+    matSuffix
+    *ngIf="addressFormatConfig && addressFullNameString"
+    (click)="clear()"
+  >clear</mat-icon>
+  <mat-icon
+    class="control"
+    matSuffix
+    *ngIf="addressFormatConfig && addressFullNameString"
+    (click)="edit()"
+  >mode_edit</mat-icon>
 
 </mat-form-field>

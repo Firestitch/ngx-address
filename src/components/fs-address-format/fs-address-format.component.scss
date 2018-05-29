@@ -1,4 +1,10 @@
-
-span:not(:empty):not(:last-child):after {
-  content: ", ";
+.formatted {
+  .formatted-line-1 {
+    font-weight: 500;
+    padding-bottom: 2px;
+  }
+  .formatted-line-2 {
+    font-size: 12px;
+  }
 }
+

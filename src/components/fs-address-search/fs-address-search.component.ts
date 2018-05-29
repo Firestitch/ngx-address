@@ -14,8 +14,11 @@ import { MapsAPILoader } from '@agm/core';
 import 'rxjs/add/operator/debounceTime';
 import { Subject } from 'rxjs/Subject';
 
-import { FsAddress } from '../../interfaces/address.interface';
-import { IFsAddressConfig } from '../../interfaces/address-config.interface';
+import {
+  FsAddress,
+  IFsAddressConfig,
+  IFsAddressFormatConfig
+} from '../../interfaces';
 
 
 @Component({
@@ -25,7 +28,16 @@ import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 })
 export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
-  @Input() address: FsAddress = {};
+  // ADDRESS Two-way binding
+  public addressValue: FsAddress;
+  @Input() get address() {
+    return this.addressValue;
+  }
+  @Output() addressChange = new EventEmitter();
+  set address(value: FsAddress) {
+    this.addressValue = value;
+    this.addressChange.emit(this.addressValue);
+  }
   @Input() config: IFsAddressConfig = {};
   @Input() pickerMode = false;
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
@@ -40,6 +52,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.editModeChange.emit(this.isEdit);
   }
 
+  @Input() addressFormatConfig: IFsAddressFormatConfig;
+
   // Address Predictions
   public predictions: any[] = [];
 
@@ -53,7 +67,6 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   // Other
   public addressFullName: string[] = [];
   public addressFullNameString = '';
-  public mainAddressPart: string;
   public isRequired = false;
   private _changeAddressDebounce = new Subject<any>();
 
@@ -142,14 +155,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     if (this.address.country) {
       this.addressFullName.push(this.address.country);
     }
-
-    this.mainAddressPart = this.addressFullName.shift();
-
-    this.addressFullNameString = '';
-    if (this.mainAddressPart && this.mainAddressPart !== '') {
-      this.addressFullNameString += this.mainAddressPart + ', ';
-    }
-    this.addressFullNameString += this.addressFullName.join(', ');
+    this.addressFullNameString = this.addressFullName.join(', ');
   }
 
   private initGoogleMap() {
@@ -291,8 +297,6 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
               newAddress.name = '';
             }
             this.address = newAddress;
-
-            this.generateFullAddress();
 
             this.selected.emit(newAddress);
           });

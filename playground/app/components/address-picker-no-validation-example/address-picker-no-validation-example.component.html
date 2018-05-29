@@ -1,7 +1,7 @@
 <fs-address-picker
   [(address)]="address"
   [(config)]="config"
-  (change)="changeAddress($event)"
+  [addressFormatConfig]="addressFormatConfig"
   #picker
 ></fs-address-picker>
 
@@ -13,7 +13,7 @@
   >Collapse Address Editor</button>
 </p>
 
-<h2>Formatted Address</h2>
+<h3>Formatted Address (default config)</h3>
 <fs-address-format
   [(address)]="address"
   [config]="addressFormatConfig"

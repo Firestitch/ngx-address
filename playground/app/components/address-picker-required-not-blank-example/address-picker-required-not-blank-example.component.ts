@@ -1,12 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 
 // Interfaces
-import { IFsAddressConfig } from '../../../../src/interfaces/address-config.interface';
-import { FsAddress } from '../../../../src/interfaces/address.interface';
-import { IFsAddressFormatConfig } from '../../../../src/interfaces/address-format-config.interface';
+import {
+  FsAddress,
+  IFsAddressConfig,
+  IFsAddressFormatConfig
+} from '../../../../src/interfaces';
 
 // Others
 import { FsAddressPickerComponent } from '../../../../src/components/fs-address-picker/fs-address-picker.component';
+
 
 @Component({
   selector: 'address-picker-required-not-blank-example',
@@ -24,7 +31,9 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
     zip: { required: false, visible: true },
     map: { zoom: 15 }
   };
-  public addressFormatConfig: IFsAddressFormatConfig = {};
+  public addressFormatConfig: IFsAddressFormatConfig = {
+    linesCount: 2
+  };
 
   @ViewChild('picker') picker: FsAddressPickerComponent;
 

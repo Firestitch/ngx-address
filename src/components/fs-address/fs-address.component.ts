@@ -19,9 +19,10 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import { Subscription } from 'rxjs/Subscription';
 import { COUNTRIES } from '../../constants/countries';
-import { FsAddress } from '../../interfaces';
-import { IFsAddressConfig } from '../../interfaces/address-config.interface';
-import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
+import {
+  FsAddress,
+  IFsAddressConfig
+} from '../../interfaces';
 
 
 @Component({
@@ -33,9 +34,18 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
   @ViewChild(AgmMap) agmMap;
   @ViewChild(AgmMarker) agmMarker;
-  @Input() address: FsAddress = {};
+
+  // ADDRESS Two-way binding
+  public addressValue: FsAddress;
+  @Input() get address() {
+    return this.addressValue;
+  }
+  @Output() addressChange = new EventEmitter();
+  set address(value: FsAddress) {
+    this.addressValue = value;
+    this.addressChange.emit(this.addressValue);
+  }
   @Input() config: IFsAddressConfig = {};
-  @Output() change = new EventEmitter<any>();
 
   public isSearched = false;
   private _subMapReady: Subscription;
@@ -131,12 +141,14 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
     geocoder.geocode( { address: this.searchedAddress  }, (results, status) => {
       this.isSearched = true;
+      const newAddress = Object.assign({}, this.address);
 
       if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
         const location = results[0].geometry.location;
-        this.address.description = results[0].formatted_address;
-        this.address.lat = location.lat();
-        this.address.lng = location.lng();
+
+        newAddress.description = results[0].formatted_address;
+        newAddress.lat = location.lat();
+        newAddress.lng = location.lng();
         this.config.map.center = { latitude: location.lat(), longitude: location.lng() };
 
         this.config.map.marker.coords.latitude = location.lat();
@@ -146,11 +158,11 @@ export class FsAddressComponent implements OnInit, OnDestroy {
           this.agmMap.triggerResize();
         }
       } else {
-        this.address.lat = null;
-        this.address.lng = null;
+        newAddress.lat = null;
+        newAddress.lng = null;
       }
 
-      this.change.emit(this.address);
+      this.address = newAddress;
     });
   }
 
@@ -215,7 +227,15 @@ export class FsAddressComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (this.countries.length && !this.address.country) {
+    let isEmpty = true;
+    Object.keys(this.address).forEach((objectKey, index) => {
+      if (this.address[objectKey]) {
+        isEmpty = false;
+        return;
+      }
+    });
+
+    if (this.countries.length && isEmpty) {
       this.address.country = this.countries[0].code
     }
   }

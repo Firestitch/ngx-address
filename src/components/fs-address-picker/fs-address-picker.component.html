@@ -4,19 +4,18 @@
 
   <div class="search" *ngIf="!isEdit">
     <fs-address-search
-      [address]="address"
+      [(address)]="address"
       [config]="config"
       [pickerMode]="true"
       [(editMode)]="isEdit"
-      (selected)="changed($event)"
+      [addressFormatConfig]="addressFormatConfig"
     ></fs-address-search>
   </div>
 
   <div *ngIf="isEdit">
     <fs-address
-      [address]="address"
+      [(address)]="address"
       [config]="config"
-      (change)="changed($event)"
     ></fs-address>
   </div>
 

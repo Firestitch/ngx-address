@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 
 // Interfaces
-import { FsAddress } from '../../../../src/interfaces/address.interface';
-import { IFsAddressConfig } from '../../../../src/interfaces/address-config.interface';
-import { IFsAddressMapConfig } from '../../../../src/interfaces/address-map-config.interface';
-import { IFsAddressFormatConfig } from '../../../../src/interfaces/address-format-config.interface';
+import {
+  FsAddress,
+  IFsAddressConfig,
+  IFsAddressFormatConfig
+} from '../../../../src/interfaces';
+
 
 @Component({
   selector: 'full-address-example',
@@ -29,13 +31,4 @@ export class FullAddressExampleComponent {
   };
 
   constructor() { }
-
-  public changed(event) {
-    console.log('Changed', event);
-    this.address = event;
-  }
-
-  public changeFormat(event) {
-    console.log('Parts', event);
-  }
 }
