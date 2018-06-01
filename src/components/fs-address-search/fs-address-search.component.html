@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field [ngClass]="{'hide-underline': addressFormatConfig && addressFullNameString}">
 
   <input matInput
          placeholder="Location"
