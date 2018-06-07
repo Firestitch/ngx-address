@@ -11,6 +11,7 @@ import { FsExampleModule } from '@firestitch/example';
 import { FsAddressModule } from '../src';
 
 import { FullAddressExampleComponent } from './app/components/full-address-example/full-address-example.component';
+import { FullAddressDisabledExampleComponent } from './app/components/full-address-disabled-example/full-address-disabled-example.component';
 import { AddressSearchExampleComponent } from './app/components/address-search-example/address-search-example.component';
 import { AddressPickerNoValidationExampleComponent } from './app/components/address-picker-no-validation-example/address-picker-no-validation-example.component';
 import { AddressPickerRequiredNotBlankExampleComponent } from './app/components/address-picker-required-not-blank-example/address-picker-required-not-blank-example.component';
@@ -32,6 +33,7 @@ import { AddressPickerMapRequiredExampleComponent } from './app/components/addre
   declarations: [
     AppComponent,
     FullAddressExampleComponent,
+    FullAddressDisabledExampleComponent,
     AddressPickerNoValidationExampleComponent,
     AddressPickerRequiredNotBlankExampleComponent,
     AddressPickerRequiredAllExampleComponent,

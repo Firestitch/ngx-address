@@ -4,7 +4,7 @@
       <input
         matInput
         [(ngModel)]="address.name"
-        [attr.disabled]="config.name.disabled"
+        [disabled]="config.name.disabled"
         [fsFormRequired]="config.name.required"
         name="location_name"
         placeholder="Location name"
@@ -19,7 +19,7 @@
       <input
         matInput
         [(ngModel)]="address.street"
-        [attr.disabled]="config.street.disabled"
+        [disabled]="config.street.disabled"
         [fsFormRequired]="config.street.required"
         name="street"
         placeholder="Street"
@@ -34,7 +34,7 @@
       <input
         matInput
         [(ngModel)]="address.city"
-        [attr.disabled]="config.city.disabled"
+        [disabled]="config.city.disabled"
         [fsFormRequired]="config.city.required"
         name="city"
         placeholder="City"
@@ -46,7 +46,7 @@
       <input
         matInput
         [(ngModel)]="address.zip"
-        [attr.disabled]="config.zip.disabled"
+        [disabled]="config.zip.disabled"
         [fsFormRequired]="config.zip.required"
         name="zip"
         aria-label="Zip"
@@ -60,7 +60,7 @@
     <mat-form-field fxFlex>
       <mat-select
         [(ngModel)]="address.country"
-        [attr.disabled]="config.country.disabled"
+        [disabled]="config.country.disabled"
         [fsFormRequired]="config.country.required"
         name="country"
         placeholder="Country"
@@ -79,7 +79,7 @@
       <mat-select
         *ngIf="regions.length"
         [(ngModel)]="address.region"
-        [attr.disabled]="config.region.disabled"
+        [disabled]="config.region.disabled"
         [fsFormRequired]="config.region.required"
         name="region"
         [placeholder]="regionLabel"
@@ -96,7 +96,7 @@
         *ngIf="!regions.length"
         matInput
         [(ngModel)]="address.region"
-        [attr.disabled]="config.region.disabled"
+        [disabled]="config.region.disabled"
         [fsFormRequired]="config.region.required"
         name="region"
         aria-label="Region"
