@@ -18,3 +18,8 @@
   [(address)]="address"
   [config]="addressFormatConfig"
 ></fs-address-format>
+
+<fieldset>
+  <legend>Address Format Config</legend>
+  {{ addressFormatConfig | json }}
+</fieldset>

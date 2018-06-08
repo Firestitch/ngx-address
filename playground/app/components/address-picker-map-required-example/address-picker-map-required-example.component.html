@@ -5,6 +5,8 @@
   #picker
 ></fs-address-picker>
 
+<p style="font-size: 11px"><b>Note:</b> for address picker, you would never want to use address-only formatting.</p>
+
 <p *ngIf="picker.isEdit">
   <button
     mat-raised-button
@@ -18,3 +20,8 @@
   [(address)]="address"
   [config]="addressFormatConfig"
 ></fs-address-format>
+
+<fieldset>
+  <legend>Address Format Config</legend>
+  {{ addressFormatConfig | json }}
+</fieldset>

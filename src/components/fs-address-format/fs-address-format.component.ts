@@ -37,6 +37,8 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
   private _orderList: string[];
   private _defaultOrderList = ['name', 'street', 'city', 'region', 'zip', 'country'];
 
+  public isBlank = false;
+
   constructor() {}
 
   ngOnChanges(changes) {
@@ -78,6 +80,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
   }
 
   private updateView() {
+    this.isBlank = false;
     if (this.config.isShort) {
       if (this.config.name && this.address.name && this.address.name !== '') {
         this.shortName = this.address.name;
@@ -93,6 +96,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
         this.shortName = this.address.country;
       } else {
         this.shortName = '';
+        this.isBlank = true;
       }
     } else {
       this.formattedAddress.length = 0;
@@ -120,6 +124,10 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
 
       if (otherValues.length) {
         this.formattedAddress.push(otherValues.join(', '));
+      }
+
+      if (!this.formattedAddress.length) {
+        this.isBlank = true;
       }
     }
   }
