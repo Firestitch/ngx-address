@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -19,6 +20,7 @@ import {
   IFsAddressConfig,
   IFsAddressFormatConfig
 } from '../../interfaces';
+import { MatAutocompleteTrigger } from '@angular/material';
 
 
 @Component({
@@ -26,7 +28,7 @@ import {
   templateUrl: './fs-address-search.component.html',
   styleUrls: ['./fs-address-search.component.scss'],
 })
-export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
+export class FsAddressSearchComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
 
   // ADDRESS Two-way binding
   public addressValue: FsAddress;
@@ -60,6 +62,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   @ViewChild('search')
   public searchElement: ElementRef;
 
+  @ViewChild(MatAutocompleteTrigger) trigger: MatAutocompleteTrigger;
+
   // Google
   public googleAutocompleteService = null;
   public googlePlacesService = null;
@@ -69,6 +73,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public addressFullNameString = '';
   public isRequired = false;
   private _changeAddressDebounce = new Subject<any>();
+  private _allowDefaultBlurAddress = true;
 
   constructor(
     private _mapsAPILoader: MapsAPILoader,
@@ -77,6 +82,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this._changeAddressDebounce
       .debounceTime(300)
       .subscribe(value => {
+        this._allowDefaultBlurAddress = !!value;
         this.updatePredictions(value);
       });
   }
@@ -91,6 +97,15 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.initConfig();
     this.initAddress();
     this.initGoogleMap();
+  }
+
+  public ngAfterViewInit() {
+    // TODO should be changed to simple (closed) after updating to the latest Angular and Material
+    this.trigger.panelClosingActions.subscribe(e => {
+      if (this._allowDefaultBlurAddress && this.predictions.length) {
+        this.selectionChange(this.predictions[0].description);
+      }
+    });
   }
 
   public ngOnDestroy() {}
@@ -196,27 +211,32 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this._changeAddressDebounce.next(event);
   }
 
-  public change(event) {
-    event.stopPropagation();
-  }
+  public selectionChange(value: string) {
+    this._allowDefaultBlurAddress = false;
 
-  public selectionChange(event) {
-    const place = this.predictions.find(el => el.description === event.option.value);
+    // If last prediction has been chosen ('Just use ...')
+    if (this.predictions &&
+      this.predictions.length &&
+      this.predictions[this.predictions.length - 1] &&
+      this.predictions[this.predictions.length - 1].description === value) {
+      const placeJustUse = this.predictions[this.predictions.length - 1];
 
-    if (place.id === 1) {
       this.address = {
-        name: place.value,
+        name: placeJustUse.value,
       };
 
       this.generateFullAddress();
 
       this.selected.emit({
-        name: place.value,
-        description: place.value
+        name: placeJustUse.value,
+        description: placeJustUse.value
       });
 
       return;
     }
+
+    // Find prediction and get details about this prediction
+    const place = this.predictions.find(el => el.description === value);
 
     const newAddress: FsAddress = {
       description: place.description
@@ -237,6 +257,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
             let countryLongName, regionLongName, streetShortName;
 
+            // Finding different parts of address
             result.address_components.forEach((item) => {
               if (item.types.some(type => type === 'country')) {
                 newAddress.country = item.short_name;
@@ -257,6 +278,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
               }
             });
 
+            // Address.Street consists from number and street
             const streetNumber = result.address_components
               .find(el => el.types.some(type => type === 'street_number'));
 
@@ -284,12 +306,15 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
               }
             }
 
+            // Checking correct place NAME
             if (newAddress.country !== result.name &&
                 countryLongName !== result.name &&
                 newAddress.region !== result.name &&
                 regionLongName !== result.name &&
                 newAddress.city !== result.name &&
                 streetShortName !== result.name &&
+                streetAddress && streetAddress.short_name !== result.name &&
+                streetAddress && streetAddress.long_name !== result.name &&
                 newAddress.zip !== result.name &&
                 newAddress.street !== result.name) {
               newAddress.name = result.name;
@@ -299,6 +324,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
             this.address = newAddress;
 
             this.selected.emit(newAddress);
+            this._allowDefaultBlurAddress = true;
           });
         });
     }
@@ -352,6 +378,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.editMode = false;
     this.address = {};
     this.generateFullAddress();
+    this._allowDefaultBlurAddress = false;
   }
 
   public edit() {
