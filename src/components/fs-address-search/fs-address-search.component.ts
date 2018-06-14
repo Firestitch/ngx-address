@@ -32,7 +32,7 @@ import {
 export class FsAddressSearchComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
 
 
-  @Input() address: FsAddress;
+  @Input() address: FsAddress = {};
   @Input() showEdit = false;
   @Input() showClear = true;
   @Input() format = 'online';
@@ -116,6 +116,13 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, AfterViewIni
     this.emptyAddress = !(this.address.name) && !(this.address.street) &&
                         !(this.address.city) && !(this.address.region) &&
                         !(this.address.zip) && !(this.address.country);
+
+    this.location = (this.address.name ? this.address.name + ', ' : '') +
+      (this.address.street ? this.address.street + ', ' : '') +
+      (this.address.city ? this.address.city + ', ' : '') +
+      (this.address.region ? this.address.region + ', ' : '') +
+      (this.address.zip ? this.address.zip + ', ' : '') +
+      (this.address.country ? this.address.country : '');
   }
 
   private initGoogleMap() {
@@ -125,13 +132,16 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, AfterViewIni
         this.googleAutocompleteService = new google.maps.places.AutocompleteService();
         this.googlePlacesService = new google.maps.places.PlacesService(this.searchElement.nativeElement);
 
-        if (this.address && this.address.description) {
-          this.updatePredictions(this.address.description);
+        if (this.location) {
+          this.updatePredictions(this.location);
         }
       });
   }
 
   public autocompleteFormat(value) {
+    if (typeof value === 'string') {
+      return value;
+    }
     return value ? value.description : '';
   }
 

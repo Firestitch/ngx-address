@@ -17,6 +17,7 @@ import { AddressPickerRequiredNotBlankExampleComponent } from './app/components/
 import { AddressPickerRequiredAllExampleComponent } from './app/components/address-picker-required-all-example/address-picker-required-all-example.component';
 import { AddressPickerMapRequiredExampleComponent } from './app/components/address-picker-map-required-example/address-picker-map-required-example.component';
 import { FormatExampleComponent } from './app/components/format-example/format-example.component';
+import { AddressPickerPreFilledExampleComponent } from './app/components/address-picker-pre-filled-example/address-picker-pre-filled-example.component';
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -38,6 +39,7 @@ import { FormatExampleComponent } from './app/components/format-example/format-e
     AddressPickerRequiredNotBlankExampleComponent,
     AddressPickerRequiredAllExampleComponent,
     AddressPickerMapRequiredExampleComponent,
+    AddressPickerPreFilledExampleComponent,
     FormatExampleComponent
   ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]

@@ -235,9 +235,9 @@ export class FsAddressComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (this.countries.length && isEmpty) {
-      this.address.country = this.countries[0].code
-    }
+    // if (this.countries.length && isEmpty) {
+    //   this.address.country = this.countries[0].code
+    // }
   }
 
   private initRegions() {
