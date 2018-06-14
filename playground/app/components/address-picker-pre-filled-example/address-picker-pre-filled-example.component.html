@@ -1,0 +1,20 @@
+<fs-address-picker
+  [(address)]="address"
+  [(config)]="config"
+  (changed)="changed($event)"
+  format="twoline"
+  #picker>
+</fs-address-picker>
+
+<p *ngIf="picker.view==='edit'">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="viewSearch()">Collapse Address Editor
+  </button>
+</p>
+
+<fieldset [hidden]="format.empty">
+  <legend>Selected Address</legend>
+  <fs-address-format #format [(address)]="address" format="twoline"></fs-address-format>
+</fieldset>
