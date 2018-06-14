@@ -21,14 +21,7 @@ import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../
 export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
 
   public view = '';
-  public address: FsAddress = {
-    name: 'CN Tower',
-    street: '301 Front St W',
-    city: 'Toronto',
-    region: 'ON',
-    zip: 'M5V 2T6',
-    country: 'CA'
-  };
+  public address: FsAddress = {};
 
   public config: IFsAddressConfig = {
     country: { required: true },
