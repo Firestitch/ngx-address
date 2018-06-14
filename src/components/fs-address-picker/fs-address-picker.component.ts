@@ -2,17 +2,18 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
-  OnInit,
-  Output
+  AfterViewInit,
+  Output,
+  ViewChild
 } from '@angular/core';
 
 // Interfaces
 import {
   IFsAddressConfig,
   FsAddress,
-  IFsAddressFormatConfig
 } from '../../interfaces';
+
+import { FsAddressSearchComponent } from '../fs-address-search';
 
 
 @Component({
@@ -20,46 +21,45 @@ import {
   templateUrl: './fs-address-picker.component.html',
   styleUrls: ['./fs-address-picker.component.scss'],
 })
-export class FsAddressPickerComponent implements OnInit, OnDestroy {
+export class FsAddressPickerComponent implements AfterViewInit {
 
-  // ADDRESS Two-way binding
-  public addressValue: FsAddress;
-  @Input() get address() {
-    return this.addressValue;
-  }
-  @Output() addressChange = new EventEmitter();
-  set address(value: FsAddress) {
-    this.addressValue = value;
-    this.addressChange.emit(this.addressValue);
-  }
-  // BINDING END
+  @Input() address: FsAddress;
+  @Input() config: IFsAddressConfig;
+  @Input() format = 'oneline';
+  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild(FsAddressSearchComponent) search: FsAddressSearchComponent;
 
-  // CONFIG Two-way binding
-  public configValue: IFsAddressConfig;
-  @Input() get config() {
-    return this.configValue;
-  }
-  @Output() configChange = new EventEmitter();
-  set config(value: IFsAddressConfig) {
-    this.configValue = value;
-    this.configChange.emit(this.configValue);
-  }
-  // BINDING END
+  public view = 'search';
+  public showEdit = false;
+  public showClear = false;
 
-  @Input() addressFormatConfig: IFsAddressFormatConfig;
+  constructor() {}
 
-  // Others
-  public isEdit: boolean;
-
-  constructor() {
-    this.isEdit = false;
+  ngAfterViewInit() {
+    this.viewSearch();
   }
 
-  ngOnInit() {}
+  public viewSearch() {
+    this.view = 'search';
+    if (!this.search.emptyAddress) {
+      this.showClear = true;
+      this.showEdit = true;
+    }
+  }
 
-  ngOnDestroy() {}
+  public viewEdit() {
+    this.view = 'edit';
+    this.showClear = false;
+    this.showEdit = false;
+  }
 
-  public closeEdit() {
-    this.isEdit = false;
+  public searchEdited() {
+    this.viewEdit();
+  }
+
+  public searchChanged(address) {
+    this.viewSearch();
+    this.address = address;
+    this.changed.emit(address);
   }
 }

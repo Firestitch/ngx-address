@@ -11,9 +11,7 @@ import {
   IFsAddressFormatConfig
 } from '../../../../src/interfaces';
 
-// Others
-import { FsAddressPickerComponent } from '../../../../src/components/fs-address-picker/fs-address-picker.component';
-
+import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../src';
 
 @Component({
   selector: 'address-picker-required-not-blank-example',
@@ -22,6 +20,7 @@ import { FsAddressPickerComponent } from '../../../../src/components/fs-address-
 })
 export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
 
+  public view = '';
   public address: FsAddress = {};
   public config: IFsAddressConfig = {
     country: { required: true, visible: true },
@@ -31,23 +30,19 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
     zip: { required: false, visible: true },
     map: { zoom: 15 }
   };
-  public addressFormatConfig: IFsAddressFormatConfig = {
-    linesCount: 2
-  };
 
   @ViewChild('picker') picker: FsAddressPickerComponent;
+  @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 
   public ngOnInit() {}
 
-  public changeAddress(event) {
-    console.log('Picker: Required (not blank) select', event);
-    this.address = event;
+  public viewSearch() {
+    this.picker.viewSearch()
   }
 
-  public closeEdit() {
-    this.picker.closeEdit()
+  public changed(address) {
+    this.address = address;
   }
-
 }

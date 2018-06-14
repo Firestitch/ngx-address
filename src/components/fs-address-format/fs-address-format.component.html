@@ -1,18 +1,7 @@
-<div *ngIf="!isBlank">
-  <div *ngIf="!config.isShort" class="formatted">
-    <div
-      *ngIf="formattedAddress && formattedAddress.length === 1"
-    >{{formattedAddress[0]}}</div>
-
-    <span *ngIf="formattedAddress && formattedAddress.length !== 1">
-    <div
-      *ngFor="let item of formattedAddress; let i = index"
-      class="formatted-line-{{i+1}}"
-    >{{item}}</div>
+<span *ngIf="!empty" [ngClass]="format">
+  <span *ngFor="let parts of lines; let index = index" class="line-{{index + 1}}">
+    <span *ngFor="let part of parts;" class="part">{{part}}</span>
   </span>
-  </div>
-
-  <span *ngIf="config.isShort">{{shortName}}</span>
-</div>
+</span>
 
 

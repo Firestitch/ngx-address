@@ -1,27 +1,22 @@
-<mat-form-field [ngClass]="{'hide-underline': addressFormatConfig && addressFullNameString}">
+<mat-form-field>
 
   <input matInput
          placeholder="Location"
-         [ngClass]="{'hide': addressFormatConfig && addressFullNameString}"
-         [ngModel]="addressFullNameString"
+         [(ngModel)]="location"
+         [ngClass]="{hide: !emptyAddress}"
          (ngModelChange)="addressChanged($event)"
          [fsFormRequired]="isRequired"
          [fsFormFunction]="functionPromise"
-         #search
-         [matAutocomplete]="auto">
-
-  <div [hidden]="!addressFormatConfig || !addressFullNameString">
-    <fs-address-format
-      [(address)]="address"
-      [config]="addressFormatConfig"
-    ></fs-address-format>
-  </div>
+         [matAutocomplete]="auto"
+         #search>
+  <fs-address-format [(address)]="address" [format]="format"></fs-address-format>
 
   <mat-autocomplete
-    #auto="matAutocomplete"
-    (optionSelected)="selectionChange($event.option.value)"
-    autoActiveFirstOption>
-    <mat-option *ngFor="let option of predictions" [value]="option.description">
+    (optionSelected)="selectionChange($event.option)"
+    [displayWith]="autocompleteFormat"
+    autoActiveFirstOption
+    #auto="matAutocomplete">
+    <mat-option *ngFor="let option of predictions" [value]="option">
       {{option.description}}
     </mat-option>
   </mat-autocomplete>
@@ -29,14 +24,13 @@
   <mat-icon
     class="control"
     matSuffix
-    *ngIf="addressFormatConfig && addressFullNameString"
-    (click)="clear()"
-  >clear</mat-icon>
+    *ngIf="showClear && !emptyAddress"
+    (click)="clear()">clear</mat-icon>
+
   <mat-icon
     class="control"
     matSuffix
-    *ngIf="addressFormatConfig && addressFullNameString"
-    (click)="edit()"
-  >mode_edit</mat-icon>
+    *ngIf="showEdit && !emptyAddress"
+    (click)="edit()">mode_edit</mat-icon>
 
 </mat-form-field>

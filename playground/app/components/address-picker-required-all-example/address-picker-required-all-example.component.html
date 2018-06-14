@@ -1,7 +1,6 @@
 <fs-address-picker
   [(address)]="address"
   [(config)]="config"
-  [addressFormatConfig]="addressFormatConfig"
   #picker
 ></fs-address-picker>
 
@@ -9,14 +8,13 @@
   <button
     mat-raised-button
     color="primary"
-    (click)="closeEdit()"
+    (click)="viewSearch()"
   >Collapse Address Editor</button>
 </p>
 
 <h3>Formatted Address</h3>
 <fs-address-format
   [(address)]="address"
-  [config]="addressFormatConfig"
 ></fs-address-format>
 
 <fieldset>

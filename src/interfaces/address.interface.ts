@@ -1,8 +1,3 @@
-export interface IFsLongShort {
-  longName: string;
-  shortName: string;
-}
-
 export interface FsAddress {
   name?: string,
   description?: string,

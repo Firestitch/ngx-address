@@ -1,18 +1,15 @@
 import {
   Component,
-  OnInit,
   ViewChild
 } from '@angular/core';
 
 // Interfaces
 import {
   FsAddress,
-  IFsAddressConfig,
-  IFsAddressFormatConfig
+  IFsAddressConfig
 } from '../../../../src/interfaces';
 
-// Others
-import { FsAddressPickerComponent } from '../../../../src/components/fs-address-picker/fs-address-picker.component';
+import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../src';
 
 
 @Component({
@@ -20,8 +17,9 @@ import { FsAddressPickerComponent } from '../../../../src/components/fs-address-
   templateUrl: 'address-picker-no-validation-example.component.html',
   styles: []
 })
-export class AddressPickerNoValidationExampleComponent implements OnInit {
+export class AddressPickerNoValidationExampleComponent {
 
+  public view = '';
   public address: FsAddress = {};
   public config: IFsAddressConfig = {
     country: { required: false, visible: true },
@@ -31,21 +29,17 @@ export class AddressPickerNoValidationExampleComponent implements OnInit {
     zip: { required: false, visible: true },
     map: { zoom: 15 }
   };
-  public addressFormatConfig: IFsAddressFormatConfig = {};
 
   @ViewChild('picker') picker: FsAddressPickerComponent;
+  @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 
-  public ngOnInit() {}
-
-  public changeAddress(event) {
-    console.log('Picker: No Validation select', event);
-    this.address = event;
+  public viewSearch() {
+    this.picker.viewSearch();
   }
 
-  public closeEdit() {
-    this.picker.closeEdit()
+  public changed(address) {
+    this.address = address;
   }
-
 }

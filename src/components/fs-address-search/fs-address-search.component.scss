@@ -10,3 +10,10 @@ mat-form-field {
   visibility: hidden;
   position: absolute;
 }
+
+
+textarea {
+  height: 16px;
+  resize: none;
+  overflow: hidden;
+}

@@ -1,22 +1,22 @@
 <div class="address-picker-container">
 
-  <input #search style="display: none"/>
-
-  <div class="search" *ngIf="!isEdit">
+  <div class="search" [hidden]="view==='edit'">
     <fs-address-search
       [(address)]="address"
       [config]="config"
-      [pickerMode]="true"
-      [(editMode)]="isEdit"
-      [addressFormatConfig]="addressFormatConfig"
-    ></fs-address-search>
+      [showEdit]="showEdit"
+      [showClear]="showClear"
+      [format]="format"
+      (edited)="searchEdited()"
+      (changed)="searchChanged($event)">
+    </fs-address-search>
   </div>
 
-  <div *ngIf="isEdit">
+  <div *ngIf="view==='edit'">
     <fs-address
       [(address)]="address"
-      [config]="config"
-    ></fs-address>
+      [config]="config">
+    </fs-address>
   </div>
 
 </div>

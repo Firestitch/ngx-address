@@ -12,11 +12,11 @@ import { FsAddressModule } from '../src';
 
 import { FullAddressExampleComponent } from './app/components/full-address-example/full-address-example.component';
 import { FullAddressDisabledExampleComponent } from './app/components/full-address-disabled-example/full-address-disabled-example.component';
-import { AddressSearchExampleComponent } from './app/components/address-search-example/address-search-example.component';
 import { AddressPickerNoValidationExampleComponent } from './app/components/address-picker-no-validation-example/address-picker-no-validation-example.component';
 import { AddressPickerRequiredNotBlankExampleComponent } from './app/components/address-picker-required-not-blank-example/address-picker-required-not-blank-example.component';
 import { AddressPickerRequiredAllExampleComponent } from './app/components/address-picker-required-all-example/address-picker-required-all-example.component';
 import { AddressPickerMapRequiredExampleComponent } from './app/components/address-picker-map-required-example/address-picker-map-required-example.component';
+import { FormatExampleComponent } from './app/components/format-example/format-example.component';
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -38,7 +38,7 @@ import { AddressPickerMapRequiredExampleComponent } from './app/components/addre
     AddressPickerRequiredNotBlankExampleComponent,
     AddressPickerRequiredAllExampleComponent,
     AddressPickerMapRequiredExampleComponent,
-    AddressSearchExampleComponent
+    FormatExampleComponent
   ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
 })

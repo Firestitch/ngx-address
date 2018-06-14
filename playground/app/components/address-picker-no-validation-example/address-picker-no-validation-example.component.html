@@ -1,25 +1,18 @@
 <fs-address-picker
   [(address)]="address"
   [(config)]="config"
-  [addressFormatConfig]="addressFormatConfig"
+  (changed)="changed($event)"
   #picker
 ></fs-address-picker>
 
-<p *ngIf="picker.isEdit">
+<p *ngIf="picker.view==='edit'">
   <button
     mat-raised-button
     color="primary"
-    (click)="closeEdit()"
-  >Collapse Address Editor</button>
+    (click)="viewSearch()">Show Search View</button>
 </p>
 
-<h3>Formatted Address</h3>
-<fs-address-format
-  [(address)]="address"
-  [config]="addressFormatConfig"
-></fs-address-format>
-
-<fieldset>
-  <legend>Address Format Config</legend>
-  {{ addressFormatConfig | json }}
+<fieldset [hidden]="format.empty">
+  <legend>Selected Address</legend>
+  <fs-address-format #format [(address)]="address"></fs-address-format>
 </fieldset>

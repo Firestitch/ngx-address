@@ -48,8 +48,8 @@ export class AddressPickerMapRequiredExampleComponent implements OnInit {
     this.address = event;
   }
 
-  public closeEdit() {
-    this.picker.closeEdit()
+  public viewSearch() {
+    this.picker.viewSearch()
   }
 
 }

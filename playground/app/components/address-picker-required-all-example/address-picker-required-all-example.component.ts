@@ -34,7 +34,7 @@ export class AddressPickerRequiredAllExampleComponent implements OnInit {
     map: { zoom: 15 }
   };
   public addressFormatConfig: IFsAddressFormatConfig = {
-    isShort: true
+    includeFirst: 3
   };
 
   @ViewChild('picker') picker: FsAddressPickerComponent;
@@ -48,8 +48,8 @@ export class AddressPickerRequiredAllExampleComponent implements OnInit {
     this.address = event;
   }
 
-  public closeEdit() {
-    this.picker.closeEdit()
+  public viewSearch() {
+    this.picker.viewSearch()
   }
 
 }

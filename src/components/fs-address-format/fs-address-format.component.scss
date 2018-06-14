@@ -1,10 +1,19 @@
-.formatted {
-  .formatted-line-1 {
-    font-weight: 500;
-    padding-bottom: 2px;
+.twoline {
+  .line-1 {
+    font-weight: bold;
+    display: block;
   }
-  .formatted-line-2 {
-    font-size: 12px;
+
+  .line-2 {
+    font-size: smaller;
   }
+}
+
+.part + .part:before {
+  content: ', ';
+}
+
+.part:last-child:after {
+  content: '';
 }
 
