@@ -4,18 +4,20 @@
          placeholder="Location"
          [(ngModel)]="location"
          [ngClass]="{hide: !emptyAddress}"
-         (ngModelChange)="addressChanged($event)"
          [fsFormRequired]="isRequired"
          [fsFormFunction]="functionPromise"
-         [matAutocomplete]="auto"
+         [matAutocomplete]="autocomplete"
+         [ngModelOptions]="{updateOn: 'blur'}"
+         (keyup)="addressChanged($event)"
+         (blur)="blur()"
          #search>
   <fs-address-format [(address)]="address" [format]="format"></fs-address-format>
 
   <mat-autocomplete
-    (optionSelected)="selectionChange($event.option)"
+    (optionSelected)="autocompleteSelected($event.option)"
     [displayWith]="autocompleteFormat"
     autoActiveFirstOption
-    #auto="matAutocomplete">
+    #autocomplete="matAutocomplete">
     <mat-option *ngFor="let option of predictions" [value]="option">
       {{option.description}}
     </mat-option>

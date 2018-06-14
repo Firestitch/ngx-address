@@ -1,8 +1,8 @@
-import { NgModule, ModuleWithProviders, Injectable, Inject } from '@angular/core';
+import { NgModule, ModuleWithProviders, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JsonpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import {} from '@types/googlemaps';
 declare var google: any;
@@ -47,8 +47,6 @@ import {
     FsFormModule,
     FlexLayoutModule,
     AgmCoreModule.forRoot(),
-
-    ReactiveFormsModule,
   ],
   exports: [
     AgmCoreModule,
@@ -71,7 +69,7 @@ import {
     GoogleMapsAPIWrapper,
     MarkerManager,
     { provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapConfig }
-  ],
+  ]
 })
 export class FsAddressModule {
   static forRoot(): ModuleWithProviders {
