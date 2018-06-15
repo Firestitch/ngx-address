@@ -41,8 +41,4 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
   public viewSearch() {
     this.picker.viewSearch()
   }
-
-  public changed(address) {
-    this.address = address;
-  }
 }

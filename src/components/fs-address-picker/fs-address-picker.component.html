@@ -4,11 +4,9 @@
     <fs-address-search
       [(address)]="address"
       [config]="config"
-      [showEdit]="showEdit"
-      [showClear]="showClear"
       [format]="format"
       (edited)="searchEdited()"
-      (changed)="searchChanged($event)">
+      (addressChange)="searchChanged($event)">
     </fs-address-search>
   </div>
 

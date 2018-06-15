@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JsonpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import {} from '@types/googlemaps';
 declare var google: any;

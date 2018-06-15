@@ -1,9 +1,10 @@
-<fs-address-picker
-  [(address)]="address"
-  [(config)]="config"
-  (changed)="changed($event)"
-  #picker
-></fs-address-picker>
+<form>
+  <fs-address-picker
+    [(address)]="address"
+    [(config)]="config"
+    (changed)="changed($event)"
+    #picker></fs-address-picker>
+</form>
 
 <p *ngIf="picker.view==='edit'">
   <button

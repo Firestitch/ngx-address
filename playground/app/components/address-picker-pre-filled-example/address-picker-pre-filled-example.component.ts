@@ -28,14 +28,8 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
     street: '301 Front Street West',
     zip: 'M5V 2T6'
   };
-  public config: IFsAddressConfig = {
-    country: { required: true, visible: true },
-    region: { required: true, visible: true },
-    city: { required: false, visible: true },
-    street: { required: false, visible: true },
-    zip: { required: false, visible: true },
-    map: { zoom: 15 }
-  };
+
+  public config: IFsAddressConfig = {};
 
   @ViewChild('picker') picker: FsAddressPickerComponent;
   @ViewChild('format') format: FsAddressFormatComponent;
@@ -46,9 +40,5 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
 
   public viewSearch() {
     this.picker.viewSearch()
-  }
-
-  public changed(address) {
-    this.address = address;
   }
 }

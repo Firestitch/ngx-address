@@ -11,7 +11,7 @@
          (keyup)="addressChanged($event)"
          (blur)="blur()"
          #search>
-  <fs-address-format [(address)]="address" [format]="format"></fs-address-format>
+  <fs-address-format [(address)]="_address" [format]="format"></fs-address-format>
 
   <mat-autocomplete
     (optionSelected)="autocompleteSelected($event.option)"

@@ -23,15 +23,21 @@ import { FsAddressSearchComponent } from '../fs-address-search';
 })
 export class FsAddressPickerComponent implements AfterViewInit {
 
-  @Input() address: FsAddress;
+  @Input() _address: FsAddress;
   @Input() config: IFsAddressConfig;
   @Input() format = 'oneline';
-  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(FsAddressSearchComponent) search: FsAddressSearchComponent;
 
+  @Input() get address() {
+    return this._address;
+  }
+  @Output() addressChange = new EventEmitter();
+  set address(address: FsAddress) {
+    this._address = address;
+    this.addressChange.emit(this._address);
+  }
+
   public view = 'search';
-  public showEdit = false;
-  public showClear = false;
 
   constructor() {}
 
@@ -41,16 +47,10 @@ export class FsAddressPickerComponent implements AfterViewInit {
 
   public viewSearch() {
     this.view = 'search';
-    if (!this.search.emptyAddress) {
-      this.showClear = true;
-      this.showEdit = true;
-    }
   }
 
   public viewEdit() {
     this.view = 'edit';
-    this.showClear = false;
-    this.showEdit = false;
   }
 
   public searchEdited() {
@@ -58,8 +58,6 @@ export class FsAddressPickerComponent implements AfterViewInit {
   }
 
   public searchChanged(address) {
-    this.viewSearch();
     this.address = address;
-    this.changed.emit(address);
   }
 }

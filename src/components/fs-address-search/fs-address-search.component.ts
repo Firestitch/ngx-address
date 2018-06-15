@@ -19,6 +19,7 @@ import {
 } from '../../interfaces';
 import { MatAutocompleteTrigger } from '@angular/material';
 import { each } from 'lodash';
+import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 
 
 @Component({
@@ -28,18 +29,28 @@ import { each } from 'lodash';
 })
 export class FsAddressSearchComponent implements OnChanges, OnInit {
 
-  @Input() address: FsAddress;
-  @Input() showEdit = false;
-  @Input() showClear = true;
   @Input() format = 'online';
   @Input() config: IFsAddressConfig = {};
-  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
   @Output() edited: EventEmitter<any> = new EventEmitter<any>();
+  @Input() get address() {
+    return this._address;
+  }
+  @Output() addressChange = new EventEmitter();
+  set address(address: FsAddress) {
+    this._address = address;
+    this.calculateAddress();
+    this.showEdit = !this.emptyAddress;
+    this.showClear = !this.emptyAddress;
+    this.addressChange.emit(this._address);
+  }
   @ViewChild('search') searchElement: ElementRef;
   @ViewChild(MatAutocompleteTrigger) trigger: MatAutocompleteTrigger;
   @ViewChild('search', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
 
+  public _address: FsAddress = {};
+  public showEdit = false;
+  public showClear = false;
   public predictions: any[] = [];
   public selecting = false;
   public googleAutocompleteService = null;
@@ -57,11 +68,6 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
       .debounceTime(300)
       .subscribe(value => {
         this.updatePredictions(value);
-      });
-
-      this.changed.subscribe((address) => {
-        this.address = address;
-        this.calculateAddress();
       });
   }
 
@@ -89,7 +95,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
       lng: { required: false },
     }, this.config);
 
-    this.isRequired = 
+    this.isRequired =
     ( this.config.name.required ||
       this.config.country.required ||
       this.config.region.required ||
@@ -99,9 +105,9 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   }
 
   private calculateAddress() {
-    this.emptyAddress = !(this.address.name) && !(this.address.street) &&
-                        !(this.address.city) && !(this.address.region) &&
-                        !(this.address.zip) && !(this.address.country);
+    this.emptyAddress = !(this._address.name) && !(this._address.street) &&
+                        !(this._address.city) && !(this._address.region) &&
+                        !(this._address.zip) && !(this._address.country);
   }
 
   private initGoogleMap() {
@@ -110,10 +116,6 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
       .then(() => {
         this.googleAutocompleteService = new google.maps.places.AutocompleteService();
         this.googlePlacesService = new google.maps.places.PlacesService(this.searchElement.nativeElement);
-
-        // if (this.address && this.address.description) {
-        //   this.updatePredictions(this.address.description);
-        // }
       });
   }
 
@@ -151,7 +153,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
     this.selecting = true;
   }
 
-  public addressChanged(event) {  
+  public addressChanged(event) {
     this.changeAddressDebounce.next(event.currentTarget.value);
     this.autoComplete.openPanel();
   }
@@ -243,13 +245,13 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
               newAddress.zip !== result.name &&
               newAddress.street !== result.name) {
             newAddress.name = result.name;
-          
+
           } else {
             newAddress.name = '';
           }
-          
+
           resolve();
-          this.changed.emit(newAddress);
+          this.addressChange.emit(newAddress);
         });
       });
 
@@ -259,11 +261,11 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   }
 
   public functionPromise = (() => {
-  
+
     return new Promise((resolve, reject) => {
-      
+
       setTimeout(() => {
-              
+
         const requiredField = [];
         const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
 
@@ -273,7 +275,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
           }
         });
 
-        if ((this.config.lat.required || this.config.lng.required) && (!this.address.lat || !this.address.lat)) {
+        if ((this.config.lat.required || this.config.lng.required) && (!this._address.lat || !this._address.lat)) {
           requiredField.push('position on map');
         }
 
@@ -292,9 +294,11 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   }).bind(this);
 
   public clear() {
+    this.showEdit = false;
+    this.showClear = false;
     this.location = null;
     this.cleared.emit({});
-    this.changed.emit({});
+    this.addressChange.emit({});
   }
 
   public edit() {

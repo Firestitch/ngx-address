@@ -8,7 +8,6 @@ import {
   EventEmitter
 } from '@angular/core';
 import {
-  isArrayLikeObject,
   filter,
 } from 'lodash';
 import {
@@ -23,12 +22,14 @@ import {
   FsAddress,
   IFsAddressConfig
 } from '../../interfaces';
+import { NgForm, ControlContainer} from '@angular/forms';
 
 
 @Component({
   selector: 'fs-address',
   templateUrl: './fs-address.component.html',
   styleUrls: ['./fs-address.component.scss'],
+  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ]
 })
 export class FsAddressComponent implements OnInit, OnDestroy {
 
