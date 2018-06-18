@@ -2,7 +2,7 @@
 
   <input matInput
          placeholder="Location"
-         [(ngModel)]="location"
+         [(ngModel)]="_address"
          [ngClass]="{hide: !emptyAddress}"
          [fsFormRequired]="isRequired"
          [fsFormFunction]="functionPromise"

@@ -44,7 +44,6 @@ import {
     MatInputModule,
     MatSelectModule,
     JsonpModule,
-    FsFormModule,
     FlexLayoutModule,
     AgmCoreModule.forRoot(),
   ],
