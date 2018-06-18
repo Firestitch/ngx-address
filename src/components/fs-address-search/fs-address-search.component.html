@@ -10,6 +10,7 @@
          [ngModelOptions]="{updateOn: 'blur'}"
          (keyup)="addressChanged($event)"
          (blur)="blur()"
+         name="address_search"
          #search>
   <fs-address-format [(address)]="_address" [format]="format"></fs-address-format>
 

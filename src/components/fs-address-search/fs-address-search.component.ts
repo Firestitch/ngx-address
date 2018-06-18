@@ -18,6 +18,8 @@ import {
   IFsAddressConfig
 } from '../../interfaces';
 import { MatAutocompleteTrigger } from '@angular/material';
+import { NgForm, ControlContainer } from '@angular/forms';
+
 import { each } from 'lodash';
 import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 
@@ -26,6 +28,7 @@ import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
   selector: 'fs-address-search',
   templateUrl: './fs-address-search.component.html',
   styleUrls: ['./fs-address-search.component.scss'],
+  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ]
 })
 export class FsAddressSearchComponent implements OnChanges, OnInit {
 
