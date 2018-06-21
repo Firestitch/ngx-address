@@ -10,7 +10,7 @@
     </fs-address-search>
   </div>
 
-  <div *ngIf="view==='edit'">
+  <div [hidden]="view!=='edit'">
     <fs-address
       [(address)]="address"
       [config]="config">
