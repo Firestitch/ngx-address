@@ -7,11 +7,12 @@
          [fsFormFunction]="functionPromise"
          [matAutocomplete]="autocomplete"
          [ngModelOptions]="{ updateOn: 'blur' }"
+         [disabled]="disabled"
          (keyup)="addressChanged($event)"
          (blur)="blur()"
          name="address_search"
          #search>
-  <fs-address-format [(address)]="_address" [format]="format"></fs-address-format>
+  <fs-address-format [(address)]="_address" [format]="format" [disabled]="disabled"></fs-address-format>
 
   <mat-autocomplete
     (optionSelected)="autocompleteSelected($event.option)"
@@ -26,13 +27,13 @@
   <mat-icon
     class="control"
     matSuffix
-    *ngIf="showClear && !emptyAddress"
+    *ngIf="showClear && !emptyAddress && !disabled && !readonly"
     (click)="clear()">clear</mat-icon>
 
   <mat-icon
     class="control"
     matSuffix
-    *ngIf="showEdit && !emptyAddress"
+    *ngIf="showEdit && !emptyAddress && !disabled && !readonly"
     (click)="edit()">mode_edit</mat-icon>
 
 </mat-form-field>

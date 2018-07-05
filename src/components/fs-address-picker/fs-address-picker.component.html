@@ -1,16 +1,18 @@
 <div class="address-picker-container">
 
-  <div class="search" [hidden]="view==='edit'">
+  <div class="search" [hidden]="view === 'edit'">
     <fs-address-search
       [(address)]="address"
       [config]="config"
       [format]="format"
+      [disabled]="disabled"
+      [readonly]="readonly"
       (edited)="searchEdited()"
       (addressChange)="searchChanged($event)">
     </fs-address-search>
   </div>
 
-  <div [hidden]="view!=='edit'">
+  <div [hidden]="view !== 'edit'">
     <fs-address
       [(address)]="address"
       [config]="config">

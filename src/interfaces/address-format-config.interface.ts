@@ -6,5 +6,7 @@ export interface IFsAddressFormatConfig {
   street?: boolean,
   zip?: boolean,
   format?: string | 'twoline' | 'oneline',
-  includeFirst?: number
+  includeFirst?: number,
+  disabled?: boolean,
+  readonly?: boolean
 }

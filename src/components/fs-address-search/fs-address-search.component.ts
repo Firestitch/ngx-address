@@ -33,6 +33,8 @@ import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 export class FsAddressSearchComponent implements OnChanges, OnInit {
 
   @Input() format = 'online';
+  @Input() disabled = false;
+  @Input() readonly = false;
   @Input() config: IFsAddressConfig = {};
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
   @Output() edited: EventEmitter<any> = new EventEmitter<any>();

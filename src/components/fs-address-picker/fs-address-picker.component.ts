@@ -26,6 +26,9 @@ export class FsAddressPickerComponent implements AfterViewInit {
   @Input() _address: FsAddress;
   @Input() config: IFsAddressConfig;
   @Input() format = 'oneline';
+  @Input() disabled = false;
+  @Input() readonly = false;
+
   @ViewChild(FsAddressSearchComponent) search: FsAddressSearchComponent;
 
   @Input() get address() {
@@ -41,7 +44,7 @@ export class FsAddressPickerComponent implements AfterViewInit {
 
   constructor() {}
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     this.viewSearch();
   }
 

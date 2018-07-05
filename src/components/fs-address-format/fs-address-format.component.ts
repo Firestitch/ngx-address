@@ -33,6 +33,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
 
   @Input() format: 'oneline' | 'twoline';
   @Input() includeFirst: 0;
+  @Input() disabled = false;
 
   public lines: any[] = [];
   public empty = false;
