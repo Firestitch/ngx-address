@@ -40,6 +40,7 @@ import { AddressPickerPreFilledExampleComponent } from './app/components/address
     AddressPickerRequiredAllExampleComponent,
     AddressPickerMapRequiredExampleComponent,
     AddressPickerPreFilledExampleComponent,
+    AddressPickerNoValidationExampleComponent,
     FormatExampleComponent
   ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
