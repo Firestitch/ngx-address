@@ -48,6 +48,8 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   }
   @Input() config: IFsAddressConfig = {};
 
+  @Output() collapseChange = new EventEmitter();
+
   public isSearched = false;
   private _subMapReady: Subscription;
 
@@ -69,6 +71,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
     this.initCountries();
     this.initRegions();
     this.initZipAndStateLabels();
+    this.initCollapseBtn();
 
     // Example ready event. Allow to use google object and map instance
     if (this.agmMap) {
@@ -167,6 +170,10 @@ export class FsAddressComponent implements OnInit, OnDestroy {
     });
   }
 
+  public collapseEditor() {
+    this.collapseChange.emit();
+  }
+
   private initAddress() {
     this.address = Object.assign({
       name: void 0,
@@ -258,5 +265,14 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   private updateCountryRegionLabels() {
     this.zipLabel = (this.address.country === 'CA' || this.address.country === 'US' ) ? 'Zip' : 'Postal Code';
     this.regionLabel = this.address.country === 'CA' ? 'Province' : 'State';
+  }
+
+  private initCollapseBtn() {
+    this.config.collapseButton = Object.assign({
+      show: true,
+      title: 'Collapse Address Editor',
+      color: 'primary',
+      theme: 'mat-raised-button',
+    }, this.config.collapseButton);
   }
 }

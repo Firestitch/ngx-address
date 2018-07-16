@@ -2,11 +2,10 @@
   <fs-address-picker
     [(address)]="address"
     [(config)]="config"
-    format="twoline"
     #picker></fs-address-picker>
 </form>
 
 <fieldset [hidden]="format.empty">
   <legend>Selected Address</legend>
-  <fs-address-format #format [(address)]="address" format="twoline"></fs-address-format>
+  <fs-address-format #format [(address)]="address"></fs-address-format>
 </fieldset>

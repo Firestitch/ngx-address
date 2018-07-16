@@ -4,10 +4,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   FsAddress,
   IFsAddressConfig,
-  IFsAddressFormatConfig
 } from '../../../../src/interfaces';
 
-import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../src';
+import { FsAddressFormatComponent } from '../../../../src';
 
 
 @Component({
@@ -16,7 +15,6 @@ import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../
 })
 export class AddressDisabledOrReadonlyExampleComponent implements OnInit {
 
-  public view = '';
   public address: FsAddress = {
     name: 'CN Tower',
     country: 'CA',
@@ -28,15 +26,10 @@ export class AddressDisabledOrReadonlyExampleComponent implements OnInit {
 
   public config: IFsAddressConfig = {};
 
-  @ViewChild('disabledPicker') disabledPicker: FsAddressPickerComponent;
-  @ViewChild('readonlyPicker') readonlyPicker: FsAddressPickerComponent;
   @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 
   public ngOnInit() {}
 
-  public viewSearch() {
-    this.disabledPicker.viewSearch()
-  }
 }

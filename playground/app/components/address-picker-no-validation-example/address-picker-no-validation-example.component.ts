@@ -22,22 +22,12 @@ export class AddressPickerNoValidationExampleComponent {
   public view = '';
   public address: FsAddress = {};
   public config: IFsAddressConfig = {
-    country: { required: false, visible: true },
-    region: { required: false, visible: true },
-    city: { required: false, visible: true },
-    street: { required: false, visible: true },
-    zip: { required: false, visible: true },
     map: { zoom: 15 }
   };
 
-  @ViewChild('picker') picker: FsAddressPickerComponent;
   @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
-
-  public viewSearch() {
-    this.picker.viewSearch();
-  }
 
   public changed(address) {
     this.address = address;

@@ -6,14 +6,6 @@
 
 <p style="font-size: 11px"><b>Note:</b> for address picker, you would never want to use address-only formatting.</p>
 
-<p *ngIf="picker.isEdit">
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="viewSearch()"
-  >Collapse Address Editor</button>
-</p>
-
 <h3>Formatted Address</h3>
 <fs-address-format
   [(address)]="address"

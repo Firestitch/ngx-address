@@ -37,8 +37,6 @@ export class AddressPickerMapRequiredExampleComponent implements OnInit {
     name: false
   };
 
-  @ViewChild('picker') picker: FsAddressPickerComponent;
-
   constructor() {}
 
   public ngOnInit() {}
@@ -46,10 +44,6 @@ export class AddressPickerMapRequiredExampleComponent implements OnInit {
   public changeAddress(event) {
     console.log('Picker: All fields required', event);
     this.address = event;
-  }
-
-  public viewSearch() {
-    this.picker.viewSearch()
   }
 
 }

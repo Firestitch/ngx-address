@@ -19,7 +19,6 @@ import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../
 })
 export class AddressPickerPreFilledExampleComponent implements OnInit {
 
-  public view = '';
   public address: FsAddress = {
     name: 'CN Tower',
     country: 'CA',
@@ -31,14 +30,9 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
 
   public config: IFsAddressConfig = {};
 
-  @ViewChild('picker') picker: FsAddressPickerComponent;
   @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 
   public ngOnInit() {}
-
-  public viewSearch() {
-    this.picker.viewSearch()
-  }
 }

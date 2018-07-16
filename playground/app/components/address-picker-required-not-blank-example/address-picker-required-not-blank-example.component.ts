@@ -20,7 +20,6 @@ import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../
 })
 export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
 
-  public view = '';
   public address: FsAddress = {};
 
   public config: IFsAddressConfig = {
@@ -31,14 +30,9 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
     zip: { required: true }
   };
 
-  @ViewChild('picker') picker: FsAddressPickerComponent;
   @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 
   public ngOnInit() {}
-
-  public viewSearch() {
-    this.picker.viewSearch()
-  }
 }

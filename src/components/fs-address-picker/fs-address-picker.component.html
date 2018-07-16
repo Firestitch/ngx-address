@@ -1,6 +1,6 @@
-<div class="address-picker-container">
+<div class="address-picker-container" [ngSwitch]="view">
 
-  <div class="search" [hidden]="view === 'edit'">
+  <div class="search" *ngSwitchCase="'search'">
     <fs-address-search
       [(address)]="address"
       [config]="config"
@@ -12,10 +12,11 @@
     </fs-address-search>
   </div>
 
-  <div [hidden]="view !== 'edit'">
+  <div *ngSwitchCase="'edit'">
     <fs-address
       [(address)]="address"
-      [config]="config">
+      [config]="config"
+      (collapseChange)="viewSearch()">
     </fs-address>
   </div>
 

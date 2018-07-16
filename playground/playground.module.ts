@@ -21,6 +21,7 @@ import {
   AddressPickerPreFilledExampleComponent,
   AddressPickerNoValidationTwolineExampleComponent
 } from './app/components';
+import {AddressPickerCustomCollapseBtnComponent} from './app/components/address-picker-custom-collapse-btn-example/address-picker-custom-collapse-btn-example.component';
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -45,6 +46,7 @@ import {
     AddressPickerPreFilledExampleComponent,
     AddressPickerNoValidationExampleComponent,
     AddressPickerNoValidationTwolineExampleComponent,
+    AddressPickerCustomCollapseBtnComponent,
     FormatExampleComponent
   ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]

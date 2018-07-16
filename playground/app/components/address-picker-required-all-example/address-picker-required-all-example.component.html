@@ -4,14 +4,6 @@
   #picker
 ></fs-address-picker>
 
-<p *ngIf="picker.isEdit">
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="viewSearch()"
-  >Collapse Address Editor</button>
-</p>
-
 <h3>Formatted Address</h3>
 <fs-address-format
   [(address)]="address"

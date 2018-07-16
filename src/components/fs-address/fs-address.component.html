@@ -137,4 +137,27 @@
     <div *ngIf="!isSearched">Please populate the address above to locate it on the map</div>
     <div *ngIf="isSearched">Could not find address "{{ searchedAddress }}"</div>
   </div>
+
+  <p *ngIf="config.collapseButton.show" [ngSwitch]="config.collapseButton.theme">
+    <button
+      *ngSwitchCase="'mat-button'"
+      mat-button
+      [color]="config.collapseButton.color"
+      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
+    <button
+      *ngSwitchCase="'mat-flat-button'"
+      mat-flat-button
+      [color]="config.collapseButton.color"
+      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
+    <button
+      *ngSwitchCase="'mat-stroked-button'"
+      mat-stroked-button
+      [color]="config.collapseButton.color"
+      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
+    <button
+      *ngSwitchDefault
+      mat-raised-button
+      [color]="config.collapseButton.color"
+      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
+  </p>
 </div>

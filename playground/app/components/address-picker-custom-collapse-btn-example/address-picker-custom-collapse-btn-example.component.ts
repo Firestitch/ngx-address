@@ -13,15 +13,16 @@ import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../
 
 
 @Component({
-  selector: 'address-picker-no-validation-twoline-example',
-  templateUrl: 'address-picker-no-validation-twoline-example.component.html',
+  selector: 'address-picker-custom-collapse-btn-example',
+  templateUrl: 'address-picker-custom-collapse-btn-example.component.html',
   styles: []
 })
-export class AddressPickerNoValidationTwolineExampleComponent {
+export class AddressPickerCustomCollapseBtnComponent {
 
   public address: FsAddress = {};
   public config: IFsAddressConfig = {
-    map: { zoom: 15 }
+    map: { zoom: 15 },
+    collapseButton: { title: 'Show search view', color: 'warn', theme: 'mat-stroked-button' }
   };
 
   @ViewChild('format') format: FsAddressFormatComponent;

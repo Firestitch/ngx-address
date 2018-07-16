@@ -7,3 +7,4 @@ export * from './format-example';
 export * from './address-disabled-or-readonly-example';
 export * from './full-address-example';
 export * from './address-picker-pre-filled-example';
+export * from './address-picker-custom-collapse-btn-example';
