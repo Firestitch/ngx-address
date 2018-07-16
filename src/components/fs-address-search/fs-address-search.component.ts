@@ -142,11 +142,12 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
         (predictions, status) => {
           this._ngZone.run(() => {
             this.predictions.length = 0;
-
-            if (status != google.maps.places.PlacesServiceStatus.OK) {
+            if (status != google.maps.places.PlacesServiceStatus.OK &&
+                status != google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
               return;
             }
-            this.predictions = predictions.slice();
+
+            this.predictions = predictions ? predictions.slice() : [];
 
             this.predictions.push({description: `Just use "${value}"`, id: 1, value: value});
           });
