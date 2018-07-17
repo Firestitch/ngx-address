@@ -21,7 +21,7 @@ import { MatAutocompleteTrigger } from '@angular/material';
 import { NgForm, ControlContainer } from '@angular/forms';
 
 import { each } from 'lodash';
-import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
+import { ENTER } from '@angular/cdk/keycodes';
 
 
 @Component({
@@ -149,7 +149,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
 
             this.predictions = predictions ? predictions.slice() : [];
 
-            this.predictions.push({description: `Just use "${value}"`, id: 1, value: value});
+            this.predictions.push({ description: `Just use "${value}"`, id: 1, name: value });
           });
         });
     }
@@ -160,6 +160,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   }
 
   public addressChanged(event) {
+    if (event.keyCode === ENTER) { return; }
+
     this.changeAddressDebounce.next(event.currentTarget.value);
     this.autoComplete.openPanel();
   }
@@ -173,12 +175,19 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
 
     (new Promise((resolve) => {
 
+      // when something went wrong
       if (!place || !this.googlePlacesService) {
         resolve();
       }
 
+      // when it's not an address it's "Just use" case
+      if (place && !place.place_id) {
+        this.addressChange.emit(place);
+        resolve();
+      }
+
       newAddress.description = place.description;
-      this.googlePlacesService.getDetails(place,(result, status) => {
+      this.googlePlacesService.getDetails(place, (result, status) => {
         this._ngZone.run(() => {
 
           if (status != google.maps.places.PlacesServiceStatus.OK) {
