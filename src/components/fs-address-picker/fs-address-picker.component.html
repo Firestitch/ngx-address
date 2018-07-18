@@ -1,6 +1,6 @@
 <div class="address-picker-container">
 
-  <div class="search" [hidden]="view === 'search'">
+  <div class="search" [hidden]="view === 'edit'">
     <fs-address-search
       [(address)]="address"
       [config]="config"
@@ -13,7 +13,7 @@
     </fs-address-search>
   </div>
 
-  <div [hidden]="view !== 'search'">
+  <div [hidden]="view !== 'edit'">
     <fs-address
       [(address)]="address"
       [config]="config"
