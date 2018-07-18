@@ -37,7 +37,7 @@ export class FsAddressPickerComponent implements AfterViewInit {
     return this._name;
   }
 
-  @ViewChild(FsAddressSearchComponent) search: FsAddressSearchComponent;
+  @ViewChild(FsAddressSearchComponent) public search: FsAddressSearchComponent;
 
   @Input() get address() {
     return this._address;

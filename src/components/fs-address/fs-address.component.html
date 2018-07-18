@@ -140,21 +140,25 @@
 
   <p *ngIf="config.collapseButton.show" [ngSwitch]="config.collapseButton.theme">
     <button
+      type="button"
       *ngSwitchCase="'mat-button'"
       mat-button
       [color]="config.collapseButton.color"
       (click)="collapseEditor()">{{config.collapseButton.title}}</button>
     <button
+      type="button"
       *ngSwitchCase="'mat-flat-button'"
       mat-flat-button
       [color]="config.collapseButton.color"
       (click)="collapseEditor()">{{config.collapseButton.title}}</button>
     <button
+      type="button"
       *ngSwitchCase="'mat-stroked-button'"
       mat-stroked-button
       [color]="config.collapseButton.color"
       (click)="collapseEditor()">{{config.collapseButton.title}}</button>
     <button
+      type="button"
       *ngSwitchDefault
       mat-raised-button
       [color]="config.collapseButton.color"
