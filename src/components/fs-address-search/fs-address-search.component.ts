@@ -36,6 +36,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   @Input() disabled = false;
   @Input() readonly = false;
   @Input() config: IFsAddressConfig = {};
+  @Input() name = true;
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
   @Output() edited: EventEmitter<any> = new EventEmitter<any>();
   @Input() get address() {

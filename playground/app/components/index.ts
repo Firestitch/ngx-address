@@ -8,3 +8,4 @@ export * from './address-disabled-or-readonly-example';
 export * from './full-address-example';
 export * from './address-picker-pre-filled-example';
 export * from './address-picker-custom-collapse-btn-example';
+export * from './address-picker-no-validation-summary-example';

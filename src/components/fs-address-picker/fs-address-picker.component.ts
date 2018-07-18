@@ -28,6 +28,14 @@ export class FsAddressPickerComponent implements AfterViewInit {
   @Input() format = 'oneline';
   @Input() disabled = false;
   @Input() readonly = false;
+  @Input('name')
+  set name(value: string | boolean) {
+    this._name = (value === 'true' || (typeof value === 'boolean' && value)) as boolean;
+  }
+
+  get name() {
+    return this._name;
+  }
 
   @ViewChild(FsAddressSearchComponent) search: FsAddressSearchComponent;
 
@@ -41,6 +49,7 @@ export class FsAddressPickerComponent implements AfterViewInit {
   }
 
   public view = 'search';
+  private _name = true;
 
   constructor() {}
 

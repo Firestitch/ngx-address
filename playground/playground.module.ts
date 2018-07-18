@@ -19,9 +19,10 @@ import {
   AddressPickerMapRequiredExampleComponent,
   FormatExampleComponent,
   AddressPickerPreFilledExampleComponent,
-  AddressPickerNoValidationTwolineExampleComponent
+  AddressPickerNoValidationTwolineExampleComponent,
+  AddressPickerCustomCollapseBtnComponent,
+  AddressPickerNoValidationSummaryExampleComponent,
 } from './app/components';
-import {AddressPickerCustomCollapseBtnComponent} from './app/components/address-picker-custom-collapse-btn-example/address-picker-custom-collapse-btn-example.component';
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -47,6 +48,7 @@ import {AddressPickerCustomCollapseBtnComponent} from './app/components/address-
     AddressPickerNoValidationExampleComponent,
     AddressPickerNoValidationTwolineExampleComponent,
     AddressPickerCustomCollapseBtnComponent,
+    AddressPickerNoValidationSummaryExampleComponent,
     FormatExampleComponent
   ],
   providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
