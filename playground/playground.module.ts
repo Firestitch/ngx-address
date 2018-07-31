@@ -22,7 +22,9 @@ import {
   AddressPickerNoValidationTwolineExampleComponent,
   AddressPickerCustomCollapseBtnComponent,
   AddressPickerNoValidationSummaryExampleComponent,
+  AddressPickerCustomCollapseLabelComponent
 } from './app/components';
+
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -48,6 +50,7 @@ import {
     AddressPickerNoValidationExampleComponent,
     AddressPickerNoValidationTwolineExampleComponent,
     AddressPickerCustomCollapseBtnComponent,
+    AddressPickerCustomCollapseLabelComponent,
     AddressPickerNoValidationSummaryExampleComponent,
     FormatExampleComponent
   ],

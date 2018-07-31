@@ -9,6 +9,7 @@ export interface IFsAddressFieldSetting {
 }
 
 export interface IFsAddressConfig {
+  label?: string;
   name?: IFsAddressFieldSetting,
   country?: IFsAddressFieldSetting,
   region?: IFsAddressFieldSetting,

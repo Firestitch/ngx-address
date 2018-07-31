@@ -1,6 +1,6 @@
 <mat-form-field [floatLabel]="emptyAddress ? 'auto' : 'always'">
   <input matInput
-         placeholder="Location"
+         [placeholder]="config.label || 'Location'"
          [(ngModel)]="_address"
          [ngClass]="{ hide: !emptyAddress }"
          [fsFormRequired]="isRequired"
