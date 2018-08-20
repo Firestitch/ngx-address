@@ -256,8 +256,6 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
               regionLongName !== result.name &&
               newAddress.city !== result.name &&
               streetShortName !== result.name &&
-              streetAddress && streetAddress.short_name !== result.name &&
-              streetAddress && streetAddress.long_name !== result.name &&
               newAddress.zip !== result.name &&
               newAddress.street !== result.name) {
             newAddress.name = result.name;
