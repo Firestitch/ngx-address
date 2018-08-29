@@ -65,9 +65,9 @@
       placeholder="Country"
       aria-label="Country"
       (change)="changeCountry()"
-      autocomplete="off">
+      autocomplete="country">
 
-      <mat-option *ngFor="let country of countries" [value]="country.code">
+      <mat-option *ngFor="let country of countries" [value]="country.name">
         <span>{{ country.name }}</span>
       </mat-option>
 
@@ -85,7 +85,7 @@
       (change)="changeRegion()"
       autocomplete="off">
 
-      <mat-option *ngFor="let region of regions" [value]="region.code">
+      <mat-option *ngFor="let region of regions" [value]="region.name">
         <span>{{ region.name }}</span>
       </mat-option>
 

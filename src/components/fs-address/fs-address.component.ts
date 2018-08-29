@@ -96,7 +96,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     if (this.agmMap) {
-      this._subMapReady.unsubscribe();
+      this._subMapReady && this._subMapReady.unsubscribe();
     }
   }
 
