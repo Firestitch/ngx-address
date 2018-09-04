@@ -42,6 +42,7 @@
       autocomplete="off">
   </mat-form-field>
   <mat-form-field fxFlex>
+    <mat-label>{{zipLabel}}</mat-label>
     <input
       matInput
       [(ngModel)]="address.zip"
@@ -49,7 +50,6 @@
       [fsFormRequired]="config.zip.required"
       name="zip"
       aria-label="Zip"
-      [placeholder]="zipLabel"
       (change)="search($event)"
       autocomplete="off">
   </mat-form-field>
@@ -67,7 +67,7 @@
       (change)="changeCountry()"
       autocomplete="country">
 
-      <mat-option *ngFor="let country of countries" [value]="country.name">
+      <mat-option *ngFor="let country of countries" [value]="country.code">
         <span>{{ country.name }}</span>
       </mat-option>
 
@@ -75,17 +75,18 @@
   </mat-form-field>
 
   <mat-form-field fxFlex>
+    <mat-label>{{regionLabel}}</mat-label>
     <mat-select
+      matInput
       *ngIf="regions.length"
       [(ngModel)]="address.region"
       [disabled]="config.region.disabled"
       [fsFormRequired]="config.region.required"
       name="region"
-      [placeholder]="regionLabel"
       (change)="changeRegion()"
       autocomplete="off">
 
-      <mat-option *ngFor="let region of regions" [value]="region.name">
+      <mat-option *ngFor="let region of regions" [value]="region.code">
         <span>{{ region.name }}</span>
       </mat-option>
 

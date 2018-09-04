@@ -5,7 +5,8 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  EventEmitter
+  EventEmitter,
+  OnChanges
 } from '@angular/core';
 import {
   filter,
@@ -31,7 +32,7 @@ import { NgForm, ControlContainer} from '@angular/forms';
   styleUrls: ['./fs-address.component.scss'],
   viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ]
 })
-export class FsAddressComponent implements OnInit, OnDestroy {
+export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild(AgmMap) agmMap;
   @ViewChild(AgmMarker) agmMarker;
@@ -92,6 +93,13 @@ export class FsAddressComponent implements OnInit, OnDestroy {
           }
         });
       }
+  }
+
+  public ngOnChanges(change) {
+    if (!change.address.firstChange && change.address.currentValue.country !== change.address.previousValue.country){
+      this.initRegions();
+      this.initZipAndStateLabels();
+    }
   }
 
   public ngOnDestroy() {
@@ -249,7 +257,7 @@ export class FsAddressComponent implements OnInit, OnDestroy {
   }
 
   private initRegions() {
-    if (this.address.country && this.address.country) {
+    if (this.address.country) {
       const country = COUNTRIES.find(countryEl => countryEl.code === this.address.country);
 
       if (country) {
