@@ -1,6 +1,7 @@
 <fs-address-picker
   [(address)]="address"
   [(config)]="config"
+  (addressChange)="addressChanged($event)"
   #picker
 ></fs-address-picker>
 

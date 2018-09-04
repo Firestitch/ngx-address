@@ -1,7 +1,7 @@
 <mat-form-field [floatLabel]="emptyAddress ? 'auto' : 'always'">
   <input matInput
          [placeholder]="config.label || 'Location'"
-         [(ngModel)]="_address"
+         [(ngModel)]="address"
          [ngClass]="{ hide: !emptyAddress }"
          [fsFormRequired]="isRequired"
          [fsFormFunction]="functionPromise"
@@ -12,7 +12,7 @@
          (blur)="blur()"
          name="address_search"
          #search>
-  <fs-address-format [(address)]="_address" [format]="format" [name]="name" [disabled]="disabled"></fs-address-format>
+  <fs-address-format [(address)]="address" [format]="format" [name]="name" [disabled]="disabled"></fs-address-format>
 
   <mat-autocomplete
     (optionSelected)="autocompleteSelected($event.option)"

@@ -38,15 +38,8 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(AgmMarker) agmMarker;
 
   // ADDRESS Two-way binding
-  public addressValue: FsAddress;
-  @Input() get address() {
-    return this.addressValue;
-  }
+  @Input() address: FsAddress;
   @Output() addressChange = new EventEmitter();
-  set address(value: FsAddress) {
-    this.addressValue = value;
-    this.addressChange.emit(this.addressValue);
-  }
   @Input() config: IFsAddressConfig = {};
 
   @Output() collapseChange = new EventEmitter();
@@ -174,7 +167,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
         newAddress.lng = null;
       }
 
-      this.address = newAddress;
+      this.addressChange.emit(newAddress);
     });
   }
 

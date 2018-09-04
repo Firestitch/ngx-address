@@ -17,7 +17,8 @@
     <fs-address
       [(address)]="address"
       [config]="config"
-      (collapseChange)="viewSearch()">
+      (collapseChange)="viewSearch()"
+      (addressChange)="searchChanged($event)">
     </fs-address>
   </div>
 

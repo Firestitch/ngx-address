@@ -23,11 +23,12 @@ import { FsAddressSearchComponent } from '../fs-address-search';
 })
 export class FsAddressPickerComponent implements AfterViewInit {
 
-  @Input() _address: FsAddress;
   @Input() config: IFsAddressConfig;
   @Input() format = 'oneline';
   @Input() disabled = false;
   @Input() readonly = false;
+  @Input() address: FsAddress;
+  @Output() addressChange = new EventEmitter();
   @Input('name')
   set name(value: string | boolean) {
     this._name = (value === 'true' || (typeof value === 'boolean' && value)) as boolean;
@@ -38,15 +39,6 @@ export class FsAddressPickerComponent implements AfterViewInit {
   }
 
   @ViewChild(FsAddressSearchComponent) public search: FsAddressSearchComponent;
-
-  @Input() get address() {
-    return this._address;
-  }
-  @Output() addressChange = new EventEmitter();
-  set address(address: FsAddress) {
-    this._address = address;
-    this.addressChange.emit(this._address);
-  }
 
   public view = 'search';
   private _name = true;
@@ -70,6 +62,6 @@ export class FsAddressPickerComponent implements AfterViewInit {
   }
 
   public searchChanged(address) {
-    this.address = address;
+    this.addressChange.emit(address);
   }
 }

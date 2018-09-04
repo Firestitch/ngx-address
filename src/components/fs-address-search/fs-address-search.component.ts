@@ -39,22 +39,13 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   @Input() name = true;
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
   @Output() edited: EventEmitter<any> = new EventEmitter<any>();
-  @Input() get address() {
-    return this._address;
-  }
+  @Input() address: FsAddress = {};
   @Output() addressChange = new EventEmitter();
-  set address(address: FsAddress) {
-    this._address = address;
-    this.calculateAddress();
-    this.showEdit = !this.emptyAddress;
-    this.showClear = !this.emptyAddress;
-    this.addressChange.emit(this._address);
-  }
+
   @ViewChild('search') searchElement: ElementRef;
   @ViewChild(MatAutocompleteTrigger) trigger: MatAutocompleteTrigger;
   @ViewChild('search', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
 
-  public _address: FsAddress = {};
   public showEdit = false;
   public showClear = false;
   public predictions: any[] = [];
@@ -80,6 +71,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   public ngOnChanges(changes) {
     if (changes.address) {
       this.calculateAddress();
+      this.showEdit = !this.emptyAddress;
+      this.showClear = !this.emptyAddress;
     }
   }
 
@@ -111,9 +104,9 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   }
 
   private calculateAddress() {
-    this.emptyAddress = !(this._address.name) && !(this._address.street) &&
-                        !(this._address.city) && !(this._address.region) &&
-                        !(this._address.zip) && !(this._address.country);
+    this.emptyAddress = !(this.address.name) && !(this.address.street) &&
+                        !(this.address.city) && !(this.address.region) &&
+                        !(this.address.zip) && !(this.address.country);
   }
 
   private initGoogleMap() {
@@ -289,7 +282,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
           }
         });
 
-        if ((this.config.lat.required || this.config.lng.required) && (!this._address.lat || !this._address.lat)) {
+        if ((this.config.lat.required || this.config.lng.required) && (!this.address.lat || !this.address.lat)) {
           requiredField.push('position on map');
         }
 
