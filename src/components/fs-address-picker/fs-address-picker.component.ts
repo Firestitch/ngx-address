@@ -14,6 +14,7 @@ import {
 } from '../../interfaces';
 
 import { FsAddressSearchComponent } from '../fs-address-search';
+import { FsAddressComponent } from '../fs-address/fs-address.component';
 
 
 @Component({
@@ -39,6 +40,7 @@ export class FsAddressPickerComponent implements AfterViewInit {
   }
 
   @ViewChild(FsAddressSearchComponent) public search: FsAddressSearchComponent;
+  @ViewChild(FsAddressComponent) public editable: FsAddressComponent;
 
   public view = 'search';
   private _name = true;
@@ -55,6 +57,7 @@ export class FsAddressPickerComponent implements AfterViewInit {
 
   public viewEdit() {
     this.view = 'edit';
+    this.editable.search();
   }
 
   public searchEdited() {
