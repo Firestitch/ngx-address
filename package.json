@@ -1,10 +1,10 @@
 {
   "name": "@firestitch/address",
   "description": "@firestitch/address",
-  "version": "0.1.54",
+  "version": "0.1.55",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Firestitch/fs-address"
+    "url": "https://github.com/Firestitch/ngx-address"
   },
   "author": {
     "name": "Firestitch",
@@ -15,7 +15,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Firestitch/fs-address/issues"
+    "url": "https://github.com/Firestitch/ngx-address/issues"
   },
   "main": "package/index.js",
   "typings": "package/index.d.ts",

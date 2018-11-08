@@ -89,9 +89,20 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnChanges(change) {
-    if (!change.address.firstChange && change.address.currentValue.country !== change.address.previousValue.country){
-      this.initRegions();
-      this.initZipAndStateLabels();
+
+    if (change.address) {
+      if(!change.address.currentValue) {
+        this.address = {};
+      }
+
+      if (!change.address.firstChange) {
+        const currentCountry = change.address.currentValue ? change.address.currentValue.country : null;
+        const previousCountry = change.address.previousValue ? change.address.previousValue.country : null;
+        if(currentCountry !== previousCountry) {
+          this.initRegions();
+          this.initZipAndStateLabels();
+        }
+      }
     }
   }
 

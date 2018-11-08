@@ -27,7 +27,13 @@ export class AddressPickerNoValidationExampleComponent {
 
   @ViewChild('format') format: FsAddressFormatComponent;
 
-  constructor() {}
+  constructor() {
+
+    setTimeout(() => {
+      this.address = null;;
+    },1000)
+
+  }
 
   public changed(address) {
     this.address = address;

@@ -104,9 +104,9 @@ export class FsAddressSearchComponent implements OnChanges, OnInit {
   }
 
   private calculateAddress() {
-    this.emptyAddress = !(this.address.name) && !(this.address.street) &&
+    this.emptyAddress = !this.address || (!(this.address.name) && !(this.address.street) &&
                         !(this.address.city) && !(this.address.region) &&
-                        !(this.address.zip) && !(this.address.country);
+                        !(this.address.zip) && !(this.address.country));
   }
 
   private initGoogleMap() {
