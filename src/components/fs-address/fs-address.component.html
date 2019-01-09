@@ -28,7 +28,7 @@
   </mat-form-field>
 </div>
 
-<div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
+<div fxLayout="row wrap" fxLayoutGap="5px">
   <mat-form-field fxFlex>
     <input
       matInput
@@ -40,38 +40,6 @@
       aria-label="City"
       (change)="search($event)"
       autocomplete="off">
-  </mat-form-field>
-  <mat-form-field fxFlex>
-    <mat-label>{{zipLabel}}</mat-label>
-    <input
-      matInput
-      [(ngModel)]="address.zip"
-      [disabled]="config.zip.disabled"
-      [fsFormRequired]="config.zip.required"
-      name="zip"
-      aria-label="Zip"
-      (change)="search($event)"
-      autocomplete="off">
-  </mat-form-field>
-</div>
-
-<div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
-  <mat-form-field fxFlex>
-    <mat-select
-      [(ngModel)]="address.country"
-      [disabled]="config.country.disabled"
-      [fsFormRequired]="config.country.required"
-      name="country"
-      placeholder="Country"
-      aria-label="Country"
-      (change)="changeCountry()"
-      autocomplete="country">
-
-      <mat-option *ngFor="let country of countries" [value]="country.code">
-        <span>{{ country.name }}</span>
-      </mat-option>
-
-    </mat-select>
   </mat-form-field>
 
   <mat-form-field fxFlex>
@@ -104,17 +72,46 @@
       (change)="search($event)"
       autocomplete="off">
   </mat-form-field>
+
+  <mat-form-field fxFlex>
+    <mat-label>{{zipLabel}}</mat-label>
+    <input
+      matInput
+      [(ngModel)]="address.zip"
+      [disabled]="config.zip.disabled"
+      [fsFormRequired]="config.zip.required"
+      name="zip"
+      aria-label="Zip"
+      (change)="search($event)"
+      autocomplete="off">
+  </mat-form-field>
+
+  <mat-form-field fxFlex>
+    <mat-select
+      [(ngModel)]="address.country"
+      [disabled]="config.country.disabled"
+      [fsFormRequired]="config.country.required"
+      name="country"
+      placeholder="Country"
+      aria-label="Country"
+      (change)="changeCountry()"
+      autocomplete="country">
+
+      <mat-option *ngFor="let country of countries" [value]="country.code">
+        <span>{{ country.name }}</span>
+      </mat-option>
+
+    </mat-select>
+  </mat-form-field>
+
+
+</div>
+
+<div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
+
 </div>
 
 <div class="map-container" [hidden]="!config.map.showMap">
-
-  <button
-    mat-button
-    class="center"
-    type="button"
-    *ngIf="(address.lat && address.lng) && (config.map.marker.coords.latitude && config.map.marker.coords.longitude)"
-    (click)="recenter()"
-  >Center Map using Address</button>
 
   <agm-map
     [ngStyle.xs]="{'height': '300px'}"
@@ -139,30 +136,16 @@
     <div *ngIf="isSearched">Could not find address "{{ searchedAddress }}"</div>
   </div>
 
-  <p *ngIf="config.collapseButton.show" [ngSwitch]="config.collapseButton.theme">
-    <button
-      type="button"
-      *ngSwitchCase="'mat-button'"
+  <div fxLayout="row" fxLayoutGap="5px" class="map-buttons">
+      <button fxFlex
       mat-button
-      [color]="config.collapseButton.color"
-      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
-    <button
       type="button"
-      *ngSwitchCase="'mat-flat-button'"
-      mat-flat-button
-      [color]="config.collapseButton.color"
-      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
-    <button
+      *ngIf="(address.lat && address.lng) && (config.map.marker.coords.latitude && config.map.marker.coords.longitude)"
+      (click)="recenter()"
+    >Center Address</button>
+    <button fxFlex
       type="button"
-      *ngSwitchCase="'mat-stroked-button'"
-      mat-stroked-button
-      [color]="config.collapseButton.color"
-      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
-    <button
-      type="button"
-      *ngSwitchDefault
-      mat-raised-button
-      [color]="config.collapseButton.color"
-      (click)="collapseEditor()">{{config.collapseButton.title}}</button>
-  </p>
+      mat-button
+      (click)="collapseEditor()">Collapse Address</button>
+  </div>
 </div>

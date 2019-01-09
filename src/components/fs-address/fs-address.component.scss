@@ -6,6 +6,9 @@ agm-map {
 
 [hidden] { display: none !important; }
 
+.map-buttons {
+    margin-top: 5px;
+}
 .map-container {
     position: relative;
 
@@ -32,6 +35,6 @@ agm-map {
         right: 5px;
         top: 5px;
         z-index: 5;
-        background-color: #fff;    
+        background-color: #fff;
     }
 }

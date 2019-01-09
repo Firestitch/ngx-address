@@ -1,7 +1,7 @@
 {
   "name": "@firestitch/address",
   "description": "@firestitch/address",
-  "version": "0.1.55",
+  "version": "0.1.57",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-address"
@@ -112,7 +112,8 @@
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
     "webpack-merge": "^4.1.2",
     "webpack-node-externals": "^1.7.2",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "node-dir": "^0.1.17"
   },
   "engines": {
     "node": ">=6.0.0"
