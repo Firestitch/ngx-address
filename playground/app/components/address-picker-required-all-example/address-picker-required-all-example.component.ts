@@ -9,10 +9,10 @@ import {
   FsAddress,
   IFsAddressConfig,
   IFsAddressFormatConfig
-} from '../../../../src/interfaces';
+} from '@firestitch/address';
 
 // Others
-import { FsAddressPickerComponent } from '../../../../src/components/fs-address-picker/fs-address-picker.component';
+import { FsAddressPickerComponent } from '@firestitch/address';
 
 
 @Component({

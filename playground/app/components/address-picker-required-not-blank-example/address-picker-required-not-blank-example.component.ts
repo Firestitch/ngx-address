@@ -5,13 +5,9 @@ import {
 } from '@angular/core';
 
 // Interfaces
-import {
-  FsAddress,
-  IFsAddressConfig,
-  IFsAddressFormatConfig
-} from '../../../../src/interfaces';
+import { FsAddress, IFsAddressConfig, } from '@firestitch/address';
 
-import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../src';
+import { FsAddressFormatComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-required-not-blank-example',

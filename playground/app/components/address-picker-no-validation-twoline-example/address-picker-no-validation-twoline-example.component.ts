@@ -7,9 +7,9 @@ import {
 import {
   FsAddress,
   IFsAddressConfig
-} from '../../../../src/interfaces';
+} from '@firestitch/address';
 
-import { FsAddressPickerComponent, FsAddressFormatComponent } from '../../../../src';
+import { FsAddressFormatComponent } from '@firestitch/address';
 
 
 @Component({

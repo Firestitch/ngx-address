@@ -4,9 +4,9 @@ import { Component, ViewChild } from '@angular/core';
 import {
   FsAddress,
   IFsAddressConfig,
-} from '../../../../src/interfaces';
+} from '@firestitch/address';
 
-import {  FsAddressFormatComponent } from '../../../../src';
+import {  FsAddressFormatComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-no-validation-summary-example',

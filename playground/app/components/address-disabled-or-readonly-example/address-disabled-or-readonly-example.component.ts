@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 
+import { FsAddressFormatComponent } from '@firestitch/address';
+
 // Interfaces
 import {
   FsAddress,
   IFsAddressConfig,
-} from '../../../../src/interfaces';
-
-import { FsAddressFormatComponent } from '../../../../src';
+} from '@firestitch/address';
 
 
 @Component({

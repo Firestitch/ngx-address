@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewChild
 } from '@angular/core';
 
 // Interfaces
@@ -9,10 +8,7 @@ import {
   FsAddress,
   IFsAddressConfig,
   IFsAddressFormatConfig
-} from '../../../../src/interfaces';
-
-// Others
-import { FsAddressPickerComponent } from '../../../../src/components/fs-address-picker/fs-address-picker.component';
+} from '@firestitch/address';
 
 
 @Component({
