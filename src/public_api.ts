@@ -4,8 +4,12 @@
 
 // Modules
 export { FsAddressModule } from './app/fs-address.module';
+export { FsAddressCountryModule } from './app/fs-address-country.module';
 
-export { GoogleMapConfig } from './app/classes/googlemapconfig';
+
+// Inject Tokens
+export { COUNTRIES } from './app/constants/inject-token-countries';
+export { GOOGLE_MAP_KEY } from './app/constants/inject-token-google-map-key';
 
 // Components
 export { FsAddressComponent } from './app/components/address/address.component';

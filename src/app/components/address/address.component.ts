@@ -6,7 +6,8 @@ import {
   OnDestroy,
   ViewChild,
   EventEmitter,
-  OnChanges
+  OnChanges,
+  Inject
 } from '@angular/core';
 import { NgForm, ControlContainer} from '@angular/forms';
 
@@ -15,7 +16,7 @@ import { AgmMap, AgmMarker } from '@agm/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'lodash-es';
 
-import { COUNTRIES } from '../../constants/countries';
+import { COUNTRIES } from './../../constants/inject-token-countries';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
@@ -44,7 +45,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   public isSearched = false;
   private _subMapReady: Subscription;
 
-  public countries = COUNTRIES.slice() || [];
+  public countries = [];
   public regions: { code: string, name: string }[] = [];
 
   // Others
@@ -52,7 +53,9 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   public zipLabel: string;
   public searchedAddress: string;
 
-  constructor() { }
+  constructor(@Inject(COUNTRIES) countries) {
+    this.countries = countries;
+  }
 
   public ngOnInit() {
     this.initAddress();
@@ -118,14 +121,14 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public changeCountry() {
-    const country = filter(COUNTRIES, { code: this.address.country })[0];
+    const country = filter(this.countries, { code: this.address.country })[0];
     this.regions = country  && country.regions ? country.regions : [];
     this.updateCountryRegionLabels();
     this.search();
   }
 
   public changeRegion() {
-    const country = filter(COUNTRIES, { code: this.address.country })[0];
+    const country = filter(this.countries, { code: this.address.country })[0];
 
     if (country && country.regions) {
       const region = filter(country.regions, { code: this.address.region })[0];
@@ -237,7 +240,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     if (this.config.country && this.config.country.list && this.config.country.list.length) {
       this.countries.length = 0;
       this.config.country.list.forEach(el => {
-        const country = COUNTRIES.find(countryEl => countryEl.code === el);
+        const country = this.countries.find(countryEl => countryEl.code === el);
         if (country) {
           this.countries.push(country);
         }
@@ -259,7 +262,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   private initRegions() {
     if (this.address.country) {
-      const country = COUNTRIES.find(countryEl => countryEl.code === this.address.country);
+      const country = this.countries.find(countryEl => countryEl.code === this.address.country);
 
       if (country) {
         this.regions = country['regions'] || [];

@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
-import { FsAddressModule } from '@firestitch/address';
+import { FsAddressModule, GOOGLE_MAP_KEY } from '@firestitch/address';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -58,7 +58,7 @@ import {
     AddressPickerNoValidationSummaryExampleComponent,
     FormatExampleComponent
   ],
-  providers: [{ provide: 'GoogleMapKey', useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
+  providers: [{ provide: GOOGLE_MAP_KEY, useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]
 })
 export class PlaygroundModule {
 }

@@ -94,7 +94,7 @@
       name="country"
       placeholder="Country"
       aria-label="Country"
-      (change)="changeCountry()"
+      (selectionChange)="changeCountry()"
       autocomplete="country">
 
       <mat-option *ngFor="let country of countries" [value]="country.code">

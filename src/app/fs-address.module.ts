@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-
-// declare var google: any;
+import { FsAddressCountryModule } from './fs-address-country.module';
 
 import {
   AgmCoreModule,
@@ -39,6 +38,7 @@ import { FsAddressSearchComponent } from './components/address-search/address-se
     MatInputModule,
     MatSelectModule,
     FlexLayoutModule,
+    FsAddressCountryModule,
     AgmCoreModule.forRoot(),
   ],
   exports: [
@@ -54,7 +54,6 @@ import { FsAddressSearchComponent } from './components/address-search/address-se
   declarations: [
     FsAddressComponent,
     FsAddressFormatComponent,
-
     FsAddressPickerComponent,
     FsAddressSearchComponent
   ],
