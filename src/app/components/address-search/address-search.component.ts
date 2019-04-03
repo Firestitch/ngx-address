@@ -177,8 +177,18 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public autocompleteSelected(option) {
 
     const place = option.value;
+    const newAddress: FsAddress = {
+      name: '',
+      description: '',
+      country: '',
+      region: '',
+      city: '',
+      street: '',
+      zip: '',
+      lat: null,
+      lng: null,
+    };
 
-    const newAddress: FsAddress = {};
     this.emptyAddress = true;
 
     (new Promise((resolve) => {
