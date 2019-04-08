@@ -1,0 +1,13 @@
+<form>
+  <fs-address-region
+    [config]="config"
+    [(country)]="country"
+    [(region)]="region">
+  </fs-address-region>
+</form>
+
+<!--<fieldset>-->
+  <legend>Selected Address</legend>
+  {{ country }} {{ region }}
+  <!--<fs-address-format #format [(address)]="address"></fs-address-format>-->
+<!--</fieldset>-->

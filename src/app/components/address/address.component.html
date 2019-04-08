@@ -42,36 +42,15 @@
       autocomplete="off">
   </mat-form-field>
 
-  <mat-form-field fxFlex>
-    <mat-label>{{regionLabel}}</mat-label>
-    <mat-select
-      matInput
-      *ngIf="regions.length"
-      [(ngModel)]="address.region"
-      [disabled]="config.region.disabled"
-      [fsFormRequired]="config.region.required"
-      name="region"
-      (change)="changeRegion()"
-      autocomplete="off">
-
-      <mat-option *ngFor="let region of regions" [value]="region.code">
-        <span>{{ region.name }}</span>
-      </mat-option>
-
-    </mat-select>
-
-    <input
-      *ngIf="!regions.length"
-      matInput
-      [(ngModel)]="address.region"
-      [disabled]="config.region.disabled"
-      [fsFormRequired]="config.region.required"
-      name="region"
-      aria-label="Region"
-      [placeholder]="regionLabel"
-      (change)="search($event)"
-      autocomplete="off">
-  </mat-form-field>
+  <fs-region
+    [(region)]="address.region"
+    (regionChange)="search()"
+    [country]="address.country"
+    [countries]="countries"
+    [disabled]="config.region.disabled"
+    [required]="config.region.required"
+    name="region">
+  </fs-region>
 
   <mat-form-field fxFlex>
     <mat-label>{{zipLabel}}</mat-label>

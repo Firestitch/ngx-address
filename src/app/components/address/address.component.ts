@@ -46,10 +46,8 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   private _subMapReady: Subscription;
 
   public countries = [];
-  public regions: { code: string, name: string }[] = [];
 
   // Others
-  public regionLabel: string;
   public zipLabel: string;
   public searchedAddress: string;
 
@@ -63,7 +61,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.initMap();
 
     this.initCountries();
-    this.initRegions();
     this.initZipAndStateLabels();
     this.initCollapseBtn();
 
@@ -99,7 +96,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
         const currentCountry = change.address.currentValue ? change.address.currentValue.country : null;
         const previousCountry = change.address.previousValue ? change.address.previousValue.country : null;
         if (currentCountry !== previousCountry) {
-          this.initRegions();
           this.initZipAndStateLabels();
         }
       }
@@ -121,22 +117,10 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public changeCountry() {
-    const country = filter(this.countries, { code: this.address.country })[0];
-    this.regions = country  && country.regions ? country.regions : [];
     this.updateCountryRegionLabels();
     this.search();
   }
 
-  public changeRegion() {
-    const country = filter(this.countries, { code: this.address.country })[0];
-
-    if (country && country.regions) {
-      const region = filter(country.regions, { code: this.address.region })[0];
-      this.address.region = region.code;
-    }
-
-    this.search();
-  }
 
   public search(event?) {
     if (event) {
@@ -254,20 +238,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
     });
-
-    // if (this.countries.length && isEmpty) {
-    //   this.address.country = this.countries[0].code
-    // }
-  }
-
-  private initRegions() {
-    if (this.address.country) {
-      const country = this.countries.find(countryEl => countryEl.code === this.address.country);
-
-      if (country) {
-        this.regions = country['regions'] || [];
-      }
-    }
   }
 
   private initZipAndStateLabels() {
@@ -276,7 +246,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateCountryRegionLabels() {
     this.zipLabel = (this.address.country === 'CA' || this.address.country === 'US' ) ? 'Zip' : 'Postal Code';
-    this.regionLabel = this.address.country === 'CA' ? 'Province' : 'State';
   }
 
   private initCollapseBtn() {

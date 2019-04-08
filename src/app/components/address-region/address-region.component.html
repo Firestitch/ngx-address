@@ -1,0 +1,30 @@
+<div fxLayout="column">
+  <mat-form-field fxFlex>
+    <mat-select
+      [(ngModel)]="country"
+      [disabled]="config.country.disabled"
+      [fsFormRequired]="config.country.required"
+      (selectionChange)="changeCountry()"
+      name="country"
+      placeholder="Country"
+      aria-label="Country"
+      autocomplete="country">
+
+      <mat-option *ngFor="let country of countries" [value]="country.code">
+        <span>{{ country.name }}</span>
+      </mat-option>
+
+    </mat-select>
+  </mat-form-field>
+
+  <fs-region
+    [(region)]="region"
+    (regionChange)="changeRegion()"
+    [country]="country"
+    [countries]="countries"
+    [disabled]="config.region.disabled"
+    [required]="config.region.required"
+    name="region">
+  </fs-region>
+</div>
+

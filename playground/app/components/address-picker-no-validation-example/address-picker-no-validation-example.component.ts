@@ -30,7 +30,7 @@ export class AddressPickerNoValidationExampleComponent {
   constructor() {
 
     setTimeout(() => {
-      this.address = null;;
+      this.address = null;
     },1000)
 
   }

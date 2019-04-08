@@ -24,7 +24,11 @@ import {
   AddressPickerNoValidationTwolineExampleComponent,
   AddressPickerCustomCollapseBtnComponent,
   AddressPickerNoValidationSummaryExampleComponent,
-  AddressPickerCustomCollapseLabelComponent
+  AddressPickerCustomCollapseLabelComponent,
+  AddressRegionPrefilledExampleComponent,
+  AddressRegionRequiredExampleComponent,
+  AddressRegionDisabledExampleComponent,
+  AddressRegionNoValidationExampleComponent,
 } from './components';
 
 
@@ -56,6 +60,10 @@ import {
     AddressPickerCustomCollapseBtnComponent,
     AddressPickerCustomCollapseLabelComponent,
     AddressPickerNoValidationSummaryExampleComponent,
+    AddressRegionPrefilledExampleComponent,
+    AddressRegionRequiredExampleComponent,
+    AddressRegionDisabledExampleComponent,
+    AddressRegionNoValidationExampleComponent,
     FormatExampleComponent
   ],
   providers: [{ provide: GOOGLE_MAP_KEY, useValue: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk' }]

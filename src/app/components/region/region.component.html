@@ -1,0 +1,30 @@
+<mat-form-field fxFlex>
+  <mat-label>{{regionLabel}}</mat-label>
+  <mat-select
+    matInput
+    *ngIf="regions.length"
+    [(ngModel)]="region"
+    [disabled]="disabled"
+    [fsFormRequired]="required"
+    name="region"
+    (selectionChange)="changeRegion($event)"
+    autocomplete="off">
+
+    <mat-option *ngFor="let region of regions" [value]="region.code">
+      <span>{{ region.name }}</span>
+    </mat-option>
+
+  </mat-select>
+
+  <input
+    *ngIf="!regions.length"
+    matInput
+    [(ngModel)]="region"
+    [disabled]="disabled"
+    [fsFormRequired]="required"
+    name="region"
+    aria-label="Region"
+    [placeholder]="regionLabel"
+    (change)="changeRegion($event)"
+    autocomplete="off">
+</mat-form-field>

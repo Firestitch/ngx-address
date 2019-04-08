@@ -25,6 +25,8 @@ import { FsAddressComponent } from './components/address/address.component';
 import { FsAddressFormatComponent } from './components/address-format/address-format.component';
 import { FsAddressPickerComponent } from './components/address-picker/address-picker.component';
 import { FsAddressSearchComponent } from './components/address-search/address-search.component';
+import { FsAddressRegionComponent } from './components/address-region/address-region.component';
+import { FsRegionComponent } from './components/region/region.component';
 
 
 @NgModule({
@@ -47,7 +49,9 @@ import { FsAddressSearchComponent } from './components/address-search/address-se
     FsAddressFormatComponent,
 
     FsAddressPickerComponent,
-    FsAddressSearchComponent
+    FsAddressSearchComponent,
+    FsAddressRegionComponent,
+    FsRegionComponent
   ],
   entryComponents: [
   ],
@@ -55,7 +59,9 @@ import { FsAddressSearchComponent } from './components/address-search/address-se
     FsAddressComponent,
     FsAddressFormatComponent,
     FsAddressPickerComponent,
-    FsAddressSearchComponent
+    FsAddressSearchComponent,
+    FsAddressRegionComponent,
+    FsRegionComponent
   ],
   providers: [
     GoogleMapsAPIWrapper,
