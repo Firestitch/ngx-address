@@ -2,7 +2,7 @@
   "name": "@firestitch/address",
   "title": "Address",
   "description": "@firestitch/address",
-  "version": "0.2.3",
+  "version": "7.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-address"
@@ -45,10 +45,9 @@
     "@angular/platform-browser": "^7.2.2",
     "@angular/platform-browser-dynamic": "^7.2.2",
     "@compodoc/compodoc": "^1.1.7",
-    "@firestitch/common": "^0.5.1",
-    "@firestitch/example": "^0.6.0",
-    "@firestitch/form": "^1.2.2",
-    "@firestitch/iframe": "^0.2.0",
+    "@firestitch/common": "^7.0.0",
+    "@firestitch/example": "^7.0.0",
+    "@firestitch/form": "^7.0.0",
     "@firestitch/message": "^0.2.0",
     "codelyzer": "^4.5.0",
     "cpx": "^1.5.0",
@@ -63,7 +62,9 @@
     "typescript": "^3.1.6",
     "webpack": "^4.29.1",
     "webpack-dev-server": "^3.1.14",
-    "zone.js": "^0.8.29"
+    "zone.js": "^0.8.29",
+    "ngx-toastr": "^9.1.2",
+    "date-fns": "2.0.0-alpha.2"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -71,11 +72,10 @@
   "peerDependencies": {
     "rxjs": ">=5.1.0",
     "zone.js": ">=0.8.4",
-    "@firestitch/form": ">=1.0.3",
-    "@angular/material": ">=5.0.1",
+    "@firestitch/form": ">=7.0.0",
     "@types/googlemaps": ">=3.2.0",
     "@agm/core": ">=1.0.0-beta.2",
-    "lodash": ">=4.17.0"
+    "lodash-es": ">=4.17.11"
   },
   "dependencies": {}
 }
