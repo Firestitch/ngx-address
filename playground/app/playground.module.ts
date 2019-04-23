@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
+import { FsFieldEditorModule } from '@firestitch/field-editor';
 import { FsAddressModule, GOOGLE_MAP_KEY } from '@firestitch/address';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -41,6 +42,7 @@ import {
     FsAddressModule,
     AppMaterialModule,
     FsExampleModule.forRoot(),
+    FsFieldEditorModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
   ],
