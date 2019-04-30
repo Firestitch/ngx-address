@@ -1,5 +1,5 @@
 export * from './address-picker-map-required-example';
-export * from './address-picker-no-validation-example';
+export * from './kitchen-sink';
 export * from './address-picker-no-validation-twoline-example';
 export * from './address-picker-required-all-example';
 export * from './address-picker-required-not-blank-example';
@@ -14,3 +14,4 @@ export * from './address-region-prefilled-example';
 export * from './address-region-required-example';
 export * from './address-region-disabled-example';
 export * from './address-region-no-validation-example';
+export * from './configure';

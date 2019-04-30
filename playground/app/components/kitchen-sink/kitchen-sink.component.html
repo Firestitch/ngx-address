@@ -1,8 +1,11 @@
-<form>
+<form (fsForm)="submit()">
+
   <fs-address-picker
     [(address)]="address"
-    [(config)]="config"
-  ></fs-address-picker>
+    [(config)]="config">
+  </fs-address-picker>
+
+  <button mat-raised-button color="primary">Submit</button>
 </form>
 
 <fieldset [hidden]="format.empty">

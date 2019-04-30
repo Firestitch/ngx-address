@@ -3,7 +3,6 @@
          [placeholder]="config.label || 'Location'"
          [(ngModel)]="address"
          [ngClass]="{ hide: !emptyAddress }"
-         [fsFormRequired]="isRequired"
          [fsFormFunction]="functionPromise"
          [matAutocomplete]="autocomplete"
          [ngModelOptions]="{ updateOn: 'blur' }"

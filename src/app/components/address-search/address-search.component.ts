@@ -22,7 +22,7 @@ import { each } from 'lodash-es';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
-
+import { AddressFormat } from 'src/app/constants/enums';
 
 declare var google: any;
 
@@ -35,10 +35,10 @@ declare var google: any;
 })
 export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
-  @Input() format = 'online';
+  @Input() format = AddressFormat.OneLine;
   @Input() disabled = false;
   @Input() readonly = false;
-  @Input() config: IFsAddressConfig = {};
+  @Input('config') config;
   @Input() name = true;
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
   @Output() edited: EventEmitter<any> = new EventEmitter<any>();
@@ -56,10 +56,11 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public googleAutocompleteService = null;
   public googlePlacesService = null;
   public location = '';
-  public isRequired = false;
+  public required = false;
   public emptyAddress = true;
   private changeAddressDebounce = new Subject<any>();
   private destroy$ = new Subject<void>();
+  private _config: IFsAddressConfig = {};
 
   constructor(
     private _mapsAPILoader: MapsAPILoader,
@@ -81,10 +82,19 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       this.showEdit = !this.emptyAddress;
       this.showClear = !this.emptyAddress;
     }
+
+    if (changes.config) {
+      this.required =
+      ( (changes.config.name && changes.config.name.required) ||
+        (changes.config.country && changes.config.country.requiredd) ||
+        (changes.config.region && changes.config.region.requiredd) ||
+        (changes.config.city && changes.config.city.requiredd) ||
+        (changes.config.street && changes.config.street.requiredd) ||
+        (changes.config.zip && changes.config.zip.requiredd));
+    }
   }
 
   public ngOnInit() {
-    this.initConfig();
     this.calculateAddress();
     this.initGoogleMap();
   }
@@ -92,27 +102,6 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private initConfig() {
-    this.config = Object.assign({
-      name: { required: false, visible: true },
-      country: { required: false, visible: true },
-      region: { required: false, visible: true },
-      city: { required: false, visible: true },
-      street: { required: false, visible: true },
-      zip: { required: false, visible: true },
-      lat: { required: false },
-      lng: { required: false },
-    }, this.config);
-
-    this.isRequired =
-    ( this.config.name.required ||
-      this.config.country.required ||
-      this.config.region.required ||
-      this.config.city.required ||
-      this.config.street.required ||
-      this.config.zip.required);
   }
 
   private calculateAddress() {
@@ -295,33 +284,33 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
     return new Promise((resolve, reject) => {
 
-      setTimeout(() => {
+      const requiredField = [];
+      const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
 
-        const requiredField = [];
-        const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
-
-        each(parts, (part) => {
-          if (this.config[part].required && (this.address[part] === '' || !this.address[part])) {
-            requiredField.push([part]);
-          }
-        });
-
-        if ((this.config.lat.required || this.config.lng.required) && (!this.address.lat || !this.address.lat)) {
-          requiredField.push('position on map');
+      each(parts, (part) => {
+        if (this.config[part] && this.config[part].required && (this.address[part] === '' || !this.address[part])) {
+          requiredField.push([part]);
         }
+      });
 
-        if (requiredField.length) {
-          if (requiredField.length === 1) {
-            reject(`The ${requiredField[0]} is required`);
-          } else {
-            const last = requiredField.pop();
-            reject(`The ${requiredField.join(', ')} and ${last} are required`);
-          }
+      if (((this.config.lat && this.config.lat.required) ||
+           (this.config.lng && this.config.lng.required)) &&
+           (!this.address.lat || !this.address.lat)) {
+        requiredField.push('position on map');
+      }
+
+      if (requiredField.length) {
+        if (requiredField.length === 1) {
+          reject(`The ${requiredField[0]} is required`);
         } else {
-          resolve();
+          const last = requiredField.pop();
+          reject(`The ${requiredField.join(', ')} and ${last} are required`);
         }
-      }, 500);
+      } else {
+        resolve();
+      }
     });
+
   }).bind(this);
 
   public clear() {

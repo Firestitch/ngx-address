@@ -21,7 +21,10 @@ export { FsAddressSearchComponent } from './app/components/address-search/addres
 
 export { FsAddress } from './app/interfaces/address.interface';
 export { IFsAddressCollapseButtonConfig } from './app/interfaces/address-collapse-button-config.interface';
-export { IFsAddressConfig, IFsAddressFieldSetting } from './app/interfaces/address-config.interface';
+export { IFsAddressConfig,
+         AddressPickerConfig,
+         IFsAddressFieldSetting } from './app/interfaces/address-config.interface';
 export { IFsAddressFormatConfig } from './app/interfaces/address-format-config.interface';
 export { IFsAddressMapConfig } from './app/interfaces/address-map-config.interface';
 export { IFsAddressRegionConfig } from './app/interfaces/address-region-config.interface';
+export { AddressFormat } from './app/constants/enums';

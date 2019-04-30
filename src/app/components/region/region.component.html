@@ -7,7 +7,7 @@
     [disabled]="disabled"
     [fsFormRequired]="required"
     name="region"
-    (selectionChange)="changeRegion($event)"
+    (selectionChange)="changeRegion()"
     autocomplete="off">
 
     <mat-option *ngFor="let region of regions" [value]="region.code">
@@ -25,6 +25,6 @@
     name="region"
     aria-label="Region"
     [placeholder]="regionLabel"
-    (change)="changeRegion($event)"
+    (change)="changeRegion()"
     autocomplete="off">
 </mat-form-field>

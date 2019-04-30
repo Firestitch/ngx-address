@@ -14,7 +14,6 @@ import { NgForm, ControlContainer} from '@angular/forms';
 import { AgmMap, AgmMarker } from '@agm/core';
 
 import { Subscription } from 'rxjs';
-import { filter } from 'lodash-es';
 
 import { COUNTRIES } from './../../constants/inject-token-countries';
 

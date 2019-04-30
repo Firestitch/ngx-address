@@ -4,9 +4,9 @@
     <fs-address-search
       [(address)]="address"
       [config]="config"
-      [format]="format"
-      [disabled]="disabled"
-      [readonly]="readonly"
+      [format]="config.format"
+      [disabled]="config.disabled"
+      [readonly]="config.readonly"
       [name]="name"
       (edited)="searchEdited()"
       (addressChange)="searchChanged($event)">

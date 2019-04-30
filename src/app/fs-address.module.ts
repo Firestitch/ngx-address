@@ -69,10 +69,4 @@ import { FsRegionComponent } from './components/region/region.component';
     { provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapConfig }
   ]
 })
-export class FsAddressModule {
-  /*static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: FsAddressModule
-    };
-  }*/
-}
+export class FsAddressModule {}

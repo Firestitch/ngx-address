@@ -38,3 +38,25 @@ agm-map {
         background-color: #fff;
     }
 }
+
+.name,
+.street {
+    width: 100%;
+    display: block;
+}
+
+.city-region-zip-country {
+    display: flex;
+
+    .city,
+    .region,
+    .zip,
+    .country {
+        flex: 1;
+        margin-right: 5px;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+}

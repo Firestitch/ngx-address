@@ -1,5 +1,6 @@
 import { IFsAddressMapConfig } from './address-map-config.interface';
 import { IFsAddressCollapseButtonConfig } from './address-collapse-button-config.interface';
+import { AddressFormat } from '../constants/enums';
 
 export interface IFsAddressFieldSetting {
   disabled?: boolean,
@@ -15,9 +16,16 @@ export interface IFsAddressConfig {
   region?: IFsAddressFieldSetting,
   city?: IFsAddressFieldSetting,
   street?: IFsAddressFieldSetting,
+  address2?: IFsAddressFieldSetting,
   zip?: IFsAddressFieldSetting,
   map?: IFsAddressMapConfig,
   collapseButton?: IFsAddressCollapseButtonConfig,
   lat?: IFsAddressFieldSetting,
   lng?: IFsAddressFieldSetting
+}
+
+export interface AddressPickerConfig extends IFsAddressConfig {
+  format?: AddressFormat,
+  readonly?: boolean,
+  disabled?: boolean
 }

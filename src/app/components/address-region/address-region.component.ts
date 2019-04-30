@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FsAddress, IFsAddressRegionConfig } from '@firestitch/address';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { IFsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
 import { COUNTRIES } from './../../constants/inject-token-countries';
 
 @Component({

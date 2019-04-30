@@ -1,40 +1,42 @@
-<div fxLayout="row">
-  <mat-form-field fxFlex>
-    <input
-      matInput
-      [(ngModel)]="address.name"
-      [disabled]="config.name.disabled"
-      [fsFormRequired]="config.name.required"
-      name="location_name"
-      placeholder="Location name"
-      aria-label="Location name"
-      (change)="search($event)"
-      autocomplete="off">
-  </mat-form-field>
-</div>
+<mat-form-field
+  *ngIf="config.name.visible!==false"
+  class="name">
+  <input
+    matInput
+    [(ngModel)]="address.name"
+    [disabled]="config.name.disabled"
+    [required]="config.name.required"
+    name="location_name"
+    placeholder="Location name"
+    aria-label="Location name"
+    (change)="search($event)"
+    autocomplete="off">
+</mat-form-field>
 
-<div fxLayout="row">
-  <mat-form-field fxFlex>
-    <input
-      matInput
-      [(ngModel)]="address.street"
-      [disabled]="config.street.disabled"
-      [fsFormRequired]="config.street.required"
-      name="street"
-      placeholder="Street"
-      aria-label="Street"
-      (change)="search($event)"
-      autocomplete="off">
-  </mat-form-field>
-</div>
+<mat-form-field
+  *ngIf="config.street.visible!==false"
+  class="street">
+  <input
+    matInput
+    [(ngModel)]="address.street"
+    [disabled]="config.street.disabled"
+    [required]="config.street.required"
+    name="street"
+    placeholder="Street"
+    aria-label="Street"
+    (change)="search($event)"
+    autocomplete="off">
+</mat-form-field>
 
-<div fxLayout="row wrap" fxLayoutGap="5px">
-  <mat-form-field fxFlex>
+<div class="city-region-zip-country">
+  <mat-form-field
+    *ngIf="config.city.visible!==false"
+    class="city">
     <input
       matInput
       [(ngModel)]="address.city"
       [disabled]="config.city.disabled"
-      [fsFormRequired]="config.city.required"
+      [required]="config.city.required"
       name="city"
       placeholder="City"
       aria-label="City"
@@ -43,6 +45,8 @@
   </mat-form-field>
 
   <fs-region
+    class="region"
+    *ngIf="config.region.visible!==false"
     [(region)]="address.region"
     (regionChange)="search()"
     [country]="address.country"
@@ -52,24 +56,28 @@
     name="region">
   </fs-region>
 
-  <mat-form-field fxFlex>
+  <mat-form-field
+    class="zip"
+    *ngIf="config.zip.visible!==false">
     <mat-label>{{zipLabel}}</mat-label>
     <input
       matInput
       [(ngModel)]="address.zip"
       [disabled]="config.zip.disabled"
-      [fsFormRequired]="config.zip.required"
+      [required]="config.zip.required"
       name="zip"
       aria-label="Zip"
       (change)="search($event)"
       autocomplete="off">
   </mat-form-field>
 
-  <mat-form-field fxFlex>
+  <mat-form-field
+    class="country"
+    *ngIf="config.country.visible!==false">
     <mat-select
       [(ngModel)]="address.country"
       [disabled]="config.country.disabled"
-      [fsFormRequired]="config.country.required"
+      [required]="config.country.required"
       name="country"
       placeholder="Country"
       aria-label="Country"
@@ -82,12 +90,6 @@
 
     </mat-select>
   </mat-form-field>
-
-
-</div>
-
-<div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
-
 </div>
 
 <div class="map-container" [hidden]="!config.map.showMap">
