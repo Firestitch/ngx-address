@@ -25,7 +25,7 @@ export class KitchenSinkComponent {
   public view = '';
   public address: FsAddress = {};
   public config: AddressPickerConfig = {
-    label: 'Locaiton',
+    label: 'Location',
     format: AddressFormat.OneLine,
     map: { zoom: 15 },
     name: { visible: true, required: false, disabled: false },
