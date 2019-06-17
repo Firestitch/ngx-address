@@ -31,10 +31,10 @@ export class KitchenSinkComponent {
     name: { visible: true, required: false, disabled: false },
     address2:  { visible: true, required: false, disabled: false },
     street:  { visible: true, required: false, disabled: false },
-    city:  { visible: true, required: false, disabled: false },
-    region:  { visible: true, required: false, disabled: false },
+    city:  { visible: true, required: true, disabled: false },
+    region:  { visible: true, required: true, disabled: false },
     zip:  { visible: true, required: false, disabled: false },
-    country:  { visible: true, required: false, disabled: false }
+    country:  { visible: true, required: true, disabled: false }
   };
 
   @ViewChild('format') format: FsAddressFormatComponent;

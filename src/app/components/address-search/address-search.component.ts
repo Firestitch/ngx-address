@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Renderer2,
   Input,
   NgZone,
   OnChanges,
@@ -12,6 +13,7 @@ import {
 } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material';
 import { NgForm, ControlContainer } from '@angular/forms';
+import { MatFormField } from '@angular/material';
 import { ENTER } from '@angular/cdk/keycodes';
 
 import { MapsAPILoader } from '@agm/core';
@@ -38,13 +40,23 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   @Input() format = AddressFormat.OneLine;
   @Input() disabled = false;
   @Input() readonly = false;
-  @Input('config') config;
+  private _config: IFsAddressConfig = {};
+  @Input() public  set config(value: IFsAddressConfig) {
+    this._config = value;
+    if (this._config) {
+      this.updateRequiredStatus();
+    }
+  }
+  public get config(): IFsAddressConfig {
+    return this._config;
+  }
   @Input() name = true;
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
   @Output() edited: EventEmitter<any> = new EventEmitter<any>();
   @Input() address: FsAddress = {};
   @Output() addressChange = new EventEmitter();
 
+  @ViewChild('searchFormField') public searchFormField: MatFormField = null;
   @ViewChild('search') searchElement: ElementRef;
   @ViewChild(MatAutocompleteTrigger) trigger: MatAutocompleteTrigger;
   @ViewChild('search', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
@@ -60,11 +72,11 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public emptyAddress = true;
   private changeAddressDebounce = new Subject<any>();
   private destroy$ = new Subject<void>();
-  private _config: IFsAddressConfig = {};
 
   constructor(
     private _mapsAPILoader: MapsAPILoader,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    private _renderer: Renderer2
   ) {
     this.changeAddressDebounce
       .pipe(
@@ -82,21 +94,32 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       this.showEdit = !this.emptyAddress;
       this.showClear = !this.emptyAddress;
     }
-
-    if (changes.config) {
-      this.required =
-      ( (changes.config.name && changes.config.name.required) ||
-        (changes.config.country && changes.config.country.requiredd) ||
-        (changes.config.region && changes.config.region.requiredd) ||
-        (changes.config.city && changes.config.city.requiredd) ||
-        (changes.config.street && changes.config.street.requiredd) ||
-        (changes.config.zip && changes.config.zip.requiredd));
-    }
   }
 
   public ngOnInit() {
     this.calculateAddress();
     this.initGoogleMap();
+  }
+
+  public updateRequiredStatus() {
+    this.required =
+    ( (this.config.name && this.config.name.required) ||
+      (this.config.country && this.config.country.required) ||
+      (this.config.region && this.config.region.required) ||
+      (this.config.city && this.config.city.required) ||
+      (this.config.street && this.config.street.required) ||
+      (this.config.zip && this.config.zip.required));
+
+    setTimeout(() => {
+      const labelRef = this.searchFormField
+        .getConnectedOverlayOrigin()
+        .nativeElement
+        .querySelector('.mat-form-field-label');
+
+      this.required ?
+        this._renderer.addClass(labelRef, 'fs-form-label-required') :
+        this._renderer.removeClass(labelRef, 'fs-form-label-required');
+    });
   }
 
   public ngOnDestroy() {

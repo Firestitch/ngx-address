@@ -1,4 +1,4 @@
-<mat-form-field [floatLabel]="emptyAddress ? 'auto' : 'always'">
+<mat-form-field #searchFormField [floatLabel]="emptyAddress ? 'auto' : 'always'">
   <input matInput
          [placeholder]="config.label || 'Location'"
          [(ngModel)]="address"
