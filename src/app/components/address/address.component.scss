@@ -51,6 +51,7 @@ agm-map {
 
 .city-region-zip-country {
     display: flex;
+    flex-wrap: wrap;
 
     .city,
     .region,
