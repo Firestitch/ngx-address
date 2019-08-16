@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 // Interfaces
-import { IFsAddressRegionConfig, IFsAddressConfig } from '@firestitch/address';
+import { IFsAddressConfig } from '@firestitch/address';
 
 
 @Component({
