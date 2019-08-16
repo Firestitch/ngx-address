@@ -4,7 +4,11 @@
 
 // Modules
 export { FsAddressModule } from './app/fs-address.module';
+export { FsAddressCountriesModule } from './app/fs-address-countries.module';
+export { FsAddressRegionModule } from './app/fs-address-region.module';
+export { FsAddressRegionCountryModule } from './app/fs-address-region-country.module';
 export { FsAddressCountryModule } from './app/fs-address-country.module';
+
 
 
 // Inject Tokens

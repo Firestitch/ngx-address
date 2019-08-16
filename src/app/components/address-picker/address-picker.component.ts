@@ -23,7 +23,20 @@ import { AddressFormat } from '../../constants/enums';
 })
 export class FsAddressPickerComponent implements AfterViewInit {
 
-  @Input() config: AddressPickerConfig = { format: AddressFormat.OneLine };
+  @ViewChild(FsAddressComponent) addressComponent;
+
+  @Input('config') set setConfig(config: AddressPickerConfig) {
+
+    if (!config.format) {
+      config.format = AddressFormat.OneLine;
+    }
+
+    config.search = true;
+    config.map = { showMap: true };
+
+    this.config = config;
+  }
+
   @Input('format') set setFormat(value) {
     this.config.format = value;
   }
@@ -51,6 +64,7 @@ export class FsAddressPickerComponent implements AfterViewInit {
   @ViewChild(FsAddressComponent) public editable: FsAddressComponent;
 
   public view = 'search';
+  public config: AddressPickerConfig = {};
   private _name = true;
 
   constructor() {}
@@ -65,14 +79,13 @@ export class FsAddressPickerComponent implements AfterViewInit {
 
   public viewEdit() {
     this.view = 'edit';
-    this.editable.search();
   }
 
   public searchEdited() {
     this.viewEdit();
   }
 
-  public searchChanged(address) {
-    this.addressChange.emit(address);
+  public recenter() {
+    this.addressComponent.recenter();
   }
 }

@@ -2,7 +2,8 @@
 
   <fs-address-picker
     [(address)]="address"
-    [(config)]="config">
+    [(config)]="config"
+    (addressChange)="changed($event)">
   </fs-address-picker>
 
   <button mat-raised-button color="primary">Submit</button>

@@ -28,7 +28,7 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
     zip: 'M5V 2T6'
   };
 
-  public config: IFsAddressConfig = {};
+  public config: IFsAddressConfig = { };
 
   @ViewChild('format') format: FsAddressFormatComponent;
 

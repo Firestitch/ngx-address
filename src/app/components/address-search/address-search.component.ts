@@ -176,6 +176,10 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public blur() {
+    this.selecting = false;
+  }
+
+  public focus() {
     this.selecting = true;
   }
 
@@ -303,9 +307,13 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     });
   }
 
-  public functionPromise = (() => {
+  public functionPromise = () => {
 
     return new Promise((resolve, reject) => {
+
+      if (this.selecting) {
+        return resolve();
+      }
 
       const requiredField = [];
       const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
@@ -334,7 +342,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       }
     });
 
-  }).bind(this);
+  };
 
   public clear() {
     this.showEdit = false;

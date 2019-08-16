@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { FsAddressCountryModule } from './fs-address-country.module';
+import { FsAddressCountriesModule } from './fs-address-countries.module';
 
 import {
   AgmCoreModule,
@@ -25,8 +25,8 @@ import { FsAddressComponent } from './components/address/address.component';
 import { FsAddressFormatComponent } from './components/address-format/address-format.component';
 import { FsAddressPickerComponent } from './components/address-picker/address-picker.component';
 import { FsAddressSearchComponent } from './components/address-search/address-search.component';
-import { FsAddressRegionComponent } from './components/address-region/address-region.component';
-import { FsRegionComponent } from './components/region/region.component';
+import { FsAddressRegionModule } from './fs-address-region.module';
+import { FsAddressCountryModule } from './fs-address-country.module';
 
 
 @NgModule({
@@ -40,8 +40,10 @@ import { FsRegionComponent } from './components/region/region.component';
     MatInputModule,
     MatSelectModule,
     FlexLayoutModule,
-    FsAddressCountryModule,
+    FsAddressCountriesModule,
     AgmCoreModule.forRoot(),
+    FsAddressRegionModule,
+    FsAddressCountryModule
   ],
   exports: [
     AgmCoreModule,
@@ -49,19 +51,13 @@ import { FsRegionComponent } from './components/region/region.component';
     FsAddressFormatComponent,
 
     FsAddressPickerComponent,
-    FsAddressSearchComponent,
-    FsAddressRegionComponent,
-    FsRegionComponent
-  ],
-  entryComponents: [
+    FsAddressSearchComponent
   ],
   declarations: [
     FsAddressComponent,
     FsAddressFormatComponent,
     FsAddressPickerComponent,
-    FsAddressSearchComponent,
-    FsAddressRegionComponent,
-    FsRegionComponent
+    FsAddressSearchComponent
   ],
   providers: [
     GoogleMapsAPIWrapper,

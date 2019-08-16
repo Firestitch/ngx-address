@@ -4,15 +4,6 @@ agm-map {
     background-color: grey;
 }
 
-[hidden] { display: none !important; }
-
-.map-buttons {
-    margin-top: 5px;
-    button {
-        width: 100%;
-    }
-}
-
 .map-container {
     position: relative;
 
@@ -21,14 +12,16 @@ agm-map {
         top: 0;
         bottom: 0;
         left: 0;
-        width: 100%;
         background: #fff;
         border: 1px solid #efefef;
-        height: 100%;
-        line-height: 100%;
         opacity: 0.87;
         font-size: larger;
         padding: 40px;
+        align-items: center;
+        display: flex;
+        right: 0;
+        flex-direction: column;
+        justify-content: center;
         text-align: center;
     }
 
@@ -57,11 +50,26 @@ agm-map {
     .region,
     .zip,
     .country {
-        flex: 1;
-        margin-right: 5px;
+        flex: 1 0 50%;
     }
 
-    &:last-child {
+
+    .city > *,
+    .region > *,
+    .zip > *,
+    .country > * {
+        padding-right: 5px;
+        box-sizing: border-box;
+        display: block;
+    }
+
+    &:last-child > * {
         margin-right: 0;
+    }
+
+    ::ng-deep {
+        .mat-form-field {
+            width: 100%;
+        }
     }
 }

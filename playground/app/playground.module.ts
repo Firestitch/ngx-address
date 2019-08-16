@@ -9,7 +9,10 @@ import { FsMessageModule } from '@firestitch/message';
 import { FsFormModule } from '@firestitch/form';
 import { FsLabelModule } from '@firestitch/label';
 import { FsFieldEditorModule } from '@firestitch/field-editor';
-import { FsAddressModule, GOOGLE_MAP_KEY } from '@firestitch/address';
+import {  FsAddressModule,
+          FsAddressRegionModule,
+          FsAddressRegionCountryModule,
+          GOOGLE_MAP_KEY } from '@firestitch/address';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -33,6 +36,7 @@ import {
   AddressRegionRequiredExampleComponent,
   AddressRegionDisabledExampleComponent,
   AddressRegionNoValidationExampleComponent,
+  AddressFormComponent
 } from './components';
 import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material';
 
@@ -44,6 +48,8 @@ import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material';
     BrowserAnimationsModule,
     FormsModule,
     FsAddressModule,
+    FsAddressRegionModule,
+    FsAddressRegionCountryModule,
     AppMaterialModule,
     FsLabelModule,
     FsFormModule,
@@ -72,6 +78,7 @@ import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material';
     AddressRegionRequiredExampleComponent,
     AddressRegionDisabledExampleComponent,
     AddressRegionNoValidationExampleComponent,
+    AddressFormComponent,
     FormatExampleComponent,
     ConfigureComponent
   ],

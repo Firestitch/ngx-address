@@ -1,0 +1,35 @@
+.region-country {
+  display: flex;
+  flex-direction: column;
+}
+
+:host.horizontal {
+  .region-country {
+    flex-direction: row;
+  }
+
+  ::ng-deep .region {
+    padding-left: 10px;
+  }
+
+  ::ng-deep fs-address-region .mat-form-field {
+    width: 100%;
+  }
+}
+
+
+:host.horizontal-stretch {
+  .region-country {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
+
+  ::ng-deep fs-address-region .mat-form-field {
+    width: 100%;
+  }
+
+  ::ng-deep .country .mat-form-field {
+    width: 100%;
+  }
+}

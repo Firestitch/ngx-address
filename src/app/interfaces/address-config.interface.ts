@@ -21,7 +21,8 @@ export interface IFsAddressConfig {
   map?: IFsAddressMapConfig,
   collapseButton?: IFsAddressCollapseButtonConfig,
   lat?: IFsAddressFieldSetting,
-  lng?: IFsAddressFieldSetting
+  lng?: IFsAddressFieldSetting,
+  search?: boolean
 }
 
 export interface AddressPickerConfig extends IFsAddressConfig {

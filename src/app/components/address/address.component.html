@@ -8,8 +8,7 @@
     [required]="config.name.required"
     name="location_name"
     placeholder="Location name"
-    aria-label="Location name"
-    (change)="search($event)"
+    (change)="change($event)"
     autocomplete="off">
 </mat-form-field>
 
@@ -23,109 +22,85 @@
     [required]="config.street.required"
     name="street"
     placeholder="Street"
-    aria-label="Street"
-    (change)="search($event)"
+    (change)="change($event)"
     autocomplete="off">
 </mat-form-field>
 
 <div class="city-region-zip-country">
-  <mat-form-field
-    *ngIf="config.city.visible!==false"
-    class="city">
-    <input
-      matInput
-      [(ngModel)]="address.city"
-      [disabled]="config.city.disabled"
-      [required]="config.city.required"
-      name="city"
-      placeholder="City"
-      aria-label="City"
-      (change)="search($event)"
-      autocomplete="off">
-  </mat-form-field>
+  <div class="city">
+    <mat-form-field *ngIf="config.city.visible!==false">
+      <input
+        matInput
+        [(ngModel)]="address.city"
+        [disabled]="config.city.disabled"
+        [required]="config.city.required"
+        name="city"
+        placeholder="City"
+        (change)="change($event)"
+        autocomplete="off">
+    </mat-form-field>
+  </div>
+  <div class="region">
+    <fs-address-region
+      *ngIf="config.region.visible!==false"
+      [(region)]="address.region"
+      (regionChange)="change()"
+      [country]="address.country"
+      [countries]="countries"
+      [disabled]="config.region.disabled"
+      [required]="config.region.required"
+      name="region">
+    </fs-address-region>
+  </div>
 
-  <fs-region
-    class="region"
-    *ngIf="config.region.visible!==false"
-    [(region)]="address.region"
-    (regionChange)="search()"
-    [country]="address.country"
-    [countries]="countries"
-    [disabled]="config.region.disabled"
-    [required]="config.region.required"
-    name="region">
-  </fs-region>
+  <div class="zip">
+    <mat-form-field
+      *ngIf="config.zip.visible!==false">
+      <mat-label>{{zipLabel}}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="address.zip"
+        [disabled]="config.zip.disabled"
+        [required]="config.zip.required"
+        name="zip"
+        (change)="change($event)"
+        autocomplete="off">
+    </mat-form-field>
+  </div>
 
-  <mat-form-field
-    class="zip"
-    *ngIf="config.zip.visible!==false">
-    <mat-label>{{zipLabel}}</mat-label>
-    <input
-      matInput
-      [(ngModel)]="address.zip"
-      [disabled]="config.zip.disabled"
-      [required]="config.zip.required"
-      name="zip"
-      aria-label="Zip"
-      (change)="search($event)"
-      autocomplete="off">
-  </mat-form-field>
-
-  <mat-form-field
-    class="country"
-    *ngIf="config.country.visible!==false">
-    <mat-select
-      [(ngModel)]="address.country"
+  <div class="country">
+    <fs-address-country
+      *ngIf="config.country.visible!==false"
       [disabled]="config.country.disabled"
       [required]="config.country.required"
-      name="country"
-      placeholder="Country"
-      aria-label="Country"
+      [(ngModel)]="address.country"
       (selectionChange)="changeCountry()"
-      autocomplete="country">
-
-      <mat-option *ngFor="let country of countries" [value]="country.code">
-        <span>{{ country.name }}</span>
-      </mat-option>
-
-    </mat-select>
-  </mat-form-field>
+      name="address-country">
+    </fs-address-country>
+  </div>
 </div>
 
-<div class="map-container" [hidden]="!config.map.showMap">
+<div class="map-container" *ngIf="mapConfig.showMap">
 
   <agm-map
     [ngStyle.xs]="{'height': '300px'}"
-    [latitude]="config.map.center.latitude"
-    [longitude]="config.map.center.longitude"
-    [zoom]="config.map.zoom"
-    [scrollwheel]="config.map.scrollwheel"
-    [streetViewControl]="config.map.streetViewControl"
-    [zoomControl]="config.map.zoomControl"
-    [mapTypeControlOptions]="config.map.mapTypeControlOptions"
-  >
+    [latitude]="mapConfig.center.latitude"
+    [longitude]="mapConfig.center.longitude"
+    [zoom]="mapConfig.zoom"
+    [scrollwheel]="mapConfig.scrollwheel"
+    [streetViewControl]="mapConfig.streetViewControl"
+    [zoomControl]="mapConfig.zoomControl"
+    [mapTypeControlOptions]="mapConfig.mapTypeControlOptions">
     <agm-marker
-      [latitude]="config.map.marker.coords.latitude"
-      [longitude]="config.map.marker.coords.longitude"
-      [markerDraggable]="config.map.marker.options.draggable"
-      (dragEnd)="config.map.marker.events.dragend($event)"
-    ></agm-marker>
+      [latitude]="mapConfig.marker.coords.latitude"
+      [longitude]="mapConfig.marker.coords.longitude"
+      [markerDraggable]="mapConfig.marker.options.draggable"
+      (dragEnd)="mapConfig.marker.events.dragend($event)">
+    </agm-marker>
   </agm-map>
 
-  <div class="address-incomplete" fxLayout="row" fxLayoutAlign="center center" *ngIf="!address.lat && !address.lng">
+  <div class="address-incomplete" *ngIf="!address.lat && !address.lng">
     <div *ngIf="!isSearched">Please populate the address above to locate it on the map</div>
     <div *ngIf="isSearched">Could not find address "{{ searchedAddress }}"</div>
-  </div>
-
-  <div fxLayout="row" fxLayoutGap="5px" class="map-buttons" fxLayout.xs="column">
-    <button
-      mat-button
-      type="button"
-      *ngIf="(address.lat && address.lng) && (config.map.marker.coords.latitude && config.map.marker.coords.longitude)"
-      (click)="recenter()">Center Address</button>
-    <button
-      type="button"
-      mat-button
-      (click)="collapseEditor()">Collapse Address</button>
   </div>
 </div>

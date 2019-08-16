@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { FsAddressCountriesModule } from './fs-address-countries.module';
 
 import {
+  MatInputModule,
   MatSelectModule
 } from '@angular/material';
 
 import { FsFormModule } from '@firestitch/form';
-import { FsAddressCountryComponent } from './components/address-country/address-country.component';
+import { FsAddressRegionComponent } from './components/address-region/address-region.component';
 
 
 @NgModule({
@@ -16,14 +17,15 @@ import { FsAddressCountryComponent } from './components/address-country/address-
     CommonModule,
     FormsModule,
     FsFormModule,
+    MatInputModule,
     MatSelectModule,
     FsAddressCountriesModule
   ],
   declarations: [
-    FsAddressCountryComponent
+    FsAddressRegionComponent
   ],
   exports: [
-    FsAddressCountryComponent
+    FsAddressRegionComponent
   ]
 })
-export class FsAddressCountryModule {}
+export class FsAddressRegionModule {}

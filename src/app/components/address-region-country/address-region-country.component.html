@@ -1,0 +1,24 @@
+<div fxLayout="column" class="region-country">
+  <div class="country">
+    <fs-address-country
+      *ngIf="config.country.visible!==false"
+      [disabled]="config.country.disabled"
+      [required]="config.country.required"
+      [(ngModel)]="country"
+      (selectionChange)="changeCountry()"
+      name="country">
+    </fs-address-country>
+  </div>
+  <div class="region">
+    <fs-address-region
+      [(region)]="region"
+      (regionChange)="changeRegion()"
+      [country]="country"
+      [countries]="countries"
+      [disabled]="config.region.disabled"
+      [required]="config.region.required"
+      name="region">
+    </fs-address-region>
+  </div>
+</div>
+

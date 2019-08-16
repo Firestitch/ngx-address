@@ -13,12 +13,16 @@ import { NgForm, ControlContainer} from '@angular/forms';
 
 import { AgmMap, AgmMarker } from '@agm/core';
 
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { isObject } from 'lodash-es';
 
 import { COUNTRIES } from './../../constants/inject-token-countries';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
+import { FsAddressRegionComponent } from '../address-region/address-region.component';
+import { takeUntil } from 'rxjs/operators';
+import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 
 declare var google: any;
 
@@ -33,22 +37,34 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild(AgmMap) agmMap;
   @ViewChild(AgmMarker) agmMarker;
+  @ViewChild(FsAddressRegionComponent) fsAddressRegionComponent;
 
   // ADDRESS Two-way binding
   @Input() address: FsAddress;
   @Output() addressChange = new EventEmitter();
-  @Input() config: IFsAddressConfig = {};
-
   @Output() collapseChange = new EventEmitter();
 
-  public isSearched = false;
-  private _subMapReady: Subscription;
+  @Input('config') set setConfig(config: IFsAddressConfig) {
 
+    config.search = config.search === undefined ? false : config.search;
+
+    if (isObject(config.map)) {
+      config.map.showMap = true;
+    } else {
+      config.map = { showMap: false };
+    }
+
+    this.config = config;
+  }
+
+  public config: IFsAddressConfig = {}
   public countries = [];
-
-  // Others
   public zipLabel: string;
   public searchedAddress: string;
+  public isSearched = false;
+  public mapConfig: IFsAddressMapConfig
+
+  private _destory$ = new Subject();
 
   constructor(@Inject(COUNTRIES) countries) {
     this.countries = countries;
@@ -65,8 +81,11 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
     // Example ready event. Allow to use google object and map instance
     if (this.agmMap) {
-      this._subMapReady = this.agmMap
+      this.agmMap
         .mapReady
+        .pipe(
+          takeUntil(this._destory$)
+        )
         .subscribe(() => {
 
           this.agmMap.triggerResize();
@@ -78,7 +97,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
             this.address.zip) {
               this.address.lat = 9999;
               this.address.lng = 9999;
-              this.search();
+              this.change();
           }
         });
       }
@@ -102,28 +121,47 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnDestroy() {
-    if (this.agmMap) {
-      this._subMapReady && this._subMapReady.unsubscribe();
-    }
+    this._destory$.next();
+    this._destory$.complete();
   }
 
   public recenter() {
-    this.config.map.center = { latitude: this.address.lat, longitude: this.address.lng };
-    this.config.map.marker.coords.latitude = this.address.lat;
-    this.config.map.marker.coords.longitude = this.address.lng;
+    this.mapConfig.center = { latitude: this.address.lat, longitude: this.address.lng };
+    this.mapConfig.marker.coords.latitude = this.address.lat;
+    this.mapConfig.marker.coords.longitude = this.address.lng;
     this.agmMap.triggerResize()
       .then(() => this.agmMap._mapsWrapper.setCenter({lat: this.address.lat, lng: this.address.lng}));
   }
 
   public changeCountry() {
-    this.updateCountryRegionLabels();
-    this.search();
+
+    const country = this.countries.find(item => item.code === this.address.country);
+
+    if (country && country.regions) {
+
+      const region = country.regions.some(item => item.code === this.address.region);
+
+      if (!region) {
+        this.address.region = null;
+      }
+
+    } else {
+      this.address.region = null;
+    }
+
+    this.fsAddressRegionComponent.region = this.address.region;
+    this.change();
   }
 
 
-  public search(event?) {
+  public change(event?) {
+
     if (event) {
       event.stopPropagation();
+    }
+
+    if (!this.config.search) {
+      return this.addressChange.emit(this.address);
     }
 
     const geocoder = new google.maps.Geocoder();
@@ -148,10 +186,11 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
         newAddress.description = results[0].formatted_address;
         newAddress.lat = location.lat();
         newAddress.lng = location.lng();
-        this.config.map.center = { latitude: location.lat(), longitude: location.lng() };
 
-        this.config.map.marker.coords.latitude = location.lat();
-        this.config.map.marker.coords.longitude = location.lng();
+        this.mapConfig.center = { latitude: location.lat(), longitude: location.lng() };
+
+        this.mapConfig.marker.coords.latitude = location.lat();
+        this.mapConfig.marker.coords.longitude = location.lng();
 
         if (this.agmMap) {
           this.agmMap.triggerResize();
@@ -163,10 +202,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
       this.addressChange.emit(newAddress);
     });
-  }
-
-  public collapseEditor() {
-    this.collapseChange.emit();
   }
 
   private initAddress() {
@@ -194,8 +229,8 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initMap() {
-    this.config.map = Object.assign({
-      showMap: true,
+
+    this.mapConfig = Object.assign({
       center: {
         latitude: this.address.lat || 9999,
         longitude: this.address.lng || 9999
