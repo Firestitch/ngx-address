@@ -1,6 +1,6 @@
 import { Inject, Optional } from '@angular/core';
 import { LazyMapsAPILoaderConfigLiteral } from '@agm/core';
-import { GOOGLE_MAP_KEY } from './../constants/inject-token-google-map-key';
+import { GOOGLE_MAP_KEY } from '../consts/inject-token-google-map-key';
 
 export class GoogleMapConfig implements LazyMapsAPILoaderConfigLiteral {
 

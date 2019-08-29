@@ -1,14 +1,11 @@
-import { COUNTRIES as countries } from './constants/countries';
+import { Countries } from './consts/countries.const';
 import { NgModule } from '@angular/core';
 
-import { COUNTRIES } from './constants/inject-token-countries';
-
-export const COUNTRY_CANADA = 'CA';
-export const COUNTRY_UNITED_STATES = 'US';
+import { COUNTRIES } from './consts/inject-token-countries';
 
 @NgModule({
   providers: [
-    { provide: COUNTRIES, useValue: countries }
+    { provide: COUNTRIES, useValue: Countries }
   ]
 })
 export class FsAddressCountriesModule {}

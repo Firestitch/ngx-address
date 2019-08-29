@@ -9,11 +9,12 @@ export { FsAddressRegionModule } from './app/fs-address-region.module';
 export { FsAddressRegionCountryModule } from './app/fs-address-region-country.module';
 export { FsAddressCountryModule } from './app/fs-address-country.module';
 
-
+export { Countries } from './app/consts/countries.const';
+export { Country } from './app/enums/country.enum';
 
 // Inject Tokens
-export { COUNTRIES } from './app/constants/inject-token-countries';
-export { GOOGLE_MAP_KEY } from './app/constants/inject-token-google-map-key';
+export { COUNTRIES } from './app/consts/inject-token-countries';
+export { GOOGLE_MAP_KEY } from './app/consts/inject-token-google-map-key';
 
 // Components
 export { FsAddressComponent } from './app/components/address/address.component';
@@ -31,4 +32,4 @@ export { IFsAddressConfig,
 export { IFsAddressFormatConfig } from './app/interfaces/address-format-config.interface';
 export { IFsAddressMapConfig } from './app/interfaces/address-map-config.interface';
 export { IFsAddressRegionConfig } from './app/interfaces/address-region-config.interface';
-export { AddressFormat } from './app/constants/enums';
+export { AddressFormat } from './app/enums/address-format.enum';

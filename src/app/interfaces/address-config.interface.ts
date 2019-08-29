@@ -1,6 +1,6 @@
 import { IFsAddressMapConfig } from './address-map-config.interface';
 import { IFsAddressCollapseButtonConfig } from './address-collapse-button-config.interface';
-import { AddressFormat } from '../constants/enums';
+import { AddressFormat } from '../enums/address-format.enum';
 
 export interface IFsAddressFieldSetting {
   disabled?: boolean,

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, forwardRef } from '@angular/core';
-import { COUNTRIES } from '../../constants/inject-token-countries';
-import { ControlContainer, NgForm, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Countries } from '../../consts/countries.const';
 
 
 @Component({
@@ -20,13 +20,9 @@ export class FsAddressCountryComponent implements ControlValueAccessor {
   @Output() selectionChange = new EventEmitter<any>();
 
   public country;
-  public countries = [];
+  public countries = Countries;
   public onChange = (data: any) => {};
   public onTouched = () => {};
-
-  constructor(@Inject(COUNTRIES) countries) {
-    this.countries = countries;
-  }
 
   public writeValue(data: any): void {
     this.country = data;

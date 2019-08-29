@@ -6,8 +6,7 @@ import {
   OnDestroy,
   ViewChild,
   EventEmitter,
-  OnChanges,
-  Inject
+  OnChanges
 } from '@angular/core';
 import { NgForm, ControlContainer} from '@angular/forms';
 
@@ -16,13 +15,14 @@ import { AgmMap, AgmMarker } from '@agm/core';
 import { Subject } from 'rxjs';
 import { isObject } from 'lodash-es';
 
-import { COUNTRIES } from './../../constants/inject-token-countries';
+import { Countries } from '../../consts/countries.const';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddressRegionComponent } from '../address-region/address-region.component';
 import { takeUntil } from 'rxjs/operators';
 import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
+import { Country } from '../../enums/country.enum';
 
 declare var google: any;
 
@@ -58,17 +58,13 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public config: IFsAddressConfig = {}
-  public countries = [];
+  public countries = Countries;
   public zipLabel: string;
   public searchedAddress: string;
   public isSearched = false;
   public mapConfig: IFsAddressMapConfig
 
   private _destory$ = new Subject();
-
-  constructor(@Inject(COUNTRIES) countries) {
-    this.countries = countries;
-  }
 
   public ngOnInit() {
     this.initAddress();
@@ -266,7 +262,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     let isEmpty = true;
-    Object.keys(this.address).forEach((objectKey, index) => {
+    Object.keys(this.address).forEach((objectKey) => {
       if (this.address[objectKey]) {
         isEmpty = false;
         return;
@@ -279,7 +275,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateCountryRegionLabels() {
-    this.zipLabel = (this.address.country === 'CA' || this.address.country === 'US' ) ? 'Zip' : 'Postal Code';
+    this.zipLabel = this.address.country === Country.UnitedStates ? 'Zip' : 'Postal Code';
   }
 
   private initCollapseBtn() {

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, HostBinding } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, HostBinding } from '@angular/core';
 import { IFsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
-import { COUNTRIES } from '../../constants/inject-token-countries';
+import { Countries } from '../../consts/countries.const';
 
 
 @Component({
@@ -27,11 +27,7 @@ export class FsAddressRegionCountryComponent implements OnInit {
   @Output() countryChange = new EventEmitter<any>();
   @Output() regionChange = new EventEmitter<any>();
 
-  public countries = [];
-
-  constructor(@Inject(COUNTRIES) countries) {
-    this.countries = countries;
-  }
+  public countries = Countries;
 
   public ngOnInit() {
     this.initConfig();

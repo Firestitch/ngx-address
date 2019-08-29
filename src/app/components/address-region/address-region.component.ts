@@ -1,7 +1,7 @@
 import {
-  Component, EventEmitter, Input, OnChanges, OnInit, Output,
-  SimpleChange
+  Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
+import { Country } from '../../enums/country.enum';
 
 @Component({
   selector: 'fs-address-region',
@@ -40,9 +40,9 @@ export class FsAddressRegionComponent implements OnInit {
   }
 
   public updateCountryRegionLabels() {
-    this.regionLabel = this._country === 'CA'
+    this.regionLabel = this._country === Country.Canada
       ? 'Province'
-      : this._country === 'US' ? 'State' : 'Province/State';
+      : this._country === Country.UnitedStates ? 'State' : 'Province/State';
   }
 
   public changeRegion() {

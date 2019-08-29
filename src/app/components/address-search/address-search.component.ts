@@ -24,7 +24,7 @@ import { each } from 'lodash-es';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
-import { AddressFormat } from '../../constants/enums';
+import { AddressFormat } from '../../enums/address-format.enum';
 
 declare var google: any;
 

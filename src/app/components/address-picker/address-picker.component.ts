@@ -13,7 +13,7 @@ import { AddressPickerConfig } from '../../interfaces/address-config.interface';
 
 import { FsAddressSearchComponent } from '../address-search/address-search.component';
 import { FsAddressComponent } from '../address/address.component';
-import { AddressFormat } from '../../constants/enums';
+import { AddressFormat } from '../../enums/address-format.enum';
 
 
 @Component({
