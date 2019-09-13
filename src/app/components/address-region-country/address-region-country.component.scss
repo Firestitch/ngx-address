@@ -17,6 +17,15 @@
   }
 }
 
+:host.vertical {
+  ::ng-deep {
+    fs-address-country .mat-form-field,
+    fs-address-region .mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
 
 :host.horizontal-stretch {
   .region-country {

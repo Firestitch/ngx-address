@@ -46,6 +46,12 @@ export class FsAddressRegionCountryComponent implements OnInit {
       country: { required: false },
       region: { required: false },
     }, this.config);
+
+    if (this.config.country.list) {
+      this.countries = Countries.filter(country => {
+        return this.config.country.list.indexOf(country.code) >= 0;
+      });
+    }
   }
 
 

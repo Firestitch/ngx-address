@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 // Interfaces
-import { IFsAddressRegionConfig } from '@firestitch/address';
+import { IFsAddressRegionConfig, Country } from '@firestitch/address';
 
 
 @Component({
@@ -15,7 +15,8 @@ export class AddressRegionRequiredExampleComponent {
   public region = '';
   public config: IFsAddressRegionConfig = {
     country: {
-      required: true
+      required: true,
+      list: [ Country.Canada, Country.UnitedStates ]
     },
     region: {
       required: true

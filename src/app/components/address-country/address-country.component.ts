@@ -17,10 +17,11 @@ export class FsAddressCountryComponent implements ControlValueAccessor {
 
   @Input() disabled = false;
   @Input() required = false;
+  @Input() countries = Countries;
+
   @Output() selectionChange = new EventEmitter<any>();
 
   public country;
-  public countries = Countries;
   public onChange = (data: any) => {};
   public onTouched = () => {};
 
