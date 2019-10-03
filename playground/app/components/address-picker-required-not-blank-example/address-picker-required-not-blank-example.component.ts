@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 // Interfaces
-import { FsAddress, IFsAddressConfig, } from '@firestitch/address';
+import { FsAddress, FsAddressSearchComponent, IFsAddressConfig, } from '@firestitch/address';
 
 import { FsAddressFormatComponent } from '@firestitch/address';
 
@@ -26,7 +26,7 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
     zip: { required: true }
   };
 
-  @ViewChild('format') format: FsAddressFormatComponent;
+  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
 
   constructor() {}
 

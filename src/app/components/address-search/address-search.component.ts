@@ -9,7 +9,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild
+  ViewChild, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material';
 import { NgForm, ControlContainer } from '@angular/forms';
@@ -33,7 +33,8 @@ declare var google: any;
   selector: 'fs-address-search',
   templateUrl: './address-search.component.html',
   styleUrls: ['./address-search.component.scss'],
-  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ]
+  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
@@ -56,10 +57,10 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   @Input() address: FsAddress = {};
   @Output() addressChange = new EventEmitter();
 
-  @ViewChild('searchFormField') public searchFormField: MatFormField = null;
-  @ViewChild('search') searchElement: ElementRef;
-  @ViewChild(MatAutocompleteTrigger) trigger: MatAutocompleteTrigger;
-  @ViewChild('search', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
+  @ViewChild('searchFormField', { static: true }) public searchFormField: MatFormField = null;
+  @ViewChild('search', { static: true }) searchElement: ElementRef;
+  @ViewChild(MatAutocompleteTrigger, { static: true }) trigger: MatAutocompleteTrigger;
+  @ViewChild('search', { read: MatAutocompleteTrigger, static: true }) autoComplete: MatAutocompleteTrigger;
 
   public showEdit = false;
   public showClear = false;
@@ -76,7 +77,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private _mapsAPILoader: MapsAPILoader,
     private _ngZone: NgZone,
-    private _renderer: Renderer2
+    private _renderer: Renderer2,
+    private _cdRef: ChangeDetectorRef,
   ) {
     this.changeAddressDebounce
       .pipe(
@@ -170,6 +172,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
             this.predictions = predictions ? predictions.slice() : [];
 
             this.predictions.push({ description: `Just use "${value}"`, id: 1, name: value });
+
+            this._cdRef.detectChanges();
           });
         });
     }
@@ -304,6 +308,8 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
     })).then(() => {
       this.selecting = false;
+
+      this._cdRef.detectChanges();
     });
   }
 

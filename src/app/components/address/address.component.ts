@@ -1,14 +1,15 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Output,
-  Input,
-  OnInit,
-  OnDestroy,
-  ViewChild,
   EventEmitter,
-  OnChanges
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
 } from '@angular/core';
-import { NgForm, ControlContainer} from '@angular/forms';
+import { ControlContainer, NgForm } from '@angular/forms';
 
 import { AgmMap, AgmMarker } from '@agm/core';
 
@@ -31,13 +32,14 @@ declare var google: any;
   selector: 'fs-address',
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.scss'],
-  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ]
+  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild(AgmMap) agmMap;
-  @ViewChild(AgmMarker) agmMarker;
-  @ViewChild(FsAddressRegionComponent) fsAddressRegionComponent;
+  @ViewChild(AgmMap, { static: false }) agmMap;
+  @ViewChild(AgmMarker, { static: false }) agmMarker;
+  @ViewChild(FsAddressRegionComponent, { static: false }) fsAddressRegionComponent;
 
   // ADDRESS Two-way binding
   @Input() address: FsAddress;
@@ -57,12 +59,12 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.config = config;
   }
 
-  public config: IFsAddressConfig = {}
+  public config: IFsAddressConfig = {};
   public countries = Countries;
   public zipLabel: string;
   public searchedAddress: string;
   public isSearched = false;
-  public mapConfig: IFsAddressMapConfig
+  public mapConfig: IFsAddressMapConfig;
 
   private _destory$ = new Subject();
 

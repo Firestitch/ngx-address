@@ -8,7 +8,6 @@ import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
 import { FsFormModule } from '@firestitch/form';
 import { FsLabelModule } from '@firestitch/label';
-import { FsFieldEditorModule } from '@firestitch/field-editor';
 import {  FsAddressModule,
           FsAddressRegionModule,
           FsAddressRegionCountryModule,
@@ -54,7 +53,6 @@ import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material';
     FsLabelModule,
     FsFormModule,
     FsExampleModule.forRoot(),
-    FsFieldEditorModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
   ],

@@ -3,7 +3,7 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { FsAddressFormatComponent } from '@firestitch/address';
+import { FsAddressFormatComponent, FsAddressSearchComponent } from '@firestitch/address';
 
 // Interfaces
 import {
@@ -25,7 +25,7 @@ export class AddressPickerCustomCollapseBtnComponent {
     collapseButton: { title: 'Show search view', color: 'warn', theme: 'mat-stroked-button' }
   };
 
-  @ViewChild('format') format: FsAddressFormatComponent;
+  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
 
   constructor() {}
 

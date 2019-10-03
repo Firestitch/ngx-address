@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 
 // Interfaces
 import {
-  FsAddress,
+  FsAddress, FsAddressSearchComponent,
   IFsAddressConfig,
 } from '@firestitch/address';
 
@@ -20,7 +20,7 @@ export class AddressPickerNoValidationSummaryExampleComponent {
     map: { zoom: 15 }
   };
 
-  @ViewChild('format') format: FsAddressFormatComponent;
+  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
 
   constructor() {}
 }

@@ -2,17 +2,18 @@ import {
   Component,
   Input,
   OnInit,
-  OnChanges,
+  OnChanges, ChangeDetectionStrategy,
 } from '@angular/core';
 
-import { each, isArrayLikeObject } from 'lodash-es';
+import { each } from 'lodash-es';
 import { FsAddress } from '../../interfaces/address.interface';
 
 
 @Component({
   selector: 'fs-address-format',
   templateUrl: './address-format.component.html',
-  styleUrls: ['./address-format.component.scss']
+  styleUrls: ['./address-format.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressFormatComponent implements OnInit, OnChanges {
 

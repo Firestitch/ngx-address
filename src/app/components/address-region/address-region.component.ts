@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { Country } from '../../enums/country.enum';
@@ -7,6 +8,7 @@ import { Country } from '../../enums/country.enum';
   selector: 'fs-address-region',
   templateUrl: './address-region.component.html',
   styleUrls: ['./address-region.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressRegionComponent implements OnInit {
 

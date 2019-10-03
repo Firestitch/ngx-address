@@ -6,7 +6,7 @@ import {
 
 // Interfaces
 import {
-  FsAddress,
+  FsAddress, FsAddressSearchComponent,
   IFsAddressConfig,
 } from '@firestitch/address';
 
@@ -30,7 +30,7 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
 
   public config: IFsAddressConfig = { };
 
-  @ViewChild('format') format: FsAddressFormatComponent;
+  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
 
   constructor() {}
 

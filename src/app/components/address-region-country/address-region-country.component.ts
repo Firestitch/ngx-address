@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, HostBinding } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  HostBinding,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { IFsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
 import { Countries } from '../../consts/countries.const';
 
@@ -7,6 +15,7 @@ import { Countries } from '../../consts/countries.const';
   selector: 'fs-address-region-country',
   templateUrl: './address-region-country.component.html',
   styleUrls: ['./address-region-country.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressRegionCountryComponent implements OnInit {
   // ADDRESS Two-way binding
