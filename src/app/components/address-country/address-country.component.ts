@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  forwardRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Countries } from '../../consts/countries.const';
 
@@ -11,7 +18,8 @@ import { Countries } from '../../consts/countries.const';
     provide: NG_VALUE_ACCESSOR,
     multi: true,
     useExisting: forwardRef(() => FsAddressCountryComponent),
-  } ]
+  } ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressCountryComponent implements ControlValueAccessor {
 

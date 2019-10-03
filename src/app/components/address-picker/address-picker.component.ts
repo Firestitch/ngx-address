@@ -4,7 +4,7 @@ import {
   Input,
   AfterViewInit,
   Output,
-  ViewChild
+  ViewChild, ChangeDetectionStrategy
 } from '@angular/core';
 
 // Interfaces
@@ -20,10 +20,11 @@ import { AddressFormat } from '../../enums/address-format.enum';
   selector: 'fs-address-picker',
   templateUrl: './address-picker.component.html',
   styleUrls: ['./address-picker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressPickerComponent implements AfterViewInit {
 
-  @ViewChild(FsAddressComponent) addressComponent;
+  @ViewChild(FsAddressComponent, { static: false }) addressComponent;
 
   @Input('config') set setConfig(config: AddressPickerConfig) {
 
@@ -60,8 +61,8 @@ export class FsAddressPickerComponent implements AfterViewInit {
     return this._name;
   }
 
-  @ViewChild(FsAddressSearchComponent) public search: FsAddressSearchComponent;
-  @ViewChild(FsAddressComponent) public editable: FsAddressComponent;
+  @ViewChild(FsAddressSearchComponent, { static: false }) public search: FsAddressSearchComponent;
+  @ViewChild(FsAddressComponent, { static: false }) public editable: FsAddressComponent;
 
   public view = 'search';
   public config: AddressPickerConfig = {};

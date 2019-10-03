@@ -5,7 +5,7 @@ import {
 
 // Interfaces
 import {
-  FsAddress,
+  FsAddress, FsAddressSearchComponent,
   IFsAddressConfig
 } from '@firestitch/address';
 
@@ -24,7 +24,7 @@ export class AddressPickerNoValidationTwolineExampleComponent {
     map: { zoom: 15 }
   };
 
-  @ViewChild('format') format: FsAddressFormatComponent;
+  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
 
   constructor() {}
 

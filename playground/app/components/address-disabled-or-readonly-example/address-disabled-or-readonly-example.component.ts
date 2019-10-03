@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 
-import { FsAddressFormatComponent } from '@firestitch/address';
+import { FsAddressFormatComponent, FsAddressSearchComponent } from '@firestitch/address';
 
 // Interfaces
 import {
@@ -26,7 +26,7 @@ export class AddressDisabledOrReadonlyExampleComponent implements OnInit {
 
   public config: IFsAddressConfig = {};
 
-  @ViewChild('format') format: FsAddressFormatComponent;
+  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
 
   constructor() {}
 
