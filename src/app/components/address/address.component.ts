@@ -174,6 +174,8 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
     this.searchedAddress = parts.filter(part => part).join(', ');
 
+    this.addressChange.emit(this.address);
+
     geocoder.geocode( { address: this.searchedAddress  }, (results, status) => {
       this.isSearched = true;
       const newAddress = Object.assign({}, this.address);
