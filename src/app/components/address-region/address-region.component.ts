@@ -23,6 +23,7 @@ export class FsAddressRegionComponent implements OnInit {
   @Input() public region: string;
   @Input() public countries = [];
   @Input() public disabled = false;
+  @Input() public label;
   @Input() public required = false;
   @Output() public regionChange = new EventEmitter<string>();
   @Input('country') set country(value) {
@@ -33,7 +34,7 @@ export class FsAddressRegionComponent implements OnInit {
 
   private _country;
   public regions: { code: string, name: string }[] = [];
-  public regionLabel = 'Province/State';
+  public regionLabel;
 
   constructor() { }
 
@@ -52,9 +53,15 @@ export class FsAddressRegionComponent implements OnInit {
   }
 
   public updateCountryRegionLabels() {
-    this.regionLabel = this._country === Country.Canada
+
+    if (this.label) {
+      this.regionLabel = this.label
+
+    } else {
+      this.regionLabel = this._country === Country.Canada
       ? 'Province'
       : this._country === Country.UnitedStates ? 'State' : 'Province/State';
+    }
   }
 
   public changeRegion() {
