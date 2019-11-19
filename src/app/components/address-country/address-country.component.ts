@@ -6,7 +6,8 @@ import {
   forwardRef,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlContainer, NgForm, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { Countries } from '../../consts/countries.const';
 
 
@@ -20,6 +21,7 @@ import { Countries } from '../../consts/countries.const';
     useExisting: forwardRef(() => FsAddressCountryComponent),
   } ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
 })
 export class FsAddressCountryComponent implements ControlValueAccessor {
 

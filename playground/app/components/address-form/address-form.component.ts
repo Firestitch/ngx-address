@@ -12,7 +12,7 @@ import { IFsAddressConfig } from '@firestitch/address';
 export class AddressFormComponent {
 
   public address;
-  public config: IFsAddressConfig = {};
+  public config: IFsAddressConfig = { };
 
   change(address) {
     this.address = address;

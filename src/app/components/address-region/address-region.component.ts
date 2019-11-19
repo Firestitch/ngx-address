@@ -1,14 +1,22 @@
 import {
   ChangeDetectionStrategy,
-  Component, EventEmitter, Input, OnInit, Output
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
 } from '@angular/core';
+import { ControlContainer, NgForm } from '@angular/forms';
+
 import { Country } from '../../enums/country.enum';
+
 
 @Component({
   selector: 'fs-address-region',
   templateUrl: './address-region.component.html',
   styleUrls: ['./address-region.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
 })
 export class FsAddressRegionComponent implements OnInit {
 
@@ -26,6 +34,8 @@ export class FsAddressRegionComponent implements OnInit {
   private _country;
   public regions: { code: string, name: string }[] = [];
   public regionLabel = 'Province/State';
+
+  constructor() { }
 
   public ngOnInit() {
     this.initRegions();
@@ -56,4 +66,5 @@ export class FsAddressRegionComponent implements OnInit {
     }
     this.regionChange.emit(this.region);
   }
+
 }
