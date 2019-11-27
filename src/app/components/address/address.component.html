@@ -3,6 +3,7 @@
   class="name">
   <input
     matInput
+    autocomplete="nope"
     [(ngModel)]="address.name"
     [disabled]="config.name.disabled"
     [fsFormRequired]="config.name.required"
@@ -17,6 +18,7 @@
   class="street">
   <input
     matInput
+    autocomplete="nope"
     [(ngModel)]="address.street"
     [disabled]="config.street.disabled"
     [fsFormRequired]="config.street.required"
@@ -31,6 +33,7 @@
     <mat-form-field *ngIf="config.city.visible!==false">
       <input
         matInput
+        autocomplete="nope"
         [(ngModel)]="address.city"
         [disabled]="config.city.disabled"
         [fsFormRequired]="config.city.required"
@@ -58,6 +61,7 @@
       <mat-label>{{ zipLabel }}</mat-label>
       <input
         matInput
+        autocomplete="nope"
         [(ngModel)]="address.zip"
         [disabled]="config.zip.disabled"
         [fsFormRequired]="config.zip.required"

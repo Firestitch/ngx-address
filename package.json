@@ -2,7 +2,7 @@
   "name": "@firestitch/address",
   "title": "Address",
   "description": "@firestitch/address",
-  "version": "8.0.3",
+  "version": "8.0.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-address"
@@ -50,9 +50,9 @@
     "@firestitch/datepicker": "^7.4.6",
     "@firestitch/drawer": "^7.0.4",
     "@firestitch/example": "^7.0.8",
-    "@firestitch/form": "^7.6.7",
+    "@firestitch/form": "^8.0.3",
     "@firestitch/label": "^7.1.9",
-    "@firestitch/menu": "^7.0.10",
+    "@firestitch/menu": "^7.0.11",
     "@firestitch/message": "^7.1.9",
     "@firestitch/phone": "^7.2.1",
     "@firestitch/scroll-picker": "^7.0.2",

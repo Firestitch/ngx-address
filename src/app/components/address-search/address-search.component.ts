@@ -41,16 +41,18 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   @Input() format = AddressFormat.OneLine;
   @Input() disabled = false;
   @Input() readonly = false;
-  private _config: IFsAddressConfig = {};
+
   @Input() public  set config(value: IFsAddressConfig) {
     this._config = value;
     if (this._config) {
       this.updateRequiredStatus();
     }
   }
+
   public get config(): IFsAddressConfig {
     return this._config;
   }
+
   @Input() name = true;
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
   @Output() edited: EventEmitter<any> = new EventEmitter<any>();
@@ -71,8 +73,10 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public location = '';
   public required = false;
   public emptyAddress = true;
+
   private changeAddressDebounce = new Subject<any>();
   private destroy$ = new Subject<void>();
+  private _config: IFsAddressConfig = {};
 
   constructor(
     private _mapsAPILoader: MapsAPILoader,

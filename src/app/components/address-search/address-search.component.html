@@ -3,6 +3,7 @@
   [floatLabel]="emptyAddress ? 'auto' : 'always'">
     <input
       matInput
+      autocomplete="nope"
       [placeholder]="config.label || 'Location'"
       [(ngModel)]="address"
       [ngClass]="{ hide: !emptyAddress }"
