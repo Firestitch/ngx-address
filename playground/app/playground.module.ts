@@ -37,7 +37,7 @@ import {
   AddressRegionNoValidationExampleComponent,
   AddressFormComponent
 } from './components';
-import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material';
+import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material/core';
 
 
 @NgModule({

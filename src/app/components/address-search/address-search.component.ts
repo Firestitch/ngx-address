@@ -11,9 +11,9 @@ import {
   Output,
   ViewChild, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
-import { MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { NgForm, ControlContainer } from '@angular/forms';
-import { MatFormField } from '@angular/material';
+import { MatFormField } from '@angular/material/form-field';
 import { ENTER } from '@angular/cdk/keycodes';
 
 import { MapsAPILoader } from '@agm/core';

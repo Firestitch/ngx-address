@@ -9,13 +9,11 @@ import {
   GoogleMapsAPIWrapper,
   MarkerManager,
   LAZY_MAPS_API_CONFIG } from '@agm/core';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatIconModule,
-  MatInputModule,
-  MatSelectModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 import { FsFormModule } from '@firestitch/form';
 
