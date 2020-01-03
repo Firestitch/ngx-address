@@ -21,6 +21,7 @@ import { MapsAPILoader } from '@agm/core';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { each } from 'lodash-es';
+import { guid } from '@firestitch/common';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
@@ -73,6 +74,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public location = '';
   public required = false;
   public emptyAddress = true;
+  public autocompleteName = `search-${guid('xxxxxxxx')}`;
 
   private changeAddressDebounce = new Subject<any>();
   private destroy$ = new Subject<void>();
@@ -201,17 +203,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public autocompleteSelected(option) {
 
     const place = option.value;
-    const newAddress: FsAddress = {
-      name: '',
-      description: '',
-      country: '',
-      region: '',
-      city: '',
-      street: '',
-      zip: '',
-      lat: null,
-      lng: null,
-    };
+    const newAddress: FsAddress = this._createAddress();
 
     this.emptyAddress = true;
 
@@ -358,12 +350,26 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.showEdit = false;
     this.showClear = false;
     this.location = null;
-    this.cleared.emit({});
-    this.addressChange.emit({});
+    this.cleared.emit(this._createAddress());
+    this.addressChange.emit(this._createAddress());
   }
 
   public edit() {
     this.selecting = false;
     this.edited.emit();
+  }
+
+  private _createAddress(): FsAddress {
+    return {
+      name: '',
+      description: '',
+      country: '',
+      region: '',
+      city: '',
+      street: '',
+      zip: '',
+      lat: null,
+      lng: null,
+    };
   }
 }

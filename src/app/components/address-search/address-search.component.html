@@ -3,7 +3,7 @@
   [floatLabel]="emptyAddress ? 'auto' : 'always'">
     <input
       matInput
-      autocomplete="nope"
+      autocomplete="off"
       [placeholder]="config.label || 'Location'"
       [(ngModel)]="address"
       [ngClass]="{ hide: !emptyAddress }"
@@ -13,7 +13,7 @@
       [disabled]="disabled"
       (keyup)="addressChanged($event)"
       (focus)="focus()"
-      name="address_search"
+      [name]="autocompleteName"
       #search>
 
     <fs-address-format
