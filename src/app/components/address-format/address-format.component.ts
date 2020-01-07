@@ -62,7 +62,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
 
   private lineFormat() {
 
-    const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
+    const parts = ['name', 'street', 'address2', 'city', 'region', 'zip', 'country'];
     let address = [];
     this.lines = [];
 
@@ -92,7 +92,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
   }
 
   private summaryFormat() {
-    const parts = ['name', 'street', 'city', 'region', 'country'];
+    const parts = ['name', 'street', 'address2', 'city', 'region', 'country'];
     const address = [];
     this.lines = [];
 

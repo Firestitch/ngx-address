@@ -28,6 +28,21 @@
     autocomplete="off">
 </mat-form-field>
 
+<mat-form-field
+  *ngIf="config.address2.visible"
+  class="address2">
+  <input
+    matInput
+    autocomplete="nope"
+    [(ngModel)]="address.address2"
+    [disabled]="config.address2.disabled"
+    [fsFormRequired]="config.address2.required"
+    name="address2"
+    placeholder="Apartment, Suite, Unit, Etc."
+    (change)="change($event)"
+    autocomplete="off">
+</mat-form-field>
+
 <div class="city-region-zip-country">
   <div class="city">
     <mat-form-field *ngIf="config.city.visible!==false">

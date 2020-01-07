@@ -116,6 +116,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       (this.config.region && this.config.region.required) ||
       (this.config.city && this.config.city.required) ||
       (this.config.street && this.config.street.required) ||
+      (this.config.address2 && this.config.address2.required) ||
       (this.config.zip && this.config.zip.required));
 
     setTimeout(() => {
@@ -291,7 +292,10 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
               streetShortName !== result.name &&
               newAddress.zip !== result.name &&
               newAddress.street !== result.name) {
-            newAddress.name = result.name;
+
+            if (this.config.name.visible) {
+              newAddress.name = result.name;
+            }
 
           } else {
             newAddress.name = '';

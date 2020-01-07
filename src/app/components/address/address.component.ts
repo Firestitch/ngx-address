@@ -41,7 +41,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(AgmMarker, { static: false }) agmMarker;
   @ViewChild(FsAddressRegionComponent, { static: false }) fsAddressRegionComponent;
 
-  // ADDRESS Two-way binding
   @Input() address: FsAddress;
   @Output() addressChange = new EventEmitter();
   @Output() collapseChange = new EventEmitter();
@@ -50,9 +49,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
     config.search = config.search === undefined ? false : config.search;
 
-    if (isObject(config.map)) {
-      config.map.showMap = true;
-    } else {
+    if (!isObject(config.map)) {
       config.map = { showMap: false };
     }
 
@@ -209,6 +206,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       name: void 0,
       country: void 0,
       region: void 0,
+      address2: void 0,
       street: void 0,
       city: void 0,
       zip: void 0,
@@ -222,6 +220,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       name: { required: false, visible: true },
       country: { required: false, visible: true },
       region: { required: false, visible: true },
+      address2: { required: false, visible: false },
       city: { required: false, visible: true },
       street: { required: false, visible: true },
       zip: { required: false, visible: true },

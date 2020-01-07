@@ -14,6 +14,7 @@ import { AddressPickerConfig } from '../../interfaces/address-config.interface';
 import { FsAddressSearchComponent } from '../address-search/address-search.component';
 import { FsAddressComponent } from '../address/address.component';
 import { AddressFormat } from '../../enums/address-format.enum';
+import { isObject } from 'lodash-es';
 
 
 @Component({
@@ -33,7 +34,9 @@ export class FsAddressPickerComponent implements AfterViewInit {
     }
 
     config.search = true;
-    config.map = { showMap: true };
+    if (!isObject(config.map)) {
+      config.map = { showMap: false };
+    }
 
     this.config = config;
   }

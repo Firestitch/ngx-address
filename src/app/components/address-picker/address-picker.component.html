@@ -21,7 +21,7 @@
       (addressChange)="addressChange.emit($event)">
     </fs-address>
 
-    <div fxLayout="row" fxLayoutGap="5px" class="map-buttons" fxLayout.xs="column">
+    <div fxLayout="row" fxLayoutGap="5px" class="map-buttons" fxLayout.xs="column" *ngIf="config.map.showMap">
       <button
         mat-button
         type="button"

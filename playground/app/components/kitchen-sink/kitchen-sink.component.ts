@@ -27,8 +27,8 @@ export class KitchenSinkComponent {
   public config: AddressPickerConfig = {
     label: 'Location',
     format: AddressFormat.OneLine,
-    map: { zoom: 15 },
-    name: { visible: true, required: false, disabled: false },
+    map: { zoom: 15, showMap: true },
+    name: { visible: false, required: false, disabled: false },
     address2:  { visible: true, required: false, disabled: false },
     street:  { visible: true, required: false, disabled: false },
     city:  { visible: true, required: true, disabled: false },
