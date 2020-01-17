@@ -17,8 +17,8 @@ import { ENTER } from '@angular/cdk/keycodes';
 
 import { MapsAPILoader } from '@agm/core';
 
-import { Subject, Observable, zip, of, throwError } from 'rxjs';
-import { debounceTime, takeUntil, switchMap, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { guid } from '@firestitch/common';
 
 import { FsAddress } from '../../interfaces/address.interface';
