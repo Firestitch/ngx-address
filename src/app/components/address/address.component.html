@@ -51,7 +51,7 @@
         autocomplete="nope"
         [(ngModel)]="address.city"
         [disabled]="config.city.disabled"
-
+        [fsFormRequired]="config.city.required"
         name="city"
         placeholder="City"
         (change)="change($event)"
