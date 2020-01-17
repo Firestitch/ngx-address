@@ -1,0 +1,22 @@
+<form fsForm [submit]="submit">
+  <fs-dialog>
+    <div mat-dialog-content>
+      <fs-address
+        [(address)]="address"
+        [config]="config"
+        (addressChange)="addressChange($event)">
+      </fs-address>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button type="submit" color="primary">Apply</button>
+      <button
+        mat-button
+        type="button"
+        *ngIf="config.map.showMap && address.lat && address.lng"
+        (click)="recenter()">
+        Center Address
+      </button>
+      <button mat-button type="button" [mat-dialog-close]="null">Cancel</button>
+    </div>
+  </fs-dialog>
+</form>

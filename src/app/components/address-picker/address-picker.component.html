@@ -1,6 +1,6 @@
 <div class="address-picker-container">
 
-  <div class="search" *ngIf="view === 'search'; else addressEdit">
+  <div class="search">
     <fs-address-search
       [(address)]="address"
       [config]="config"
@@ -13,29 +13,4 @@
     </fs-address-search>
   </div>
 
-  <ng-template #addressEdit>
-    <fs-address
-      #addressComponent
-      [(address)]="address"
-      [config]="config"
-      (addressChange)="addressChange.emit($event)">
-    </fs-address>
-
-    <div fxLayout="row" fxLayoutGap="5px" class="map-buttons" fxLayout.xs="column" *ngIf="config.map.showMap">
-      <button
-        mat-button
-        type="button"
-        *ngIf="address.lat && address.lng"
-        (click)="recenter()">
-        Center Address
-      </button>
-
-      <button
-        type="button"
-        mat-button
-        (click)="viewSearch()">
-        Collapse Address
-      </button>
-    </div>
-  </ng-template>
 </div>

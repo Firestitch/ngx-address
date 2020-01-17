@@ -7,6 +7,7 @@ import {
 
 import { each } from 'lodash-es';
 import { FsAddress } from '../../interfaces/address.interface';
+import { AddressFormat } from '../../enums/address-format.enum';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
     return this._address;
   }
 
-  @Input() format: 'oneline' | 'twoline' | 'summary';
+  @Input() format: AddressFormat;
   @Input() includeFirst: 0;
   @Input() disabled = false;
   @Input('name')
@@ -48,16 +49,20 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
 
   public ngOnChanges(changes) {
     if (changes.address && changes.address.previousValue) {
-      this.updateView();
+      this._updateView();
     }
   }
 
   public ngOnInit() {
-    this.updateView();
+    this._updateView();
   }
 
-  private updateView() {
-    this.format === 'summary' ? this.summaryFormat() : this.lineFormat();
+  private _updateView() {
+    if (this.format === AddressFormat.Summary) {
+      this.summaryFormat();
+    } else {
+      this.lineFormat();
+    }
   }
 
   private lineFormat() {
@@ -84,7 +89,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
 
       this.lines = [address];
 
-      if (this.format === 'twoline') {
+      if (this.format === AddressFormat.TwoLine) {
         this.lines = [[address.shift()]];
         this.lines.push(address);
       }

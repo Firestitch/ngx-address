@@ -11,9 +11,15 @@ mat-form-field {
   position: absolute;
 }
 
-
 textarea {
   height: 16px;
   resize: none;
   overflow: hidden;
+}
+
+fs-address-format {
+  display: block;
+  &.editable {
+    cursor: pointer;
+  }
 }

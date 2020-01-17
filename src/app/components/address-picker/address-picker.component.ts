@@ -2,9 +2,8 @@ import {
   Component,
   EventEmitter,
   Input,
-  AfterViewInit,
   Output,
-  ViewChild, ChangeDetectionStrategy
+  ViewChild, ChangeDetectionStrategy, OnDestroy
 } from '@angular/core';
 
 // Interfaces
@@ -15,6 +14,11 @@ import { FsAddressSearchComponent } from '../address-search/address-search.compo
 import { FsAddressComponent } from '../address/address.component';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { isObject } from 'lodash-es';
+import { MatDialog } from '@angular/material/dialog';
+import { FsAddressDialogComponent } from '../address-dialog/address-dialog.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -23,14 +27,12 @@ import { isObject } from 'lodash-es';
   styleUrls: ['./address-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsAddressPickerComponent implements AfterViewInit {
-
-  @ViewChild(FsAddressComponent, { static: false }) addressComponent;
+export class FsAddressPickerComponent implements OnDestroy {
 
   @Input('config') set setConfig(config: AddressPickerConfig) {
 
     if (!config.format) {
-      config.format = AddressFormat.OneLine;
+      config.format = AddressFormat.Summary;
     }
 
     config.search = true;
@@ -71,25 +73,41 @@ export class FsAddressPickerComponent implements AfterViewInit {
   public config: AddressPickerConfig = {};
   private _name = true;
 
-  constructor() {}
+  private _destroy$ = new Subject();
 
-  public ngAfterViewInit() {
-    this.viewSearch();
-  }
+  constructor(private _dialog: MatDialog,
+              private _ngForm: NgForm) {}
 
-  public viewSearch() {
-    this.view = 'search';
-  }
+  open(): void {
+    const dialogRef = this._dialog.open(FsAddressDialogComponent, {
+      width: '700px',
+      data: {
+        address: this.address,
+        config: this.config
+      }
+    });
 
-  public viewEdit() {
-    this.view = 'edit';
+    dialogRef.afterClosed()
+    .pipe(
+      takeUntil(this._destroy$)
+    )
+    .subscribe(result => {
+      if (result) {
+        this.address = result;
+        this.addressChange.emit(this.address);
+        setTimeout(() => {
+          this.search.revalidate();
+        });
+      }
+    });
   }
 
   public searchEdited() {
-    this.viewEdit();
+    this.open();
   }
 
-  public recenter() {
-    this.addressComponent.recenter();
+  public ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

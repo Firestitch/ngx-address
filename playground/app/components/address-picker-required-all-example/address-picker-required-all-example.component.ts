@@ -48,10 +48,6 @@ export class AddressPickerRequiredAllExampleComponent implements OnInit {
     this.address = event;
   }
 
-  public viewSearch() {
-    this.picker.viewSearch()
-  }
-
   public addressChanged(event) {
     console.log('fired', event);
   }

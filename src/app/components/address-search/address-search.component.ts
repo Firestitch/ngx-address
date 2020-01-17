@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Renderer2,
   Input,
   NgZone,
   OnChanges,
@@ -18,9 +17,8 @@ import { ENTER } from '@angular/cdk/keycodes';
 
 import { MapsAPILoader } from '@agm/core';
 
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { each } from 'lodash-es';
+import { Subject, Observable, zip, of, throwError } from 'rxjs';
+import { debounceTime, takeUntil, switchMap, map } from 'rxjs/operators';
 import { guid } from '@firestitch/common';
 
 import { FsAddress } from '../../interfaces/address.interface';
@@ -39,14 +37,21 @@ declare var google: any;
 })
 export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
-  @Input() format = AddressFormat.OneLine;
+  @Input() format = AddressFormat.TwoLine;
   @Input() disabled = false;
   @Input() readonly = false;
 
   @Input() public  set config(value: IFsAddressConfig) {
     this._config = value;
     if (this._config) {
-      this.updateRequiredStatus();
+      this.required =
+      ( (this.config.name && this.config.name.required) ||
+        (this.config.country && this.config.country.required) ||
+        (this.config.region && this.config.region.required) ||
+        (this.config.city && this.config.city.required) ||
+        (this.config.street && this.config.street.required) ||
+        (this.config.address2 && this.config.address2.required) ||
+        (this.config.zip && this.config.zip.required));
     }
   }
 
@@ -61,11 +66,11 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   @Output() addressChange = new EventEmitter();
 
   @ViewChild('searchFormField', { static: true }) public searchFormField: MatFormField = null;
-  @ViewChild('search', { static: true }) searchElement: ElementRef;
+  @ViewChild('searchInput', { static: true }) searchElement: ElementRef;
   @ViewChild(MatAutocompleteTrigger, { static: true }) trigger: MatAutocompleteTrigger;
-  @ViewChild('search', { read: MatAutocompleteTrigger, static: true }) autoComplete: MatAutocompleteTrigger;
+  @ViewChild('searchInput', { read: MatAutocompleteTrigger, static: true }) autoComplete: MatAutocompleteTrigger;
 
-  public showEdit = false;
+  public inputAddress;
   public showClear = false;
   public predictions: any[] = [];
   public selecting = false;
@@ -74,34 +79,41 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public location = '';
   public required = false;
   public emptyAddress = true;
+  public editable = true;
   public autocompleteName = `search-${guid('xxxxxxxx')}`;
 
-  private changeAddressDebounce = new Subject<any>();
-  private destroy$ = new Subject<void>();
+  private _changeAddressDebounce$ = new Subject<any>();
+  private _destroy$ = new Subject<void>();
   private _config: IFsAddressConfig = {};
 
   constructor(
     private _mapsAPILoader: MapsAPILoader,
     private _ngZone: NgZone,
-    private _renderer: Renderer2,
+    private _ngForm: NgForm,
     private _cdRef: ChangeDetectorRef,
   ) {
-    this.changeAddressDebounce
+    this._changeAddressDebounce$
       .pipe(
-        debounceTime(300),
-        takeUntil(this.destroy$),
+        debounceTime(200),
+        takeUntil(this._destroy$),
       )
       .subscribe(value => {
         this.updatePredictions(value);
       });
   }
 
+  public revalidate() {
+    const control = this._ngForm.controls[this.autocompleteName];
+    control.updateValueAndValidity();
+  }
+
   public ngOnChanges(changes) {
     if (changes.address) {
       this.calculateAddress();
-      this.showEdit = !this.emptyAddress;
       this.showClear = !this.emptyAddress;
     }
+
+    this.editable = !this.disabled && !this.readonly;
   }
 
   public ngOnInit() {
@@ -109,31 +121,9 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.initGoogleMap();
   }
 
-  public updateRequiredStatus() {
-    this.required =
-    ( (this.config.name && this.config.name.required) ||
-      (this.config.country && this.config.country.required) ||
-      (this.config.region && this.config.region.required) ||
-      (this.config.city && this.config.city.required) ||
-      (this.config.street && this.config.street.required) ||
-      (this.config.address2 && this.config.address2.required) ||
-      (this.config.zip && this.config.zip.required));
-
-    setTimeout(() => {
-      const labelRef = this.searchFormField
-        .getConnectedOverlayOrigin()
-        .nativeElement
-        .querySelector('.mat-form-field-label');
-
-      this.required ?
-        this._renderer.addClass(labelRef, 'fs-form-label-required') :
-        this._renderer.removeClass(labelRef, 'fs-form-label-required');
-    });
-  }
-
   public ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   private calculateAddress() {
@@ -177,27 +167,16 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
             }
 
             this.predictions = predictions ? predictions.slice() : [];
-
             this.predictions.push({ description: `Just use "${value}"`, id: 1, name: value });
-
             this._cdRef.detectChanges();
           });
         });
     }
   }
 
-  public blur() {
-    this.selecting = false;
-  }
-
-  public focus() {
-    this.selecting = true;
-  }
-
   public addressChanged(event) {
     if (event.keyCode === ENTER) { return; }
-
-    this.changeAddressDebounce.next(event.currentTarget.value);
+    this._changeAddressDebounce$.next(event.currentTarget.value);
     this.autoComplete.openPanel();
   }
 
@@ -205,10 +184,9 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
     const place = option.value;
     const newAddress: FsAddress = this._createAddress();
-
     this.emptyAddress = true;
 
-    (new Promise((resolve) => {
+    new Promise(resolve => {
 
       // when something went wrong
       if (!place || !this.googlePlacesService) {
@@ -293,7 +271,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
               newAddress.zip !== result.name &&
               newAddress.street !== result.name) {
 
-            if (this.config.name.visible) {
+            if (this.config.name && this.config.name.visible !== false) {
               newAddress.name = result.name;
             }
 
@@ -301,65 +279,76 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
             newAddress.name = '';
           }
 
-          resolve();
+          resolve(newAddress);
           this.addressChange.emit(newAddress);
         });
       });
 
-    })).then(() => {
+    }).then(() => {
       this.selecting = false;
-
+      this.address = newAddress;
       this._cdRef.detectChanges();
+      this.revalidate();
+    }, () => {
+
     });
+  }
+
+  public focus() {
+    this.selecting = true;
   }
 
   public functionPromise = () => {
 
+    if (this.selecting === true) {
+      return true;
+    }
+
     return new Promise((resolve, reject) => {
 
-      if (this.selecting) {
-        return resolve();
-      }
+        const requiredField = [];
+        const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
 
-      const requiredField = [];
-      const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
+        parts.forEach(part => {
+          if (this.config[part] && this.config[part].required && !this.address[part]) {
+            requiredField.push([part]);
+          }
+        });
 
-      each(parts, (part) => {
-        if (this.config[part] && this.config[part].required && (this.address[part] === '' || !this.address[part])) {
-          requiredField.push([part]);
+        if (((this.config.lat && this.config.lat.required) ||
+            (this.config.lng && this.config.lng.required)) &&
+            (!this.address.lat || !this.address.lat)) {
+          requiredField.push('position on map');
         }
-      });
 
-      if (((this.config.lat && this.config.lat.required) ||
-           (this.config.lng && this.config.lng.required)) &&
-           (!this.address.lat || !this.address.lat)) {
-        requiredField.push('position on map');
-      }
-
-      if (requiredField.length) {
-        if (requiredField.length === 1) {
-          reject(`The ${requiredField[0]} is required`);
+        if (requiredField.length) {
+          if (requiredField.length === 1) {
+            reject(`The ${requiredField[0]} is required`);
+          } else {
+            const last = requiredField.pop();
+            reject(`The ${requiredField.join(', ')} and ${last} are required`);
+          }
         } else {
-          const last = requiredField.pop();
-          reject(`The ${requiredField.join(', ')} and ${last} are required`);
+          resolve();
         }
-      } else {
-        resolve();
-      }
     });
-
   };
 
   public clear() {
-    this.showEdit = false;
     this.showClear = false;
     this.location = null;
+    this.address = this._createAddress();
+    this.inputAddress = '';
     this.cleared.emit(this._createAddress());
     this.addressChange.emit(this._createAddress());
   }
 
   public edit() {
-    this.selecting = false;
+
+    if (!this.editable) {
+      return;
+    }
+
     this.edited.emit();
   }
 

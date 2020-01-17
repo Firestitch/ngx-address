@@ -5,21 +5,24 @@
       matInput
       autocomplete="off"
       [placeholder]="config.label || 'Location'"
-      [(ngModel)]="address"
+      [(ngModel)]="inputAddress"
       [ngClass]="{ hide: !emptyAddress }"
       [fsFormFunction]="functionPromise"
       [matAutocomplete]="autocomplete"
       [ngModelOptions]="{ updateOn: 'blur' }"
+      [required]="required"
       [disabled]="disabled"
-      (keyup)="addressChanged($event)"
       (focus)="focus()"
+      (keyup)="addressChanged($event)"
       [name]="autocompleteName"
-      #search>
+      #searchInput>
 
     <fs-address-format
       [(address)]="address"
       [format]="format"
       [name]="name"
+      (click)="edit()"
+      [ngClass]="{ editable: editable }"
       [disabled]="disabled">
     </fs-address-format>
 
@@ -37,11 +40,7 @@
       class="control"
       matSuffix
       *ngIf="showClear && !emptyAddress && !disabled && !readonly"
-      (click)="clear()">clear</mat-icon>
+      (click)="clear()">clear
+    </mat-icon>
 
-    <mat-icon
-      class="control"
-      matSuffix
-      *ngIf="showEdit && !emptyAddress && !disabled && !readonly"
-      (click)="edit()">mode_edit</mat-icon>
 </mat-form-field>

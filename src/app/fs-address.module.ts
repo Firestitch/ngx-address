@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { FsFormModule } from '@firestitch/form';
+import { FsDialogModule } from '@firestitch/dialog';
 
 import { GoogleMapConfig } from './classes/googlemapconfig';
 
@@ -25,6 +26,8 @@ import { FsAddressPickerComponent } from './components/address-picker/address-pi
 import { FsAddressSearchComponent } from './components/address-search/address-search.component';
 import { FsAddressRegionModule } from './fs-address-region.module';
 import { FsAddressCountryModule } from './fs-address-country.module';
+import { FsAddressDialogComponent } from './components/address-dialog/address-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -37,8 +40,10 @@ import { FsAddressCountryModule } from './fs-address-country.module';
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatDialogModule,
     FlexLayoutModule,
     FsAddressCountriesModule,
+    FsDialogModule,
     AgmCoreModule.forRoot(),
     FsAddressRegionModule,
     FsAddressCountryModule
@@ -47,7 +52,6 @@ import { FsAddressCountryModule } from './fs-address-country.module';
     AgmCoreModule,
     FsAddressComponent,
     FsAddressFormatComponent,
-
     FsAddressPickerComponent,
     FsAddressSearchComponent
   ],
@@ -55,7 +59,11 @@ import { FsAddressCountryModule } from './fs-address-country.module';
     FsAddressComponent,
     FsAddressFormatComponent,
     FsAddressPickerComponent,
-    FsAddressSearchComponent
+    FsAddressSearchComponent,
+    FsAddressDialogComponent
+  ],
+  entryComponents: [
+    FsAddressDialogComponent
   ],
   providers: [
     GoogleMapsAPIWrapper,
