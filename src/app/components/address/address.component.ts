@@ -247,6 +247,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
           dragend: marker => {
             this.address.lat = marker.coords.lat;
             this.address.lng = marker.coords.lng;
+            this.addressChange.emit(this.address);
           }
         }
       }

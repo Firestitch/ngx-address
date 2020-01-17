@@ -32,7 +32,7 @@ export class FsAddressPickerComponent implements OnDestroy {
   @Input('config') set setConfig(config: AddressPickerConfig) {
 
     if (!config.format) {
-      config.format = AddressFormat.Summary;
+      config.format = AddressFormat.TwoLine;
     }
 
     config.search = true;

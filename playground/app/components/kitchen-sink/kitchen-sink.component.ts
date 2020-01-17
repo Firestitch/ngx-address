@@ -28,7 +28,7 @@ export class KitchenSinkComponent {
     label: 'Location',
     format: AddressFormat.TwoLine,
     map: { zoom: 15, showMap: true },
-    name: { visible: true, required: false, disabled: false },
+    name: { visible: false, required: false, disabled: false },
     address2:  { visible: true, required: false, disabled: false },
     street:  { visible: true, required: false, disabled: false },
     city:  { visible: true, required: true, disabled: false },
