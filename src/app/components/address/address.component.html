@@ -38,7 +38,7 @@
     [disabled]="config.address2.disabled"
     [fsFormRequired]="config.address2.required"
     name="address2"
-    placeholder="Apartment, Suite, Unit, Etc."
+    [placeholder]="config.address2.placeholder || 'Apartment, Suite, Unit, Etc.'"
     (change)="change($event)"
     autocomplete="off">
 </mat-form-field>

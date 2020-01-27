@@ -6,6 +6,7 @@ export interface IFsAddressFieldSetting {
   disabled?: boolean,
   required?: boolean,
   visible?: boolean,
+  placeholder?: string,
   list?: string[],
 }
 
