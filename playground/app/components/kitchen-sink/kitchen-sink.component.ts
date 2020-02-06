@@ -30,6 +30,7 @@ export class KitchenSinkComponent {
     map: { zoom: 15, showMap: true },
     name: { visible: false, required: false, disabled: false },
     address2:  { visible: true, required: false, disabled: false },
+    address3:  { visible: true, required: false, disabled: false },
     street:  { visible: true, required: false, disabled: false },
     city:  { visible: true, required: true, disabled: false },
     region:  { visible: true, required: true, disabled: false },

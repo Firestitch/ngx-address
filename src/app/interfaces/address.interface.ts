@@ -6,6 +6,7 @@ export interface FsAddress {
   city?: string,
   street?: string,
   address2?: string,
+  address3?: string,
   zip?: string,
   lat?: number,
   lng?: number

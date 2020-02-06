@@ -51,6 +51,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
         (this.config.city && this.config.city.required) ||
         (this.config.street && this.config.street.required) ||
         (this.config.address2 && this.config.address2.required) ||
+        (this.config.address3 && this.config.address3.required) ||
         (this.config.zip && this.config.zip.required));
     }
   }

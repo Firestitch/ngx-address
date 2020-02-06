@@ -38,7 +38,22 @@
     [disabled]="config.address2.disabled"
     [fsFormRequired]="config.address2.required"
     name="address2"
-    [placeholder]="config.address2.placeholder || 'Apartment, Suite, Unit, Etc.'"
+    [placeholder]="config.address2.placeholder || 'Address 2'"
+    (change)="change($event)"
+    autocomplete="off">
+</mat-form-field>
+
+<mat-form-field
+  *ngIf="config.address3.visible"
+  class="address3">
+  <input
+    matInput
+    autocomplete="nope"
+    [(ngModel)]="address.address3"
+    [disabled]="config.address3.disabled"
+    [fsFormRequired]="config.address3.required"
+    name="address3"
+    [placeholder]="config.address3.placeholder || 'Address 3'"
     (change)="change($event)"
     autocomplete="off">
 </mat-form-field>

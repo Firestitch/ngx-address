@@ -18,6 +18,7 @@ export interface IFsAddressConfig {
   city?: IFsAddressFieldSetting,
   street?: IFsAddressFieldSetting,
   address2?: IFsAddressFieldSetting,
+  address3?: IFsAddressFieldSetting,
   zip?: IFsAddressFieldSetting,
   map?: IFsAddressMapConfig,
   collapseButton?: IFsAddressCollapseButtonConfig,
