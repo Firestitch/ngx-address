@@ -12,6 +12,7 @@ export interface IFsAddressFieldSetting {
 
 export interface IFsAddressConfig {
   label?: string;
+  hint?: string;
   name?: IFsAddressFieldSetting,
   country?: IFsAddressFieldSetting,
   region?: IFsAddressFieldSetting,

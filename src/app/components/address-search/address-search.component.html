@@ -41,5 +41,5 @@
       *ngIf="showClear && !emptyAddress && !disabled && !readonly"
       (click)="clear()">clear
     </mat-icon>
-
+    <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
 </mat-form-field>

@@ -8,11 +8,11 @@ import {
   FsAddress,
   AddressFormat, FsAddressSearchComponent
 } from '@firestitch/address';
-
+import { FsMessage } from '@firestitch/message';
 import { FsAddressFormatComponent, AddressPickerConfig  } from '@firestitch/address';
 import { FsExampleComponent } from '@firestitch/example';
+
 import { ConfigureComponent } from '../configure';
-import { FsMessage } from '@firestitch/message';
 
 
 @Component({
@@ -26,6 +26,7 @@ export class KitchenSinkComponent {
   public address: FsAddress = {};
   public config: AddressPickerConfig = {
     label: 'Location',
+    hint: 'Hint Hint Hint Hint Hint...',
     format: AddressFormat.TwoLine,
     map: { zoom: 15, showMap: true },
     name: { visible: false, required: false, disabled: false },
