@@ -12,6 +12,7 @@
       [ngModelOptions]="{ updateOn: 'blur' }"
       [disabled]="disabled"
       (focus)="focus()"
+      (blur)="blur()"
       (keyup)="addressChanged($event)"
       [name]="autocompleteName"
       #searchInput>

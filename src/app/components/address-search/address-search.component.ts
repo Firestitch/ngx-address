@@ -301,6 +301,10 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.selecting = true;
   }
 
+  public blur() {
+    this.selecting = false;
+  }
+
   public functionPromise = () => {
 
     if (this.selecting === true) {
@@ -340,6 +344,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   public clear() {
     this.showClear = false;
     this.location = null;
+    this.selecting = false;
     this.address = this._createAddress();
     this.inputAddress = '';
     this.cleared.emit(this._createAddress());
