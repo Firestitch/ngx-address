@@ -11,6 +11,7 @@
       [matAutocomplete]="autocomplete"
       [ngModelOptions]="{ updateOn: 'blur' }"
       [disabled]="disabled"
+      [required]="required"
       (focus)="focus()"
       (blur)="blur()"
       (keyup)="addressChanged($event)"
