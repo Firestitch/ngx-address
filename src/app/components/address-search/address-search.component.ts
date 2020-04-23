@@ -71,7 +71,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   @ViewChild(MatAutocompleteTrigger, { static: true }) trigger: MatAutocompleteTrigger;
   @ViewChild('searchInput', { read: MatAutocompleteTrigger, static: true }) autoComplete: MatAutocompleteTrigger;
 
-  public inputAddress;
+  public inputAddress = this._defaultInputAddress();
   public showClear = false;
   public predictions: any[] = [];
   public selecting = false;
@@ -181,6 +181,13 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     if (event.keyCode === ENTER) { return; }
     this._changeAddressDebounce$.next(event.currentTarget.value);
     this.autoComplete.openPanel();
+  }
+
+  // Search input can't be null. We implemented required validation to show asterisk if needed
+  // But general validation placed in another level and not depends of this input
+  // This hack allow us to show asterisk but disable extra validation
+  private _defaultInputAddress() {
+    return ' ';
   }
 
   public autocompleteSelected(option) {
@@ -346,7 +353,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.location = null;
     this.selecting = false;
     this.address = this._createAddress();
-    this.inputAddress = '';
+    this.inputAddress = this._defaultInputAddress();
     this.cleared.emit(this._createAddress());
     this.addressChange.emit(this._createAddress());
   }
