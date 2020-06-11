@@ -105,9 +105,9 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
   public revalidate() {
     const control = this._ngForm.controls[this.autocompleteName];
-    control.updateValueAndValidity();
     control.markAsDirty();
     control.markAsTouched();
+    control.updateValueAndValidity();
   }
 
   public ngOnChanges(changes) {
@@ -356,6 +356,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.inputAddress = this._defaultInputAddress();
     this.cleared.emit(this._createAddress());
     this.addressChange.emit(this._createAddress());
+    this.revalidate();
   }
 
   public edit() {
