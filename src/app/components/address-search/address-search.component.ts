@@ -376,9 +376,12 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
       region: '',
       city: '',
       street: '',
+      address2: '',
+      address3: '',
       zip: '',
       lat: null,
       lng: null,
     };
   }
+
 }
