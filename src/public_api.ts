@@ -33,3 +33,10 @@ export { IFsAddressFormatConfig } from './app/interfaces/address-format-config.i
 export { IFsAddressMapConfig } from './app/interfaces/address-map-config.interface';
 export { IFsAddressRegionConfig } from './app/interfaces/address-region-config.interface';
 export { AddressFormat } from './app/enums/address-format.enum';
+
+export {
+  addressFormat,
+  addressTwoLineFormat,
+  addressOneLineFormat,
+  addressSummaryFormat
+} from './app/helpers';
