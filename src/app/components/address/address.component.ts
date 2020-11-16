@@ -239,7 +239,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       zoom: 13,
       scrollwheel: false,
       streetViewControl: false,
-      zoomControl: false,
+      zoomControl: true,
       mapTypeControlOptions: { mapTypeIds: [] },
       marker: {
         id: 0,
