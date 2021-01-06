@@ -6,7 +6,6 @@ import {
   ViewChild, ChangeDetectionStrategy, OnDestroy
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -30,6 +29,9 @@ import { FsAddressDialogComponent } from '../address-dialog/address-dialog.compo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressPickerComponent implements OnDestroy {
+
+  @ViewChild(FsAddressSearchComponent, { static: true })
+  public addressSearch: FsAddressSearchComponent;
 
   @Input('config') set setConfig(config: AddressPickerConfig) {
 
@@ -57,8 +59,10 @@ export class FsAddressPickerComponent implements OnDestroy {
     this.config.readonly = value;
   }
 
-  @Input() address: FsAddress;
-  @Output() addressChange = new EventEmitter();
+  @Input() public address: FsAddress;
+
+  @Output() public addressChange = new EventEmitter();
+
   @Input('name')
   set name(value: string | boolean) {
     this._name = (value === 'true' || (typeof value === 'boolean' && value)) as boolean;
@@ -77,10 +81,11 @@ export class FsAddressPickerComponent implements OnDestroy {
 
   private _destroy$ = new Subject();
 
-  constructor(private _dialog: MatDialog,
-              private _ngForm: NgForm) {}
+  constructor(
+    private _dialog: MatDialog,
+  ) { }
 
-  open(): void {
+  public open(): void {
     const dialogRef = this._dialog.open(FsAddressDialogComponent, {
       width: '700px',
       data: {
@@ -106,6 +111,11 @@ export class FsAddressPickerComponent implements OnDestroy {
 
   public searchEdited() {
     this.open();
+  }
+
+  public clear() {
+    this.address = {};
+    this.addressSearch.clear();
   }
 
   public ngOnDestroy() {

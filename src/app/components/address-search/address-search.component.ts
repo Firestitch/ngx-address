@@ -41,7 +41,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() readonly = false;
 
-  @Input() public  set config(value: IFsAddressConfig) {
+  @Input() public set config(value: IFsAddressConfig) {
     this._config = value;
     if (this._config) {
       this.required =
@@ -200,13 +200,13 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
 
       // when something went wrong
       if (!place || !this.googlePlacesService) {
-        resolve();
+        resolve(true);
       }
 
       // when it's not an address it's "Just use" case
       if (place && !place.place_id) {
         this.addressChange.emit(place);
-        resolve();
+        resolve(true);
       }
 
       newAddress.description = place.description;
@@ -214,7 +214,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
         this._ngZone.run(() => {
 
           if (status != google.maps.places.PlacesServiceStatus.OK) {
-            return resolve();
+            return resolve(true);
           }
 
           newAddress.lat = result.geometry.location.lat();
@@ -343,7 +343,7 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
             reject(`The ${requiredField.join(', ')} and ${last} are required`);
           }
         } else {
-          resolve();
+          resolve(true);
         }
     });
   };
@@ -356,7 +356,10 @@ export class FsAddressSearchComponent implements OnChanges, OnInit, OnDestroy {
     this.inputAddress = this._defaultInputAddress();
     this.cleared.emit(this._createAddress());
     this.addressChange.emit(this._createAddress());
-    this.revalidate();
+    const control = this._ngForm.controls[this.autocompleteName];
+    control.markAsPristine();
+    control.markAsUntouched();
+    control.updateValueAndValidity();
   }
 
   public edit() {

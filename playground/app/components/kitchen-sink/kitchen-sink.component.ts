@@ -6,7 +6,7 @@ import {
 // Interfaces
 import {
   FsAddress,
-  AddressFormat, FsAddressSearchComponent
+  AddressFormat, FsAddressSearchComponent, FsAddressPickerComponent
 } from '@firestitch/address';
 import { FsMessage } from '@firestitch/message';
 import { FsAddressFormatComponent, AddressPickerConfig  } from '@firestitch/address';
@@ -39,7 +39,11 @@ export class KitchenSinkComponent {
     country:  { visible: true, required: true, disabled: false }
   };
 
-  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
+  @ViewChild(FsAddressFormatComponent, { static: false })
+  public format: FsAddressFormatComponent;
+
+  @ViewChild(FsAddressPickerComponent, { static: false })
+  public addressPicker: FsAddressPickerComponent;
 
   constructor(private example: FsExampleComponent, private message: FsMessage) {
     example.setConfigureComponent(ConfigureComponent, { config: this.config });
