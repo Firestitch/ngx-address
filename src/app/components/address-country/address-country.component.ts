@@ -4,7 +4,9 @@ import {
   Input,
   Output,
   forwardRef,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { ControlContainer, NgForm, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -23,10 +25,11 @@ import { Countries } from '../../consts/countries.const';
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
 })
-export class FsAddressCountryComponent implements ControlValueAccessor {
+export class FsAddressCountryComponent implements OnChanges, ControlValueAccessor {
 
   @Input() disabled = false;
   @Input() required = false;
+  @Input() excludeCountries: string[];
   @Input() countries = Countries;
 
   @Output() selectionChange = new EventEmitter<any>();
@@ -50,5 +53,13 @@ export class FsAddressCountryComponent implements ControlValueAccessor {
 
   public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.excludeCountries && changes.excludeCountries.currentValue) {
+      this.countries = this.countries.filter((country) => {
+        return this.excludeCountries.indexOf(country.code) === -1;
+      })
+    }
   }
 }

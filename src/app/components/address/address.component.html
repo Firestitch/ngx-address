@@ -65,6 +65,7 @@
       *ngIf="config.country.visible!==false"
       [disabled]="config.country.disabled"
       [required]="config.country.required"
+      [excludeCountries]="excludeCountries"
       [(ngModel)]="address.country"
       (selectionChange)="changeCountry()"
       name="address-country">

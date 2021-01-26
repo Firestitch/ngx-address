@@ -42,6 +42,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(FsAddressRegionComponent, { static: false }) fsAddressRegionComponent;
 
   @Input() address: FsAddress;
+  @Input() excludeCountries: string[];
   @Output() addressChange = new EventEmitter();
   @Output() collapseChange = new EventEmitter();
 
