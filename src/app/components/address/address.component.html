@@ -60,16 +60,19 @@
 
 <div class="city-region-zip-country" fxLayout.lt-sm="column">
 
-  <div class="country">
-    <fs-address-country
-      *ngIf="config.country.visible!==false"
-      [disabled]="config.country.disabled"
-      [required]="config.country.required"
-      [excludeCountries]="excludeCountries"
-      [(ngModel)]="address.country"
-      (selectionChange)="changeCountry()"
-      name="address-country">
-    </fs-address-country>
+  <div class="city">
+    <mat-form-field *ngIf="config.city.visible!==false">
+      <input
+        matInput
+        autocomplete="nope"
+        [(ngModel)]="address.city"
+        [disabled]="config.city.disabled"
+        [fsFormRequired]="config.city.required"
+        name="city"
+        placeholder="City"
+        (change)="change($event)"
+        autocomplete="off">
+    </mat-form-field>
   </div>
 
   <div class="region">
@@ -84,19 +87,16 @@
     </fs-address-region>
   </div>
 
-    <div class="city">
-    <mat-form-field *ngIf="config.city.visible!==false">
-      <input
-        matInput
-        autocomplete="nope"
-        [(ngModel)]="address.city"
-        [disabled]="config.city.disabled"
-        [fsFormRequired]="config.city.required"
-        name="city"
-        placeholder="City"
-        (change)="change($event)"
-        autocomplete="off">
-    </mat-form-field>
+  <div class="country">
+    <fs-address-country
+      *ngIf="config.country.visible!==false"
+      [disabled]="config.country.disabled"
+      [required]="config.country.required"
+      [excludeCountries]="excludeCountries"
+      [(ngModel)]="address.country"
+      (selectionChange)="changeCountry()"
+      name="address-country">
+    </fs-address-country>
   </div>
 
   <div class="zip">
