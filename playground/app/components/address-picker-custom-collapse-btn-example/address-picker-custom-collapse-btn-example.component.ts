@@ -25,7 +25,7 @@ export class AddressPickerCustomCollapseBtnComponent {
     collapseButton: { title: 'Show search view', color: 'warn', theme: 'mat-stroked-button' }
   };
 
-  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
+  @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 

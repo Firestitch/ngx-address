@@ -1,29 +1,33 @@
 <mat-form-field>
   <mat-label>{{ regionLabel }}</mat-label>
-  <mat-select
-    matInput
-    *ngIf="regions.length"
-    [(ngModel)]="region"
-    [disabled]="disabled"
-    [fsFormRequired]="required"
-    name="region"
-    (selectionChange)="changeRegion()"
-    autocomplete="off">
+  <ng-container *ngIf="regions.length; else noRegions">
+    <mat-select
+      matInput
 
-    <mat-option *ngFor="let region of regions" [value]="region.code">
-      <span>{{ region.name }}</span>
-    </mat-option>
+      [(ngModel)]="region"
+      [disabled]="disabled"
+      [fsFormRequired]="required"
+      name="region"
+      (selectionChange)="changeRegion()"
+      autocomplete="off">
 
-  </mat-select>
+      <mat-option *ngFor="let region of regions" [value]="region.code">
+        <span>{{ region.name }}</span>
+      </mat-option>
 
-  <input
-    *ngIf="!regions.length"
-    matInput
-    [(ngModel)]="region"
-    [disabled]="disabled"
-    [fsFormRequired]="required"
-    name="region"
-    aria-label="Region"
-    (change)="changeRegion()"
-    autocomplete="off">
+    </mat-select>
+  </ng-container>
+
+
+  <ng-template #noRegions>
+    <input
+      matInput
+      [(ngModel)]="region"
+      [disabled]="disabled"
+      [fsFormRequired]="required"
+      name="region"
+      aria-label="Region"
+      (change)="changeRegion()"
+      autocomplete="off">
+  </ng-template>
 </mat-form-field>

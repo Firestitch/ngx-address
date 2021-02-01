@@ -26,7 +26,7 @@ export class AddressDisabledOrReadonlyExampleComponent implements OnInit {
 
   public config: IFsAddressConfig = {};
 
-  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
+  @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 

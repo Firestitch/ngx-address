@@ -37,7 +37,7 @@ export class AddressPickerRequiredAllExampleComponent implements OnInit {
     includeFirst: 3
   };
 
-  @ViewChild('picker', { static: false }) picker: FsAddressPickerComponent;
+  @ViewChild('picker') picker: FsAddressPickerComponent;
 
   constructor() {}
 

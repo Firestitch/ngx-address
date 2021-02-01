@@ -24,7 +24,7 @@ export class AddressPickerNoValidationTwolineExampleComponent {
     map: { zoom: 15 }
   };
 
-  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
+  @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 

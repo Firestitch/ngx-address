@@ -17,7 +17,7 @@ import { FsAddressComponent } from '../../components/address/address.component';
 })
 export class FsAddressDialogComponent {
 
-  @ViewChild(FsAddressComponent, { static: false }) addressComponent;
+  @ViewChild(FsAddressComponent) addressComponent;
 
   public address: FsAddress;
   public config;

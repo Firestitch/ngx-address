@@ -26,7 +26,7 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
     zip: { required: true }
   };
 
-  @ViewChild('format', { static: false }) format: FsAddressFormatComponent;
+  @ViewChild('format') format: FsAddressFormatComponent;
 
   constructor() {}
 

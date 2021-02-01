@@ -37,9 +37,9 @@ declare var google: any;
 })
 export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild(AgmMap, { static: false }) agmMap;
-  @ViewChild(AgmMarker, { static: false }) agmMarker;
-  @ViewChild(FsAddressRegionComponent, { static: false }) fsAddressRegionComponent;
+  @ViewChild(AgmMap) agmMap;
+  @ViewChild(AgmMarker) agmMarker;
+  @ViewChild(FsAddressRegionComponent) fsAddressRegionComponent;
 
   @Input() address: FsAddress;
   @Input() excludeCountries: string[];

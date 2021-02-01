@@ -72,8 +72,8 @@ export class FsAddressPickerComponent implements OnDestroy {
     return this._name;
   }
 
-  @ViewChild(FsAddressSearchComponent, { static: false }) public search: FsAddressSearchComponent;
-  @ViewChild(FsAddressComponent, { static: false }) public editable: FsAddressComponent;
+  @ViewChild(FsAddressSearchComponent) public search: FsAddressSearchComponent;
+  @ViewChild(FsAddressComponent) public editable: FsAddressComponent;
 
   public view = 'search';
   public config: AddressPickerConfig = {};

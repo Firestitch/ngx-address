@@ -39,10 +39,10 @@ export class KitchenSinkComponent {
     country:  { visible: true, required: true, disabled: false }
   };
 
-  @ViewChild(FsAddressFormatComponent, { static: false })
+  @ViewChild(FsAddressFormatComponent)
   public format: FsAddressFormatComponent;
 
-  @ViewChild(FsAddressPickerComponent, { static: false })
+  @ViewChild(FsAddressPickerComponent)
   public addressPicker: FsAddressPickerComponent;
 
   constructor(private example: FsExampleComponent, private message: FsMessage) {
