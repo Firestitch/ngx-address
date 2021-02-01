@@ -1,12 +1,10 @@
 <fs-autocomplete
-  #autocomplete
   [fetch]="fetch"
   [displayWith]="displayWith"
   [fetchOnFocus]="true"
   [(ngModel)]="model"
   (ngModelChange)="regionChanged()"
   [placeholder]="regionLabel"
-  [required]="true"
   name="model">
 
   <ng-template fsAutocompleteTemplate let-data="data">
