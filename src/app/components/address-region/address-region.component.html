@@ -1,33 +1,27 @@
-<mat-form-field>
-  <mat-label>{{ regionLabel }}</mat-label>
-  <ng-container *ngIf="regions.length; else noRegions">
-    <mat-select
-      matInput
+<fs-autocomplete
+  #autocomplete
+  [fetch]="fetch"
+  [displayWith]="displayWith"
+  [fetchOnFocus]="true"
+  [(ngModel)]="model"
+  (ngModelChange)="regionChanged()"
+  [placeholder]="regionLabel"
+  [required]="true"
+  name="model">
 
-      [(ngModel)]="region"
-      [disabled]="disabled"
-      [fsFormRequired]="required"
-      name="region"
-      (selectionChange)="changeRegion()"
-      autocomplete="off">
-
-      <mat-option *ngFor="let region of regions" [value]="region.code">
-        <span>{{ region.name }}</span>
-      </mat-option>
-
-    </mat-select>
-  </ng-container>
-
-
-  <ng-template #noRegions>
-    <input
-      matInput
-      [(ngModel)]="region"
-      [disabled]="disabled"
-      [fsFormRequired]="required"
-      name="region"
-      aria-label="Region"
-      (change)="changeRegion()"
-      autocomplete="off">
+  <ng-template fsAutocompleteTemplate let-data="data">
+    <span>{{ data.name }}</span>
   </ng-template>
-</mat-form-field>
+
+
+  <ng-template fsAutocompleteStatic
+               let-keyword
+               [showWhenKeyword]="true">
+    <div (click)="selectUserOption(keyword)">
+      Just Use "{{ keyword }}"
+    </div>
+  </ng-template>
+
+  <ng-template fsAutocompleteNoResults></ng-template>
+
+</fs-autocomplete>

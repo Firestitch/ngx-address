@@ -130,22 +130,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public changeCountry() {
-
-    const country = this.countries.find(item => item.code === this.address.country);
-
-    if (country && country.regions) {
-
-      const region = country.regions.some(item => item.code === this.address.region);
-
-      if (!region) {
-        this.address.region = null;
-      }
-
-    } else {
-      this.address.region = null;
-    }
-
-    this.fsAddressRegionComponent.region = this.address.region;
     this.change();
   }
 
