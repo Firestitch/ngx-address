@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FsAddressCountriesModule } from './fs-address-countries.module';
 
-import { MatSelectModule } from '@angular/material/select';
-
 import { FsFormModule } from '@firestitch/form';
+import { FsAutocompleteModule } from '@firestitch/autocomplete';
 import { FsAddressCountryComponent } from './components/address-country/address-country.component';
 
 
@@ -14,8 +13,8 @@ import { FsAddressCountryComponent } from './components/address-country/address-
     CommonModule,
     FormsModule,
     FsFormModule,
-    MatSelectModule,
-    FsAddressCountriesModule
+    FsAddressCountriesModule,
+    FsAutocompleteModule,
   ],
   declarations: [
     FsAddressCountryComponent

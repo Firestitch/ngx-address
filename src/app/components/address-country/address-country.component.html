@@ -1,14 +1,14 @@
-<mat-form-field>
-  <mat-select
-    [(ngModel)]="country"
-    [disabled]="disabled"
-    [fsFormRequired]="required"
-    (ngModelChange)="changed($event)"
-    name="country"
-    placeholder="Country"
-    autocomplete="country">
-    <mat-option *ngFor="let country of countries" [value]="country.code">
-      <span>{{ country.name }}</span>
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<fs-autocomplete
+  [fetch]="fetch"
+  [displayWith]="displayWith"
+  [fetchOnFocus]="true"
+  [(ngModel)]="country"
+  (ngModelChange)="changed($event)"
+  placeholder="Country"
+  [disabled]="disabled"
+  [fsFormRequired]="required"
+  name="country">
+  <ng-template fsAutocompleteTemplate let-data="data">
+    {{ data.name }}
+  </ng-template>
+</fs-autocomplete>

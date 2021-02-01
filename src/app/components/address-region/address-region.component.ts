@@ -4,16 +4,16 @@ import {
   EventEmitter,
   Input,
   Output,
-  OnInit,
+  OnInit, OnChanges, SimpleChanges,
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
-import { Country } from '../../enums/country.enum';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { searchRegions } from '../../helpers';
+import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
 import { IAddressRegion } from '../../interfaces/address-region.interface';
+import { Country } from '../../enums/country.enum';
 
 
 @Component({
@@ -23,16 +23,18 @@ import { IAddressRegion } from '../../interfaces/address-region.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
 })
-export class FsAddressRegionComponent implements OnInit {
+export class FsAddressRegionComponent implements OnInit, OnChanges {
 
   @Input() public region: string;
   @Input() public countries = [];
   @Input() public disabled = false;
   @Input() public label;
   @Input() public required = false;
+
   @Output() public regionChange = new EventEmitter<string>();
+
   @Input('country')
-  set country(value) {
+  public set country(value) {
     this._country = value;
     this.updateCountryRegionLabels();
   }
@@ -45,9 +47,15 @@ export class FsAddressRegionComponent implements OnInit {
   public canadaRegions: IAddressRegion[];
   public usRegions: IAddressRegion[];
 
+  public countryEnum = Country;
+
   private _country;
 
   constructor() { }
+
+  public get country(): string {
+    return this._country;
+  }
 
   public ngOnInit() {
     this._initCanadaItems();
@@ -55,49 +63,44 @@ export class FsAddressRegionComponent implements OnInit {
     this.updateCountryRegionLabels();
   }
 
+  public ngOnChanges(changes: SimpleChanges) {
+    if (changes.region && !!this.region) {
+      const country  = this.countries.find((c) => c.code === this.country);
+      if (country && country.regions) {
+        this.model = country.regions.find((region) => {
+          return region.code === this.region;
+        });
+      }
+
+      if (!this.model) {
+        this.model = { name: this.region, code: this.region };
+      }
+    }
+  }
+
   public fetch = (keyword: string) => {
     return of(keyword)
       .pipe(
         map((kw) => {
-          let canadaMatches = searchRegions(kw, this.canadaRegions, 3);
-          let usMatches = searchRegions(kw, this.usRegions, 3);
+          const canadaMatches = searchCountryRegions(kw, this.canadaRegions, 3);
+          const usMatches = searchCountryRegions(kw, this.usRegions, 3);
 
           switch (this._country) {
             case Country.Canada: {
-              const secondaryResults = this._markSecondaryRegions(
-                usMatches,
-                this.usCountryItem
-              );
-
               return [
                 ...canadaMatches,
-                ...secondaryResults,
+                ...usMatches,
               ]
             }
 
             case Country.UnitedStates: {
-              const secondaryResults = this._markSecondaryRegions(
-                canadaMatches,
-                this.canadaCountryItem
-              );
-
               return [
                 ...usMatches,
-                ...secondaryResults,
+                ...canadaMatches,
               ]
             }
 
             default: {
-              usMatches = this._markSecondaryRegions(
-                usMatches,
-                this.usCountryItem
-              );
-
-              canadaMatches = this._markSecondaryRegions(
-                canadaMatches,
-                this.canadaCountryItem
-              );
-
               return [
                 ...usMatches,
                 ...canadaMatches,
@@ -135,18 +138,6 @@ export class FsAddressRegionComponent implements OnInit {
     }
   }
 
-  private _markSecondaryRegions(matches: IAddressRegion[], countryItem: IAddressCountry) {
-    matches = matches.map((match) => {
-      return { ...match };
-    });
-
-    matches.forEach((match) => {
-      match.name = `${match.name}, ${countryItem.name}`
-    });
-
-    return matches;
-  }
-
   private _initCanadaItems(): void {
     this.canadaCountryItem = this.countries
       .find((country) => {
@@ -154,6 +145,9 @@ export class FsAddressRegionComponent implements OnInit {
       });
 
     this.canadaRegions = this.canadaCountryItem?.regions;
+    this.canadaRegions.forEach((region) => {
+      region.country = this.canadaCountryItem.code;
+    });
   }
 
   private _initUsItems(): void {
@@ -163,6 +157,9 @@ export class FsAddressRegionComponent implements OnInit {
       });
 
     this.usRegions = this.usCountryItem?.regions;
+    this.usRegions.forEach((region) => {
+      region.country = this.usCountryItem.code;
+    });
   }
 
 }

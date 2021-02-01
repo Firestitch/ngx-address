@@ -1,6 +1,12 @@
 import { IAddressRegion } from '../interfaces/address-region.interface';
+import { IAddressCountry } from '../interfaces/address-country.interface';
 
-export function searchRegions(text: string, regions: IAddressRegion[], limit: number): IAddressRegion[] {
+
+export function searchCountryRegions(
+  text: string,
+  regions: IAddressRegion[] | IAddressCountry[],
+  limit: number,
+): IAddressRegion[] {
   let matches = [];
 
   text = text.toLowerCase().trim();

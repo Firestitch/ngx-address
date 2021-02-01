@@ -5,10 +5,22 @@
   [(ngModel)]="model"
   (ngModelChange)="regionChanged()"
   [placeholder]="regionLabel"
-  name="model">
+  [disabled]="disabled"
+  [fsFormRequired]="required"
+  name="region">
 
   <ng-template fsAutocompleteTemplate let-data="data">
     <span>{{ data.name }}</span>
+    <ng-container *ngIf="!country || country !== data.country">
+      <ng-container [ngSwitch]="data.country">
+        <ng-container *ngSwitchCase="countryEnum.Canada"><!--
+          -->, {{ canadaCountryItem.name }}
+        </ng-container>
+        <ng-container *ngSwitchCase="countryEnum.UnitedStates"><!--
+          -->, {{ usCountryItem.name }}
+        </ng-container>
+      </ng-container>
+    </ng-container>
   </ng-template>
 
 

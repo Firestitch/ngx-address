@@ -79,7 +79,7 @@
     <fs-address-region
       *ngIf="config.region.visible!==false"
       [(region)]="address.region"
-      (regionChange)="change()"
+      (regionChange)="changeRegion()"
       [country]="address.country"
       [countries]="countries"
       [disabled]="config.region.disabled"

@@ -6,11 +6,14 @@ import {
   forwardRef,
   ChangeDetectionStrategy,
   OnChanges,
-  SimpleChanges,
+  SimpleChanges, ChangeDetectorRef,
 } from '@angular/core';
 import { ControlContainer, NgForm, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Countries } from '../../consts/countries.const';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { searchCountryRegions } from '../../helpers';
 
 
 @Component({
@@ -38,13 +41,35 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
   public onChange = (data: any) => {};
   public onTouched = () => {};
 
+  constructor(private _cdRef: ChangeDetectorRef) {}
+
+  public fetch = (keyword: string) => {
+    return of(keyword)
+      .pipe(
+        map((kw) => {
+          return searchCountryRegions(kw, this.countries, 10);
+        }),
+      )
+  }
+
+  public displayWith = (data) => {
+    return data.name;
+  };
+
   public writeValue(data: any): void {
-    this.country = data;
+    if (data) {
+      this.country = this.countries.find((country) => country.code === data);
+      this._cdRef.markForCheck();
+    } else {
+      this.country = data;
+    }
   }
 
   public changed(value) {
-    this.onChange(value);
-    this.selectionChange.emit(value);
+    const code = value?.code;
+
+    this.onChange(code);
+    this.selectionChange.emit(code);
   }
 
   public registerOnChange(fn: (data: any) => void): void {
