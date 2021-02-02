@@ -149,6 +149,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.fsAddressRegionComponent.region = this.address.region;
+    this.initZipAndStateLabels();
     this.change();
   }
 
@@ -299,7 +300,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateCountryRegionLabels() {
-    this.zipLabel = this.address.country === Country.UnitedStates ? 'Zip' : 'Postal Code';
+    this.zipLabel = this.address.country === Country.UnitedStates ? 'ZIP Code' : 'Postal Code';
   }
 
   private initCollapseBtn() {
