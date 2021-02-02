@@ -46,6 +46,9 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Output() addressChange = new EventEmitter();
   @Output() collapseChange = new EventEmitter();
 
+  @Input()
+  public regionCountryOrder = ['CA', 'US'];
+
   @Input('config') set setConfig(config: IFsAddressConfig) {
 
     config.search = config.search === undefined ? false : config.search;

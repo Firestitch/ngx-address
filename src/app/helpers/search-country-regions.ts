@@ -5,7 +5,7 @@ import { IAddressCountry } from '../interfaces/address-country.interface';
 export function searchCountryRegions(
   text: string,
   regions: IAddressRegion[] | IAddressCountry[],
-  limit: number,
+  limit?: number,
 ): IAddressRegion[] {
   let matches = [];
 

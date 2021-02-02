@@ -6,7 +6,8 @@ import {
   forwardRef,
   ChangeDetectionStrategy,
   OnChanges,
-  SimpleChanges, ChangeDetectorRef,
+  SimpleChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ControlContainer, NgForm, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 

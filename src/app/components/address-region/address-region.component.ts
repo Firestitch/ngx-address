@@ -4,12 +4,15 @@ import {
   EventEmitter,
   Input,
   Output,
-  OnInit, OnChanges, SimpleChanges,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
 import { IAddressRegion } from '../../interfaces/address-region.interface';
@@ -31,6 +34,9 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
   @Input() public label;
   @Input() public required = false;
 
+  @Input()
+  public regionCountryOrder = ['CA', 'US'];
+
   @Output() public regionChange = new EventEmitter<string>();
 
   @Input('country')
@@ -46,7 +52,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
   public usCountryItem: IAddressCountry;
   public canadaRegions: IAddressRegion[];
   public usRegions: IAddressRegion[];
-
+  public canadaRegionsIsFirst = false;
   public countryEnum = Country;
 
   private _country;
@@ -58,6 +64,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit() {
+    this._detectCountriesOrder();
     this._initCanadaItems();
     this._initUsItems();
     this.updateCountryRegionLabels();
@@ -76,14 +83,18 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
         this.model = { name: this.region, code: this.region };
       }
     }
+
+    if (changes.country && !this._country) {
+      this.model = null;
+    }
   }
 
   public fetch = (keyword: string) => {
     return of(keyword)
       .pipe(
         map((kw) => {
-          const canadaMatches = searchCountryRegions(kw, this.canadaRegions, 3);
-          const usMatches = searchCountryRegions(kw, this.usRegions, 3);
+          const canadaMatches = searchCountryRegions(kw, this.canadaRegions);
+          const usMatches = searchCountryRegions(kw, this.usRegions);
 
           switch (this._country) {
             case Country.Canada: {
@@ -101,10 +112,17 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
             }
 
             default: {
-              return [
-                ...usMatches,
-                ...canadaMatches,
-              ];
+              if (this.canadaRegionsIsFirst) {
+                return [
+                  ...canadaMatches,
+                  ...usMatches,
+                ];
+              } else {
+                return [
+                  ...usMatches,
+                  ...canadaMatches,
+                ];
+              }
             }
           }
         }),
@@ -160,6 +178,10 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
     this.usRegions.forEach((region) => {
       region.country = this.usCountryItem.code;
     });
+  }
+
+  private _detectCountriesOrder() {
+    this.canadaRegionsIsFirst = this.regionCountryOrder.indexOf(Country.Canada) === 0;
   }
 
 }
