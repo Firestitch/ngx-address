@@ -300,7 +300,13 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateCountryRegionLabels() {
-    this.zipLabel = this.address.country === Country.UnitedStates ? 'ZIP Code' : 'Postal Code';
+    if (this.address.country) {
+      this.zipLabel = this.address.country === Country.UnitedStates
+        ? 'ZIP Code'
+        : 'Postal Code';
+    } else {
+      this.zipLabel = 'ZIP/Postal Code';
+    }
   }
 
   private initCollapseBtn() {
