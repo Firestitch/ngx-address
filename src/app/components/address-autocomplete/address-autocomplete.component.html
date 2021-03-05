@@ -1,0 +1,16 @@
+<input
+  matInput
+  autocomplete="off"
+  [(ngModel)]="inputAddress"
+  [matAutocomplete]="autocomplete"
+  [name]="autocompleteName"
+  #searchInput>
+
+<mat-autocomplete
+  [displayWith]="displayWith"
+  autoActiveFirstOption
+  #autocomplete="matAutocomplete">
+  <mat-option *ngFor="let option of predictions" [value]="option">
+    {{ option.description }}
+  </mat-option>
+</mat-autocomplete>

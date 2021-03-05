@@ -1,47 +1,32 @@
 <mat-form-field
-  #searchFormField
-  [floatLabel]="emptyAddress ? 'auto' : 'always'">
-    <input
-      matInput
-      autocomplete="off"
-      [placeholder]="config.label || 'Location'"
-      [(ngModel)]="inputAddress"
-      [ngClass]="{ hide: !emptyAddress }"
-      [fsFormFunction]="functionPromise"
-      [matAutocomplete]="autocomplete"
-      [ngModelOptions]="{ updateOn: 'blur' }"
-      [disabled]="disabled"
-      [required]="required"
-      (focus)="focus()"
-      (blur)="blur()"
-      (keyup)="addressChanged($event)"
-      [name]="autocompleteName"
-      #searchInput>
+  [floatLabel]="addressControl.empty ? 'auto' : 'always'">
+  <fs-address-format
+    [address]="address"
+    [format]="format"
+    [name]="name"
+    (click)="edit()"
+    [ngClass]="{ editable: editable }"
+    [disabled]="disabled">
+  </fs-address-format>
 
-    <fs-address-format
-      [(address)]="address"
-      [format]="format"
-      [name]="name"
-      (click)="edit()"
-      [ngClass]="{ editable: editable }"
-      [disabled]="disabled">
-    </fs-address-format>
+  <fs-address-autocomplete
+    [config]="config"
+    [(ngModel)]="address"
+    [disabled]="disabled"
+    (ngModelChange)="addressChanged()"
+    [ngClass]="{ hide: !addressControl.addressIsEmpty }"
+    [placeholder]="config.label || 'Location'"
+    [name]="autocompleteName"
+    [required]="required"
+    #addressControl
+  >
+  </fs-address-autocomplete>
 
-    <mat-autocomplete
-      (optionSelected)="autocompleteSelected($event.option)"
-      [displayWith]="autocompleteFormat"
-      autoActiveFirstOption
-      #autocomplete="matAutocomplete">
-      <mat-option *ngFor="let option of predictions" [value]="option">
-        {{ option.description }}
-      </mat-option>
-    </mat-autocomplete>
-
-    <mat-icon
-      class="control"
-      matSuffix
-      *ngIf="showClear && !emptyAddress && !disabled && !readonly"
-      (click)="clear()">clear
-    </mat-icon>
-    <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
+  <mat-icon
+    class="control"
+    matSuffix
+    *ngIf="!addressControl.addressIsEmpty && !disabled && !readonly"
+    (click)="clear()">clear
+  </mat-icon>
+  <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
 </mat-form-field>

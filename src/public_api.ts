@@ -21,6 +21,7 @@ export { FsAddressComponent } from './app/components/address/address.component';
 export { FsAddressFormatComponent } from './app/components/address-format/address-format.component';
 export { FsAddressPickerComponent } from './app/components/address-picker/address-picker.component';
 export { FsAddressSearchComponent } from './app/components/address-search/address-search.component';
+export { FsAddressAutocompleteComponent } from './app/components/address-autocomplete/address-autocomplete.component';
 
 // Interfaces
 

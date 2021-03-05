@@ -49,6 +49,9 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   public regionCountryOrder = ['CA', 'US'];
 
+  @Input()
+  public suggestions = false;
+
   @Input('config') set setConfig(config: IFsAddressConfig) {
 
     config.search = config.search === undefined ? false : config.search;
@@ -130,6 +133,10 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.mapConfig.marker.coords.longitude = this.address.lng;
     this.agmMap.triggerResize()
       .then(() => this.agmMap._mapsWrapper.setCenter({lat: this.address.lat, lng: this.address.lng}));
+  }
+
+  public dragEnded(event): void {
+    this.mapConfig.marker.events.dragend(event)
   }
 
   public changeCountry() {

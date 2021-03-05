@@ -13,20 +13,37 @@
     autocomplete="off">
 </mat-form-field>
 
-<mat-form-field
-  *ngIf="config.street.visible!==false"
-  class="street">
-  <input
-    matInput
-    autocomplete="nope"
-    [(ngModel)]="address.street"
-    [disabled]="config.street.disabled"
-    [fsFormRequired]="config.street.required"
-    name="street"
-    placeholder="Street"
-    (change)="change($event)"
-    autocomplete="off">
-</mat-form-field>
+<ng-container *ngIf="config.street.visible!==false">
+  <mat-form-field class="street">
+    <ng-container *ngIf="suggestions; else textStreetField">
+      <fs-address-autocomplete
+        [config]="config"
+        [(ngModel)]="address"
+        (ngModelChange)="change()"
+        placeholder="Street"
+        name="street">
+      </fs-address-autocomplete>
+    </ng-container>
+
+    <ng-template #textStreetField>
+        <input
+          matInput
+          autocomplete="nope"
+          [(ngModel)]="address.street"
+          [disabled]="config.street.disabled"
+          [fsFormRequired]="config.street.required"
+          name="street"
+          placeholder="Street"
+          (change)="change()"
+          autocomplete="off">
+    </ng-template>
+  </mat-form-field>
+</ng-container>
+
+<!--<fs-address-search
+  [(address)]="address"
+  [config]="config">
+</fs-address-search>-->
 
 <mat-form-field
   *ngIf="config.address2.visible"
@@ -133,7 +150,7 @@
       [latitude]="mapConfig.marker.coords.latitude"
       [longitude]="mapConfig.marker.coords.longitude"
       [markerDraggable]="mapConfig.marker.options.draggable"
-      (dragEnd)="mapConfig.marker.events.dragend($event)">
+      (dragEnd)="dragEnded($event)">
     </agm-marker>
   </agm-map>
 

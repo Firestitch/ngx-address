@@ -8,12 +8,14 @@ import {
   AgmCoreModule,
   GoogleMapsAPIWrapper,
   MarkerManager,
-  LAZY_MAPS_API_CONFIG } from '@agm/core';
+  LAZY_MAPS_API_CONFIG,
+} from '@agm/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { FsFormModule } from '@firestitch/form';
 import { FsDialogModule } from '@firestitch/dialog';
@@ -27,7 +29,7 @@ import { FsAddressSearchComponent } from './components/address-search/address-se
 import { FsAddressRegionModule } from './fs-address-region.module';
 import { FsAddressCountryModule } from './fs-address-country.module';
 import { FsAddressDialogComponent } from './components/address-dialog/address-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { FsAddressAutocompleteComponent } from './components/address-autocomplete/address-autocomplete.component';
 
 
 @NgModule({
@@ -53,17 +55,16 @@ import { MatDialogModule } from '@angular/material/dialog';
     FsAddressComponent,
     FsAddressFormatComponent,
     FsAddressPickerComponent,
-    FsAddressSearchComponent
+    FsAddressSearchComponent,
+    FsAddressAutocompleteComponent,
   ],
   declarations: [
     FsAddressComponent,
     FsAddressFormatComponent,
     FsAddressPickerComponent,
     FsAddressSearchComponent,
-    FsAddressDialogComponent
-  ],
-  entryComponents: [
-    FsAddressDialogComponent
+    FsAddressDialogComponent,
+    FsAddressAutocompleteComponent,
   ],
   providers: [
     GoogleMapsAPIWrapper,

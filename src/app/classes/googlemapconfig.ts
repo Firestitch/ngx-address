@@ -7,6 +7,7 @@ export class GoogleMapConfig implements LazyMapsAPILoaderConfigLiteral {
 
   public apiKey: string = null;
   public libraries = [ 'places' ];
+  public apiVersion = 'beta';
 
   constructor(@Optional() @Inject(GOOGLE_MAP_KEY) apiKey,
               @Optional() @Inject('GoogleMapKey') legacyApiKey) {

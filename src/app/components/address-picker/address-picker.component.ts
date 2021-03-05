@@ -3,7 +3,10 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild, ChangeDetectionStrategy, OnDestroy
+  ViewChild,
+  ChangeDetectionStrategy,
+  OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -83,6 +86,7 @@ export class FsAddressPickerComponent implements OnDestroy {
 
   constructor(
     private _dialog: MatDialog,
+    private _cdRef: ChangeDetectorRef,
   ) { }
 
   public open(): void {
@@ -102,9 +106,7 @@ export class FsAddressPickerComponent implements OnDestroy {
       if (result) {
         this.address = result;
         this.addressChange.emit(this.address);
-        setTimeout(() => {
-          this.search.revalidate();
-        });
+        this._cdRef.markForCheck();
       }
     });
   }
