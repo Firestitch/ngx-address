@@ -1,4 +1,4 @@
-import { FsAddress } from '@firestitch/address';
+import { FsAddress } from '../interfaces/address.interface';
 
 
 export function createEmptyAddress(): FsAddress {
