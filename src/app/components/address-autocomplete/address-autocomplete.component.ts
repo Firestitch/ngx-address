@@ -48,6 +48,7 @@ import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { googleDetailsToAddress } from '../../helpers/google-details-to-address';
+import { createEmptyAddress } from '../../helpers/create-empty-address';
 
 
 @Component({
@@ -298,6 +299,7 @@ export class FsAddressAutocompleteComponent
 
   public clear(): void {
     this.inputAddress = this._defaultInputAddress();
+    this.value = createEmptyAddress();
   }
 
   // Search input can't be null. We implemented required validation to show asterisk if needed
