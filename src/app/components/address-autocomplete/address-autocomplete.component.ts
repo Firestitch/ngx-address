@@ -77,6 +77,9 @@ export class FsAddressAutocompleteComponent
   public name = true;
 
   @Input()
+  public suggestions = false;
+
+  @Input()
   public set config(value: IFsAddressConfig) {
     this._config = value;
     if (this._config) {
@@ -193,7 +196,13 @@ export class FsAddressAutocompleteComponent
   }
 
   public get empty(): boolean {
-    return (!this.inputAddress && !this.value.street) || (this.inputAddress && !this.value.street);
+    if (this.suggestions) {
+      return (!this.inputAddress && !this.value.street) || (this.inputAddress && !this.value.street);
+    } else {
+      return !this.value || (!(this.value.name) && !(this.value.street) &&
+        !(this.value.city) && !(this.value.region) &&
+        !(this.value.zip) && !(this.value.country))
+    }
   }
 
   public get addressIsEmpty(): boolean {
