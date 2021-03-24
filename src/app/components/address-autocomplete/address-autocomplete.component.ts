@@ -200,18 +200,20 @@ export class FsAddressAutocompleteComponent
     if (this.suggestions) {
       return (!this.inputAddress && !this.value.street) || (this.inputAddress && !this.value.street);
     } else {
-      return !this.value || (!(this.value.name) && !(this.value.street) &&
-        !(this.value.city) && !(this.value.region) &&
-        !(this.value.zip) && !(this.value.country))
+      const inputValue = (typeof this.inputAddress === 'string') && this.inputAddress.trim();
+
+      return this.addressIsEmpty && !inputValue;
     }
   }
 
   public get addressIsEmpty(): boolean {
-    return !this.value ||
-      (!this.value.name
+    return !this.value
+      || (!this.value.name
         && !this.value.street
-        && !this.value.city && !this.value.region
-        && !this.value.zip && !this.value.country
+        && !this.value.city
+        && !this.value.region
+        && !this.value.zip
+        && !this.value.country
       );
   }
 
@@ -302,6 +304,12 @@ export class FsAddressAutocompleteComponent
     this.value = createEmptyAddress();
   }
 
+  public autocompletePanelClosed(): void {
+    if (this.addressIsEmpty && !!this.inputAddress) {
+      this.inputAddress = null;
+    }
+  }
+
   // Search input can't be null. We implemented required validation to show asterisk if needed
   // But general validation placed in another level and not depends of this input
   // This hack allow us to show asterisk but disable extra validation
@@ -329,7 +337,17 @@ export class FsAddressAutocompleteComponent
               this.value = this._address;
             }
           }),
-          filter((text) => !!text),
+          filter((text) => {
+            const textExists = !!text;
+
+            if (!textExists) {
+              this.predictions = [];
+
+              this._cdRef.markForCheck();
+            }
+
+            return textExists;
+          }),
           distinctUntilChanged(),
           switchMap((text: string) => {
             return this._getPlacePredictions(text);
@@ -337,11 +355,14 @@ export class FsAddressAutocompleteComponent
           takeUntil(this._destroy$),
         )
         .subscribe(({value, predictions}) => {
-          this.predictions = [
-            ...predictions,
-            { description: `Just use "${value}"`, id: 1, name: value }
-          ];
-          this._cdRef.markForCheck();
+          this._ngZone.run(() => {
+            this.predictions = [
+              ...predictions,
+              { description: `Just use "${value}"`, id: 1, name: value }
+            ];
+
+            this._cdRef.markForCheck();
+          })
         });
     })
   }
@@ -381,11 +402,13 @@ export class FsAddressAutocompleteComponent
         takeUntil(this._destroy$),
       )
       .subscribe((address) => {
-        this.value = address;
-        this.addressChange.emit(address);
-        this.inputAddress = address;
+        this._ngZone.run(() => {
+          this.value = address;
+          this.addressChange.emit(address);
+          this.inputAddress = address;
 
-        this._cdRef.markForCheck();
+          this._cdRef.markForCheck();
+        });
       })
   }
 

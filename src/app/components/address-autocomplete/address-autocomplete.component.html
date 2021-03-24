@@ -8,6 +8,7 @@
 
 <mat-autocomplete
   [displayWith]="displayWith"
+  (closed)="autocompletePanelClosed()"
   autoActiveFirstOption
   #autocomplete="matAutocomplete">
   <mat-option *ngFor="let option of predictions" [value]="option">
