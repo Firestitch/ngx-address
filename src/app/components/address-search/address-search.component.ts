@@ -58,6 +58,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   @Input() format = AddressFormat.TwoLine;
   @Input() disabled = false;
   @Input() readonly = false;
+  @Input() editDialog = true;
   @Input() required = false;
 
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
@@ -80,7 +81,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   ) {}
 
   public get editable(): boolean {
-    return !this.disabled && !this.readonly;
+    return !this.disabled && !this.readonly && this.editDialog;
   }
 
   public ngOnInit() {

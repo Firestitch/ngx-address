@@ -62,6 +62,9 @@ export class FsAddressPickerComponent implements OnDestroy {
     this.config.readonly = value;
   }
 
+  @Input()
+  public editDialog = true;
+
   @Input() public address: FsAddress;
 
   @Output() public addressChange = new EventEmitter();
@@ -112,7 +115,9 @@ export class FsAddressPickerComponent implements OnDestroy {
   }
 
   public searchEdited() {
-    this.open();
+    if (this.editDialog) {
+      this.open();
+    }
   }
 
   public clear() {
