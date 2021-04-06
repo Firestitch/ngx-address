@@ -29,7 +29,7 @@ export interface IFsAddressConfig {
 }
 
 export interface AddressPickerConfig extends IFsAddressConfig {
-  format?: AddressFormat,
-  readonly?: boolean,
-  disabled?: boolean
+  format?: AddressFormat;
+  readonly?: boolean;
+  disabled?: boolean;
 }
