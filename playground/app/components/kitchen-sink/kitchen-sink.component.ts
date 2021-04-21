@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ViewChild
 } from '@angular/core';
@@ -18,7 +19,8 @@ import { ConfigureComponent } from '../configure';
 @Component({
   selector: 'kitchen-sink',
   templateUrl: 'kitchen-sink.component.html',
-  styles: []
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KitchenSinkComponent {
 

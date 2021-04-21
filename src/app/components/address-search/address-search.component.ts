@@ -1,18 +1,13 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
-  NgZone,
   OnDestroy,
-  OnInit,
   Output,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   ViewChild,
 } from '@angular/core';
 import { NgForm, ControlContainer } from '@angular/forms';
-
-import { MapsAPILoader } from '@agm/core';
 
 import { Subject } from 'rxjs';
 import { guid } from '@firestitch/common';
@@ -31,7 +26,7 @@ import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-
   viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsAddressSearchComponent implements OnInit, OnDestroy {
+export class FsAddressSearchComponent implements OnDestroy {
 
   @Input()
   public set config(value: IFsAddressConfig) {
@@ -73,18 +68,8 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   private _config: IFsAddressConfig = {};
 
-  constructor(
-    private _mapsAPILoader: MapsAPILoader,
-    private _ngZone: NgZone,
-    private _ngForm: NgForm,
-    private _cdRef: ChangeDetectorRef,
-  ) {}
-
   public get editable(): boolean {
     return !this.disabled && !this.readonly && this.editDialog;
-  }
-
-  public ngOnInit() {
   }
 
   public ngOnDestroy() {
@@ -104,7 +89,6 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this.address = createEmptyAddress();
     this.cleared.emit(createEmptyAddress());
     this.addressChange.emit(createEmptyAddress());
-
     this.autocomplete.clear();
   }
 
