@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -27,7 +28,7 @@ import { AddressSearchEditEvent } from './address-search.interface';
   viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsAddressSearchComponent implements OnDestroy {
+export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
   @Input()
   public set config(value: IFsAddressConfig) {
@@ -66,7 +67,7 @@ export class FsAddressSearchComponent implements OnDestroy {
 
   public autocompleteName = `search-${guid('xxxxxxxx')}`;
 
-  private _initialChange = true;
+  private _initialChange;
   private _destroy$ = new Subject<void>();
   private _config: IFsAddressConfig = {};
 
@@ -76,6 +77,10 @@ export class FsAddressSearchComponent implements OnDestroy {
 
   public set initialChange(value: boolean) {
     this._initialChange = value;
+  }
+
+  public ngOnInit() {
+    this._initialChange = Object.keys(this.address).length === 0;
   }
 
   public ngOnDestroy() {
