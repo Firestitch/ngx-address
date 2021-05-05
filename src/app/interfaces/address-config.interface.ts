@@ -26,6 +26,7 @@ export interface IFsAddressConfig {
   lat?: IFsAddressFieldSetting,
   lng?: IFsAddressFieldSetting,
   search?: boolean
+  openDialogWhenSelected?: boolean;
 }
 
 export interface AddressPickerConfig extends IFsAddressConfig {

@@ -234,6 +234,7 @@ export class FsAddressAutocompleteComponent
 
   public writeValue(value: FsAddress | null) {
     this._address = value;
+    this.inputAddress = '';
   }
 
   public setDescribedByIds(ids: string[]) {

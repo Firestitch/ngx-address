@@ -23,6 +23,7 @@ import { FsAddressSearchComponent } from '../address-search/address-search.compo
 import { FsAddressComponent } from '../address/address.component';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { FsAddressDialogComponent } from '../address-dialog/address-dialog.component';
+import { AddressSearchEditEvent } from '../address-search/address-search.interface';
 
 
 @Component({
@@ -92,12 +93,13 @@ export class FsAddressPickerComponent implements OnDestroy {
     private _cdRef: ChangeDetectorRef,
   ) { }
 
-  public open(): void {
+  public open(event: AddressSearchEditEvent): void {
     const dialogRef = this._dialog.open(FsAddressDialogComponent, {
       width: '700px',
       data: {
-        address: this.address,
-        config: this.config
+        address: event.value || this.address,
+        config: this.config,
+        initial: event.initialChange,
       }
     });
 
@@ -109,14 +111,20 @@ export class FsAddressPickerComponent implements OnDestroy {
       if (result) {
         this.address = result;
         this.addressChange.emit(this.address);
-        this._cdRef.markForCheck();
+      } else {
+        if (event.initialChange) {
+          this.address = {};
+          this.search.clear();
+        }
       }
+
+      this._cdRef.markForCheck();
     });
   }
 
-  public searchEdited() {
+  public searchEdited(event: AddressSearchEditEvent) {
     if (this.editDialog) {
-      this.open();
+      this.open(event);
     }
   }
 

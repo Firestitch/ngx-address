@@ -8,7 +8,7 @@
       [disabled]="config.disabled"
       [readonly]="config.readonly"
       [name]="name"
-      (edited)="searchEdited()"
+      (edited)="searchEdited($event)"
       (addressChange)="addressChange.emit($event)">
     </fs-address-search>
   </div>

@@ -4,9 +4,9 @@ import {
   Inject,
   ViewChild
 } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FsAddress } from '../../interfaces/address.interface';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FsAddressComponent } from '../../components/address/address.component';
 
 
@@ -27,6 +27,10 @@ export class FsAddressDialogComponent {
     @Inject(MAT_DIALOG_DATA) private _data) {
       this.address = _data.address;
       this.config = _data.config;
+  }
+
+  public get initialEditDialog(): boolean {
+    return this._data.initial;
   }
 
   public submit = () => {

@@ -17,6 +17,7 @@ import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-autocomplete.component';
+import { AddressSearchEditEvent } from './address-search.interface';
 
 
 @Component({
@@ -57,7 +58,7 @@ export class FsAddressSearchComponent implements OnDestroy {
   @Input() required = false;
 
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
-  @Output() edited: EventEmitter<any> = new EventEmitter<any>();
+  @Output() edited = new EventEmitter<AddressSearchEditEvent>();
   @Output() addressChange = new EventEmitter();
 
   @ViewChild(FsAddressAutocompleteComponent)
@@ -65,11 +66,16 @@ export class FsAddressSearchComponent implements OnDestroy {
 
   public autocompleteName = `search-${guid('xxxxxxxx')}`;
 
+  private _initialChange = true;
   private _destroy$ = new Subject<void>();
   private _config: IFsAddressConfig = {};
 
   public get editable(): boolean {
     return !this.disabled && !this.readonly && this.editDialog;
+  }
+
+  public set initialChange(value: boolean) {
+    this._initialChange = value;
   }
 
   public ngOnDestroy() {
@@ -82,7 +88,10 @@ export class FsAddressSearchComponent implements OnDestroy {
       return;
     }
 
-    this.edited.emit();
+    this.edited.emit({
+      initialChange: this._initialChange,
+      value: this.address,
+    });
   }
 
   public clear() {
@@ -90,10 +99,20 @@ export class FsAddressSearchComponent implements OnDestroy {
     this.cleared.emit(createEmptyAddress());
     this.addressChange.emit(createEmptyAddress());
     this.autocomplete.clear();
+    this.initialChange = true;
   }
 
   public addressChanged(): void {
-    this.addressChange.emit(this.address);
+    if (this.editable
+      && this.config.openDialogWhenSelected
+      && !this.autocomplete.addressIsEmpty
+    ) {
+      this.edit();
+    } else {
+      this.addressChange.emit(this.address);
+    }
+
+    this.initialChange = false;
   }
 
 }
