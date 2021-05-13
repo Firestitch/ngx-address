@@ -8,12 +8,16 @@ import {
   OnChanges,
   SimpleChanges,
   ChangeDetectorRef,
+  Optional,
 } from '@angular/core';
 import { ControlContainer, NgForm, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { Countries } from '../../consts/countries.const';
+import { controlContainerFactory } from '@firestitch/core';
+
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { Countries } from '../../consts/countries.const';
 import { searchCountryRegions } from '../../helpers';
 
 
@@ -27,7 +31,13 @@ import { searchCountryRegions } from '../../helpers';
     useExisting: forwardRef(() => FsAddressCountryComponent),
   } ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    }
+  ],
 })
 export class FsAddressCountryComponent implements OnChanges, ControlValueAccessor {
 

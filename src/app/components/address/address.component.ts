@@ -7,9 +7,12 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  Optional,
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
+
+import { controlContainerFactory } from '@firestitch/core';
 
 import { AgmMap, AgmMarker } from '@agm/core';
 
@@ -32,7 +35,13 @@ declare var google: any;
   selector: 'fs-address',
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.scss'],
-  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    }
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {

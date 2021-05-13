@@ -48,6 +48,7 @@
     "@firestitch/autocomplete": "^10.0.4",
     "@firestitch/clear": "^8.0.0",
     "@firestitch/common": "^8.0.6",
+    "@firestitch/core": "^9.0.0",
     "@firestitch/date": "^8.0.1",
     "@firestitch/datepicker": "^8.1.1",
     "@firestitch/dialog": "^8.2.6",

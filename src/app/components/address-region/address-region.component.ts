@@ -7,11 +7,14 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
+  Optional,
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { controlContainerFactory } from '@firestitch/core';
 
 import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
@@ -24,7 +27,13 @@ import { Country } from '../../enums/country.enum';
   templateUrl: './address-region.component.html',
   styleUrls: ['./address-region.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    }
+  ],
 })
 export class FsAddressRegionComponent implements OnInit, OnChanges {
 

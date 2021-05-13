@@ -5,13 +5,16 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   ViewChild,
 } from '@angular/core';
 import { NgForm, ControlContainer } from '@angular/forms';
 
 import { Subject } from 'rxjs';
+
 import { guid } from '@firestitch/common';
+import { controlContainerFactory } from '@firestitch/core';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { IFsAddressConfig } from '../../interfaces/address-config.interface';
@@ -25,7 +28,13 @@ import { AddressSearchEditEvent } from './address-search.interface';
   selector: 'fs-address-search',
   templateUrl: './address-search.component.html',
   styleUrls: ['./address-search.component.scss'],
-  viewProviders: [ { provide: ControlContainer, useExisting: NgForm } ],
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    }
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressSearchComponent implements OnInit, OnDestroy {

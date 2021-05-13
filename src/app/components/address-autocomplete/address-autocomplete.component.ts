@@ -15,7 +15,6 @@ import {
   Self,
 } from '@angular/core';
 import {
-  NgForm,
   NgControl,
   ControlValueAccessor,
   Validator,
@@ -147,7 +146,6 @@ export class FsAddressAutocompleteComponent
     @Optional() @Self() public ngControl: NgControl,
     private _mapsAPILoader: MapsAPILoader,
     private _ngZone: NgZone,
-    private _ngForm: NgForm,
     private _fm: FocusMonitor,
     private _elementRef: ElementRef,
     private _cdRef: ChangeDetectorRef,
@@ -198,7 +196,7 @@ export class FsAddressAutocompleteComponent
 
   public get empty(): boolean {
     if (this.suggestions) {
-      return (!this.inputAddress && !this.value.street) || (this.inputAddress && !this.value.street);
+      return (!this.inputAddress && !this.value?.street) || (this.inputAddress && !this.value?.street);
     } else {
       const inputValue = (typeof this.inputAddress === 'string') && this.inputAddress.trim();
 
