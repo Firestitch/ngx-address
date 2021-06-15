@@ -29,6 +29,7 @@
     <ng-template #textStreetField>
         <input
           matInput
+          type="search"
           autocomplete="nope"
           [(ngModel)]="address.street"
           [disabled]="config.street.disabled"
@@ -46,6 +47,7 @@
   class="address2">
   <input
     matInput
+    type="search"
     autocomplete="nope"
     [(ngModel)]="address.address2"
     [disabled]="config.address2.disabled"
@@ -61,6 +63,7 @@
   class="address3">
   <input
     matInput
+    type="search"
     autocomplete="nope"
     [(ngModel)]="address.address3"
     [disabled]="config.address3.disabled"
@@ -77,6 +80,7 @@
     <mat-form-field *ngIf="config.city.visible!==false">
       <input
         matInput
+        type="search"
         autocomplete="nope"
         [(ngModel)]="address.city"
         [disabled]="config.city.disabled"
@@ -119,6 +123,7 @@
       <mat-label>{{ zipLabel }}</mat-label>
       <input
         matInput
+        type="search"
         autocomplete="nope"
         [(ngModel)]="address.zip"
         [disabled]="config.zip.disabled"
@@ -132,7 +137,6 @@
 </div>
 
 <div class="map-container" *ngIf="mapConfig.showMap">
-
   <agm-map
     [ngStyle.xs]="{'height': '300px'}"
     [latitude]="mapConfig.center.latitude"
