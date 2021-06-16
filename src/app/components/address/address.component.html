@@ -78,6 +78,7 @@
 
   <div class="city">
     <mat-form-field *ngIf="config.city.visible!==false">
+      <mat-label [attr.data-after-content]="'City'"></mat-label>
       <input
         matInput
         type="search"
@@ -86,7 +87,6 @@
         [disabled]="config.city.disabled"
         [fsFormRequired]="config.city.required"
         name="city"
-        placeholder="City"
         (change)="change($event)"
         autocomplete="off">
     </mat-form-field>

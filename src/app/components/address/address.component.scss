@@ -1,77 +1,81 @@
 agm-map {
-    width: 100%;
-    height: 400px;
-    background-color: grey;
+  width: 100%;
+  height: 400px;
+  background-color: grey;
+}
+
+mat-label::after {
+  content: attr(data-after-content);
 }
 
 .map-container {
-    position: relative;
+  position: relative;
 
-    .address-incomplete {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        background: #fff;
-        border: 1px solid #efefef;
-        opacity: 0.87;
-        font-size: larger;
-        padding: 40px;
-        align-items: center;
-        display: flex;
-        right: 0;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-    }
+  .address-incomplete {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    border: 1px solid #efefef;
+    opacity: 0.87;
+    font-size: larger;
+    padding: 40px;
+    align-items: center;
+    display: flex;
+    right: 0;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
 
-    .center {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        right: 5px;
-        top: 5px;
-        z-index: 5;
-        background-color: #fff;
-    }
+  .center {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    right: 5px;
+    top: 5px;
+    z-index: 5;
+    background-color: #fff;
+  }
 }
 
 .name,
 .address2,
 .address3,
 .street {
-    width: 100%;
-    display: block;
+  width: 100%;
+  display: block;
 }
 
 .city-region-zip-country {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 
-    .city,
-    .region,
-    .zip,
-    .country {
-        flex: 1 0 50%;
+  .city,
+  .region,
+  .zip,
+  .country {
+    flex: 1 0 50%;
+  }
+
+
+  .city > *,
+  .region > *,
+  .zip > *,
+  .country > * {
+    padding-right: 5px;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  &:last-child > * {
+    margin-right: 0;
+  }
+
+  ::ng-deep {
+    .mat-form-field {
+        width: 100%;
     }
-
-
-    .city > *,
-    .region > *,
-    .zip > *,
-    .country > * {
-        padding-right: 5px;
-        box-sizing: border-box;
-        display: block;
-    }
-
-    &:last-child > * {
-        margin-right: 0;
-    }
-
-    ::ng-deep {
-        .mat-form-field {
-            width: 100%;
-        }
-    }
+  }
 }

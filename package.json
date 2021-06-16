@@ -2,7 +2,7 @@
   "name": "@firestitch/address",
   "title": "Address",
   "description": "@firestitch/address",
-  "version": "8.5.5",
+  "version": "8.5.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-address"
@@ -45,7 +45,7 @@
     "@angular/platform-browser-dynamic": "^9.1.13",
     "@angular/router": "^9.1.13",
     "@compodoc/compodoc": "^1.1.11",
-    "@firestitch/autocomplete": "^10.0.12",
+    "@firestitch/autocomplete": "^10.0.13",
     "@firestitch/clear": "^8.0.0",
     "@firestitch/common": "^8.0.6",
     "@firestitch/core": "^9.0.0",
