@@ -133,6 +133,7 @@ export class FsAddressAutocompleteComponent
 
   private _config: IFsAddressConfig = {};
   private _address: FsAddress = {};
+  private _searchText = '';
 
   // Material
   private _disabled = false;
@@ -331,6 +332,7 @@ export class FsAddressAutocompleteComponent
             return (event.target as HTMLInputElement).value;
           }),
           tap((value) => {
+            this._searchText = value;
             if (!value) {
               this._address.street = value;
               this.value = this._address;
@@ -403,6 +405,17 @@ export class FsAddressAutocompleteComponent
       .subscribe((address) => {
         this._ngZone.run(() => {
           this.value = address;
+
+          const matchSecondary = this._searchText.trim().match(/(apartment|building|floor|suite|room|department|unit|po\s*box).*$/i);
+          if (matchSecondary) {
+            address.address2 = matchSecondary[0];
+          }
+
+          const matchNumber = this._searchText.trim().match(/^(\d+)-/);
+          if (matchNumber) {
+            address.address2 = matchNumber[1];
+          }
+
           this.addressChange.emit(address);
           this.inputAddress = address;
 
