@@ -48,6 +48,7 @@ import { IFsAddressConfig } from '../../interfaces/address-config.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { googleDetailsToAddress } from '../../helpers/google-details-to-address';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
+import { addressIsEmpty } from '../../helpers/address-is-empty';
 
 
 @Component({
@@ -206,14 +207,7 @@ export class FsAddressAutocompleteComponent
   }
 
   public get addressIsEmpty(): boolean {
-    return !this.value
-      || (!this.value.name
-        && !this.value.street
-        && !this.value.city
-        && !this.value.region
-        && !this.value.zip
-        && !this.value.country
-      );
+    return addressIsEmpty(this.value);
   }
 
   public ngOnInit() {

@@ -22,6 +22,7 @@ import { AddressFormat } from '../../enums/address-format.enum';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-autocomplete.component';
 import { AddressSearchEditEvent } from './address-search.interface';
+import { addressIsEmpty } from '../../helpers/address-is-empty';
 
 
 @Component({
@@ -89,7 +90,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this._initialChange = Object.keys(this.address).length === 0;
+    this._initialChange = addressIsEmpty(this.address);
   }
 
   public ngOnDestroy() {
