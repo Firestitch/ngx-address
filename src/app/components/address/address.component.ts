@@ -22,10 +22,10 @@ import { isObject } from 'lodash-es';
 import { Countries } from '../../consts/countries.const';
 
 import { FsAddress } from '../../interfaces/address.interface';
-import { IFsAddressConfig } from '../../interfaces/address-config.interface';
+import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddressRegionComponent } from '../address-region/address-region.component';
 import { takeUntil } from 'rxjs/operators';
-import { IFsAddressMapConfig } from '../../interfaces/address-map-config.interface';
+import { FsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 import { Country } from '../../enums/country.enum';
 
 declare var google: any;
@@ -61,7 +61,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   public suggestions = false;
 
-  @Input('config') set setConfig(config: IFsAddressConfig) {
+  @Input('config') set setConfig(config: FsAddressConfig) {
 
     config.search = config.search === undefined ? false : config.search;
 
@@ -72,12 +72,12 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.config = config;
   }
 
-  public config: IFsAddressConfig = {};
+  public config: FsAddressConfig = {};
   public countries = Countries;
   public zipLabel: string;
   public searchedAddress: string;
   public isSearched = false;
-  public mapConfig: IFsAddressMapConfig;
+  public mapConfig: FsAddressMapConfig;
 
   private _destory$ = new Subject();
 

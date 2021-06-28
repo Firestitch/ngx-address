@@ -17,7 +17,7 @@ import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 
 import { FsAddress } from '../../interfaces/address.interface';
-import { IFsAddressConfig } from '../../interfaces/address-config.interface';
+import { FsAddressPickerConfig, FsAddressConfig } from '../../interfaces/address-config.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-autocomplete.component';
@@ -41,7 +41,7 @@ import { addressIsEmpty } from '../../helpers/address-is-empty';
 export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
   @Input()
-  public set config(value: IFsAddressConfig) {
+  public set config(value: FsAddressPickerConfig) {
     this._config = value;
     if (this._config) {
       this.required =
@@ -56,7 +56,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  public get config(): IFsAddressConfig {
+  public get config(): FsAddressPickerConfig {
     return this._config;
   }
 
@@ -79,7 +79,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
   private _initialChange;
   private _destroy$ = new Subject<void>();
-  private _config: IFsAddressConfig = {};
+  private _config: FsAddressPickerConfig = {};
 
   public get editable(): boolean {
     return !this.disabled && !this.readonly && this.editDialog;
@@ -119,7 +119,7 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
 
   public addressChanged(): void {
     if (this.editable
-      && this.config.openDialogWhenSelected
+      && this.config.confirmation
       && !this.autocomplete.addressIsEmpty
     ) {
       this.edit();

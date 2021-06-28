@@ -1,11 +1,11 @@
 import { createEmptyAddress } from './create-empty-address';
-import { IFsAddressConfig } from '../interfaces/address-config.interface';
+import { FsAddressConfig } from '../interfaces/address-config.interface';
 import { FsAddress } from '../interfaces/address.interface';
 
 
 export function googleDetailsToAddress(
   result: google.maps.places.PlaceResult,
-  config: IFsAddressConfig,
+  config: FsAddressConfig,
 ): FsAddress {
   const address = createEmptyAddress();
   let countryLongName, regionLongName, streetShortName;

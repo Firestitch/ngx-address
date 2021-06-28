@@ -1,4 +1,4 @@
-export interface IFsAddressFormatConfig {
+export interface FsAddressFormatConfig {
   name?: boolean,
   country?: boolean,
   region?: boolean,
@@ -10,3 +10,6 @@ export interface IFsAddressFormatConfig {
   disabled?: boolean,
   readonly?: boolean
 }
+
+export interface IFsAddressFormatConfig extends FsAddressFormatConfig {}
+

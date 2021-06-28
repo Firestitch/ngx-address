@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 // Interfaces
-import { IFsAddressRegionConfig } from '@firestitch/address';
+import { FsAddressRegionConfig } from '@firestitch/address';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class AddressRegionDisabledExampleComponent {
 
   public country = 'CA';
   public region = 'ON';
-  public config: IFsAddressRegionConfig = {
+  public config: FsAddressRegionConfig = {
     country: { disabled: true },
     region: { disabled: true }
   };

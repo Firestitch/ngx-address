@@ -1,6 +1,9 @@
-import { IFsAddressFieldSetting } from './address-config.interface';
+import { FsAddressFieldSetting } from './address-config.interface';
 
-export interface IFsAddressRegionConfig {
-  country?: IFsAddressFieldSetting,
-  region?: IFsAddressFieldSetting,
+export interface FsAddressRegionConfig {
+  country?: FsAddressFieldSetting,
+  region?: FsAddressFieldSetting,
 }
+
+export interface IFsAddressRegionConfig extends FsAddressRegionConfig {}
+

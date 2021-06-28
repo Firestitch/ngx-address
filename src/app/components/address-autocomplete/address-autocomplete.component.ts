@@ -44,7 +44,7 @@ import {
 
 
 import { FsAddress } from '../../interfaces/address.interface';
-import { IFsAddressConfig } from '../../interfaces/address-config.interface';
+import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { googleDetailsToAddress } from '../../helpers/google-details-to-address';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
@@ -81,7 +81,7 @@ export class FsAddressAutocompleteComponent
   public suggestions = false;
 
   @Input()
-  public set config(value: IFsAddressConfig) {
+  public set config(value: FsAddressConfig) {
     this._config = value;
     if (this._config) {
       this.required =
@@ -96,7 +96,7 @@ export class FsAddressAutocompleteComponent
     }
   }
 
-  public get config(): IFsAddressConfig {
+  public get config(): FsAddressConfig {
     return this._config;
   }
 
@@ -132,7 +132,7 @@ export class FsAddressAutocompleteComponent
 
   public readonly autocompleteName = `search-${guid('xxxxxxxx')}`;
 
-  private _config: IFsAddressConfig = {};
+  private _config: FsAddressConfig = {};
   private _address: FsAddress = {};
   private _searchText = '';
 

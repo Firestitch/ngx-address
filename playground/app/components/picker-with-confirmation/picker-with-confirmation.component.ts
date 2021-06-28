@@ -17,12 +17,12 @@ import { ConfigureComponent } from '../configure';
 
 
 @Component({
-  selector: 'kitchen-sink',
-  templateUrl: 'kitchen-sink.component.html',
+  selector: 'picker-with-confirmation',
+  templateUrl: 'picker-with-confirmation.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KitchenSinkComponent {
+export class PickerWithConfirmationComponent {
 
   public view = '';
   public address: FsAddress = {};
@@ -38,7 +38,8 @@ export class KitchenSinkComponent {
     city:  { visible: true, required: true, disabled: false },
     region:  { visible: true, required: true, disabled: false },
     zip:  { visible: true, required: false, disabled: false },
-    country:  { visible: true, required: true, disabled: false }
+    country:  { visible: true, required: true, disabled: false },
+    confirmation: true,
   };
 
   @ViewChild(FsAddressFormatComponent)

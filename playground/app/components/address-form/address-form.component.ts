@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 // Interfaces
-import { IFsAddressConfig } from '@firestitch/address';
+import { FsAddressConfig } from '@firestitch/address';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { IFsAddressConfig } from '@firestitch/address';
 export class AddressFormComponent {
 
   public address;
-  public config: IFsAddressConfig = {
+  public config: FsAddressConfig = {
     address2: {
       visible: true,
     },

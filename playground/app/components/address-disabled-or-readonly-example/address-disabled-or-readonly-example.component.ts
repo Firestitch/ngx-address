@@ -5,7 +5,7 @@ import { FsAddressFormatComponent, FsAddressSearchComponent } from '@firestitch/
 // Interfaces
 import {
   FsAddress,
-  IFsAddressConfig,
+  FsAddressConfig,
 } from '@firestitch/address';
 
 
@@ -24,7 +24,7 @@ export class AddressDisabledOrReadonlyExampleComponent implements OnInit {
     zip: 'M5V 2T6'
   };
 
-  public config: IFsAddressConfig = {};
+  public config: FsAddressConfig = {};
 
   @ViewChild('format') format: FsAddressFormatComponent;
 

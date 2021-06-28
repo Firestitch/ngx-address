@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 // Interfaces
-import { FsAddress, IFsAddressConfig, IFsAddressFormatConfig } from '@firestitch/address';
+import { FsAddress, FsAddressConfig, FsAddressFormatConfig } from '@firestitch/address';
 
 
 @Component({
@@ -12,7 +12,7 @@ export class FullAddressExampleComponent {
 
   public address: FsAddress = {};
 
-  public config: IFsAddressConfig = {
+  public config: FsAddressConfig = {
     name: { required: false, visible: true },
     country: { required: true, visible: true },
     region: { required: true, visible: true },
@@ -22,7 +22,7 @@ export class FullAddressExampleComponent {
     map: {}
   };
 
-  public addressFormatConfig: IFsAddressFormatConfig = {
+  public addressFormatConfig: FsAddressFormatConfig = {
     city: false,
   };
 

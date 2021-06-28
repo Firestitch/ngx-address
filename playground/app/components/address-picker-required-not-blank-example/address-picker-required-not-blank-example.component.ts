@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 // Interfaces
-import { FsAddress, FsAddressSearchComponent, IFsAddressConfig, } from '@firestitch/address';
+import { FsAddress, FsAddressSearchComponent, FsAddressConfig, } from '@firestitch/address';
 
 import { FsAddressFormatComponent } from '@firestitch/address';
 
@@ -18,7 +18,7 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
 
   public address: FsAddress = {};
 
-  public config: IFsAddressConfig = {
+  public config: FsAddressConfig = {
     country: { required: true },
     region: { required: true },
     city: { required: true },

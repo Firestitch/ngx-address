@@ -7,7 +7,7 @@ import {
   HostBinding,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { IFsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
+import { FsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
 import { Countries } from '../../consts/countries.const';
 
 
@@ -24,7 +24,7 @@ export class FsAddressRegionCountryComponent implements OnInit {
   @HostBinding('class.horizontal') orientationHorizontal = false;
   @HostBinding('class.horizontal-stretch') orientationHorizontalStretch = false;
 
-  @Input() config: IFsAddressRegionConfig = {};
+  @Input() config: FsAddressRegionConfig = {};
   @Input() country = '';
   @Input() region = '';
   @Input('orientation') set setOrientation(value) {

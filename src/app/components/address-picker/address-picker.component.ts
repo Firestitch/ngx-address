@@ -17,7 +17,7 @@ import { isObject } from 'lodash-es';
 
 // Interfaces
 import { FsAddress, } from '../../interfaces/address.interface';
-import { AddressPickerConfig } from '../../interfaces/address-config.interface';
+import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
 
 import { FsAddressSearchComponent } from '../address-search/address-search.component';
 import { FsAddressComponent } from '../address/address.component';
@@ -37,7 +37,7 @@ export class FsAddressPickerComponent implements OnDestroy {
   @ViewChild(FsAddressSearchComponent, { static: true })
   public addressSearch: FsAddressSearchComponent;
 
-  @Input('config') set setConfig(config: AddressPickerConfig) {
+  @Input('config') set setConfig(config: FsAddressPickerConfig) {
 
     if (!config.format) {
       config.format = AddressFormat.TwoLine;
@@ -83,7 +83,7 @@ export class FsAddressPickerComponent implements OnDestroy {
   @ViewChild(FsAddressComponent) public editable: FsAddressComponent;
 
   public view = 'search';
-  public config: AddressPickerConfig = {};
+  public config: FsAddressPickerConfig = {};
   private _name = true;
 
   private _destroy$ = new Subject();

@@ -6,7 +6,7 @@ import {
 // Interfaces
 import {
   FsAddress, FsAddressSearchComponent,
-  IFsAddressConfig
+  FsAddressConfig
 } from '@firestitch/address';
 
 import { FsAddressFormatComponent } from '@firestitch/address';
@@ -20,7 +20,7 @@ import { FsAddressFormatComponent } from '@firestitch/address';
 export class AddressPickerNoValidationTwolineExampleComponent {
 
   public address: FsAddress = {};
-  public config: IFsAddressConfig = {
+  public config: FsAddressConfig = {
     map: { zoom: 15 }
   };
 

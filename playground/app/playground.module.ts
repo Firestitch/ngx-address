@@ -38,6 +38,7 @@ import {
   AddressFormComponent
 } from './components';
 import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material/core';
+import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material/core';
     AddressRegionNoValidationExampleComponent,
     AddressFormComponent,
     FormatExampleComponent,
-    ConfigureComponent
+    ConfigureComponent,
+    PickerWithConfirmationComponent,
   ],
   providers: [
     { provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: { float: 'auto' } },

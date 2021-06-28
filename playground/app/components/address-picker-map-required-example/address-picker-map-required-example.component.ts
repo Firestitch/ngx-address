@@ -6,8 +6,8 @@ import {
 // Interfaces
 import {
   FsAddress,
-  IFsAddressConfig,
-  IFsAddressFormatConfig
+  FsAddressConfig,
+  FsAddressFormatConfig
 } from '@firestitch/address';
 
 
@@ -19,7 +19,7 @@ import {
 export class AddressPickerMapRequiredExampleComponent implements OnInit {
 
   public address: FsAddress = {};
-  public config: IFsAddressConfig = {
+  public config: FsAddressConfig = {
     country: { required: false, visible: true },
     region: { required: false, visible: true },
     city: { required: false, visible: true },
@@ -29,7 +29,7 @@ export class AddressPickerMapRequiredExampleComponent implements OnInit {
     lng: { required: true },
     map: { zoom: 15 }
   };
-  public addressFormatConfig: IFsAddressFormatConfig = {
+  public addressFormatConfig: FsAddressFormatConfig = {
     name: false
   };
 

@@ -8,7 +8,7 @@ import { FsAddressFormatComponent, FsAddressSearchComponent } from '@firestitch/
 // Interfaces
 import {
   FsAddress,
-  IFsAddressConfig
+  FsAddressConfig
 } from '@firestitch/address';
 
 
@@ -20,7 +20,7 @@ import {
 export class AddressPickerCustomCollapseLabelComponent {
 
   public address: FsAddress = {};
-  public config: IFsAddressConfig = {
+  public config: FsAddressConfig = {
     label: 'Mailing Address',
     map: { zoom: 15 },
     collapseButton: { title: 'Show search view', color: 'warn', theme: 'mat-stroked-button' }

@@ -7,7 +7,7 @@ import {
 // Interfaces
 import {
   FsAddress, FsAddressSearchComponent,
-  IFsAddressConfig,
+  FsAddressConfig,
 } from '@firestitch/address';
 
 import { FsAddressFormatComponent } from '@firestitch/address';
@@ -28,7 +28,7 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
     zip: 'M5V 2T6'
   };
 
-  public config: IFsAddressConfig = { };
+  public config: FsAddressConfig = { };
 
   @ViewChild('format') format: FsAddressFormatComponent;
 

@@ -1,4 +1,4 @@
-export interface IFsAddressMapConfig {
+export interface FsAddressMapConfig {
   showMap?: boolean,
   center?: {
     latitude?: number,
@@ -11,3 +11,5 @@ export interface IFsAddressMapConfig {
   mapTypeControlOptions?: { mapTypeIds?: any[] },
   marker?: any
 }
+
+export interface IFsAddressMapConfig extends FsAddressMapConfig {}

@@ -1,8 +1,8 @@
-import { IFsAddressMapConfig } from './address-map-config.interface';
-import { IFsAddressCollapseButtonConfig } from './address-collapse-button-config.interface';
+import { FsAddressMapConfig } from './address-map-config.interface';
+import { FsAddressCollapseButtonConfig } from './address-collapse-button-config.interface';
 import { AddressFormat } from '../enums/address-format.enum';
 
-export interface IFsAddressFieldSetting {
+export interface FsAddressFieldSetting {
   disabled?: boolean,
   required?: boolean,
   visible?: boolean,
@@ -10,27 +10,31 @@ export interface IFsAddressFieldSetting {
   list?: string[],
 }
 
-export interface IFsAddressConfig {
+export interface FsAddressConfig {
   label?: string;
   hint?: string;
-  name?: IFsAddressFieldSetting,
-  country?: IFsAddressFieldSetting,
-  region?: IFsAddressFieldSetting,
-  city?: IFsAddressFieldSetting,
-  street?: IFsAddressFieldSetting,
-  address2?: IFsAddressFieldSetting,
-  address3?: IFsAddressFieldSetting,
-  zip?: IFsAddressFieldSetting,
-  map?: IFsAddressMapConfig,
-  collapseButton?: IFsAddressCollapseButtonConfig,
-  lat?: IFsAddressFieldSetting,
-  lng?: IFsAddressFieldSetting,
-  search?: boolean
-  openDialogWhenSelected?: boolean;
+  name?: FsAddressFieldSetting,
+  country?: FsAddressFieldSetting,
+  region?: FsAddressFieldSetting,
+  city?: FsAddressFieldSetting,
+  street?: FsAddressFieldSetting,
+  address2?: FsAddressFieldSetting,
+  address3?: FsAddressFieldSetting,
+  zip?: FsAddressFieldSetting,
+  map?: FsAddressMapConfig,
+  collapseButton?: FsAddressCollapseButtonConfig,
+  lat?: FsAddressFieldSetting,
+  lng?: FsAddressFieldSetting,
+  search?: boolean;
 }
 
-export interface AddressPickerConfig extends IFsAddressConfig {
+export interface FsAddressPickerConfig extends FsAddressConfig {
   format?: AddressFormat;
   readonly?: boolean;
   disabled?: boolean;
+  confirmation?: boolean;
 }
+
+export interface AddressPickerConfig extends FsAddressPickerConfig {}
+export interface IFsAddressConfig extends FsAddressConfig {}
+export interface IFsAddressFieldSetting extends FsAddressFieldSetting {}
