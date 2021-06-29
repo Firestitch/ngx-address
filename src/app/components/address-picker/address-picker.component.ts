@@ -103,6 +103,7 @@ export class FsAddressPickerComponent implements OnDestroy {
       }
     });
 
+    this.search.disableAutocomplete();
     dialogRef.afterClosed()
     .pipe(
       takeUntil(this._destroy$)
@@ -110,7 +111,7 @@ export class FsAddressPickerComponent implements OnDestroy {
     .subscribe(result => {
       // hard dirty fix for DT-T867.
       // In future it must be ControlValue Accessor...
-      if (!event.initialChange) {
+      if (result && !event.initialChange) {
         this.search.autocomplete.value = this.address;
       }
 
@@ -121,9 +122,11 @@ export class FsAddressPickerComponent implements OnDestroy {
         if (event.initialChange) {
           this.address = {};
           this.search.clear();
+          this.search.resetAutocomplete();
         }
       }
 
+      this.search.enableAutocomplete();
       this._cdRef.markForCheck();
     });
   }

@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -81,6 +81,11 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
   private _config: FsAddressPickerConfig = {};
 
+
+  constructor(
+    private _cdRef: ChangeDetectorRef,
+  ) {}
+
   public get editable(): boolean {
     return !this.disabled && !this.readonly && this.editDialog;
   }
@@ -117,12 +122,28 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this.initialChange = true;
   }
 
+  public enableAutocomplete(): void {
+    this.disabled = false;
+    this._cdRef.markForCheck();
+  }
+
+  public disableAutocomplete(): void {
+    this.disabled = true;
+    this._cdRef.markForCheck();
+  }
+
+  public resetAutocomplete(): void {
+    this.autocomplete.reset();
+    this.initialChange = true;
+  }
+
   public addressChanged(): void {
     if (this.editable
       && this.config.confirmation
       && !this.autocomplete.addressIsEmpty
     ) {
       this.edit();
+      this.resetAutocomplete();
     } else {
       this.addressChange.emit(this.address);
     }

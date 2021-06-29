@@ -298,6 +298,10 @@ export class FsAddressAutocompleteComponent
     this.value = createEmptyAddress();
   }
 
+  public reset(): void {
+    this.ngControl.reset(createEmptyAddress());
+  }
+
   public autocompletePanelClosed(): void {
     if (this.addressIsEmpty && !!this.inputAddress) {
       this.inputAddress = null;
