@@ -47,6 +47,18 @@ export class FsAddressRegionCountryComponent implements OnInit {
   }
 
   public changeRegion() {
+    if (!!this.region) {
+      const regionCountry = this.countries.find((country) => {
+        return country.regions
+          && country.regions.find((region) => this.region === region.code);
+      });
+
+      if (regionCountry) {
+        this.country = regionCountry.code;
+        this.changeCountry();
+      }
+    }
+
     this.regionChange.emit(this.region);
   }
 
