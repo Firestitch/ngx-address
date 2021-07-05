@@ -3,6 +3,7 @@
   type="search"
   autocomplete="off"
   [(ngModel)]="inputAddress"
+  (blur)="blurAutocompleteInput()"
   [matAutocomplete]="autocomplete"
   [name]="autocompleteName"
   [disabled]="disabled"

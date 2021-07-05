@@ -308,6 +308,14 @@ export class FsAddressAutocompleteComponent
     }
   }
 
+  public blurAutocompleteInput() {
+    if (this.empty
+      && typeof this.inputAddress === 'string'
+      && this.inputAddress !== '') {
+      this.inputAddress = '';
+    }
+  }
+
   // Search input can't be null. We implemented required validation to show asterisk if needed
   // But general validation placed in another level and not depends of this input
   // This hack allow us to show asterisk but disable extra validation
