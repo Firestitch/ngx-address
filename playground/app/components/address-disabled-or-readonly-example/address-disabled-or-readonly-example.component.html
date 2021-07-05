@@ -2,7 +2,7 @@
   <label> Disabled Address </label>
   <fs-address-picker
     [(address)]="address"
-    [(config)]="config"
+    [config]="config"
     format="twoline"
     disabled="true"
     #disabledPicker>
@@ -11,7 +11,7 @@
   <label> Readonly Address </label>
   <fs-address-picker
     [(address)]="address"
-    [(config)]="config"
+    [config]="config"
     format="twoline"
     readonly="true"
     #readonlyPicker>
@@ -20,5 +20,5 @@
 
 <fieldset [hidden]="format.empty">
   <legend>Selected Address Disabled Style</legend>
-  <fs-address-format #format [(address)]="address" format="twoline" disabled="true"></fs-address-format>
+  <fs-address-format #format [address]="address" format="twoline" disabled="true"></fs-address-format>
 </fieldset>

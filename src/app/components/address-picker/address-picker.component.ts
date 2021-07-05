@@ -48,6 +48,9 @@ export class FsAddressPickerComponent implements OnDestroy {
       config.map = { showMap: false };
     }
 
+    config.disabled = this.config.disabled;
+    config.readonly = this.config.readonly;
+
     this.config = config;
   }
 
