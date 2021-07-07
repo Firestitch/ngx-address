@@ -452,7 +452,7 @@ export class FsAddressAutocompleteComponent
       .then((result) => {
         return {
           value: text,
-          predictions: result.predictions,
+          predictions: result?.predictions || [],
         }
       })
   }
