@@ -342,6 +342,7 @@ export class FsAddressAutocompleteComponent
             if (!value) {
               this._address.street = value;
               this.value = this._address;
+              this.addressChange.emit(this.value);
             }
           }),
           filter((text) => {
