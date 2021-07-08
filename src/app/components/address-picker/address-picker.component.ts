@@ -106,7 +106,6 @@ export class FsAddressPickerComponent implements OnDestroy {
       }
     });
 
-    this.search.disableAutocomplete();
     dialogRef.afterClosed()
     .pipe(
       takeUntil(this._destroy$)
@@ -129,7 +128,6 @@ export class FsAddressPickerComponent implements OnDestroy {
         }
       }
 
-      this.search.enableAutocomplete();
       this._cdRef.markForCheck();
     });
   }

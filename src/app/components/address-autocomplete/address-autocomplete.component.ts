@@ -410,6 +410,7 @@ export class FsAddressAutocompleteComponent
       )
       .subscribe((address) => {
         this._ngZone.run(() => {
+          this.searchElement.nativeElement.blur();
           this.value = address;
 
           const matchSecondary = this._searchText.trim().match(/(apartment|building|floor|suite|room|department|unit|po\s*box).*$/i);

@@ -122,16 +122,6 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this.initialChange = true;
   }
 
-  public enableAutocomplete(): void {
-    this.disabled = false;
-    this._cdRef.markForCheck();
-  }
-
-  public disableAutocomplete(): void {
-    this.disabled = true;
-    this._cdRef.markForCheck();
-  }
-
   public resetAutocomplete(): void {
     this.autocomplete.reset();
     this.initialChange = true;
