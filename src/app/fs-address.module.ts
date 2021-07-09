@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
@@ -46,9 +46,9 @@ import { FsAddressAutocompleteComponent } from './components/address-autocomplet
     FlexLayoutModule,
     FsAddressCountriesModule,
     FsDialogModule,
-    AgmCoreModule.forRoot(),
     FsAddressRegionModule,
-    FsAddressCountryModule
+    FsAddressCountryModule,
+    AgmCoreModule,
   ],
   exports: [
     AgmCoreModule,
@@ -65,11 +65,19 @@ import { FsAddressAutocompleteComponent } from './components/address-autocomplet
     FsAddressSearchComponent,
     FsAddressDialogComponent,
     FsAddressAutocompleteComponent,
-  ],
-  providers: [
-    GoogleMapsAPIWrapper,
-    MarkerManager,
-    { provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapConfig }
   ]
 })
-export class FsAddressModule {}
+export class FsAddressModule {
+  static forRoot(): ModuleWithProviders<FsAddressModule> {
+    return {
+      ngModule: FsAddressModule,
+      providers: [
+        GoogleMapsAPIWrapper,
+        MarkerManager,
+        // for easy configuration on project side (you don't need use AgmCoreModule.forRoot any more)
+        AgmCoreModule.forRoot().providers,
+        { provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapConfig },
+      ]
+    };
+  }
+}

@@ -11,6 +11,7 @@ export { FsAddressCountryModule } from './app/fs-address-country.module';
 
 export { Countries } from './app/consts/countries.const';
 export { Country } from './app/enums/country.enum';
+export { GoogleMapConfig } from './app/classes/googlemapconfig';
 
 // Inject Tokens
 export { COUNTRIES } from './app/consts/inject-token-countries';

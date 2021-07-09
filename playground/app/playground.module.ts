@@ -47,7 +47,7 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    FsAddressModule,
+    FsAddressModule.forRoot(),
     FsAddressRegionModule,
     FsAddressRegionCountryModule,
     AppMaterialModule,
@@ -56,9 +56,6 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
     FsExampleModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
-  ],
-  entryComponents: [
-    ConfigureComponent
   ],
   declarations: [
     AppComponent,
