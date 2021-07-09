@@ -113,7 +113,7 @@ export class FsAddressPickerComponent implements OnDestroy {
     .subscribe(result => {
       // hard dirty fix for DT-T867.
       // In future it must be ControlValue Accessor...
-      if (result && !event.initialChange) {
+      if (result) {
         this.search.autocomplete.value = this.address;
       }
 
