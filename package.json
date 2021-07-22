@@ -25,7 +25,10 @@
     "package:test": "cd tools && npm run cli:package:test",
     "package:publish": "cd tools && npm run cli:package:publish",
     "demo:build": "cd tools && npm run cli:demo",
-    "serve": "cd tools && npm run cli:serve"
+    "serve": "cd tools && npm run cli:serve",
+    "e2e": "ng e2e",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "devDependencies": {
     "@agm/core": "^1.1.0",
@@ -45,6 +48,7 @@
     "@angular/platform-browser-dynamic": "^9.1.13",
     "@angular/router": "^9.1.13",
     "@compodoc/compodoc": "^1.1.11",
+    "@cypress/schematic": "^1.5.0",
     "@firestitch/autocomplete": "^10.0.13",
     "@firestitch/clear": "^8.0.0",
     "@firestitch/common": "^8.0.6",
@@ -81,7 +85,8 @@
     "rxjs": "^6.5.3",
     "tslint": "^5.20.1",
     "typescript": "3.8.3",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "cypress": "8.0.0"
   },
   "engines": {
     "node": ">=6.0.0"
