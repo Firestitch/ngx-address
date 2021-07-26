@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isObject } from 'lodash-es';
+import { isObject, cloneDeep } from 'lodash-es';
 
 // Interfaces
 import { FsAddress, } from '../../interfaces/address.interface';
@@ -38,6 +38,7 @@ export class FsAddressPickerComponent implements OnDestroy {
   public addressSearch: FsAddressSearchComponent;
 
   @Input('config') set setConfig(config: FsAddressPickerConfig) {
+    config = cloneDeep(config);
 
     if (!config.format) {
       config.format = AddressFormat.TwoLine;
