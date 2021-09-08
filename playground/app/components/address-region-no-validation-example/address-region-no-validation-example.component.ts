@@ -11,6 +11,12 @@ export class AddressRegionNoValidationExampleComponent {
   public country = '';
   public region = '';
 
+  public config = {
+    country: {
+      placeholder: 'Custom Country',
+    },
+  };
+
   constructor() {
 
   }

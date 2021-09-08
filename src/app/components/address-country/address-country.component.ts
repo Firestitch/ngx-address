@@ -45,6 +45,8 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
   @Input() required = false;
   @Input() excludeCountries: string[];
   @Input() countries = Countries;
+  @Input()
+  public placeholder = 'Country';
 
   @Output() selectionChange = new EventEmitter<any>();
 
