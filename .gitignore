@@ -44,3 +44,10 @@ dist/*
 /demo
 /docs
 /src/package.json
+
+#Cypress
+videos
+screenshots
+mochawesome-report
+mochawesome.json
+results

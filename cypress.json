@@ -5,5 +5,11 @@
   "screenshotsFolder": "cypress/screenshots",
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",
-  "baseUrl": "http://localhost:8000"
+  "baseUrl": "http://localhost:8000",
+  "projectId": "js6tf6",
+  "retries": 1,
+  "reporter": "cypress-multi-reporters",
+      "reporterOptions": {
+          "configFile": "reporter-config.json"
+  }
 }
