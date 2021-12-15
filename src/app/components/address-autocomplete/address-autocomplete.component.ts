@@ -366,13 +366,12 @@ export class FsAddressAutocompleteComponent
           this._ngZone.run(() => {
             this.predictions = [
               ...predictions,
-              { description: `Just use "${value}"`, id: 1, name: value }
             ];
 
             this._cdRef.markForCheck();
           })
         });
-    })
+    });
   }
 
   private _listenAutocompleteSelection(): void {
@@ -390,6 +389,7 @@ export class FsAddressAutocompleteComponent
             return of({
               ...this.value,
               street: place.name,
+              manual: true,
             });
           }
 
@@ -425,6 +425,7 @@ export class FsAddressAutocompleteComponent
           }
 
           this.addressChange.emit(address);
+          this.edited.emit();
           this.inputAddress = address;
 
           this._cdRef.markForCheck();
@@ -455,6 +456,12 @@ export class FsAddressAutocompleteComponent
         return {
           value: text,
           predictions: result?.predictions || [],
+        }
+      })
+      .catch(() => {
+        return {
+          value: text,
+          predictions: [],
         }
       })
   }

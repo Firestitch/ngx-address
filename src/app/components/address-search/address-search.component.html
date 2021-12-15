@@ -14,6 +14,7 @@
     [(ngModel)]="address"
     [disabled]="disabled"
     (addressChange)="addressChanged()"
+    (edited)="edit()"
     [ngClass]="{ hide: !addressControl.addressIsEmpty }"
     [placeholder]="config.label || 'Location'"
     [name]="autocompleteName"

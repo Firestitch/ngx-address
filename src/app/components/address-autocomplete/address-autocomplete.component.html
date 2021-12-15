@@ -17,4 +17,9 @@
   <mat-option *ngFor="let option of predictions" [value]="option">
     {{ option.description }}
   </mat-option>
+  <div class="static-options">
+    <mat-option [value]="{id: 'manual', name: inputAddress}">
+      Enter address manually
+    </mat-option>
+  </div>
 </mat-autocomplete>
