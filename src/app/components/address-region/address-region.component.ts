@@ -15,6 +15,7 @@ import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { controlContainerFactory } from '@firestitch/core';
+import { guid } from '@firestitch/common';
 
 import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
@@ -56,6 +57,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
 
   public model;
 
+  public controlName = `region_${guid('xxxxxx')}`
   public regionLabel;
   public canadaCountryItem: IAddressCountry;
   public usCountryItem: IAddressCountry;

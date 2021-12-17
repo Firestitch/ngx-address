@@ -13,20 +13,21 @@ import {
 import { ControlContainer, NgForm } from '@angular/forms';
 
 import { controlContainerFactory } from '@firestitch/core';
+import { guid } from '@firestitch/common';
 
 import { AgmMap, AgmMarker } from '@agm/core';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { isObject } from 'lodash-es';
 
 import { Countries } from '../../consts/countries.const';
-
 import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddressRegionComponent } from '../address-region/address-region.component';
-import { takeUntil } from 'rxjs/operators';
 import { FsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 import { Country } from '../../enums/country.enum';
+
 
 declare var google: any;
 
@@ -71,6 +72,16 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
     this.config = config;
   }
+
+  public controlNames = {
+    street: `street_${guid('xxxxxxxx')}`,
+    locationName: `location_name_${guid('xxxxxxxx')}`,
+    address2: `address2_${guid('xxxxxxxx')}`,
+    address3: `address3_${guid('xxxxxxxx')}`,
+    city: `city_${guid('xxxxxxxx')}`,
+    addressCountry: `address_country_${guid('xxxxxxxx')}`,
+    zip: `zip_${guid('xxxxxxxx')}`,
+  };
 
   public config: FsAddressConfig = {};
   public countries = Countries;

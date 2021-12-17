@@ -7,7 +7,7 @@
     [(ngModel)]="address.name"
     [disabled]="config.name.disabled"
     [fsFormRequired]="config.name.required"
-    name="location_name"
+    [name]="controlNames.locationName"
     placeholder="Location name"
     (change)="change($event)"
     autocomplete="off">
@@ -22,7 +22,7 @@
         (ngModelChange)="change()"
         [suggestions]="suggestions"
         placeholder="Street"
-        name="street">
+        name="{{controlNames.street}}">
       </fs-address-autocomplete>
     </ng-container>
 
@@ -34,7 +34,7 @@
           [(ngModel)]="address.street"
           [disabled]="config.street.disabled"
           [fsFormRequired]="config.street.required"
-          name="street"
+          [name]="controlNames.street"
           placeholder="Street"
           (change)="change()"
           autocomplete="off">
@@ -52,7 +52,7 @@
     [(ngModel)]="address.address2"
     [disabled]="config.address2.disabled"
     [fsFormRequired]="config.address2.required"
-    name="address2"
+    [name]="controlNames.address2"
     [placeholder]="config.address2.placeholder || 'Address 2'"
     (change)="change($event)"
     autocomplete="off">
@@ -68,7 +68,7 @@
     [(ngModel)]="address.address3"
     [disabled]="config.address3.disabled"
     [fsFormRequired]="config.address3.required"
-    name="address3"
+    [name]="controlNames.address3"
     [placeholder]="config.address3.placeholder || 'Address 3'"
     (change)="change($event)"
     autocomplete="off">
@@ -86,7 +86,7 @@
         [(ngModel)]="address.city"
         [disabled]="config.city.disabled"
         [fsFormRequired]="config.city.required"
-        name="city"
+        [name]="controlNames.city"
         (change)="change($event)"
         autocomplete="off">
     </mat-form-field>
@@ -114,7 +114,7 @@
       [excludeCountries]="excludeCountries"
       [(ngModel)]="address.country"
       (selectionChange)="changeCountry()"
-      name="address-country">
+      [name]="controlNames.addressCountry">
     </fs-address-country>
   </div>
 
@@ -129,7 +129,7 @@
         [(ngModel)]="address.zip"
         [disabled]="config.zip.disabled"
         [fsFormRequired]="config.zip.required"
-        name="zip"
+        [name]="controlNames.zip"
         (change)="change($event)"
         autocomplete="off">
     </mat-form-field>

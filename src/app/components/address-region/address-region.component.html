@@ -7,7 +7,7 @@
   [placeholder]="regionLabel"
   [disabled]="disabled"
   [fsFormRequired]="required"
-  name="region">
+  [name]="controlName">
 
   <ng-template fsAutocompleteTemplate let-data="data">
     <span>{{ data.name }}</span>
