@@ -7,8 +7,9 @@ import {
   ChangeDetectionStrategy,
   OnDestroy,
   ChangeDetectorRef,
+  OnChanges, SimpleChanges,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,6 +25,7 @@ import { FsAddressComponent } from '../address/address.component';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { FsAddressDialogComponent } from '../address-dialog/address-dialog.component';
 import { AddressSearchEditEvent } from '../address-search/address-search.interface';
+import { createEmptyAddress } from '../../helpers/create-empty-address';
 
 
 @Component({
@@ -32,7 +34,7 @@ import { AddressSearchEditEvent } from '../address-search/address-search.interfa
   styleUrls: ['./address-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsAddressPickerComponent implements OnDestroy {
+export class FsAddressPickerComponent implements OnChanges, OnDestroy {
 
   @ViewChild(FsAddressSearchComponent, { static: true })
   public addressSearch: FsAddressSearchComponent;
@@ -90,6 +92,7 @@ export class FsAddressPickerComponent implements OnDestroy {
   public config: FsAddressPickerConfig = {};
   private _name = true;
 
+  private _dialogRef: MatDialogRef<any>;
   private _destroy$ = new Subject();
 
   constructor(
@@ -97,8 +100,25 @@ export class FsAddressPickerComponent implements OnDestroy {
     private _cdRef: ChangeDetectorRef,
   ) { }
 
+  public ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes.address
+      && changes.address.currentValue !== changes.address.previousValue
+    ) {
+      if (!this.address) {
+        this.address = createEmptyAddress();
+      }
+    }
+  }
+
   public open(event: AddressSearchEditEvent): void {
-    const dialogRef = this._dialog.open(FsAddressDialogComponent, {
+    // because of the issue in HM-T1804
+    // so lets leave it like that for now and feel free to find solution in future
+    if (this._dialogRef) {
+      return;
+    }
+
+    this._dialogRef = this._dialog.open(FsAddressDialogComponent, {
       width: '700px',
       data: {
         address: event.value || this.address,
@@ -107,11 +127,12 @@ export class FsAddressPickerComponent implements OnDestroy {
       }
     });
 
-    dialogRef.afterClosed()
+    this._dialogRef.afterClosed()
     .pipe(
       takeUntil(this._destroy$)
     )
     .subscribe(result => {
+      this._dialogRef = null;
       // hard dirty fix for DT-T867.
       // In future it must be ControlValue Accessor...
       if (result) {

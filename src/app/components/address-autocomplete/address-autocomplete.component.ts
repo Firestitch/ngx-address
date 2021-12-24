@@ -374,7 +374,7 @@ export class FsAddressAutocompleteComponent
     });
   }
 
-  private _listenAutocompleteSelection(): void {
+    private _listenAutocompleteSelection(): void {
     this.autoCompleteRef.optionSelected
       .pipe(
         map((option) => {
