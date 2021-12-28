@@ -46,13 +46,21 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
   @Input() excludeCountries: string[];
   @Input() countries = Countries;
   @Input()
-  public placeholder = 'Country';
+  public set placeholder(value) {
+    this._placeholder = value || 'Country';
+  }
+
+  public get placeholder(): string {
+    return this._placeholder;
+  }
 
   @Output() selectionChange = new EventEmitter<any>();
 
   public country;
   public onChange = (data: any) => {};
   public onTouched = () => {};
+
+  private _placeholder: string = null;
 
   constructor(private _cdRef: ChangeDetectorRef) {}
 
