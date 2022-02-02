@@ -37,7 +37,7 @@ import {
   AddressRegionNoValidationExampleComponent,
   AddressFormComponent
 } from './components';
-import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material/core';
+import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
 
 
@@ -80,7 +80,7 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
     PickerWithConfirmationComponent,
   ],
   providers: [
-    { provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: { float: 'auto' } },
+    { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { float: 'auto' } },
     { provide: GOOGLE_MAP_KEY, useValue: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE' }
   ]
 })

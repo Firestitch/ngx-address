@@ -23,6 +23,11 @@ export { FsAddressFormatComponent } from './app/components/address-format/addres
 export { FsAddressPickerComponent } from './app/components/address-picker/address-picker.component';
 export { FsAddressSearchComponent } from './app/components/address-search/address-search.component';
 export { FsAddressAutocompleteComponent } from './app/components/address-autocomplete/address-autocomplete.component';
+export { FsAddressCountryComponent } from './app/components/address-country/address-country.component';
+export { FsAddressRegionComponent } from './app/components/address-region/address-region.component';
+export {
+  FsAddressRegionCountryComponent
+} from './app/components/address-region-country/address-region-country.component';
 
 // Interfaces
 
