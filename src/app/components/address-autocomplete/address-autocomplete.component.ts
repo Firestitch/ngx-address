@@ -49,6 +49,7 @@ import { AddressFormat } from '../../enums/address-format.enum';
 import { googleDetailsToAddress } from '../../helpers/google-details-to-address';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
+import { extractUnit } from '../../helpers/extract-unit';
 
 
 @Component({
@@ -135,6 +136,7 @@ export class FsAddressAutocompleteComponent
   private _config: FsAddressConfig = {};
   private _address: FsAddress = {};
   private _searchText = '';
+  private _addressUnit = '';
 
   // Material
   private _disabled = false;
@@ -414,15 +416,16 @@ export class FsAddressAutocompleteComponent
           this.searchElement.nativeElement.blur();
           this.value = address;
 
-          const matchSecondary = this._searchText.trim().match(/(apartment|building|floor|suite|room|department|unit|po\s*box).*$/i);
-          if (matchSecondary) {
-            address.address2 = matchSecondary[0];
+          // const matchSecondary = this._searchText.trim().match(/(apartment|building|floor|suite|room|department|unit|po\s*box).*$/i);
+          const { unit } = extractUnit(this._searchText);
+          if (unit) {
+            address.address2 = unit;
           }
 
-          const matchNumber = this._searchText.trim().match(/^(\d+)-/);
-          if (matchNumber) {
-            address.address2 = matchNumber[1];
-          }
+          // const matchNumber = this._searchText.trim().match(/^(\d+)-/);
+          // if (matchNumber) {
+          //   address.address2 = matchNumber[1];
+          // }
 
           this.addressChange.emit(address);
           this.edited.emit();
@@ -444,7 +447,8 @@ export class FsAddressAutocompleteComponent
     });
   }
 
-  private _getPlacePredictions(text: string) {
+  private _getPlacePredictions(address: string) {
+    const { text } = extractUnit(address);
     const placesRequest = this.googleAutocompleteService
       .getPlacePredictions(
         { input: text },
