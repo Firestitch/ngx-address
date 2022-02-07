@@ -1,5 +1,5 @@
 export function extractUnit(text: string) {
-  const primaryUnitRegex = /((unit|apt|#)\s?#?\d+([,.])?(\w)?([,.])?)/gi;
+  const primaryUnitRegex = /((unit|apt|#|apartment|building|floor|suite|room|department|po\s*box)\s?#?\d+([,.])?(\w)?([,.])?)/gi;
   const secondaryUnitRegex = /-\s?\d+/gi;
   const nonWordOrDigitChar = /^[^a-z\d]*|[^a-z\d]*$/gi;
 
@@ -13,7 +13,10 @@ export function extractUnit(text: string) {
       .replace(unit, '')
       .trim();
 
-    unit = unit.replace(nonWordOrDigitChar, '').trim();
+    unit = unit
+      .replace(nonWordOrDigitChar, '')
+      .replace('unit', 'Unit')
+      .trim();
   }
 
   text = text.replace(nonWordOrDigitChar, '').trim();
