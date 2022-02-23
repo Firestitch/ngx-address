@@ -4,7 +4,7 @@
     [address]="address"
     [format]="format"
     [name]="name"
-    (click)="edit()"
+    (click)="editClick()"
     [ngClass]="{ editable: editable }"
     [disabled]="disabled">
   </fs-address-format>
@@ -13,8 +13,7 @@
     [config]="config"
     [(ngModel)]="address"
     [disabled]="disabled"
-    (addressChange)="addressChanged()"
-    (edited)="edit()"
+    (addressChange)="addressSelected()"
     [ngClass]="{ hide: !addressControl.addressIsEmpty }"
     [placeholder]="config.label || 'Location'"
     [name]="autocompleteName"

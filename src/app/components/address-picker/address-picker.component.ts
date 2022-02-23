@@ -12,7 +12,7 @@ import {
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { isObject, cloneDeep } from 'lodash-es';
 
@@ -21,7 +21,6 @@ import { FsAddress, } from '../../interfaces/address.interface';
 import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
 
 import { FsAddressSearchComponent } from '../address-search/address-search.component';
-import { FsAddressComponent } from '../address/address.component';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { FsAddressDialogComponent } from '../address-dialog/address-dialog.component';
 import { AddressSearchEditEvent } from '../address-search/address-search.interface';
@@ -69,9 +68,6 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     this.config.readonly = value;
   }
 
-  @Input()
-  public editDialog = true;
-
   @Input() public address: FsAddress;
 
   @Output() public addressChange = new EventEmitter();
@@ -85,14 +81,13 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     return this._name;
   }
 
-  @ViewChild(FsAddressSearchComponent) public search: FsAddressSearchComponent;
-  @ViewChild(FsAddressComponent) public editable: FsAddressComponent;
+  @ViewChild(FsAddressSearchComponent) 
+  public search: FsAddressSearchComponent;
 
   public view = 'search';
   public config: FsAddressPickerConfig = {};
-  private _name = true;
 
-  private _dialogRef: MatDialogRef<any>;
+  private _name = true;
   private _destroy$ = new Subject();
 
   constructor(
@@ -111,14 +106,26 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     }
   }
 
-  public open(event: AddressSearchEditEvent): void {
-    // because of the issue in HM-T1804
-    // so lets leave it like that for now and feel free to find solution in future
-    if (this._dialogRef) {
-      return;
-    }
+  public addressEdit() {
+    this.open({ value: this.address, initialChange: false });
+  }
 
-    this._dialogRef = this._dialog.open(FsAddressDialogComponent, {
+  public addressSelected(address) {
+    if(this.config.confirmation) {
+      this.open({ value: address, initialChange: true })
+        .afterClosed()
+        .pipe(
+          filter((result) => !result),
+          takeUntil(this._destroy$)
+        )
+      .subscribe(() => {
+        this.addressSearch.clear(); 
+      });
+    }
+  }
+
+  public open(event: AddressSearchEditEvent): MatDialogRef<FsAddressDialogComponent> {
+    const dialogRef = this._dialog.open(FsAddressDialogComponent, {
       width: '700px',
       data: {
         address: event.value || this.address,
@@ -127,37 +134,22 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
       }
     });
 
-    this._dialogRef.afterClosed()
+    dialogRef.afterClosed()
     .pipe(
+      filter((result) => !!result),
       takeUntil(this._destroy$)
     )
-    .subscribe(result => {
-      this._dialogRef = null;
-      // hard dirty fix for DT-T867.
-      // In future it must be ControlValue Accessor...
-      if (result) {
-        this.search.autocomplete.value = this.address;
-      }
-
-      if (result) {
-        this.address = result;
-        this.addressChange.emit(this.address);
-      } else {
-        if (event.initialChange) {
-          this.address = {};
-          this.search.clear();
-          this.search.resetAutocomplete();
-        }
-      }
-
+    .subscribe((result) => {
+      this.address = result;
+      this.addressChange.emit(this.address);
       this._cdRef.markForCheck();
     });
+
+    return dialogRef;
   }
 
   public searchEdited(event: AddressSearchEditEvent) {
-    if (this.editDialog) {
-      this.open(event);
-    }
+    this.open(event);
   }
 
   public clear() {

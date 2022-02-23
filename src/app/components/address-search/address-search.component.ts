@@ -1,10 +1,9 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   ViewChild,
@@ -17,12 +16,10 @@ import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 
 import { FsAddress } from '../../interfaces/address.interface';
-import { FsAddressPickerConfig, FsAddressConfig } from '../../interfaces/address-config.interface';
+import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-autocomplete.component';
-import { AddressSearchEditEvent } from './address-search.interface';
-import { addressIsEmpty } from '../../helpers/address-is-empty';
 
 
 @Component({
@@ -38,7 +35,7 @@ import { addressIsEmpty } from '../../helpers/address-is-empty';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsAddressSearchComponent implements OnInit, OnDestroy {
+export class FsAddressSearchComponent implements OnDestroy {
 
   @Input()
   public set config(value: FsAddressPickerConfig) {
@@ -65,37 +62,24 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
   @Input() format = AddressFormat.TwoLine;
   @Input() disabled = false;
   @Input() readonly = false;
-  @Input() editDialog = true;
   @Input() required = false;
 
   @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
-  @Output() edited = new EventEmitter<AddressSearchEditEvent>();
   @Output() addressChange = new EventEmitter();
+  @Output() edit = new EventEmitter();
+  @Output() selected = new EventEmitter();
 
   @ViewChild(FsAddressAutocompleteComponent)
   public autocomplete: FsAddressAutocompleteComponent;
 
   public autocompleteName = `search-${guid('xxxxxxxx')}`;
 
-  private _initialChange;
+  //private _initialChange;
   private _destroy$ = new Subject<void>();
   private _config: FsAddressPickerConfig = {};
 
-
-  constructor(
-    private _cdRef: ChangeDetectorRef,
-  ) {}
-
   public get editable(): boolean {
-    return !this.disabled && !this.readonly && this.editDialog;
-  }
-
-  public set initialChange(value: boolean) {
-    this._initialChange = value;
-  }
-
-  public ngOnInit() {
-    this._initialChange = addressIsEmpty(this.address);
+    return !this.disabled && !this.readonly;
   }
 
   public ngOnDestroy() {
@@ -103,42 +87,26 @@ export class FsAddressSearchComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  public edit() {
-    if (!this.editable) {
-      return;
-    }
-
-    this.edited.emit({
-      initialChange: this._initialChange,
-      value: this.address,
-    });
-  }
-
   public clear() {
     this.address = createEmptyAddress();
     this.cleared.emit(createEmptyAddress());
     this.addressChange.emit(createEmptyAddress());
     this.autocomplete.clear();
-    this.initialChange = true;
   }
 
   public resetAutocomplete(): void {
     this.autocomplete.reset();
-    this.initialChange = true;
   }
 
-  public addressChanged(): void {
-    if (this.editable
-      && this.config.confirmation
-      && !this.autocomplete.addressIsEmpty
-    ) {
-      this.edit();
-      this.resetAutocomplete();
-    } else {
-      this.addressChange.emit(this.address);
+  public editClick(): void {
+    if (this.editable) {
+      this.edit.emit();
     }
+  }
 
-    this.initialChange = false;
+  public addressSelected(): void {
+    this.selected.emit(this.address);
+    this.addressChange.emit(this.address);
   }
 
 }

@@ -20,6 +20,7 @@ import {
   Validator,
   ValidationErrors,
   AbstractControl,
+  NgModel,
 } from '@angular/forms';
 
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -102,9 +103,6 @@ export class FsAddressAutocompleteComponent
   }
 
   @Output()
-  public readonly edited: EventEmitter<any> = new EventEmitter<any>();
-
-  @Output()
   public readonly addressChange = new EventEmitter();
 
   @ViewChild('searchInput', { static: true })
@@ -136,7 +134,6 @@ export class FsAddressAutocompleteComponent
   private _config: FsAddressConfig = {};
   private _address: FsAddress = {};
   private _searchText = '';
-  private _addressUnit = '';
 
   // Material
   private _disabled = false;
@@ -153,6 +150,7 @@ export class FsAddressAutocompleteComponent
     private _fm: FocusMonitor,
     private _elementRef: ElementRef,
     private _cdRef: ChangeDetectorRef,
+    private _ngModel: NgModel,
   ) {
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;
@@ -298,6 +296,7 @@ export class FsAddressAutocompleteComponent
   public clear(): void {
     this.inputAddress = this._defaultInputAddress();
     this.value = createEmptyAddress();
+    this._ngModel.reset();
   }
 
   public reset(): void {
@@ -428,7 +427,6 @@ export class FsAddressAutocompleteComponent
           // }
 
           this.addressChange.emit(address);
-          this.edited.emit();
           this.inputAddress = address;
 
           this._cdRef.markForCheck();
