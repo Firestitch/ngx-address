@@ -296,7 +296,7 @@ export class FsAddressAutocompleteComponent
   public clear(): void {
     this.inputAddress = this._defaultInputAddress();
     this.value = createEmptyAddress();
-    this._ngModel.reset();
+    this.ngControl?.control.setValue(this.value);
   }
 
   public reset(): void {
