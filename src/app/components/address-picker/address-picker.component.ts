@@ -141,6 +141,13 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     )
     .subscribe((result) => {
       this.address = result;
+
+      // hard dirty fix for DT-T867.
+      // In future it must be ControlValue Accessor...
+      if (result) {
+        this.search.autocomplete.value = this.address;
+      }
+
       this.addressChange.emit(this.address);
       this._cdRef.markForCheck();
     });
