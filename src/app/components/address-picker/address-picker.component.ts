@@ -81,7 +81,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     return this._name;
   }
 
-  @ViewChild(FsAddressSearchComponent) 
+  @ViewChild(FsAddressSearchComponent)
   public search: FsAddressSearchComponent;
 
   public view = 'search';
@@ -111,16 +111,21 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
   }
 
   public addressSelected(address) {
-    if(this.config.confirmation) {
+    if (this.config.confirmation) {
       this.open({ value: address, initialChange: true })
         .afterClosed()
         .pipe(
-          filter((result) => !result),
           takeUntil(this._destroy$)
         )
-      .subscribe(() => {
-        this.addressSearch.clear(); 
+      .subscribe((result) => {
+        if (result) {
+          this.addressChange.emit(address);
+        } else {
+          this.addressSearch.clear();
+        }
       });
+    } else {
+      this.addressChange.emit(address);
     }
   }
 
