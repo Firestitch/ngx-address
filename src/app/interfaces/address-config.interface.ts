@@ -26,6 +26,7 @@ export interface FsAddressConfig {
   lat?: FsAddressFieldSetting,
   lng?: FsAddressFieldSetting,
   search?: boolean;
+  hideEnterManually?: boolean;
 }
 
 export interface FsAddressPickerConfig extends FsAddressConfig {
