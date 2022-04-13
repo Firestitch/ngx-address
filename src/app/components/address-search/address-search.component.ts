@@ -57,24 +57,23 @@ export class FsAddressSearchComponent implements OnDestroy {
     return this._config;
   }
 
-  @Input() name = true;
-  @Input() address: FsAddress = {};
-  @Input() format = AddressFormat.TwoLine;
-  @Input() disabled = false;
-  @Input() readonly = false;
-  @Input() required = false;
+  @Input() public name = true;
+  @Input() public address: FsAddress = {};
+  @Input() public format = AddressFormat.TwoLine;
+  @Input() public disabled = false;
+  @Input() public readonly = false;
+  @Input() public required = false;
 
-  @Output() cleared: EventEmitter<any> = new EventEmitter<any>();
-  @Output() addressChange = new EventEmitter();
-  @Output() edit = new EventEmitter();
-  @Output() selected = new EventEmitter();
+  @Output() public cleared: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public addressChange = new EventEmitter();
+  @Output() public edit = new EventEmitter();
+  @Output() public selected = new EventEmitter();
 
   @ViewChild(FsAddressAutocompleteComponent)
   public autocomplete: FsAddressAutocompleteComponent;
 
   public autocompleteName = `search-${guid('xxxxxxxx')}`;
 
-  //private _initialChange;
   private _destroy$ = new Subject<void>();
   private _config: FsAddressPickerConfig = {};
 

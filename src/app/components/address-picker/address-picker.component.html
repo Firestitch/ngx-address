@@ -2,13 +2,14 @@
 
   <div class="search">
     <fs-address-search
-      [(address)]="address"
+      [address]="address"
       [config]="config"
       [format]="config.format"
       [disabled]="config.disabled"
       [readonly]="config.readonly"
       [name]="name"
       (edit)="addressEdit()"
+      (addressChange)="addressChange.emit($event)"
       (selected)="addressSelected($event)">
     </fs-address-search>
   </div>
