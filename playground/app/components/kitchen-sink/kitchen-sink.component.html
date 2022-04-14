@@ -9,7 +9,7 @@
   <button mat-raised-button color="primary">Save</button>
 </form>
 
-<fieldset *ngIf="address.country">
+<fieldset *ngIf="address?.country">
   <legend>Selected Address</legend>
   <fs-address-format [(address)]="address"></fs-address-format>
 </fieldset>

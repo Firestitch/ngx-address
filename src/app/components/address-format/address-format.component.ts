@@ -2,7 +2,7 @@ import {
   Component,
   Input,
   OnInit,
-  OnChanges, ChangeDetectionStrategy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { FsAddress } from '../../interfaces/address.interface';
@@ -16,15 +16,17 @@ import { addressOneLineFormat, addressTwoLineFormat, addressSummaryFormat } from
   styleUrls: ['./address-format.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsAddressFormatComponent implements OnInit, OnChanges {
+export class FsAddressFormatComponent implements OnInit {
 
   private _address: FsAddress = {};
 
   @Input()
-  set address(address) {
+  public set address(address) {
     this._address = address;
+    this._updateView();
   }
-  get address() {
+
+  public get address() {
     return this._address;
   }
 
@@ -32,7 +34,7 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
   @Input() includeFirst: 0;
   @Input() disabled = false;
   @Input('name')
-  set name(value: string | boolean) {
+  public set name(value: string | boolean) {
     this._name = (value === 'true' || (typeof value === 'boolean' && value)) as boolean;
   }
 
@@ -45,23 +47,14 @@ export class FsAddressFormatComponent implements OnInit, OnChanges {
 
   private _name = true;
 
-  constructor() {}
-
-  public ngOnChanges(changes) {
-    if (changes.address && changes.address.previousValue) {
-      this._updateView();
-    }
-  }
-
   public ngOnInit() {
     this._updateView();
   }
 
   private _updateView() {
-
     const address = {
       ...this.address,
-      name: this.name ? this.address.name : null,
+      name: this.name ? this.address?.name : null,
     };
 
     if (this.format === AddressFormat.Summary) {

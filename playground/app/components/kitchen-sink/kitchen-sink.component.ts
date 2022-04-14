@@ -25,7 +25,7 @@ import { ConfigureComponent } from '../configure';
 export class KitchenSinkComponent {
 
   public view = '';
-  public address: FsAddress = {};
+  public address: FsAddress;
   public config: FsAddressPickerConfig = {
     label: 'Location',
     hint: 'Hint Hint Hint Hint Hint...',

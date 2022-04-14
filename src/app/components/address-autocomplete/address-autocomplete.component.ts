@@ -251,7 +251,7 @@ export class FsAddressAutocompleteComponent
 
   public displayWith = (value: FsAddress) => {
     if (value && typeof value === 'object') {
-      return this.value.street;
+      return this.value?.street;
     } else if (!this.empty) {
       return ' ';
     }
@@ -341,7 +341,11 @@ export class FsAddressAutocompleteComponent
           tap((value) => {
             this._searchText = value;
             if (!value) {
-              this._address.street = value;
+              this._address = {
+                ...this._address,
+                street: value,
+              };
+
               this.value = this._address;
               this.addressChange.emit(this.value);
             }
@@ -375,7 +379,7 @@ export class FsAddressAutocompleteComponent
     });
   }
 
-    private _listenAutocompleteSelection(): void {
+  private _listenAutocompleteSelection(): void {
     this.autoCompleteRef.optionSelected
       .pipe(
         map((option) => {
@@ -415,16 +419,10 @@ export class FsAddressAutocompleteComponent
           this.searchElement.nativeElement.blur();
           this.value = address;
 
-          // const matchSecondary = this._searchText.trim().match(/(apartment|building|floor|suite|room|department|unit|po\s*box).*$/i);
           const { unit } = extractUnit(this._searchText);
           if (unit) {
             address.address2 = unit;
           }
-
-          // const matchNumber = this._searchText.trim().match(/^(\d+)-/);
-          // if (matchNumber) {
-          //   address.address2 = matchNumber[1];
-          // }
 
           this.addressChange.emit(address);
           this.inputAddress = address;
