@@ -463,7 +463,7 @@ export class FsAddressAutocompleteComponent
           value: text,
           predictions: [],
         }
-      })
+      });
   }
 
   private _getPlaceDetails(

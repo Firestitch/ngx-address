@@ -30,7 +30,6 @@ export {
 } from './app/components/address-region-country/address-region-country.component';
 
 // Interfaces
-
 export { FsAddress } from './app/interfaces/address.interface';
 export {
   FsAddressCollapseButtonConfig,
@@ -64,3 +63,6 @@ export {
   addressOneLineFormat,
   addressSummaryFormat
 } from './app/helpers';
+
+
+export { FsAddressGeocoder } from './app/services/address-geocoder';

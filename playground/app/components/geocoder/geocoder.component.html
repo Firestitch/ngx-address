@@ -1,0 +1,8 @@
+
+<button mat-raised-button color="primary" (click)="lookup()">Lookup</button> 
+
+
+<fieldset *ngIf="results">
+  <legend>Results</legend>
+  {{results|json}}
+</fieldset>

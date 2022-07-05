@@ -35,7 +35,8 @@ import {
   AddressRegionRequiredExampleComponent,
   AddressRegionDisabledExampleComponent,
   AddressRegionNoValidationExampleComponent,
-  AddressFormComponent
+  AddressFormComponent,
+  GeocoderComponent
 } from './components';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
@@ -78,6 +79,7 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
     FormatExampleComponent,
     ConfigureComponent,
     PickerWithConfirmationComponent,
+    GeocoderComponent,
   ],
   providers: [
     { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { float: 'auto' } },

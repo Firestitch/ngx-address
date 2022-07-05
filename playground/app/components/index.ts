@@ -16,3 +16,4 @@ export * from './address-region-disabled-example';
 export * from './address-region-no-validation-example';
 export * from './configure';
 export * from './address-form';
+export * from './geocoder';

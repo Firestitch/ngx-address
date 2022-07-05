@@ -7,7 +7,8 @@ import {
 // Interfaces
 import {
   FsAddress,
-  AddressFormat, FsAddressSearchComponent, FsAddressPickerComponent
+  AddressFormat, 
+  FsAddressPickerComponent
 } from '@firestitch/address';
 import { FsMessage } from '@firestitch/message';
 import { FsAddressFormatComponent, FsAddressPickerConfig  } from '@firestitch/address';
@@ -47,7 +48,10 @@ export class KitchenSinkComponent {
   @ViewChild(FsAddressPickerComponent)
   public addressPicker: FsAddressPickerComponent;
 
-  constructor(private example: FsExampleComponent, private message: FsMessage) {
+  constructor(
+    private example: FsExampleComponent, 
+    private message: FsMessage,
+  ) {
     example.setConfigureComponent(ConfigureComponent, { config: this.config });
   }
 
