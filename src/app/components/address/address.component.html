@@ -21,7 +21,7 @@
         [(ngModel)]="address"
         (ngModelChange)="change()"
         [suggestions]="suggestions"
-        placeholder="Street"
+        [placeholder]="config.street.placeholder || 'Street'"
         name="{{controlNames.street}}">
       </fs-address-autocomplete>
     </ng-container>
@@ -35,7 +35,7 @@
           [disabled]="config.street.disabled"
           [fsFormRequired]="config.street.required"
           [name]="controlNames.street"
-          placeholder="Street"
+          [placeholder]="config.street.placeholder || 'Street'"
           (change)="change()"
           autocomplete="off">
     </ng-template>
@@ -78,7 +78,7 @@
 
   <div class="city">
     <mat-form-field *ngIf="config.city.visible!==false">
-      <mat-label [attr.data-after-content]="'City'"></mat-label>
+      <mat-label [attr.data-after-content]="config.city.placeholder || 'City'"></mat-label>
       <input
         matInput
         type="search"
@@ -99,6 +99,7 @@
       (regionChange)="changeRegion()"
       [country]="address.country"
       [countries]="countries"
+      [label]="config.region.placeholder"
       [disabled]="config.region.disabled"
       [required]="config.region.required"
       [regionCountryOrder]="regionCountryOrder">

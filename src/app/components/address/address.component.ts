@@ -334,6 +334,10 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.zipLabel = 'ZIP/Postal Code';
     }
+
+    this.zipLabel = this.config.zip.placeholder
+      ? this.config.zip.placeholder
+      : this.zipLabel;
   }
 
   private initCollapseBtn() {
