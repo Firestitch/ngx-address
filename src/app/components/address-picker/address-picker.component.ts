@@ -111,7 +111,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
   }
 
   public addressSelected(address) {
-    if (this.config.confirmation) {
+    if (this.config.confirmation || address.manual) {
       this.open({ value: address, initialChange: true })
         .afterClosed()
         .pipe(
