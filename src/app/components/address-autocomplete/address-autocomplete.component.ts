@@ -43,6 +43,7 @@ import {
   takeUntil, tap,
 } from 'rxjs/operators';
 
+import { cloneDeep } from 'lodash-es';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressConfig } from '../../interfaces/address-config.interface';
@@ -227,7 +228,8 @@ export class FsAddressAutocompleteComponent
 
   public writeValue(value: FsAddress | null) {
     this._address = value;
-    this.inputAddress = '';
+    this.inputAddress = cloneDeep(value);
+    this._cdRef.markForCheck();
   }
 
   public setDescribedByIds(ids: string[]) {
