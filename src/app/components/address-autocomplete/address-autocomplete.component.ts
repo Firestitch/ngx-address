@@ -228,7 +228,7 @@ export class FsAddressAutocompleteComponent
 
   public writeValue(value: FsAddress | null) {
     this._address = value;
-    this.inputAddress = cloneDeep(value);
+    this.inputAddress = value?.street ? cloneDeep(value) : ' ';
     this._cdRef.markForCheck();
   }
 
