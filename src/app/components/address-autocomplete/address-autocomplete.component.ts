@@ -335,7 +335,7 @@ export class FsAddressAutocompleteComponent
           }),
           debounceTime(200),
           filter((event: KeyboardEvent) => {
-            return event.code !== 'Enter';
+            return event.code !== 'Enter' && event.code !== 'Tab';
           }),
           map((event: KeyboardEvent) => {
             return (event.target as HTMLInputElement).value;
