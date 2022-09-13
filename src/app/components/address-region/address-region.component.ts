@@ -144,12 +144,13 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
     return data.name;
   };
 
-  public selectUserOption(kw: string) {
+  public selectUserOption(keyword) {
     this.model = {
-      code: kw,
-      name: kw,
+      code: keyword,
+      name: keyword,
     };
-    this.regionChange.emit(kw);
+    
+    this.regionChange.emit(keyword);
   }
 
   public regionChanged() {

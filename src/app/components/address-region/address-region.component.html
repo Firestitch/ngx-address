@@ -24,12 +24,12 @@
   </ng-template>
 
 
-  <ng-template fsAutocompleteStatic
-               let-keyword
-               [showWhenKeyword]="true">
-    <div (click)="selectUserOption(keyword)">
-      Just Use "{{ keyword }}"
-    </div>
+  <ng-template
+      fsAutocompleteStatic
+      let-keyword
+      (selected)="selectUserOption($event)"
+      [showWhenKeyword]="true">
+    Just Use "{{ keyword }}"
   </ng-template>
 
   <ng-template fsAutocompleteNoResults></ng-template>
