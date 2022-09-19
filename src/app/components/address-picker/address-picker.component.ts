@@ -115,12 +115,16 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
       this.open({ value: address, initialChange: true })
         .afterClosed()
         .pipe(
-          takeUntil(this._destroy$)
+          takeUntil(this._destroy$),
         )
       .subscribe((result) => {
-        if (result) {
-          this.addressChange.emit(address);
-        } else {
+        // if (result) {
+        //   this.addressChange.emit(this.address);
+        // } else {
+        //   this.addressSearch.clear();
+        // }
+
+        if (!result) {
           this.addressSearch.clear();
         }
       });
@@ -142,7 +146,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     dialogRef.afterClosed()
     .pipe(
       filter((result) => !!result),
-      takeUntil(this._destroy$)
+      takeUntil(this._destroy$),
     )
     .subscribe((result) => {
       this.address = result;
