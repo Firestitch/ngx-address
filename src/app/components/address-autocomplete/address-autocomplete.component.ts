@@ -24,7 +24,7 @@ import {
 } from '@angular/forms';
 
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -111,6 +111,9 @@ export class FsAddressAutocompleteComponent
 
   @ViewChild(MatAutocomplete, { static: true })
   public readonly autoCompleteRef: MatAutocomplete;
+
+  @ViewChild(MatAutocompleteTrigger, { static: true })
+  public readonly autocompleteTrigger: MatAutocompleteTrigger;
 
   @HostBinding()
   public id = `fs-address-autocomplete-${FsAddressAutocompleteComponent.nextId++}`;
@@ -299,6 +302,10 @@ export class FsAddressAutocompleteComponent
     this.inputAddress = this._defaultInputAddress();
     this.value = createEmptyAddress();
     this.ngControl?.control.setValue(this.value);
+    this._clearPredictions();
+    setTimeout(() => {
+      this.autocompleteTrigger.openPanel();
+    });
   }
 
   public reset(): void {
@@ -328,18 +335,38 @@ export class FsAddressAutocompleteComponent
 
   private _listenUserTyping(): void {
     this._ngZone.runOutsideAngular(() => {
+
+      fromEvent(this.searchElement.nativeElement, 'keydown')
+      .pipe(
+        filter((event: KeyboardEvent) => event.code === 'Tab'),
+        map(() => this.autocompleteTrigger.activeOption?.value),
+        filter((place) => !!place && this.predictions.length !== 0), 
+        switchMap((place) => this._placeToAddress(place)),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((address: any) => {
+        this._selectAddress(address);
+        this._clearPredictions();
+      });
+
       fromEvent(this.searchElement.nativeElement, 'keyup')
         .pipe(
           tap(() => {
             this.stateChanges.next();
-          }),
-          debounceTime(200),
+          }),        
+          debounceTime(200), 
           filter((event: KeyboardEvent) => {
             return event.code !== 'Enter' && event.code !== 'Tab';
           }),
           map((event: KeyboardEvent) => {
             return (event.target as HTMLInputElement).value;
           }),
+          tap((text) => {
+            if (!!!text) {
+              this._clearPredictions();
+            }
+          }),          
+          filter((value) => !!value),
           tap((value) => {
             this._searchText = value;
             if (!value) {
@@ -348,20 +375,8 @@ export class FsAddressAutocompleteComponent
                 street: value,
               };
 
-              this.value = this._address;
-              this.addressChange.emit(this.value);
+              this._selectAddress(this._address);
             }
-          }),
-          filter((text) => {
-            const textExists = !!text;
-
-            if (!textExists) {
-              this.predictions = [];
-
-              this._cdRef.markForCheck();
-            }
-
-            return textExists;
           }),
           distinctUntilChanged(),
           switchMap((text: string) => {
@@ -369,10 +384,10 @@ export class FsAddressAutocompleteComponent
           }),
           takeUntil(this._destroy$),
         )
-        .subscribe(({value, predictions}) => {
+        .subscribe((response: any) => {
           this._ngZone.run(() => {
             this.predictions = [
-              ...predictions,
+              ...response.predictions,
             ];
 
             this._cdRef.markForCheck();
@@ -381,39 +396,56 @@ export class FsAddressAutocompleteComponent
     });
   }
 
+  private _clearPredictions() {
+    this.predictions = [];
+    this._cdRef.markForCheck();
+  }
+
+  private _selectAddress(address) {
+    this.value = address;
+    this.addressChange.emit(address);
+  }
+
+  private _placeToAddress(place): Observable<any> {
+    return of(place)
+    .pipe(
+      switchMap((place) => {
+        if (!place || !this.googlePlacesService) {
+          return of(null);
+        }
+
+        if (place && !place.place_id) {
+          return of({
+            ...this.value,
+            street: place.name,
+            manual: true,
+          });
+        }
+
+        return this._getPlaceDetails(place);
+      }),
+      map((response) => {
+        let address: FsAddress;
+
+        if (response.result) {
+          address = googleDetailsToAddress(response.result, this.config);
+          address.description = response.place.description;
+        } else {
+          address = response;
+        }
+
+        return address;
+      }),
+    );
+  }
+
   private _listenAutocompleteSelection(): void {
     this.autoCompleteRef.optionSelected
       .pipe(
         map((option) => {
           return option.option.value;
         }),
-        switchMap((place) => {
-          if (!place || !this.googlePlacesService) {
-            return of(null);
-          }
-
-          if (place && !place.place_id) {
-            return of({
-              ...this.value,
-              street: place.name,
-              manual: true,
-            });
-          }
-
-          return this._getPlaceDetails(place);
-        }),
-        map((response) => {
-          let address: FsAddress;
-
-          if (response.result) {
-            address = googleDetailsToAddress(response.result, this.config);
-            address.description = response.place.description;
-          } else {
-            address = response;
-          }
-
-          return address;
-        }),
+        switchMap((place) => this._placeToAddress(place)),
         takeUntil(this._destroy$),
       )
       .subscribe((address) => {

@@ -118,12 +118,6 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
           takeUntil(this._destroy$),
         )
       .subscribe((result) => {
-        // if (result) {
-        //   this.addressChange.emit(this.address);
-        // } else {
-        //   this.addressSearch.clear();
-        // }
-
         if (!result) {
           this.addressSearch.clear();
         }
