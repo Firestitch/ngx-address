@@ -20,6 +20,7 @@
         [config]="config"
         [(ngModel)]="address"
         (ngModelChange)="change()"
+        [disabled]="config.street.disabled"
         [suggestions]="suggestions"
         [placeholder]="config.street.placeholder || 'Street'"
         name="{{controlNames.street}}">
