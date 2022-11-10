@@ -8,14 +8,18 @@ import {
   OnChanges,
   SimpleChanges,
   Optional,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy,
 } from '@angular/core';
-import { ControlContainer, NgForm } from '@angular/forms';
+import { ControlContainer, NgForm, NgModel } from '@angular/forms';
 
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { controlContainerFactory } from '@firestitch/core';
 import { guid } from '@firestitch/common';
+import { FsAutocompleteComponent } from '@firestitch/autocomplete';
 
 import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
@@ -36,7 +40,7 @@ import { Country } from '../../enums/country.enum';
     }
   ],
 })
-export class FsAddressRegionComponent implements OnInit, OnChanges {
+export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() public region: string;
   @Input() public countries = [];
@@ -66,9 +70,13 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
   public canadaRegionsIsFirst = false;
   public countryEnum = Country;
 
-  private _country;
+  @ViewChild(FsAutocompleteComponent, { read: NgModel, static: true})
+  private _autocompleteModel: NgModel;
 
-  constructor() { }
+  private _country;
+  private _destroy$ = new Subject<void>();
+
+  constructor(private _cdRef: ChangeDetectorRef) { }
 
   public get country(): string {
     return this._country;
@@ -79,6 +87,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
     this._initCanadaItems();
     this._initUsItems();
     this.updateCountryRegionLabels();
+    this._listenControlStateChanges();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -98,6 +107,11 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
     if (changes.country && !this._country) {
       this.model = null;
     }
+  }
+
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   public fetch = (keyword: string) => {
@@ -149,7 +163,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
       code: keyword,
       name: keyword,
     };
-    
+
     this.regionChange.emit(keyword);
   }
 
@@ -194,6 +208,19 @@ export class FsAddressRegionComponent implements OnInit, OnChanges {
 
   private _detectCountriesOrder() {
     this.canadaRegionsIsFirst = this.regionCountryOrder.indexOf(Country.Canada) === 0;
+  }
+
+  // we need this to get updated ng-(invalid/dirty) classes
+  private _listenControlStateChanges(): void {
+    this._autocompleteModel
+      .control
+      .statusChanges
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe(() => {
+        this._cdRef.markForCheck();
+      });
   }
 
 }

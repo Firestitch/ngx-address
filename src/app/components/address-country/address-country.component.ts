@@ -31,13 +31,6 @@ import { searchCountryRegions } from '../../helpers';
     useExisting: forwardRef(() => FsAddressCountryComponent),
   } ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useFactory: controlContainerFactory,
-      deps: [[new Optional(), NgForm]],
-    }
-  ],
 })
 export class FsAddressCountryComponent implements OnChanges, ControlValueAccessor {
 
