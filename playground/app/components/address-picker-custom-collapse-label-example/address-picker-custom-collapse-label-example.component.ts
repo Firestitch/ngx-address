@@ -3,7 +3,7 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { FsAddressFormatComponent, FsAddressSearchComponent } from '@firestitch/address';
+import { FsAddressFormatComponent } from '@firestitch/address';
 
 // Interfaces
 import {
@@ -14,8 +14,7 @@ import {
 
 @Component({
   selector: 'address-picker-custom-collapse-label-example',
-  templateUrl: 'address-picker-custom-collapse-label-example.component.html',
-  styles: []
+  templateUrl: './address-picker-custom-collapse-label-example.component.html',
 })
 export class AddressPickerCustomCollapseLabelComponent {
 

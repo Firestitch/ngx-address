@@ -78,9 +78,6 @@ export class FsAddressAutocompleteComponent
   public readonly = false;
 
   @Input()
-  public name = true;
-
-  @Input()
   public suggestions = false;
 
   @Input()

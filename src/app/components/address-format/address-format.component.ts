@@ -34,8 +34,8 @@ export class FsAddressFormatComponent implements OnInit {
   @Input() includeFirst: 0;
   @Input() disabled = false;
   @Input('name')
-  public set name(value: string | boolean) {
-    this._name = (value === 'true' || (typeof value === 'boolean' && value)) as boolean;
+  public set name(value: boolean) {
+    this._name = value;
   }
 
   get name() {

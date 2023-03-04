@@ -1,13 +1,13 @@
 <fs-address-picker
   [(address)]="address"
-  [(config)]="config"
+  [config]="config"
   (addressChange)="addressChanged($event)"
-  #picker
-></fs-address-picker>
+  #picker>
+</fs-address-picker>
 
 <h3>Formatted Address</h3>
 <fs-address-format
-  [(address)]="address">
+  [address]="address">
 </fs-address-format>
 
 <fieldset>

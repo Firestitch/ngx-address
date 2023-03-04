@@ -3,14 +3,6 @@
   <h2>Configure</h2>
   <div class="configs">
 
-    <fs-label-field>
-      <fs-label>Flags</fs-label>
-      <div fxLayout="column">
-        <mat-checkbox [(ngModel)]="config.disabled" [value]="true">Disabled</mat-checkbox>
-        <mat-checkbox [(ngModel)]="config.readonly" [value]="true">Readonly</mat-checkbox>
-      </div>
-    </fs-label-field>
-
     <mat-form-field>
       <mat-select placeholder="Format" [(ngModel)]="config.format" name="format">
         <mat-option value="oneline">1 Line</mat-option>
@@ -33,114 +25,77 @@
       <tr>
         <td>Name</td>
         <td>
-            <mat-checkbox [(ngModel)]="config.name.visible" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.name.visible" name="nameVisible"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.name.disabled" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.name.disabled" name="nameDisabled"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.name.required" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.name.required" name="nameRequired"></mat-checkbox>
         </td>
       </tr>
       <tr>
         <td>Street</td>
         <td>
-            <mat-checkbox [(ngModel)]="config.street.visible" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.street.visible" name="streetVisible"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.street.disabled" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.street.disabled" name="streetDisabled"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.street.required" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.street.required" name="streetRequired"></mat-checkbox>
         </td>
       </tr>
       <tr>
         <td>City</td>
         <td>
-            <mat-checkbox [(ngModel)]="config.city.visible" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.city.visible" name="cityVisible"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.city.disabled" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.city.disabled" name="cityDisabled"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.city.required" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.city.required" name="cityRequired"></mat-checkbox>
         </td>
       </tr>
       <tr>
         <td>Region</td>
         <td>
-            <mat-checkbox [(ngModel)]="config.region.visible" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.region.visible" name="regionVisible"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.region.disabled" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.region.disabled" name="regionDisabled"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.region.required" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.region.required" name="regionRequired"></mat-checkbox>
         </td>
       </tr>
       <tr>
         <td>zip</td>
         <td>
-            <mat-checkbox [(ngModel)]="config.zip.visible" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.zip.visible" name="zipVisible"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.zip.disabled" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.zip.disabled" name="zipDisabled"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.zip.required" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.zip.required" name="zipRequired"></mat-checkbox>
         </td>
       </tr>
       <tr>
         <td>Country</td>
         <td>
-            <mat-checkbox [(ngModel)]="config.country.visible" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.country.visible" name="countryVisible"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.country.disabled" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.country.disabled" name="countryDisabled"></mat-checkbox>
         </td>
         <td>
-            <mat-checkbox [(ngModel)]="config.country.required" [value]="true"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="config.country.required" name="countryRequired"></mat-checkbox>
         </td>
       </tr>
     </table>
 
-<!--
-    export interface IFsAddressFieldSetting {
-      disabled?: boolean,
-      required?: boolean,
-      visible?: boolean,
-      list?: string[],
-    }
-
-    export interface IFsAddressConfig {
-      label?: string;
-      name?: IFsAddressFieldSetting,
-      country?: IFsAddressFieldSetting,
-      region?: IFsAddressFieldSetting,
-      city?: IFsAddressFieldSetting,
-      street?: IFsAddressFieldSetting,
-      zip?: IFsAddressFieldSetting,
-      map?: IFsAddressMapConfig,
-      collapseButton?: IFsAddressCollapseButtonConfig,
-      lat?: IFsAddressFieldSetting,
-      lng?: IFsAddressFieldSetting
-    } -->
-
-
-
-    <!-- <mat-form-field>
-      <input matInput placeholder="Image Width" type="number" [(ngModel)]="config.width">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Image Height" [(ngModel)]="config.height">
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput placeholder="Text" type="text" [(ngModel)]="config.text">
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" (click)="reload()">Reload</button> -->
   </div>
 
 </div>

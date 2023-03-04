@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-// Interfaces
-import { FsAddress, } from '@firestitch/address';
+import { AddressFormat, FsAddress, } from '@firestitch/address';
 
 
 @Component({
@@ -10,14 +9,13 @@ import { FsAddress, } from '@firestitch/address';
 })
 export class FormatExampleComponent {
 
+  public AddressFormat = AddressFormat;
   public address: FsAddress = {
     name: 'CN Tower',
     street: '301 Front St W',
     city: 'Toronto',
     region: 'ON',
     zip: 'M5V 2T6'
-  };
+  }; 
 
-
-  constructor() { }
 }

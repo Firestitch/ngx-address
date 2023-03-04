@@ -1,12 +1,11 @@
 import {
   Component,
-  OnInit,
   ViewChild
 } from '@angular/core';
 
-// Interfaces
 import {
-  FsAddress, FsAddressSearchComponent,
+  AddressFormat,
+  FsAddress, 
   FsAddressConfig,
 } from '@firestitch/address';
 
@@ -14,10 +13,9 @@ import { FsAddressFormatComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-pre-filled-example',
-  templateUrl: 'address-picker-pre-filled-example.component.html',
-  styles: []
+  templateUrl: './address-picker-pre-filled-example.component.html',
 })
-export class AddressPickerPreFilledExampleComponent implements OnInit {
+export class AddressPickerPreFilledExampleComponent {
 
   public address: FsAddress = {
     name: 'CN Tower',
@@ -29,10 +27,8 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
   };
 
   public config: FsAddressConfig = { };
+  public AddressFormat = AddressFormat;
 
   @ViewChild('format') format: FsAddressFormatComponent;
 
-  constructor() {}
-
-  public ngOnInit() {}
 }

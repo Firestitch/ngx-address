@@ -6,7 +6,7 @@ import { FsAddress, FsAddressConfig, FsAddressFormatConfig } from '@firestitch/a
 
 @Component({
   selector: 'full-address-example',
-  templateUrl: 'full-address-example.component.html'
+  templateUrl: './full-address-example.component.html'
 })
 export class FullAddressExampleComponent {
 

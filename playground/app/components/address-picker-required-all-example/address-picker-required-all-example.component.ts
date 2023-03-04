@@ -11,14 +11,12 @@ import {
   FsAddressFormatConfig
 } from '@firestitch/address';
 
-// Others
 import { FsAddressPickerComponent } from '@firestitch/address';
 
 
 @Component({
   selector: 'address-picker-required-all-example',
-  templateUrl: 'address-picker-required-all-example.component.html',
-  styles: []
+  templateUrl: './address-picker-required-all-example.component.html',
 })
 export class AddressPickerRequiredAllExampleComponent implements OnInit {
 

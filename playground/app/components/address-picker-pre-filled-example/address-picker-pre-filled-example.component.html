@@ -1,13 +1,13 @@
 <form>
   <fs-address-picker
     [(address)]="address"
-    [(config)]="config"
-    format="twoline"
+    [config]="config"
+    [format]="AddressFormat.TwoLine"
     #picker>
   </fs-address-picker>
 </form>
 
 <fieldset [hidden]="format.empty">
   <legend>Selected Address</legend>
-  <fs-address-format #format [(address)]="address" format="twoline"></fs-address-format>
+  <fs-address-format #format [address]="address" [format]="AddressFormat.TwoLine"></fs-address-format>
 </fieldset>

@@ -18,8 +18,7 @@ import { ConfigureComponent } from '../configure';
 
 @Component({
   selector: 'picker-with-confirmation',
-  templateUrl: 'picker-with-confirmation.component.html',
-  styles: [],
+  templateUrl: './picker-with-confirmation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PickerWithConfirmationComponent {

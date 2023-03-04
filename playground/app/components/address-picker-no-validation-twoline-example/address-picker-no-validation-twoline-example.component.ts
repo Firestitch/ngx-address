@@ -6,7 +6,8 @@ import {
 // Interfaces
 import {
   FsAddress, FsAddressSearchComponent,
-  FsAddressConfig
+  FsAddressConfig,
+  AddressFormat
 } from '@firestitch/address';
 
 import { FsAddressFormatComponent } from '@firestitch/address';
@@ -14,12 +15,12 @@ import { FsAddressFormatComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-no-validation-twoline-example',
-  templateUrl: 'address-picker-no-validation-twoline-example.component.html',
-  styles: []
+  templateUrl: './address-picker-no-validation-twoline-example.component.html',
 })
 export class AddressPickerNoValidationTwolineExampleComponent {
 
   public address: FsAddress = {};
+  public AddressFormat = AddressFormat;
   public config: FsAddressConfig = {
     map: { zoom: 15 }
   };

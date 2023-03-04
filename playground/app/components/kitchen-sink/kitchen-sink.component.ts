@@ -19,7 +19,7 @@ import { ConfigureComponent } from '../configure';
 
 @Component({
   selector: 'kitchen-sink',
-  templateUrl: 'kitchen-sink.component.html',
+  templateUrl: './kitchen-sink.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
