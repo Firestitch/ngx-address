@@ -72,22 +72,14 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
 
   @Output() public addressChange = new EventEmitter();
 
-  @Input('name')
-  set name(value: string | boolean) {
-    this._name = (value === 'true' || (typeof value === 'boolean' && value)) as boolean;
-  }
-
-  get name() {
-    return this._name;
-  }
-
+  @Input() public name: boolean = true;
+ 
   @ViewChild(FsAddressSearchComponent)
   public search: FsAddressSearchComponent;
 
   public view = 'search';
   public config: FsAddressPickerConfig = {};
 
-  private _name = true;
   private _destroy$ = new Subject();
 
   constructor(

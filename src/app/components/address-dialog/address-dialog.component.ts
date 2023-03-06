@@ -8,6 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressComponent } from '../../components/address/address.component';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -35,6 +36,8 @@ export class FsAddressDialogComponent {
 
   public submit = () => {
     this._dialogRef.close(this.address);
+
+    return of(true);
   }
 
   public addressChange(address) {

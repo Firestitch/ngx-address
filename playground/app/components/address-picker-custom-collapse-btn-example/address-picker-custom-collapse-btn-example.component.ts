@@ -14,7 +14,7 @@ import {
 
 @Component({
   selector: 'address-picker-custom-collapse-btn-example',
-  templateUrl: 'address-picker-custom-collapse-btn-example.component.html',
+  templateUrl: './address-picker-custom-collapse-btn-example.component.html',
   styles: []
 })
 export class AddressPickerCustomCollapseBtnComponent {

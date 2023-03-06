@@ -3,7 +3,7 @@
   <fs-address-picker
     [(address)]="address"
     [config]="config"
-    format="twoline"
+    [format]="AddressFormat.TwoLine"
     disabled="true"
     #disabledPicker>
   </fs-address-picker>
@@ -12,7 +12,7 @@
   <fs-address-picker
     [(address)]="address"
     [config]="config"
-    format="twoline"
+    [format]="AddressFormat.TwoLine"
     readonly="true"
     #readonlyPicker>
   </fs-address-picker>
@@ -20,5 +20,5 @@
 
 <fieldset [hidden]="format.empty">
   <legend>Selected Address Disabled Style</legend>
-  <fs-address-format #format [address]="address" format="twoline" disabled="true"></fs-address-format>
+  <fs-address-format #format [address]="address" [format]="AddressFormat.TwoLine" [disabled]="true"></fs-address-format>
 </fieldset>

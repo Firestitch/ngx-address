@@ -13,7 +13,7 @@ import {
 
 @Component({
   selector: 'address-picker-map-required-example',
-  templateUrl: 'address-picker-map-required-example.component.html',
+  templateUrl: './address-picker-map-required-example.component.html',
   styles: []
 })
 export class AddressPickerMapRequiredExampleComponent implements OnInit {

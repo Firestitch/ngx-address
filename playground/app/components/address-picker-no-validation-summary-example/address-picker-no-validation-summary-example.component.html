@@ -1,14 +1,14 @@
 <form>
   <fs-address-picker
     [(address)]="address"
-    [(config)]="config"
-    name="false"
-    format="summary"
+    [config]="config"
+    [name]="false"
+    [format]="AddressFormat.Summary"
     #picker>
   </fs-address-picker>
 </form>
 
 <fieldset [hidden]="format.empty">
   <legend>Selected Address</legend>
-  <fs-address-format #format [(address)]="address" name="false" format="summary"></fs-address-format>
+  <fs-address-format #format [address]="address" [name]="false" [format]="AddressFormat.Summary"></fs-address-format>
 </fieldset>

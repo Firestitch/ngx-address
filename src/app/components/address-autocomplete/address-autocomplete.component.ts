@@ -78,9 +78,6 @@ export class FsAddressAutocompleteComponent
   public readonly = false;
 
   @Input()
-  public name = true;
-
-  @Input()
   public suggestions = false;
 
   @Input()
@@ -154,7 +151,6 @@ export class FsAddressAutocompleteComponent
     private _fm: FocusMonitor,
     private _elementRef: ElementRef,
     private _cdRef: ChangeDetectorRef,
-    private _ngModel: NgModel,
   ) {
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;

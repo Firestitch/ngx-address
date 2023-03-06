@@ -8,13 +8,14 @@ import {
 import {
   FsAddress, FsAddressSearchComponent,
   FsAddressConfig,
+  AddressFormat,
 } from '@firestitch/address';
 
 import { FsAddressFormatComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-pre-filled-example',
-  templateUrl: 'address-picker-pre-filled-example.component.html',
+  templateUrl: './address-picker-pre-filled-example.component.html',
   styles: []
 })
 export class AddressPickerPreFilledExampleComponent implements OnInit {
@@ -29,6 +30,7 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
   };
 
   public config: FsAddressConfig = { };
+  public AddressFormat = AddressFormat;
 
   @ViewChild('format') format: FsAddressFormatComponent;
 

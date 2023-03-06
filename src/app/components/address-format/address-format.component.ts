@@ -33,19 +33,10 @@ export class FsAddressFormatComponent implements OnInit {
   @Input() format: AddressFormat = AddressFormat.OneLine;
   @Input() includeFirst: 0;
   @Input() disabled = false;
-  @Input('name')
-  public set name(value: string | boolean) {
-    this._name = (value === 'true' || (typeof value === 'boolean' && value)) as boolean;
-  }
-
-  get name() {
-    return this._name;
-  }
+  @Input() public name = true;
 
   public lines: any[] = [];
   public empty = false;
-
-  private _name = true;
 
   public ngOnInit() {
     this._updateView();

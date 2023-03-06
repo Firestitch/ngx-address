@@ -6,7 +6,7 @@ import {
 
 // Interfaces
 import {
-  FsAddress, FsAddressSearchComponent,
+  FsAddress, 
   FsAddressConfig,
   FsAddressFormatConfig
 } from '@firestitch/address';
@@ -17,8 +17,7 @@ import { FsAddressPickerComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-required-all-example',
-  templateUrl: 'address-picker-required-all-example.component.html',
-  styles: []
+  templateUrl: './address-picker-required-all-example.component.html',  styles: []
 })
 export class AddressPickerRequiredAllExampleComponent implements OnInit {
 
