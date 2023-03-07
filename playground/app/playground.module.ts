@@ -40,6 +40,7 @@ import {
 } from './components';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
     AppMaterialModule,
     FsLabelModule,
     FsFormModule,
+    RouterModule.forRoot([]),
     FsExampleModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
