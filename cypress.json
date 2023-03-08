@@ -6,7 +6,7 @@
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",
   "baseUrl": "http://localhost:8000",
-  "projectId": "js6tf6",
+  "projectId": "cqv4gg",
   "retries": 1,
   "reporter": "cypress-multi-reporters",
       "reporterOptions": {
