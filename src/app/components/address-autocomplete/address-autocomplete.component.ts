@@ -20,7 +20,6 @@ import {
   Validator,
   ValidationErrors,
   AbstractControl,
-  NgModel,
 } from '@angular/forms';
 
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -30,8 +29,6 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
 
 import { guid } from '@firestitch/common';
-
-import { MapsAPILoader } from '@agm/core';
 
 import { bindCallback, fromEvent, Observable, of, Subject } from 'rxjs';
 import {
@@ -52,6 +49,7 @@ import { googleDetailsToAddress } from '../../helpers/google-details-to-address'
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
 import { extractUnit } from '../../helpers/extract-unit';
+import { FsMap } from '@firestitch/map';
 
 
 @Component({
@@ -146,7 +144,7 @@ export class FsAddressAutocompleteComponent
 
   constructor(
     @Optional() @Self() public ngControl: NgControl,
-    private _mapsAPILoader: MapsAPILoader,
+    private _map: FsMap,
     private _ngZone: NgZone,
     private _fm: FocusMonitor,
     private _elementRef: ElementRef,
@@ -464,9 +462,11 @@ export class FsAddressAutocompleteComponent
 
   private initGoogleMap() {
     this._ngZone.runOutsideAngular(() => {
-      this._mapsAPILoader
-        .load()
-        .then(() => {
+      this._map.loaded$
+        .pipe(
+          takeUntil(this._destroy$),
+        )
+        .subscribe(() => {
           this.googleAutocompleteService = new google.maps.places.AutocompleteService();
           this.googlePlacesService = new google.maps.places.PlacesService(this.searchElement.nativeElement);
         });

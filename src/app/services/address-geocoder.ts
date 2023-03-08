@@ -1,6 +1,7 @@
-import { MapsAPILoader } from '@agm/core';
 import { Injectable } from '@angular/core';
+import { FsMap } from '@firestitch/map';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Injectable({
@@ -9,14 +10,13 @@ import { Observable } from 'rxjs';
 export class FsAddressGeocoder {
 
   public constructor(
-    private _mapsAPILoader: MapsAPILoader,
+    private _map: FsMap,
   ) {}
 
   public lookup(address: string): Observable<google.maps.GeocoderResult[]> {
     return new Observable((observer) => {
-      this._mapsAPILoader
-        .load()
-        .then(() => {
+      this._map.loaded$
+        .subscribe(() => {
           const geocoder = new google.maps.Geocoder();
           const request: google.maps.GeocoderRequest = {
             address,

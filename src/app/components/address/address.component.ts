@@ -14,11 +14,9 @@ import { ControlContainer, NgForm } from '@angular/forms';
 
 import { controlContainerFactory } from '@firestitch/core';
 import { guid } from '@firestitch/common';
-
-import { AgmMap, AgmMarker } from '@agm/core';
+import { FsMapComponent } from '@firestitch/map';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { isObject } from 'lodash-es';
 
 import { Countries } from '../../consts/countries.const';
@@ -27,9 +25,6 @@ import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddressRegionComponent } from '../address-region/address-region.component';
 import { FsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 import { Country } from '../../enums/country.enum';
-
-
-declare var google: any;
 
 
 @Component({
@@ -47,9 +42,11 @@ declare var google: any;
 })
 export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild(AgmMap) agmMap;
-  @ViewChild(AgmMarker) agmMarker;
-  @ViewChild(FsAddressRegionComponent) fsAddressRegionComponent;
+  @ViewChild(FsAddressRegionComponent) 
+  public fsAddressRegionComponent: FsAddressRegionComponent;
+
+  @ViewChild(FsMapComponent) 
+  public map: FsMapComponent;
 
   @Input() address: FsAddress;
   @Input() excludeCountries: string[];
@@ -101,28 +98,28 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.initZipAndStateLabels();
     this.initCollapseBtn();
 
-    // Example ready event. Allow to use google object and map instance
-    if (this.agmMap) {
-      this.agmMap
-        .mapReady
-        .pipe(
-          takeUntil(this._destory$)
-        )
-        .subscribe(() => {
+    // // Example ready event. Allow to use google object and map instance
+    // if (this.agmMap) {
+    //   this.agmMap
+    //     .mapReady
+    //     .pipe(
+    //       takeUntil(this._destory$)
+    //     )
+    //     .subscribe(() => {
 
-          this.agmMap.triggerResize();
+    //       this.agmMap.triggerResize();
 
-          if (this.address.name ||
-            this.address.country ||
-            this.address.region ||
-            this.address.city ||
-            this.address.zip) {
-              this.address.lat = 9999;
-              this.address.lng = 9999;
-              this.change();
-          }
-        });
-      }
+    //       if (this.address.name ||
+    //         this.address.country ||
+    //         this.address.region ||
+    //         this.address.city ||
+    //         this.address.zip) {
+    //           this.address.lat = 9999;
+    //           this.address.lng = 9999;
+    //           this.change();
+    //       }
+    //     });
+    //   }
   }
 
   public ngOnChanges(change) {
@@ -151,8 +148,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.mapConfig.center = { latitude: this.address.lat, longitude: this.address.lng };
     this.mapConfig.marker.coords.latitude = this.address.lat;
     this.mapConfig.marker.coords.longitude = this.address.lng;
-    this.agmMap.triggerResize()
-      .then(() => this.agmMap._mapsWrapper.setCenter({lat: this.address.lat, lng: this.address.lng}));
+    this.map.setCenter(this.address.lat, this.address.lng);
   }
 
   public dragEnded(event): void {
@@ -234,10 +230,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
         this.mapConfig.marker.coords.latitude = location.lat();
         this.mapConfig.marker.coords.longitude = location.lng();
-
-        if (this.agmMap) {
-          this.agmMap.triggerResize();
-        }
       } else {
         newAddress.lat = null;
         newAddress.lng = null;

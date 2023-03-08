@@ -7,11 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
 import { FsFormModule } from '@firestitch/form';
+import { FsMapModule } from '@firestitch/map';
 import { FsLabelModule } from '@firestitch/label';
-import {  FsAddressModule,
-          FsAddressRegionModule,
-          FsAddressRegionCountryModule,
-          GOOGLE_MAP_KEY } from '@firestitch/address';
+import {  
+  FsAddressModule, 
+  FsAddressRegionModule,      
+  FsAddressRegionCountryModule,
+ } from '@firestitch/address';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -40,6 +42,7 @@ import {
 } from './components';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -48,12 +51,16 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    FsAddressModule.forRoot(),
+    FsAddressModule,
+    FsMapModule.forRoot({
+      googleMapKey: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE',
+    }),
     FsAddressRegionModule,
     FsAddressRegionCountryModule,
     AppMaterialModule,
     FsLabelModule,
     FsFormModule,
+    RouterModule.forRoot([]),
     FsExampleModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
@@ -83,7 +90,6 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
   ],
   providers: [
     { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { float: 'auto' } },
-    { provide: GOOGLE_MAP_KEY, useValue: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE' }
   ]
 })
 export class PlaygroundModule {
