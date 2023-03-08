@@ -4,12 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { FsAddressCountriesModule } from './fs-address-countries.module';
 
-import {
-  AgmCoreModule,
-  GoogleMapsAPIWrapper,
-  MarkerManager,
-  LAZY_MAPS_API_CONFIG,
-} from '@agm/core';
+import { FsMapModule } from '@firestitch/map';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,8 +14,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { FsFormModule } from '@firestitch/form';
 import { FsDialogModule } from '@firestitch/dialog';
-
-import { GoogleMapConfig } from './classes/googlemapconfig';
 
 import { FsAddressComponent } from './components/address/address.component';
 import { FsAddressFormatComponent } from './components/address-format/address-format.component';
@@ -48,10 +41,9 @@ import { FsAddressAutocompleteComponent } from './components/address-autocomplet
     FsDialogModule,
     FsAddressRegionModule,
     FsAddressCountryModule,
-    AgmCoreModule,
+    FsMapModule,
   ],
   exports: [
-    AgmCoreModule,
     FsAddressComponent,
     FsAddressFormatComponent,
     FsAddressPickerComponent,
@@ -71,13 +63,6 @@ export class FsAddressModule {
   static forRoot(): ModuleWithProviders<FsAddressModule> {
     return {
       ngModule: FsAddressModule,
-      providers: [
-        GoogleMapsAPIWrapper,
-        MarkerManager,
-        // for easy configuration on project side (you don't need use AgmCoreModule.forRoot any more)
-        AgmCoreModule.forRoot().providers,
-        { provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapConfig },
-      ]
     };
   }
 }

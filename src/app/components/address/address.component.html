@@ -140,22 +140,21 @@
 </div>
 
 <div class="map-container" *ngIf="mapConfig.showMap">
-  <agm-map
-    [ngStyle.xs]="{'height': '300px'}"
-    [latitude]="mapConfig.center.latitude"
-    [longitude]="mapConfig.center.longitude"
-    [zoom]="mapConfig.zoom"
-    [scrollwheel]="mapConfig.scrollwheel"
-    [streetViewControl]="mapConfig.streetViewControl"
-    [zoomControl]="mapConfig.zoomControl"
-    [mapTypeControlOptions]="mapConfig.mapTypeControlOptions">
-    <agm-marker
-      [latitude]="mapConfig.marker.coords.latitude"
-      [longitude]="mapConfig.marker.coords.longitude"
-      [markerDraggable]="mapConfig.marker.options.draggable"
-      (dragEnd)="dragEnded($event)">
-    </agm-marker>
-  </agm-map>
+  <fs-map
+      [height]="'300px'"
+      [width]="'100%'"
+      [lat]="mapConfig.center.latitude"
+      [lng]="mapConfig.center.longitude"
+      [zoom]="mapConfig.zoom"
+      [scrollwheel]="mapConfig.scrollwheel"
+      [streetViewControl]="mapConfig.streetViewControl"
+      [zoomControl]="mapConfig.zoomControl"
+      [mapTypeControlOptions]="mapConfig.mapTypeControlOptions">
+    <fs-map-marker
+      [lat]="mapConfig.marker.coords.latitude"
+      [lng]="mapConfig.marker.coords.longitude">
+    </fs-map-marker>
+  </fs-map>
 
   <div class="address-incomplete" *ngIf="!address.lat && !address.lng">
     <div *ngIf="!isSearched">Please populate the address above to locate it on the map</div>

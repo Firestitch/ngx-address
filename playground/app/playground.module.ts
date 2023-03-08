@@ -7,11 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
 import { FsFormModule } from '@firestitch/form';
+import { FsMapModule } from '@firestitch/map';
 import { FsLabelModule } from '@firestitch/label';
-import {  FsAddressModule,
-          FsAddressRegionModule,
-          FsAddressRegionCountryModule,
-          GOOGLE_MAP_KEY } from '@firestitch/address';
+import {  
+  FsAddressModule, 
+  FsAddressRegionModule,      
+  FsAddressRegionCountryModule,
+ } from '@firestitch/address';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -49,7 +51,10 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    FsAddressModule.forRoot(),
+    FsAddressModule,
+    FsMapModule.forRoot({
+      googleMapKey: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE',
+    }),
     FsAddressRegionModule,
     FsAddressRegionCountryModule,
     AppMaterialModule,
@@ -85,7 +90,6 @@ import { RouterModule } from '@angular/router';
   ],
   providers: [
     { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { float: 'auto' } },
-    { provide: GOOGLE_MAP_KEY, useValue: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE' }
   ]
 })
 export class PlaygroundModule {
