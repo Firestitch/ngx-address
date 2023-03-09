@@ -1,4 +1,4 @@
-import  { AddressConfirmation} from "../../support/page-object/page-objects";
+import  { AddressConfirmation} from "../support/page-object/page-objects";
 /// <reference types="cypress" />
 
 describe("Confirmation Address Picker", () => {

@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { AddressRegionNoValidationHorizontal, AddressRegionPrefilledHorizontalStretched } from "../../support/page-object/page-objects";
+import { AddressRegionNoValidationHorizontal, AddressRegionPrefilledHorizontalStretched } from "../support/page-object/page-objects";
 
 describe("Address Region, pre-filled, horizontal stretched", () => {
   const addressRegion = new AddressRegionPrefilledHorizontalStretched()

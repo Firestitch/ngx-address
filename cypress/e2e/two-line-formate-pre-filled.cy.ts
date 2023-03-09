@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { TwoLineFormatePrefilled } from "../../support/page-object/page-objects";
+import { TwoLineFormatePrefilled } from "../support/page-object/page-objects";
 
 describe("Two-line formate, pre-filled", () => {
   const twoLineFormatePrefilled = new TwoLineFormatePrefilled

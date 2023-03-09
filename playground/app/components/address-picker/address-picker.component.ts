@@ -18,12 +18,12 @@ import { ConfigureComponent } from '../configure';
 
 
 @Component({
-  selector: 'kitchen-sink',
-  templateUrl: 'kitchen-sink.component.html',
+  selector: 'address-picker',
+  templateUrl: 'address-picker.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KitchenSinkComponent {
+export class AddressPickerComponent {
 
   public view = '';
   public address: FsAddress;

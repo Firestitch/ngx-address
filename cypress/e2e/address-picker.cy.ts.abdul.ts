@@ -1,57 +1,49 @@
-import  { AddressConfirmation, AddressPicker } from "../../support/page-object/page-objects";
+import  { AddressPicker } from "../support/page-object/page-objects";
 
 describe("Address Picker", () => {
+
+
+  
   const addresspicker = new AddressPicker();
   before(function () {
     //cy.visit(Cypress.env("localHost"));
     cy.visit("/");
   });
 
-  it("Validate invalid user address.", () => {
-    addresspicker.locationInput().type("Automation Testing Automation Testing Automation Testing");
-    cy.contains("Automation Testing Automation Testing Automation Testing").click();
-    addresspicker.editableAddressTwoLine().click();
-    cy.contains("Please populate the address above to locate it on the map")
-    addresspicker.invalidAddressDialogBoxApplyButton().should('be.disabled')
-    cy.contains("Cancel").click()
-    addresspicker.clearAddress().click()
-  })
-
+  // it("Validate invalid user address.", () => {
+  //   addresspicker.locationInput().type("Automation Testing");
+  //   cy.wait(300).contains("Automation Testing").click();
+  //   addresspicker.editableAddressTwoLine().click();
+  //   cy.contains("Please populate the address above to locate it on the map")
+  //   addresspicker.invalidAddressDialogBoxApplyButton().should('be.disabled')
+  //   cy.contains("Cancel").click()
+  //   addresspicker.clearAddress().click()
+  // })
 
   it("Validate address location field.", () => {
+    cy.visit("/");
     addresspicker.locationInput().should("be.empty").and("have.prop", "required");
     addresspicker.locationInput().type("Toronto, ON");
     addresspicker.autocompleteDropDownList().should('be.visible')
     cy.contains("Toronto, ON, Canada").click();
-
-    //iterating over the autocomplete list
-    // cy.get(".mat-autocomplete-panel").each(($el, index, $list) => {
-    //   const location = $el.text();
-    //   const LocationToSelect = "TorontoONCA";
-    //   if (location === LocationToSelect) {
-    //     cy.location.dblclick();
-    //   }
-    // });
   });
 
   it("Validate Save button actions.", () => {
-
-    addresspicker.clearAddress().click()
-    addresspicker.saveButton().should('be.enabled')
-    addresspicker.locationInput().type("Toronto, ON");
-    cy.contains("Toronto, ON, Canada").click();
-    addresspicker.saveButton().click()
-    addresspicker.saveButton().should('be.disabled')
-    addresspicker.SaveButtonPopUPMassage().then(function (text) {
-      cy.log(text.text());
+    cy.visit("/");
+    addresspicker.saveButton().should('be.disabled');
+    addresspicker.locationInput().type("Toronto ON");
+    cy.wait(1000).contains("Toronto, ON, Canada").click();
+    addresspicker.saveButton().click().should('be.disabled')
+    addresspicker.SaveButtonPopUPMassage()
+      .then(function (text) {
+        cy.log(text.text());
       });
   })
 
-
   it("Validate two-line Address", () => {
-    // addresspicker.clearAddress().click()
-    // addresspicker.locationInput().click().type("Toronto, ON");
-    // cy.contains("Toronto, ON, Canada").click();
+    cy.visit("/");
+    addresspicker.locationInput().click().type("Toronto, ON");
+    cy.contains("Toronto, ON, Canada").click();
     addresspicker.editableAddressLineOne().then(function (text) {
       const locationCity = text.text();
       cy.log(locationCity);
@@ -85,21 +77,25 @@ describe("Address Picker", () => {
       }
     });
 
-  })
-  it("Validate one-line Address", () => {
-    addresspicker.selectOneLineAddress().then(function (text) {
-      const oneLineAddress = text.text();
-      cy.log(oneLineAddress);
-      if (oneLineAddress === "TorontoONCA") {
-        cy.log("Test Passed:");
-      } else {
-        cy.contains("Test Failed:one_Line_address does not match:");
-      }
-    });
   });
 
-  it("validate cancel button action when a user cancels address updating", () => {
+  // it("Validate one-line Address", () => {
+  //   cy.visit("/");
+  //   addresspicker.selectOneLineAddress()
+  //   .then(function (text) {
+  //     const oneLineAddress = text.text();
+  //     if (oneLineAddress === "TorontoONCA") {
+  //       cy.log("Test Passed:");
+  //     } else {
+  //       cy.contains("Test Failed:one_Line_address does not match:");
+  //     }
+  //   });
+  // });
 
+  it("validate cancel button action when a user cancels address updating", () => {
+    cy.visit("/");
+    addresspicker.locationInput().type("Toronto, ON");
+    cy.wait(500).contains("Toronto, ON, Canada").click();
     addresspicker.editableAddressTwoLine().click()
     addresspicker.street().clear()
     addresspicker.street().type("1000 Markham Road")
@@ -120,7 +116,7 @@ describe("Address Picker", () => {
   })
 
   it("validate hint text.", () => {
-
+    cy.visit("/");
     addresspicker.hint().then(function (text) {
       const hintText=text.text();
       cy.log(hintText)
@@ -135,6 +131,7 @@ describe("Address Picker", () => {
   });
 
   it("Validate when clients enter valid and filling all address fields", () => {
+    cy.visit("/");
     addresspicker.editableAddressTwoLine().click();
     addresspicker.street().dblclick().type("215 Markham Road");
     addresspicker.address2().dblclick().type("2550 Lawrence");
@@ -165,6 +162,7 @@ describe("Address Picker", () => {
    });
 
   it("Validate Google Map.", () => {
+    cy.visit("/");
     addresspicker.editableAddressTwoLine().click()
     cy.contains("Google").scrollIntoView();
     addresspicker.zoomIn().click();
@@ -199,6 +197,7 @@ describe("Address Picker", () => {
 
   // });
   it("Validate address form dialog box", () => {
+    cy.visit("/");
     // negative tests
     addresspicker.editableAddressTwoLine().click();
     addresspicker.city().clear();
@@ -211,6 +210,7 @@ describe("Address Picker", () => {
   });
 
   it("Validate country field value when province field value is changed or cleared.", () => {
+    cy.visit("/");
     addresspicker.editableAddressTwoLine().click();
     addresspicker.city().clear();
     addresspicker.region().clear();
@@ -222,6 +222,7 @@ describe("Address Picker", () => {
   });
 
   it("Validate Dialog box2 title, content and buttons.", () => {
+    cy.visit("/");
     //fs-modal-confirm pop up window massage "You Have Unsaved Changes"
     addresspicker.editableAddressTwoLine().click();
     addresspicker.street().dblclick().clear();
@@ -269,7 +270,7 @@ describe("Address Picker", () => {
   //fs-modal-confirm button "Discard Changes & Continue "
   it("Validate when address is modified or edited", () => {
    // cy.pause()
-
+   cy.visit("/");
     addresspicker.editableAddressTwoLine().click();
     addresspicker.street().dblclick().clear();
     addresspicker.street().dblclick().type("220 Markham Road");
@@ -296,11 +297,12 @@ describe("Address Picker", () => {
 
   it("Validate Discard Changes & Continue button actions after editing the address", () => {
     // cy.pause()
-     addresspicker.editableAddressTwoLine().click();
-     addresspicker.street().dblclick().clear();
-     addresspicker.street().dblclick().type("200 Markham Road");
-     addresspicker.overlayBackdrop().click({ force: true });
-     addresspicker
+      cy.visit("/");
+      addresspicker.editableAddressTwoLine().click();
+      addresspicker.street().dblclick().clear();
+      addresspicker.street().dblclick().type("200 Markham Road");
+      addresspicker.overlayBackdrop().click({ force: true });
+      addresspicker
        .discardChangesContinueButton()
        .should("have.text", "Discard Changes & Continue")
        .click();

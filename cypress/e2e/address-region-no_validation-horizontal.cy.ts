@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { AddressRegionNoValidationHorizontal } from "../../support/page-object/page-objects";
+import { AddressRegionNoValidationHorizontal } from "../support/page-object/page-objects";
 
 describe("Address Region, no validation, horizontal", () => {
   const addressRegion = new AddressRegionNoValidationHorizontal()

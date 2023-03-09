@@ -1,26 +1,27 @@
 /// <reference types="cypress" />
-import { AddressForm } from "../../support/page-object/page-objects";
+import { AddressForm } from "../support/page-object/page-objects";
 describe("Address Form", () => {
   const addressForm = new AddressForm()
   before(function () {
-    //cy.visit(Cypress.env("localHost"));
     cy.visit("/");
   });
+
   it("Validate entering invalid address", () => {
 
-    addressForm.locationInput().type("Automation Testing Automation Testing Automation Testing")
-    addressForm.street().type("Automation Testing Automation Testing Automation Testing")
-    addressForm.address2().type("Automation Testing Automation Testing Automation Testing")
-    addressForm.address3().type("Automation Testing Automation Testing Automation Testing")
+    addressForm.locationInput().type("Automation Testing")
+    addressForm.street().type("Automation Testing")
+    addressForm.address2().type("Automation Testing")
+    addressForm.address3().type("Automation Testing")
     addressForm.city().should("be.empty");
     addressForm.region().should("be.empty");
     addressForm.country().should("be.empty");
     addressForm.zip().should("be.empty");
 
   });
+
   it("Validate entering valid address", () => {
-    addressForm.name().type("Toronto").click();
-    addressForm.street().type("215 Markham Road");
+    addressForm.name().type("Toronto");
+    addressForm.street().clear().type("215 Markham Road");
     cy.contains("215 Markham Road").click();
     addressForm.address2().type("1470 Midland");
     addressForm.address3().type("1470 Midland");
@@ -32,7 +33,6 @@ describe("Address Form", () => {
       "have.value",
       "Ontario"
     );
-    // cy.contains("Ontario").click();
      addressForm.country().should(
       "have.value",
       "Canada"

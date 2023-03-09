@@ -10,15 +10,15 @@ export class AddressPicker {
     return cy.get(".mat-autocomplete-panel");
   }
   editableAddressLineOne() {
-    return cy.get("[name='Address Picker']  .editable .line-1");
+    return cy.get("[name='Address Picker'] fs-address-format .line-1");
   }
 
   editableAddressLineTwo() {
-    return cy.get("[name='Address Picker']  .editable .line-2");
+    return cy.get("[name='Address Picker'] fs-address-format .line-2");
   }
 
   editableAddressTwoLine() {
-    return cy.get("[name='Address Picker']  .editable ");
+    return cy.get("[name='Address Picker'] fs-address-format");
   }
 
   selectOneLineAddress() {

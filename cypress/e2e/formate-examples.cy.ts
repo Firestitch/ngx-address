@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { FormateExamples } from "../../support/page-object/page-objects";
+import { FormateExamples } from "../support/page-object/page-objects";
 
 describe("Format Examples", () => {
   const format_examples = new FormateExamples()

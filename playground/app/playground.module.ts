@@ -20,7 +20,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppMaterialModule } from './material.module';
 
 import {
-  KitchenSinkComponent,
   ConfigureComponent,
   FullAddressExampleComponent,
   AddressDisabledOrReadonlyExampleComponent,
@@ -38,7 +37,8 @@ import {
   AddressRegionDisabledExampleComponent,
   AddressRegionNoValidationExampleComponent,
   AddressFormComponent,
-  GeocoderComponent
+  GeocoderComponent,
+  AddressPickerComponent
 } from './components';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
@@ -69,7 +69,7 @@ import { RouterModule } from '@angular/router';
     AppComponent,
     FullAddressExampleComponent,
     AddressDisabledOrReadonlyExampleComponent,
-    KitchenSinkComponent,
+    AddressPickerComponent,
     AddressPickerRequiredNotBlankExampleComponent,
     AddressPickerRequiredAllExampleComponent,
     AddressPickerMapRequiredExampleComponent,

@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { AddressRegionRequired } from "../../support/page-object/page-objects";
+import { AddressRegionRequired } from "../support/page-object/page-objects";
 
 describe("Address Region, required", () => {
   const addressRegion = new AddressRegionRequired()

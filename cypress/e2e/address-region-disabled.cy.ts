@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { AddressRegionDisabled } from "../../support/page-object/page-objects";
+import { AddressRegionDisabled } from "../support/page-object/page-objects";
 
 describe("Address Region, disabled", () => {
   const addressRegionDisabled = new AddressRegionDisabled()
