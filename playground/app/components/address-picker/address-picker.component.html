@@ -8,12 +8,13 @@
   <button   
       mat-raised-button 
       type="submit"
-      color="primary">
+      color="primary"
+      id="saveBtn0">
     Save
   </button>
 </form>
 
-<fieldset *ngIf="address?.country">
+<fieldset *ngIf="address?.country" id="selectedAddrField0">
   <legend>Selected Address</legend>
   <fs-address-format [address]="address"></fs-address-format>
 </fieldset>

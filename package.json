@@ -34,7 +34,7 @@
     "junit:merge": " npx junit-merge -d cypress/results/junit -o cypress/results/junit/result.xml",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run & npm run mochawesome:merge & npm run junit:merge",
-    "cypress:dashboard": "npx cypress run --record --key 042850f2-b66f-463f-b979-146594e6cf0e",
+    "cypress:dashboard+chrome": "npx cypress run --browser chrome --record --key 042850f2-b66f-463f-b979-146594e6cf0e",
     "cypress:run:chrome": "cypress run --browser chrome",
     "cypress:run:firefox": "cypress run --browser firefox",
     "cypress:run:edge": "cypress run --browser edge",

@@ -21,7 +21,7 @@ export class AddressFormComponent {
     lat: 43.6777176,
     lng: -79.6248197,
     modifyDate: null,
-    name: "Торонто",
+    name: "Toronto",
     region: "ON",
     state: "active",
     street: "6301 Silver Dart Drive",
