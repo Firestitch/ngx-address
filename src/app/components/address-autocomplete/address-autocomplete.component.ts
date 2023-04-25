@@ -191,7 +191,7 @@ export class FsAddressAutocompleteComponent
 
   @HostBinding('class.floating')
   public get shouldLabelFloat() {
-    return this.focused || !(this.value && !this.value.street);
+    return this.focused;
   }
 
   public get empty(): boolean {
@@ -225,7 +225,7 @@ export class FsAddressAutocompleteComponent
 
   public writeValue(value: FsAddress | null) {
     this._address = value;
-    this.inputAddress = value?.street ? cloneDeep(value) : ' ';
+   // this.inputAddress = value?.street ? cloneDeep(value) : ' ';
     this._cdRef.markForCheck();
   }
 
