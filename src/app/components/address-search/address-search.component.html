@@ -1,5 +1,6 @@
 <mat-form-field
     [floatLabel]="addressControl.empty ? 'auto' : 'always'">
+  <mat-label>{{config.label || 'Location'}}</mat-label>
   <fs-address-format
     [address]="address"
     [format]="format"
@@ -15,7 +16,7 @@
     [disabled]="disabled"
     (addressChange)="addressSelected()"
     [ngClass]="{ hide: !addressControl.addressIsEmpty }"
-    [placeholder]="config.label || 'Location'"
+    [placeholder]="config.placeholder"
     [name]="autocompleteName"
     [required]="required"
     #addressControl>

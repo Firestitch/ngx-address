@@ -34,6 +34,7 @@ export interface FsAddressPickerConfig extends FsAddressConfig {
   readonly?: boolean;
   disabled?: boolean;
   confirmation?: boolean;
+  placeholder?: string;
 }
 
 export interface AddressPickerConfig extends FsAddressPickerConfig {}

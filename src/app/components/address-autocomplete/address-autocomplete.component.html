@@ -5,6 +5,7 @@
   [(ngModel)]="inputAddress"
   (blur)="blurAutocompleteInput()"
   [matAutocomplete]="autocomplete"
+  [placeholder]="placeholder"
   [name]="autocompleteName"
   [disabled]="disabled"
   #searchInput>
@@ -13,6 +14,7 @@
     [displayWith]="displayWith"
     (closed)="autocompletePanelClosed()"
     autoActiveFirstOption
+    [class]="'fs-autocomplete-pane'"
     #autocomplete="matAutocomplete">
   <mat-option *ngFor="let option of predictions" [value]="option">
     {{ option.description }}
