@@ -56,8 +56,10 @@ export {
   addressFormat,
   addressTwoLineFormat,
   addressOneLineFormat,
-  addressSummaryFormat
+  addressSummaryFormat,
 } from './app/helpers';
+
+export { addressIsEmpty } from './app/helpers/address-is-empty';
 
 
 export { FsAddressGeocoder } from './app/services/address-geocoder';
