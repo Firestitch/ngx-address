@@ -1,27 +1,35 @@
-<input
-  matInput
-  type="search"
-  autocomplete="off"
-  [(ngModel)]="inputAddress"
-  (blur)="blurAutocompleteInput()"
-  [matAutocomplete]="autocomplete"
-  [placeholder]="placeholder"
-  [name]="autocompleteName"
-  [disabled]="disabled"
-  #searchInput>
-
-<mat-autocomplete
-    [displayWith]="displayWith"
-    (closed)="autocompletePanelClosed()"
-    autoActiveFirstOption
-    [class]="'fs-autocomplete-pane'"
-    #autocomplete="matAutocomplete">
-  <mat-option *ngFor="let option of predictions" [value]="option">
-    {{ option.description }}
-  </mat-option>
-  <div *ngIf="!config.hideEnterManually" class="static-options">
-    <mat-option [value]="{ id: 'manual', name: inputAddress }">
-      Enter address manually
+<mat-form-field   
+    [floatLabel]="empty ? 'auto' : 'always'">
+  <mat-label>{{placeholder}}</mat-label>
+  <ng-content></ng-content>
+  <input
+    matInput
+    type="search"
+    autocomplete="off"
+    [(ngModel)]="inputAddress"
+    [matAutocomplete]="autocomplete"
+    [name]="autocompleteName"
+    [disabled]="disabled"
+    #searchInput>
+  <mat-autocomplete
+      [displayWith]="displayWith"
+      (closed)="autocompletePanelClosed()"
+      autoActiveFirstOption
+      [class]="'fs-autocomplete-pane'"
+      #autocomplete="matAutocomplete">
+    <mat-option *ngFor="let option of predictions" [value]="option">
+      {{ option.description }}
     </mat-option>
-  </div>
-</mat-autocomplete>
+    <div *ngIf="!config.hideEnterManually" class="static-options">
+      <mat-option [value]="{ id: 'manual', name: inputAddress }">
+        Enter address manually
+      </mat-option>
+    </div>
+  </mat-autocomplete>
+  <mat-icon
+    class="clear"
+    matSuffix
+    *ngIf="showClear && !addressIsEmpty && !disabled && !readonly"
+    (click)="clear()">clear</mat-icon>
+  <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
+</mat-form-field>

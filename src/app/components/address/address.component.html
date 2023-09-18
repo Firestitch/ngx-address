@@ -1,6 +1,6 @@
 <mat-form-field
-  *ngIf="config.name.visible!==false"
-  class="name">
+    *ngIf="config.name.visible!==false"
+    class="name">
   <input
     matInput
     autocomplete="nope"
@@ -14,33 +14,34 @@
 </mat-form-field>
 
 <ng-container *ngIf="config.street.visible!==false">
-  <mat-form-field class="street">
-    <ng-container *ngIf="suggestions; else textStreetField">
-      <fs-address-autocomplete
-        [config]="config"
-        [(ngModel)]="address"
-        (ngModelChange)="change()"
-        [disabled]="config.street.disabled"
-        [suggestions]="suggestions"
-        [placeholder]="config.street.placeholder || 'Street'"
-        [name]="controlNames.street">
-      </fs-address-autocomplete>
-    </ng-container>
+  <ng-container *ngIf="suggestions; else textStreetField">
+    <fs-address-autocomplete
+      [config]="config"
+      [(ngModel)]="address"
+      (ngModelChange)="change()"
+      [disabled]="config.street.disabled"
+      [suggestions]="suggestions"
+      [showClear]="false"
+      [placeholder]="config.street.placeholder || 'Street'"
+      [name]="controlNames.street">
+    </fs-address-autocomplete>
+  </ng-container>
 
-    <ng-template #textStreetField>
-        <input
-          matInput
-          type="search"
-          autocomplete="nope"
-          [(ngModel)]="address.street"
-          [disabled]="config.street.disabled"
-          [fsFormRequired]="config.street.required"
-          [name]="controlNames.street"
-          [placeholder]="config.street.placeholder || 'Street'"
-          (change)="change()"
-          autocomplete="off">
-    </ng-template>
-  </mat-form-field>
+  <ng-template #textStreetField>
+    <mat-form-field class="street">
+      <input
+        matInput
+        type="search"
+        autocomplete="nope"
+        [(ngModel)]="address.street"
+        [disabled]="config.street.disabled"
+        [fsFormRequired]="config.street.required"
+        [name]="controlNames.street"
+        [placeholder]="config.street.placeholder || 'Street'"
+        (change)="change()"
+        autocomplete="off">
+      </mat-form-field>
+  </ng-template>
 </ng-container>
 
 <mat-form-field

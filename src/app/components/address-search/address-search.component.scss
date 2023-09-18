@@ -1,25 +1,20 @@
-mat-form-field {
-  width: 100%;
-}
+:host ::ng-deep {
+  fs-address-format {
+    display: block;
 
-.control {
-  cursor: pointer;
-}
+    &.editable {
+      cursor: pointer;
+    }
+  }
 
-.hide {
-  visibility: hidden;
-  position: absolute;
-}
+  mat-form-field {
+    width: 100%;
+  }
 
-textarea {
-  height: 16px;
-  resize: none;
-  overflow: hidden;
-}
-
-fs-address-format {
-  display: block;
-  &.editable {
-    cursor: pointer;
+  .hide {
+    input {
+      visibility: hidden;
+      position: absolute;
+    }
   }
 }

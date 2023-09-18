@@ -1,6 +1,13 @@
-<mat-form-field
-    [floatLabel]="addressControl.empty ? 'auto' : 'always'">
-  <mat-label>{{config.label || 'Location'}}</mat-label>
+<fs-address-autocomplete
+    [config]="config"
+    [(ngModel)]="address"
+    [disabled]="disabled"
+    (addressChange)="addressSelected()"
+    [ngClass]="{ hide: !addressControl.addressIsEmpty }"
+    [placeholder]="config.label"
+    [name]="autocompleteName"
+    [required]="required"
+    #addressControl>
   <fs-address-format
     [address]="address"
     [format]="format"
@@ -9,24 +16,4 @@
     [ngClass]="{ editable: editable }"
     [disabled]="disabled">
   </fs-address-format>
-
-  <fs-address-autocomplete
-    [config]="config"
-    [(ngModel)]="address"
-    [disabled]="disabled"
-    (addressChange)="addressSelected()"
-    [ngClass]="{ hide: !addressControl.addressIsEmpty }"
-    [placeholder]="config.placeholder"
-    [name]="autocompleteName"
-    [required]="required"
-    #addressControl>
-  </fs-address-autocomplete>
-
-  <mat-icon
-    class="control"
-    matSuffix
-    *ngIf="!addressControl.addressIsEmpty && !disabled && !readonly"
-    (click)="clear()">clear
-  </mat-icon>
-  <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
-</mat-form-field>
+</fs-address-autocomplete>

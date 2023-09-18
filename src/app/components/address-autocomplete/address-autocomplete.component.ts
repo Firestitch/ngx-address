@@ -1,32 +1,32 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Output,
-  ViewChild,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  HostBinding,
   Optional,
+  Output,
   Self,
+  ViewChild,
 } from '@angular/core';
 import {
-  NgControl,
-  ControlValueAccessor,
-  Validator,
-  ValidationErrors,
   AbstractControl,
+  ControlValueAccessor,
+  NgControl,
+  ValidationErrors,
+  Validator,
 } from '@angular/forms';
 
-import { MatFormFieldControl } from '@angular/material/form-field';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatFormFieldControl } from '@angular/material/form-field';
 
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 import { guid } from '@firestitch/common';
 
@@ -40,16 +40,15 @@ import {
   takeUntil, tap,
 } from 'rxjs/operators';
 
-import { cloneDeep } from 'lodash-es';
 
-import { FsAddress } from '../../interfaces/address.interface';
-import { FsAddressConfig } from '../../interfaces/address-config.interface';
-import { AddressFormat } from '../../enums/address-format.enum';
-import { googleDetailsToAddress } from '../../helpers/google-details-to-address';
-import { createEmptyAddress } from '../../helpers/create-empty-address';
-import { addressIsEmpty } from '../../helpers/address-is-empty';
-import { extractUnit } from '../../helpers/extract-unit';
 import { FsMap } from '@firestitch/map';
+import { AddressFormat } from '../../enums/address-format.enum';
+import { addressIsEmpty } from '../../helpers/address-is-empty';
+import { createEmptyAddress } from '../../helpers/create-empty-address';
+import { extractUnit } from '../../helpers/extract-unit';
+import { googleDetailsToAddress } from '../../helpers/google-details-to-address';
+import { FsAddressConfig } from '../../interfaces/address-config.interface';
+import { FsAddress } from '../../interfaces/address.interface';
 
 
 @Component({
@@ -76,6 +75,9 @@ export class FsAddressAutocompleteComponent
   public readonly = false;
 
   @Input()
+  public showClear = true;
+
+  @Input()
   public suggestions = false;
 
   @Input()
@@ -83,14 +85,14 @@ export class FsAddressAutocompleteComponent
     this._config = value;
     if (this._config) {
       this.required =
-      ( (this.config.name && this.config.name.required) ||
-        (this.config.country && this.config.country.required) ||
-        (this.config.region && this.config.region.required) ||
-        (this.config.city && this.config.city.required) ||
-        (this.config.street && this.config.street.required) ||
-        (this.config.address2 && this.config.address2.required) ||
-        (this.config.address3 && this.config.address3.required) ||
-        (this.config.zip && this.config.zip.required));
+        ((this.config.name && this.config.name.required) ||
+          (this.config.country && this.config.country.required) ||
+          (this.config.region && this.config.region.required) ||
+          (this.config.city && this.config.city.required) ||
+          (this.config.street && this.config.street.required) ||
+          (this.config.address2 && this.config.address2.required) ||
+          (this.config.address3 && this.config.address3.required) ||
+          (this.config.zip && this.config.zip.required));
     }
   }
 
@@ -113,14 +115,14 @@ export class FsAddressAutocompleteComponent
   @HostBinding()
   public id = `fs-address-autocomplete-${FsAddressAutocompleteComponent.nextId++}`;
 
-  public inputAddress: string | FsAddress = this._defaultInputAddress();
+  public inputAddress: FsAddress = this._defaultInputAddress();
   public predictions: any[] = [];
   public googleAutocompleteService: google.maps.places.AutocompleteService = null;
   public googlePlacesService: google.maps.places.PlacesService = null;
 
   // Control Accessor
-  public onChange = (data: any) => {};
-  public onTouched = () => {};
+  public onChange = (data: any) => { };
+  public onTouched = () => { };
 
   // Material
   public errorState = false;
@@ -195,13 +197,7 @@ export class FsAddressAutocompleteComponent
   }
 
   public get empty(): boolean {
-    if (this.suggestions) {
-      return (!this.inputAddress && !this.value?.street) || (this.inputAddress && !this.value?.street);
-    } else {
-      const inputValue = (typeof this.inputAddress === 'string') && this.inputAddress.trim();
-
-      return this.addressIsEmpty && !inputValue;
-    }
+    return !this.inputAddress?.street;
   }
 
   public get addressIsEmpty(): boolean {
@@ -225,7 +221,7 @@ export class FsAddressAutocompleteComponent
 
   public writeValue(value: FsAddress | null) {
     this._address = value;
-   // this.inputAddress = value?.street ? cloneDeep(value) : ' ';
+    this.inputAddress = value;
     this._cdRef.markForCheck();
   }
 
@@ -252,7 +248,7 @@ export class FsAddressAutocompleteComponent
     if (value && typeof value === 'object') {
       return this.value?.street;
     } else if (!this.empty) {
-      return ' ';
+      return '';
     }
   };
 
@@ -312,43 +308,35 @@ export class FsAddressAutocompleteComponent
     }
   }
 
-  public blurAutocompleteInput() {
-    if (this.empty
-      && typeof this.inputAddress === 'string'
-      && this.inputAddress !== '') {
-      this.inputAddress = '';
-    }
-  }
-
   // Search input can't be null. We implemented required validation to show asterisk if needed
   // But general validation placed in another level and not depends of this input
   // This hack allow us to show asterisk but disable extra validation
   private _defaultInputAddress() {
-    return ' ';
+    return null;
   }
 
   private _listenUserTyping(): void {
     this._ngZone.runOutsideAngular(() => {
 
       fromEvent(this.searchElement.nativeElement, 'keydown')
-      .pipe(
-        filter((event: KeyboardEvent) => event.code === 'Tab'),
-        map(() => this.autocompleteTrigger.activeOption?.value),
-        filter((place) => !!place && this.predictions.length !== 0), 
-        switchMap((place) => this._placeToAddress(place)),
-        takeUntil(this._destroy$),
-      )
-      .subscribe((address: any) => {
-        this._selectAddress(address);
-        this._clearPredictions();
-      });
+        .pipe(
+          filter((event: KeyboardEvent) => event.code === 'Tab'),
+          map(() => this.autocompleteTrigger.activeOption?.value),
+          filter((place) => !!place && this.predictions.length !== 0),
+          switchMap((place) => this._placeToAddress(place)),
+          takeUntil(this._destroy$),
+        )
+        .subscribe((address: any) => {
+          this._selectAddress(address);
+          this._clearPredictions();
+        });
 
       fromEvent(this.searchElement.nativeElement, 'keyup')
         .pipe(
           tap(() => {
             this.stateChanges.next();
-          }),        
-          debounceTime(200), 
+          }),
+          debounceTime(200),
           filter((event: KeyboardEvent) => {
             return event.code !== 'Enter' && event.code !== 'Tab';
           }),
@@ -359,7 +347,7 @@ export class FsAddressAutocompleteComponent
             if (!!!text) {
               this._clearPredictions();
             }
-          }),          
+          }),
           filter((value) => !!value),
           tap((value) => {
             this._searchText = value;
@@ -402,35 +390,35 @@ export class FsAddressAutocompleteComponent
 
   private _placeToAddress(place): Observable<any> {
     return of(place)
-    .pipe(
-      switchMap((place) => {
-        if (!place || !this.googlePlacesService) {
-          return of(null);
-        }
+      .pipe(
+        switchMap((place) => {
+          if (!place || !this.googlePlacesService) {
+            return of(null);
+          }
 
-        if (place && !place.place_id) {
-          return of({
-            ...this.value,
-            street: place.name,
-            manual: true,
-          });
-        }
+          if (place && !place.place_id) {
+            return of({
+              ...this.value,
+              street: place.name,
+              manual: true,
+            });
+          }
 
-        return this._getPlaceDetails(place);
-      }),
-      map((response) => {
-        let address: FsAddress;
+          return this._getPlaceDetails(place);
+        }),
+        map((response) => {
+          let address: FsAddress;
 
-        if (response.result) {
-          address = googleDetailsToAddress(response.result, this.config);
-          address.description = response.place.description;
-        } else {
-          address = response;
-        }
+          if (response.result) {
+            address = googleDetailsToAddress(response.result, this.config);
+            address.description = response.place.description;
+          } else {
+            address = response;
+          }
 
-        return address;
-      }),
-    );
+          return address;
+        }),
+      );
   }
 
   private _listenAutocompleteSelection(): void {
@@ -478,8 +466,8 @@ export class FsAddressAutocompleteComponent
     const placesRequest = this.googleAutocompleteService
       .getPlacePredictions(
         { input: text },
-        () => {}
-      ) as unknown as Promise<{ predictions: google.maps.places.AutocompletePrediction[]}>;
+        () => { }
+      ) as unknown as Promise<{ predictions: google.maps.places.AutocompletePrediction[] }>;
 
     return placesRequest
       .then((result) => {
