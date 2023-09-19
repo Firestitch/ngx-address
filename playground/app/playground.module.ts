@@ -1,52 +1,52 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppComponent } from './app.component';
 
-import { FsExampleModule } from '@firestitch/example';
-import { FsMessageModule } from '@firestitch/message';
-import { FsFormModule } from '@firestitch/form';
-import { FsMapModule } from '@firestitch/map';
-import { FsLabelModule } from '@firestitch/label';
-import {  
-  FsAddressModule, 
-  FsAddressRegionModule,      
+import {
+  FsAddressModule,
   FsAddressRegionCountryModule,
- } from '@firestitch/address';
+  FsAddressRegionModule,
+} from '@firestitch/address';
+import { FsExampleModule } from '@firestitch/example';
+import { FsFormModule } from '@firestitch/form';
+import { FsLabelModule } from '@firestitch/label';
+import { FsMapModule } from '@firestitch/map';
+import { FsMessageModule } from '@firestitch/message';
 
 import { ToastrModule } from 'ngx-toastr';
 
 import { AppMaterialModule } from './material.module';
 
+import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
+import { RouterModule } from '@angular/router';
 import {
-  ConfigureComponent,
-  FullAddressExampleComponent,
   AddressDisabledOrReadonlyExampleComponent,
-  AddressPickerRequiredNotBlankExampleComponent,
-  AddressPickerRequiredAllExampleComponent,
-  AddressPickerMapRequiredExampleComponent,
-  FormatExampleComponent,
-  AddressPickerPreFilledExampleComponent,
-  AddressPickerNoValidationTwolineExampleComponent,
+  AddressFormComponent,
+  AddressPickerComponent,
   AddressPickerCustomCollapseBtnComponent,
-  AddressPickerNoValidationSummaryExampleComponent,
   AddressPickerCustomCollapseLabelComponent,
-  AddressRegionPrefilledExampleComponent,
-  AddressRegionRequiredExampleComponent,
+  AddressPickerMapRequiredExampleComponent,
+  AddressPickerNoValidationSummaryExampleComponent,
+  AddressPickerNoValidationTwolineExampleComponent,
+  AddressPickerPreFilledExampleComponent,
+  AddressPickerRequiredAllExampleComponent,
+  AddressPickerRequiredNotBlankExampleComponent,
   AddressRegionDisabledExampleComponent,
   AddressRegionNoValidationExampleComponent,
-  AddressFormComponent,
-  GeocoderComponent,
-  AddressPickerComponent
+  AddressRegionPrefilledExampleComponent,
+  AddressRegionRequiredExampleComponent,
+  ConfigureComponent,
+  FormatExampleComponent,
+  FullAddressExampleComponent,
+  GeocoderComponent
 } from './components';
-import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
-import { RouterModule } from '@angular/router';
 
 
 @NgModule({
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

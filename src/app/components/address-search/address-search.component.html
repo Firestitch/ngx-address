@@ -3,7 +3,7 @@
     [(ngModel)]="address"
     [disabled]="disabled"
     (addressChange)="addressSelected()"
-    [ngClass]="{ hide: !addressControl.addressIsEmpty }"
+    [ngClass]="{ hide: !addressControl.empty }"
     [placeholder]="config.label"
     [name]="autocompleteName"
     [required]="required"

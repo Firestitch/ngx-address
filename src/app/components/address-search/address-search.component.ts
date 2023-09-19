@@ -8,17 +8,17 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { NgForm, ControlContainer } from '@angular/forms';
+import { ControlContainer, NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 
 import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 
-import { FsAddress } from '../../interfaces/address.interface';
-import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
+import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
+import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-autocomplete.component';
 
 
@@ -42,14 +42,14 @@ export class FsAddressSearchComponent implements OnDestroy {
     this._config = value;
     if (this._config) {
       this.required =
-      ( (this.config.name && this.config.name.required) ||
-        (this.config.country && this.config.country.required) ||
-        (this.config.region && this.config.region.required) ||
-        (this.config.city && this.config.city.required) ||
-        (this.config.street && this.config.street.required) ||
-        (this.config.address2 && this.config.address2.required) ||
-        (this.config.address3 && this.config.address3.required) ||
-        (this.config.zip && this.config.zip.required));
+        ((this.config.name && this.config.name.required) ||
+          (this.config.country && this.config.country.required) ||
+          (this.config.region && this.config.region.required) ||
+          (this.config.city && this.config.city.required) ||
+          (this.config.street && this.config.street.required) ||
+          (this.config.address2 && this.config.address2.required) ||
+          (this.config.address3 && this.config.address3.required) ||
+          (this.config.zip && this.config.zip.required));
     }
   }
 

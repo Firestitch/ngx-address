@@ -1,30 +1,33 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  Output,
-  ViewChild,
-  ChangeDetectionStrategy,
+  OnChanges,
   OnDestroy,
-  ChangeDetectorRef,
-  OnChanges, SimpleChanges,
+  Optional,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { isObject, cloneDeep } from 'lodash-es';
+import { cloneDeep, isObject } from 'lodash-es';
 
-// Interfaces
-import { FsAddress, } from '../../interfaces/address.interface';
 import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
+import { FsAddress, } from '../../interfaces/address.interface';
 
-import { FsAddressSearchComponent } from '../address-search/address-search.component';
+import { ControlContainer, NgForm } from '@angular/forms';
+import { controlContainerFactory } from '@firestitch/core';
 import { AddressFormat } from '../../enums/address-format.enum';
-import { FsAddressDialogComponent } from '../address-dialog/address-dialog.component';
-import { AddressSearchEditEvent } from '../address-search/address-search.interface';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
+import { FsAddressDialogComponent } from '../address-dialog/address-dialog.component';
+import { FsAddressSearchComponent } from '../address-search/address-search.component';
+import { AddressSearchEditEvent } from '../address-search/address-search.interface';
 
 
 @Component({
@@ -32,6 +35,13 @@ import { createEmptyAddress } from '../../helpers/create-empty-address';
   templateUrl: './address-picker.component.html',
   styleUrls: ['./address-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    }
+  ],
 })
 export class FsAddressPickerComponent implements OnChanges, OnDestroy {
 
@@ -73,7 +83,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
   @Output() public addressChange = new EventEmitter();
 
   @Input() public name: boolean = true;
- 
+
   @ViewChild(FsAddressSearchComponent)
   public search: FsAddressSearchComponent;
 
@@ -109,11 +119,11 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
         .pipe(
           takeUntil(this._destroy$),
         )
-      .subscribe((result) => {
-        if (!result) {
-          this.addressSearch.clear();
-        }
-      });
+        .subscribe((result) => {
+          if (!result) {
+            this.addressSearch.clear();
+          }
+        });
     } else {
       this.addressChange.emit(address);
     }
@@ -130,22 +140,22 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     });
 
     dialogRef.afterClosed()
-    .pipe(
-      filter((result) => !!result),
-      takeUntil(this._destroy$),
-    )
-    .subscribe((result) => {
-      this.address = result;
+      .pipe(
+        filter((result) => !!result),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((result) => {
+        this.address = result;
 
-      // hard dirty fix for DT-T867.
-      // In future it must be ControlValue Accessor...
-      if (result) {
-        this.search.autocomplete.value = this.address;
-      }
+        // hard dirty fix for DT-T867.
+        // In future it must be ControlValue Accessor...
+        if (result) {
+          this.search.autocomplete.value = this.address;
+        }
 
-      this.addressChange.emit(this.address);
-      this._cdRef.markForCheck();
-    });
+        this.addressChange.emit(this.address);
+        this._cdRef.markForCheck();
+      });
 
     return dialogRef;
   }

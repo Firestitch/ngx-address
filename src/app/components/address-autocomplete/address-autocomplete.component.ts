@@ -16,10 +16,12 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
+  ControlContainer,
   ControlValueAccessor,
   NgControl,
+  NgForm,
   ValidationErrors,
-  Validator,
+  Validator
 } from '@angular/forms';
 
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -40,7 +42,7 @@ import {
   takeUntil, tap,
 } from 'rxjs/operators';
 
-
+import { controlContainerFactory } from '@firestitch/core';
 import { FsMap } from '@firestitch/map';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
@@ -62,6 +64,13 @@ import { FsAddress } from '../../interfaces/address.interface';
     },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    }
+  ],
 })
 export class FsAddressAutocompleteComponent
   implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validator {
@@ -103,7 +112,7 @@ export class FsAddressAutocompleteComponent
   @Output()
   public readonly addressChange = new EventEmitter();
 
-  @ViewChild('searchInput', { static: true })
+  @ViewChild('searchInput', { static: true, read: ElementRef })
   public readonly searchElement: ElementRef;
 
   @ViewChild(MatAutocomplete, { static: true })
@@ -119,28 +128,19 @@ export class FsAddressAutocompleteComponent
   public predictions: any[] = [];
   public googleAutocompleteService: google.maps.places.AutocompleteService = null;
   public googlePlacesService: google.maps.places.PlacesService = null;
-
-  // Control Accessor
   public onChange = (data: any) => { };
   public onTouched = () => { };
-
-  // Material
   public errorState = false;
   public focused = false;
   public stateChanges = new Subject<void>();
-  //
-
   public readonly autocompleteName = `search-${guid('xxxxxxxx')}`;
 
   private _config: FsAddressConfig = {};
   private _address: FsAddress = {};
   private _searchText = '';
-
-  // Material
   private _disabled = false;
   private _required = false;
   private _placeholder: string;
-  //
 
   private _destroy$ = new Subject<void>();
 
@@ -167,26 +167,26 @@ export class FsAddressAutocompleteComponent
   }
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
-  set disabled(value: boolean) {
+  public get disabled(): boolean { return this._disabled; }
+  public set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
     this.stateChanges.next();
   }
 
   @Input()
-  get required() {
+  public get required() {
     return this._required;
   }
-  set required(req) {
+  public set required(req) {
     this._required = coerceBooleanProperty(req);
     this.stateChanges.next();
   }
 
   @Input()
-  get placeholder() {
+  public get placeholder() {
     return this._placeholder;
   }
-  set placeholder(plh) {
+  public set placeholder(plh) {
     this._placeholder = plh;
     this.stateChanges.next();
   }
@@ -197,20 +197,14 @@ export class FsAddressAutocompleteComponent
   }
 
   public get empty(): boolean {
-    return !this.inputAddress?.street;
-  }
-
-  public get addressIsEmpty(): boolean {
     return addressIsEmpty(this.value);
   }
 
   public ngOnInit() {
-    this.initGoogleMap();
-
+    this._initGoogleMap();
     this._listenUserTyping();
     this._listenAutocompleteSelection();
     this._registerFocusMonitor();
-
     this.ngControl.control.setValidators([this.validate.bind(this)]);
   }
 
@@ -254,15 +248,14 @@ export class FsAddressAutocompleteComponent
 
   public validate(control: AbstractControl): ValidationErrors | null {
     const validationErrors: ValidationErrors = {};
-
     const requiredField = [];
     const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
 
-    if (this.required && this.addressIsEmpty) {
+    if (this.required && this.empty) {
       validationErrors.required = true;
     }
 
-    if (!this.addressIsEmpty) {
+    if (!this.empty) {
       parts.forEach(part => {
         if (this.config[part] && this.config[part].required && !this.value[part]) {
           requiredField.push([part]);
@@ -303,7 +296,7 @@ export class FsAddressAutocompleteComponent
   }
 
   public autocompletePanelClosed(): void {
-    if (this.addressIsEmpty && !!this.inputAddress) {
+    if (this.empty && !!this.inputAddress) {
       this.inputAddress = null;
     }
   }
@@ -448,7 +441,7 @@ export class FsAddressAutocompleteComponent
       })
   }
 
-  private initGoogleMap() {
+  private _initGoogleMap() {
     this._ngZone.runOutsideAngular(() => {
       this._map.loaded$
         .pipe(

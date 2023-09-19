@@ -1,5 +1,4 @@
-<mat-form-field   
-    [floatLabel]="empty ? 'auto' : 'always'">
+<mat-form-field [floatLabel]="empty ? 'auto' : 'always'">
   <mat-label>{{placeholder}}</mat-label>
   <ng-content></ng-content>
   <input
@@ -10,6 +9,8 @@
     [matAutocomplete]="autocomplete"
     [name]="autocompleteName"
     [disabled]="disabled"
+    [fsClear]="showClear && !empty && !disabled && !readonly"
+    (cleared)="clear()"
     #searchInput>
   <mat-autocomplete
       [displayWith]="displayWith"
@@ -26,10 +27,5 @@
       </mat-option>
     </div>
   </mat-autocomplete>
-  <mat-icon
-    class="clear"
-    matSuffix
-    *ngIf="showClear && !addressIsEmpty && !disabled && !readonly"
-    (click)="clear()">clear</mat-icon>
   <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
 </mat-form-field>
