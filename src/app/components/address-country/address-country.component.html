@@ -1,13 +1,13 @@
 <fs-autocomplete
-  [fetch]="fetch"
-  [displayWith]="displayWith"
-  [fetchOnFocus]="true"
-  [(ngModel)]="country"
-  (ngModelChange)="changed($event)"
-  [placeholder]="placeholder"
-  [disabled]="disabled"
-  [fsFormRequired]="required"
-  name="country">
+    [fetch]="fetch"
+    [displayWith]="displayWith"
+    [fetchOnFocus]="true"
+    [(ngModel)]="country"
+    (ngModelChange)="changed($event)"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [fsFormRequired]="required"
+    name="country">
   <ng-template fsAutocompleteTemplate let-data="data">
     {{ data.name }}
   </ng-template>

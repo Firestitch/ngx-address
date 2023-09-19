@@ -1,14 +1,14 @@
 <mat-form-field
     *ngIf="config.name.visible!==false"
     class="name">
+  <mat-label>Location name</mat-label>
   <input
     matInput
     autocomplete="nope"
     [(ngModel)]="address.name"
     [disabled]="config.name.disabled"
     [fsFormRequired]="config.name.required"
-    [name]="controlNames.locationName"
-    placeholder="Location name"
+    [name]="controlNames.locationName"    
     (change)="change($event)"
     autocomplete="off">
 </mat-form-field>
@@ -29,6 +29,7 @@
 
   <ng-template #textStreetField>
     <mat-form-field class="street">
+      <mat-label>{{config.street.placeholder || 'Street'}}</mat-label>
       <input
         matInput
         type="search"
@@ -37,7 +38,6 @@
         [disabled]="config.street.disabled"
         [fsFormRequired]="config.street.required"
         [name]="controlNames.street"
-        [placeholder]="config.street.placeholder || 'Street'"
         (change)="change()"
         autocomplete="off">
       </mat-form-field>
@@ -45,8 +45,9 @@
 </ng-container>
 
 <mat-form-field
-  *ngIf="config.address2.visible"
-  class="address2">
+    *ngIf="config.address2.visible"
+    class="address2">
+  <mat-label>{{config.address2.placeholder || 'Address 2'}}</mat-label>
   <input
     matInput
     type="search"
@@ -55,14 +56,14 @@
     [disabled]="config.address2.disabled"
     [fsFormRequired]="config.address2.required"
     [name]="controlNames.address2"
-    [placeholder]="config.address2.placeholder || 'Address 2'"
     (change)="change($event)"
     autocomplete="off">
 </mat-form-field>
 
 <mat-form-field
-  *ngIf="config.address3.visible"
-  class="address3">
+    *ngIf="config.address3.visible"
+    class="address3">
+  <mat-label>{{config.address3.placeholder || 'Address 3'}}</mat-label>
   <input
     matInput
     type="search"
@@ -71,16 +72,14 @@
     [disabled]="config.address3.disabled"
     [fsFormRequired]="config.address3.required"
     [name]="controlNames.address3"
-    [placeholder]="config.address3.placeholder || 'Address 3'"
     (change)="change($event)"
     autocomplete="off">
 </mat-form-field>
 
 <div class="city-region-zip-country" fxLayout.lt-sm="column">
-
   <div class="city">
     <mat-form-field *ngIf="config.city.visible!==false">
-      <mat-label [attr.data-after-content]="config.city.placeholder || 'City'"></mat-label>
+      <mat-label>{{config.city.placeholder || 'City'}}</mat-label>
       <input
         matInput
         type="search"
