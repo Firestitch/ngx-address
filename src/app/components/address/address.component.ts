@@ -6,25 +6,25 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   ViewChild,
-  Optional,
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
-import { controlContainerFactory } from '@firestitch/core';
 import { guid } from '@firestitch/common';
+import { controlContainerFactory } from '@firestitch/core';
 import { FsMapComponent } from '@firestitch/map';
 
-import { Subject } from 'rxjs';
 import { isObject } from 'lodash-es';
+import { Subject } from 'rxjs';
 
 import { Countries } from '../../consts/countries.const';
-import { FsAddress } from '../../interfaces/address.interface';
-import { FsAddressConfig } from '../../interfaces/address-config.interface';
-import { FsAddressRegionComponent } from '../address-region/address-region.component';
-import { FsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 import { Country } from '../../enums/country.enum';
+import { FsAddressConfig } from '../../interfaces/address-config.interface';
+import { FsAddressMapConfig } from '../../interfaces/address-map-config.interface';
+import { FsAddress } from '../../interfaces/address.interface';
+import { FsAddressRegionComponent } from '../address-region/address-region.component';
 
 
 @Component({
@@ -42,10 +42,10 @@ import { Country } from '../../enums/country.enum';
 })
 export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild(FsAddressRegionComponent) 
+  @ViewChild(FsAddressRegionComponent)
   public fsAddressRegionComponent: FsAddressRegionComponent;
 
-  @ViewChild(FsMapComponent) 
+  @ViewChild(FsMapComponent)
   public map: FsMapComponent;
 
   @Input() address: FsAddress;
@@ -215,7 +215,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
     this.addressChange.emit(this.address);
 
-    geocoder.geocode( { address: this.searchedAddress  }, (results, status) => {
+    geocoder.geocode({ address: this.searchedAddress }, (results, status) => {
       this.isSearched = true;
       const newAddress = Object.assign({}, this.address);
 
@@ -291,7 +291,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
           }
         }
       }
-      }, this.config.map);
+    }, this.config.map);
   }
 
   private initCountries() {

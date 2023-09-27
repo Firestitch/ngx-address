@@ -166,6 +166,10 @@ export class FsAddressAutocompleteComponent
     return this._address;
   }
 
+  public get searchInputValue(): string {
+    return this.searchElement.nativeElement.value;
+  }
+
   @Input()
   public get disabled(): boolean { return this._disabled; }
   public set disabled(value: boolean) {
