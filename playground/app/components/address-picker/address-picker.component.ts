@@ -6,15 +6,15 @@ import {
 
 // Interfaces
 import {
+  AddressFormat,
   FsAddress,
-  AddressFormat, 
-  FsAddressPickerComponent
+  FsAddressFormatComponent,
+  FsAddressPickerComponent,
+  FsAddressPickerConfig
 } from '@firestitch/address';
-import { FsMessage } from '@firestitch/message';
-import { FsAddressFormatComponent, FsAddressPickerConfig  } from '@firestitch/address';
 import { FsExampleComponent } from '@firestitch/example';
+import { FsMessage } from '@firestitch/message';
 
-import { ConfigureComponent } from '../configure';
 
 
 @Component({
@@ -33,13 +33,13 @@ export class AddressPickerComponent {
     format: AddressFormat.TwoLine,
     map: { zoom: 15, showMap: true },
     name: { visible: false, required: false, disabled: false },
-    address2:  { visible: true, required: false, disabled: false },
-    address3:  { visible: true, required: false, disabled: false },
-    street:  { visible: true, required: false, disabled: false },
-    city:  { visible: true, required: true, disabled: false },
-    region:  { visible: true, required: true, disabled: false },
-    zip:  { visible: true, required: false, disabled: false },
-    country:  { visible: true, required: true, disabled: false }
+    address2: { visible: true, required: false, disabled: false },
+    address3: { visible: true, required: false, disabled: false },
+    street: { visible: true, required: false, disabled: false },
+    city: { visible: true, required: true, disabled: false },
+    region: { visible: true, required: true, disabled: false },
+    zip: { visible: true, required: false, disabled: false },
+    country: { visible: true, required: true, disabled: false }
   };
 
   @ViewChild(FsAddressFormatComponent)
@@ -49,10 +49,9 @@ export class AddressPickerComponent {
   public addressPicker: FsAddressPickerComponent;
 
   constructor(
-    private example: FsExampleComponent, 
+    private example: FsExampleComponent,
     private message: FsMessage,
   ) {
-    example.setConfigureComponent(ConfigureComponent, { config: this.config });
   }
 
   public changed(address) {

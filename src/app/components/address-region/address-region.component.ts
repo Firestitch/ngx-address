@@ -1,30 +1,30 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  Output,
-  OnInit,
   OnChanges,
-  SimpleChanges,
-  Optional,
-  ChangeDetectorRef,
-  ViewChild,
   OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { ControlContainer, NgForm, NgModel } from '@angular/forms';
 
 import { of, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { controlContainerFactory } from '@firestitch/core';
-import { guid } from '@firestitch/common';
 import { FsAutocompleteComponent } from '@firestitch/autocomplete';
+import { guid } from '@firestitch/common';
+import { controlContainerFactory } from '@firestitch/core';
 
+import { Country } from '../../enums/country.enum';
 import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
 import { IAddressRegion } from '../../interfaces/address-region.interface';
-import { Country } from '../../enums/country.enum';
 
 
 @Component({
@@ -70,7 +70,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
   public canadaRegionsIsFirst = false;
   public countryEnum = Country;
 
-  @ViewChild(FsAutocompleteComponent, { read: NgModel, static: true})
+  @ViewChild(FsAutocompleteComponent, { read: NgModel, static: true })
   private _autocompleteModel: NgModel;
 
   private _country;
@@ -92,7 +92,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
 
   public ngOnChanges(changes: SimpleChanges) {
     if (changes.region && !!this.region) {
-      const country  = this.countries.find((c) => c.code === this.country);
+      const country = this.countries.find((c) => c.code === this.country);
       if (country && country.regions) {
         this.model = country.regions.find((region) => {
           return region.code === this.region;
@@ -171,14 +171,18 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
     this.regionChange.emit(this.model?.code);
   }
 
+  public justUseShow = (keyword) => {
+    return !!keyword;
+  }
+
   public updateCountryRegionLabels() {
     if (this.label) {
       this.regionLabel = this.label
 
     } else {
       this.regionLabel = this._country === Country.Canada
-      ? 'Province'
-      : this._country === Country.UnitedStates ? 'State' : 'Province/State';
+        ? 'Province'
+        : this._country === Country.UnitedStates ? 'State' : 'Province/State';
     }
   }
 
