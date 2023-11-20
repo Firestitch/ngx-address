@@ -1,4 +1,6 @@
-export const Countries = [
+import { IAddressCountry } from '../interfaces';
+
+export const Countries: IAddressCountry[] = [
   { code: 'AF', name: 'Afghanistan' },
   { code: 'AL', name: 'Albania' },
   { code: 'DZ', name: 'Algeria' },
@@ -36,21 +38,22 @@ export const Countries = [
   { code: 'BI', name: 'Burundi' },
   { code: 'KH', name: 'Cambodia' },
   { code: 'CM', name: 'Cameroon' },
-  { code: 'CA', name: 'Canada',
+  {
+    code: 'CA', name: 'Canada',
     regions: [
-        { code: 'AB', name: 'Alberta' },
-        { code: 'BC', name: 'British Columbia' },
-        { code: 'MB', name: 'Manitoba' },
-        { code: 'NB', name: 'New Brunswick' },
-        { code: 'NL', name: 'Newfoundland and Labrador' },
-        { code: 'NT', name: 'Northwest Territories' },
-        { code: 'NS', name: 'Nova Scotia' },
-        { code: 'NU', name: 'Nunavut' },
-        { code: 'ON', name: 'Ontario' },
-        { code: 'PE', name: 'Prince Edward Island' },
-        { code: 'QC', name: 'Quebec' },
-        { code: 'SK', name: 'Saskatchewan' },
-        { code: 'YT', name: 'Yukon Territory' }
+      { code: 'AB', name: 'Alberta' },
+      { code: 'BC', name: 'British Columbia' },
+      { code: 'MB', name: 'Manitoba' },
+      { code: 'NB', name: 'New Brunswick' },
+      { code: 'NL', name: 'Newfoundland and Labrador' },
+      { code: 'NT', name: 'Northwest Territories' },
+      { code: 'NS', name: 'Nova Scotia' },
+      { code: 'NU', name: 'Nunavut' },
+      { code: 'ON', name: 'Ontario' },
+      { code: 'PE', name: 'Prince Edward Island' },
+      { code: 'QC', name: 'Quebec' },
+      { code: 'SK', name: 'Saskatchewan' },
+      { code: 'YT', name: 'Yukon Territory' },
     ],
   },
   { code: 'CV', name: 'Cape Verde' },
@@ -240,7 +243,8 @@ export const Countries = [
   { code: 'UA', name: 'Ukraine' },
   { code: 'AE', name: 'United Arab Emirates' },
   { code: 'GB', name: 'United Kingdom' },
-  { code: 'US', name: 'United States',
+  {
+    code: 'US', name: 'United States',
     regions: [
       { code: 'AK', name: 'Alaska' },
       { code: 'AL', name: 'Alabama' },
@@ -295,7 +299,7 @@ export const Countries = [
       { code: 'WA', name: 'Washington' },
       { code: 'WI', name: 'Wisconsin' },
       { code: 'WV', name: 'West Virginia' },
-      { code: 'WY', name: 'Wyoming' }
+      { code: 'WY', name: 'Wyoming' },
     ],
   },
   { code: 'UM', name: 'United States Minor Outlying Islands' },
@@ -310,5 +314,5 @@ export const Countries = [
   { code: 'EH', name: 'Western Sahara' },
   { code: 'YE', name: 'Yemen' },
   { code: 'ZM', name: 'Zambia' },
-  { code: 'ZW', name: 'Zimbabwe' }
+  { code: 'ZW', name: 'Zimbabwe' },
 ];

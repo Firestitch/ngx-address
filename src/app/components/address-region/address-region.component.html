@@ -1,14 +1,13 @@
 <fs-autocomplete
-  [fetch]="fetch"
-  [displayWith]="displayWith"
-  [fetchOnFocus]="true"
-  [(ngModel)]="model"
-  (ngModelChange)="regionChanged()"
-  [placeholder]="regionLabel"
-  [disabled]="disabled"
-  [fsFormRequired]="required"
-  [name]="controlName">
-
+    [fetch]="fetch"
+    [displayWith]="displayWith"
+    [fetchOnFocus]="true"
+    [(ngModel)]="model"
+    (ngModelChange)="regionChanged()"
+    [placeholder]="regionLabel"
+    [disabled]="disabled"
+    [fsFormRequired]="required"
+    [name]="controlName">
   <ng-template fsAutocompleteTemplate let-data="data">
     <span>{{ data.name }}</span>
     <ng-container *ngIf="!country || country !== data.country">

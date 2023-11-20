@@ -13,13 +13,13 @@
   </div>
   <div class="region">
     <fs-address-region
-      [(region)]="region"
-      (regionChange)="changeRegion()"
-      [country]="country"
-      [countries]="countries"
-      [disabled]="config.region.disabled"
-      [required]="config.region.required"
-      name="region">
+        [(region)]="region"
+        (regionChange)="changeRegion()"
+        [country]="country"
+        [countries]="regionCountries"
+        [disabled]="config.region.disabled"
+        [required]="config.region.required"
+        name="region">
     </fs-address-region>
   </div>
 </div>

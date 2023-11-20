@@ -1,24 +1,24 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 // Interfaces
 import {
+  AddressFormat,
   FsAddress,
-  AddressFormat, FsAddressSearchComponent, FsAddressPickerComponent
+  FsAddressFormatComponent,
+  FsAddressPickerComponent,
+  FsAddressPickerConfig,
 } from '@firestitch/address';
-import { FsMessage } from '@firestitch/message';
-import { FsAddressFormatComponent, FsAddressPickerConfig } from '@firestitch/address';
 import { FsExampleComponent } from '@firestitch/example';
-
-import { ConfigureComponent } from '../configure';
+import { FsMessage } from '@firestitch/message';
 
 
 @Component({
   selector: 'picker-with-confirmation',
-  templateUrl: 'picker-with-confirmation.component.html',
+  templateUrl: './picker-with-confirmation.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

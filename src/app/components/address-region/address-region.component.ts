@@ -14,13 +14,15 @@ import {
 } from '@angular/core';
 import { ControlContainer, NgForm, NgModel } from '@angular/forms';
 
-import { of, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
 
 import { FsAutocompleteComponent } from '@firestitch/autocomplete';
 import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 
+import { Subject, of } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+
+import { Countries } from '../../consts';
 import { Country } from '../../enums/country.enum';
 import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
@@ -37,19 +39,22 @@ import { IAddressRegion } from '../../interfaces/address-region.interface';
       provide: ControlContainer,
       useFactory: controlContainerFactory,
       deps: [[new Optional(), NgForm]],
-    }
+    },
   ],
 })
 export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() public region: string;
-  @Input() public countries = [];
   @Input() public disabled = false;
   @Input() public label;
   @Input() public required = false;
-
-  @Input()
-  public regionCountryOrder = ['CA', 'US'];
+  @Input() public regionCountryOrder = [Country.Canada, Country.UnitedStates];
+  @Input() public set countries(countries: string[]) {
+    this._countries = countries;
+    if (this._countries.length === 1) {
+      this.country = this._countries[0];
+    }
+  }
 
   @Output() public regionChange = new EventEmitter<string>();
 
@@ -59,9 +64,12 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
     this.updateCountryRegionLabels();
   }
 
-  public model;
+  public get country(): string {
+    return this._country;
+  }
 
-  public controlName = `region_${guid('xxxxxx')}`
+  public model;
+  public controlName = `region_${guid('xxxxxx')}`;
   public regionLabel;
   public canadaCountryItem: IAddressCountry;
   public usCountryItem: IAddressCountry;
@@ -74,13 +82,10 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
   private _autocompleteModel: NgModel;
 
   private _country;
+  private _countries: string[];
   private _destroy$ = new Subject<void>();
 
   constructor(private _cdRef: ChangeDetectorRef) { }
-
-  public get country(): string {
-    return this._country;
-  }
 
   public ngOnInit() {
     this._detectCountriesOrder();
@@ -92,15 +97,21 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
 
   public ngOnChanges(changes: SimpleChanges) {
     if (changes.region && !!this.region) {
-      const country = this.countries.find((c) => c.code === this.country);
-      if (country && country.regions) {
+      const country: IAddressCountry = this._countries
+        .filter((code) => code === this.country)
+        .map((code) => Countries.find((c) => c.code === code))
+        .pop();
+
+      if (country?.regions) {
         this.model = country.regions.find((region) => {
           return region.code === this.region;
         });
       }
 
       if (!this.model) {
-        this.model = { name: this.region, code: this.region };
+        const region = country?.regions.find((r) => this.region === r.code);
+        const name = region?.name || this.region;
+        this.model = { name, code: this.region };
       }
     }
 
@@ -126,14 +137,14 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
               return [
                 ...canadaMatches,
                 ...usMatches,
-              ]
+              ];
             }
 
             case Country.UnitedStates: {
               return [
                 ...usMatches,
                 ...canadaMatches,
-              ]
+              ];
             }
 
             default: {
@@ -142,17 +153,18 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
                   ...canadaMatches,
                   ...usMatches,
                 ];
-              } else {
-                return [
-                  ...usMatches,
-                  ...canadaMatches,
-                ];
               }
+
+              return [
+                ...usMatches,
+                ...canadaMatches,
+              ];
+
             }
           }
         }),
-      )
-  }
+      );
+  };
 
   public displayWith = (data) => {
     return data.name;
@@ -173,11 +185,11 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
 
   public justUseShow = (keyword) => {
     return !!keyword;
-  }
+  };
 
   public updateCountryRegionLabels() {
     if (this.label) {
-      this.regionLabel = this.label
+      this.regionLabel = this.label;
 
     } else {
       this.regionLabel = this._country === Country.Canada
@@ -187,7 +199,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private _initCanadaItems(): void {
-    this.canadaCountryItem = this.countries
+    this.canadaCountryItem = Countries
       .find((country) => {
         return country.code === Country.Canada;
       });
@@ -199,7 +211,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private _initUsItems(): void {
-    this.usCountryItem = this.countries
+    this.usCountryItem = Countries
       .find((country) => {
         return country.code === Country.UnitedStates;
       });

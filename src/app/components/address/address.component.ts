@@ -16,8 +16,9 @@ import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 import { FsMapComponent } from '@firestitch/map';
 
-import { isObject } from 'lodash-es';
 import { Subject } from 'rxjs';
+
+import { isObject } from 'lodash-es';
 
 import { Countries } from '../../consts/countries.const';
 import { Country } from '../../enums/country.enum';
@@ -36,7 +37,7 @@ import { FsAddressRegionComponent } from '../address-region/address-region.compo
       provide: ControlContainer,
       useFactory: controlContainerFactory,
       deps: [[new Optional(), NgForm]],
-    }
+    },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -48,18 +49,12 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(FsMapComponent)
   public map: FsMapComponent;
 
-  @Input() address: FsAddress;
-  @Input() excludeCountries: string[];
-  @Output() addressChange = new EventEmitter();
-  @Output() collapseChange = new EventEmitter();
+  @Input() public address: FsAddress;
+  @Input() public excludeCountries: string[];
+  @Input() public regionCountryOrder = [Country.Canada, Country.UnitedStates];
+  @Input() public suggestions = false;
 
-  @Input()
-  public regionCountryOrder = ['CA', 'US'];
-
-  @Input()
-  public suggestions = false;
-
-  @Input('config') set setConfig(config: FsAddressConfig) {
+  @Input('config') public set setConfig(config: FsAddressConfig) {
 
     config.search = config.search === undefined ? false : config.search;
 
@@ -69,6 +64,9 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
     this.config = config;
   }
+
+  @Output() public addressChange = new EventEmitter();
+  @Output() public collapseChange = new EventEmitter();
 
   public controlNames = {
     street: `street_${guid('xxxxxxxx')}`,
@@ -90,13 +88,13 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   private _destory$ = new Subject();
 
   public ngOnInit() {
-    this.initAddress();
-    this.initConfig();
-    this.initMap();
+    this._initAddress();
+    this._initConfig();
+    this._initMap();
 
-    this.initCountries();
-    this.initZipAndStateLabels();
-    this.initCollapseBtn();
+    this._initCountries();
+    this._initZipAndStateLabels();
+    this._initCollapseBtn();
 
     // // Example ready event. Allow to use google object and map instance
     // if (this.agmMap) {
@@ -122,8 +120,11 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     //   }
   }
 
-  public ngOnChanges(change) {
+  public get regionCountries() {
+    return this.countries.map((country) => country.code);
+  }
 
+  public ngOnChanges(change) {
     if (change.address) {
       if (!change.address.currentValue) {
         this.address = {};
@@ -133,7 +134,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
         const currentCountry = change.address.currentValue ? change.address.currentValue.country : null;
         const previousCountry = change.address.previousValue ? change.address.previousValue.country : null;
         if (currentCountry !== previousCountry) {
-          this.initZipAndStateLabels();
+          this._initZipAndStateLabels();
         }
       }
     }
@@ -152,16 +153,16 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public dragEnded(event): void {
-    this.mapConfig.marker.events.dragend(event)
+    this.mapConfig.marker.events.dragend(event);
   }
 
   public changeCountry() {
 
-    const country = this.countries.find(item => item.code === this.address.country);
+    const country = this.countries.find((item) => item.code === this.address.country);
 
     if (country && country.regions) {
 
-      const region = country.regions.some(item => item.code === this.address.region);
+      const region = country.regions.some((item) => item.code === this.address.region);
 
       if (!region) {
         this.address.region = null;
@@ -172,7 +173,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.fsAddressRegionComponent.region = this.address.region;
-    this.initZipAndStateLabels();
+    this._initZipAndStateLabels();
     this.change();
   }
 
@@ -208,18 +209,18 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       this.address.city,
       this.address.zip,
       this.address.street,
-      this.address.name
+      this.address.name,
     ];
 
-    this.searchedAddress = parts.filter(part => part).join(', ');
+    this.searchedAddress = parts.filter((part) => part).join(', ');
 
     this.addressChange.emit(this.address);
 
     geocoder.geocode({ address: this.searchedAddress }, (results, status) => {
       this.isSearched = true;
-      const newAddress = Object.assign({}, this.address);
+      const newAddress = { ...this.address };
 
-      if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+      if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
         const location = results[0].geometry.location;
 
         newAddress.description = results[0].formatted_address;
@@ -239,23 +240,23 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private initAddress() {
-    this.address = Object.assign({
-      name: void 0,
-      country: void 0,
-      region: void 0,
-      address2: void 0,
-      address3: void 0,
-      street: void 0,
-      city: void 0,
-      zip: void 0,
+  private _initAddress() {
+    this.address = {
+      name: null,
+      country: null,
+      region: null,
+      address2: null,
+      address3: null,
+      street: null,
+      city: null,
+      zip: null,
       lat: null,
-      lng: null,
-    }, this.address);
+      lng: null, ...this.address,
+    };
   }
 
-  private initConfig() {
-    this.config = Object.assign({
+  private _initConfig() {
+    this.config = {
       name: { required: false, visible: true },
       country: { required: false, visible: true },
       region: { required: false, visible: true },
@@ -263,16 +264,16 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       address3: { required: false, visible: false },
       city: { required: false, visible: true },
       street: { required: false, visible: true },
-      zip: { required: false, visible: true },
-    }, this.config);
+      zip: { required: false, visible: true }, ...this.config,
+    };
   }
 
-  private initMap() {
+  private _initMap() {
 
-    this.mapConfig = Object.assign({
+    this.mapConfig = {
       center: {
         latitude: this.address.lat || 9999,
-        longitude: this.address.lng || 9999
+        longitude: this.address.lng || 9999,
       },
       zoom: 13,
       scrollwheel: false,
@@ -284,21 +285,21 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
         coords: { latitude: this.address.lat, longitude: this.address.lng },
         options: { draggable: true },
         events: {
-          dragend: marker => {
+          dragend: (marker) => {
             this.address.lat = marker.coords.lat;
             this.address.lng = marker.coords.lng;
             this.addressChange.emit(this.address);
-          }
-        }
-      }
-    }, this.config.map);
+          },
+        },
+      }, ...this.config.map,
+    };
   }
 
-  private initCountries() {
+  private _initCountries() {
     if (this.config.country && this.config.country.list && this.config.country.list.length) {
       this.countries.length = 0;
-      this.config.country.list.forEach(el => {
-        const country = this.countries.find(countryEl => countryEl.code === el);
+      this.config.country.list.forEach((el) => {
+        const country = this.countries.find((countryEl) => countryEl.code === el);
         if (country) {
           this.countries.push(country);
         }
@@ -309,16 +310,17 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     Object.keys(this.address).forEach((objectKey) => {
       if (this.address[objectKey]) {
         isEmpty = false;
+
         return;
       }
     });
   }
 
-  private initZipAndStateLabels() {
-    this.updateCountryRegionLabels();
+  private _initZipAndStateLabels() {
+    this._updateCountryRegionLabels();
   }
 
-  private updateCountryRegionLabels() {
+  private _updateCountryRegionLabels() {
     if (this.address.country) {
       this.zipLabel = this.address.country === Country.UnitedStates
         ? 'ZIP Code'
@@ -332,12 +334,12 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       : this.zipLabel;
   }
 
-  private initCollapseBtn() {
-    this.config.collapseButton = Object.assign({
+  private _initCollapseBtn() {
+    this.config.collapseButton = {
       show: true,
       title: 'Collapse Address Editor',
       color: 'primary',
-      theme: 'mat-raised-button',
-    }, this.config.collapseButton);
+      theme: 'mat-raised-button', ...this.config.collapseButton,
+    };
   }
 }

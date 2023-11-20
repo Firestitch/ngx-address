@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+
+import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
 import {
   FsAddressModule,
@@ -15,12 +16,10 @@ import { FsLabelModule } from '@firestitch/label';
 import { FsMapModule } from '@firestitch/map';
 import { FsMessageModule } from '@firestitch/message';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
-import { AppMaterialModule } from './material.module';
-
-import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
-import { RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
 import {
   AddressDisabledOrReadonlyExampleComponent,
   AddressFormComponent,
@@ -33,6 +32,7 @@ import {
   AddressPickerPreFilledExampleComponent,
   AddressPickerRequiredAllExampleComponent,
   AddressPickerRequiredNotBlankExampleComponent,
+  AddressRegionComponent,
   AddressRegionDisabledExampleComponent,
   AddressRegionNoValidationExampleComponent,
   AddressRegionPrefilledExampleComponent,
@@ -40,9 +40,10 @@ import {
   ConfigureComponent,
   FormatExampleComponent,
   FullAddressExampleComponent,
-  GeocoderComponent
+  GeocoderComponent,
 } from './components';
 import { PickerWithConfirmationComponent } from './components/picker-with-confirmation';
+import { AppMaterialModule } from './material.module';
 
 
 @NgModule({
@@ -84,13 +85,14 @@ import { PickerWithConfirmationComponent } from './components/picker-with-confir
     AddressRegionNoValidationExampleComponent,
     AddressFormComponent,
     FormatExampleComponent,
+    AddressRegionComponent,
     ConfigureComponent,
     PickerWithConfirmationComponent,
     GeocoderComponent,
   ],
   providers: [
     { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { float: 'auto' } },
-  ]
+  ],
 })
 export class PlaygroundModule {
 }

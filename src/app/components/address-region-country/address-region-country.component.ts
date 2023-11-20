@@ -1,14 +1,15 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   OnInit,
   Output,
-  HostBinding,
-  ChangeDetectionStrategy
 } from '@angular/core';
-import { FsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
+
 import { Countries } from '../../consts/countries.const';
+import { FsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
 
 
 @Component({
@@ -20,30 +21,34 @@ import { Countries } from '../../consts/countries.const';
 export class FsAddressRegionCountryComponent implements OnInit {
   // ADDRESS Two-way binding
 
-  @HostBinding('class.vertical') orientationVertical = true;
-  @HostBinding('class.horizontal') orientationHorizontal = false;
-  @HostBinding('class.horizontal-stretch') orientationHorizontalStretch = false;
+  @HostBinding('class.vertical') public orientationVertical = true;
+  @HostBinding('class.horizontal') public orientationHorizontal = false;
+  @HostBinding('class.horizontal-stretch') public orientationHorizontalStretch = false;
 
-  @Input() config: FsAddressRegionConfig = {};
-  @Input() country = '';
-  @Input() region = '';
-  @Input('orientation') set setOrientation(value) {
+  @Input() public config: FsAddressRegionConfig = {};
+  @Input() public country: string;
+  @Input() public region: string;
+  @Input('orientation') public set setOrientation(value) {
     this.orientationVertical = value === 'vertical';
     this.orientationHorizontal = value === 'horizontal';
     this.orientationHorizontalStretch = value === 'horizontal-stretch';
   }
 
-  @Output() countryChange = new EventEmitter<any>();
-  @Output() regionChange = new EventEmitter<any>();
+  @Output() public countryChange = new EventEmitter<any>();
+  @Output() public regionChange = new EventEmitter<any>();
 
   public countries = Countries;
 
   public ngOnInit() {
-    this.initConfig();
+    this._initConfig();
   }
 
   public changeCountry() {
     this.countryChange.emit(this.country);
+  }
+
+  public get regionCountries() {
+    return this.countries.map((country) => country.code);
   }
 
   public changeRegion() {
@@ -62,14 +67,14 @@ export class FsAddressRegionCountryComponent implements OnInit {
     this.regionChange.emit(this.region);
   }
 
-  private initConfig() {
-    this.config = Object.assign({
+  private _initConfig() {
+    this.config = {
       country: { required: false },
-      region: { required: false },
-    }, this.config);
+      region: { required: false }, ...this.config,
+    };
 
     if (this.config.country.list) {
-      this.countries = Countries.filter(country => {
+      this.countries = Countries.filter((country) => {
         return this.config.country.list.indexOf(country.code) >= 0;
       });
     }
