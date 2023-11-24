@@ -1,4 +1,4 @@
-<div fxLayout="column" class="region-country">
+<div class="region-country">
   <div class="country">
     <fs-address-country
       *ngIf="config.country.visible!==false"
@@ -14,8 +14,8 @@
   <div class="region">
     <fs-address-region
         [(region)]="region"
-        (regionChange)="changeRegion()"
         [country]="country"
+        (regionChange)="changeRegion()"
         [countries]="regionCountries"
         [disabled]="config.region.disabled"
         [required]="config.region.required"

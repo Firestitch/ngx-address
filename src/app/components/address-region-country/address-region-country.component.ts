@@ -8,7 +8,7 @@ import {
   Output,
 } from '@angular/core';
 
-import { Countries } from '../../consts/countries.const';
+import { Countries } from '../../consts';
 import { FsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
 
 
@@ -19,7 +19,6 @@ import { FsAddressRegionConfig } from '../../interfaces/address-region-config.in
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressRegionCountryComponent implements OnInit {
-  // ADDRESS Two-way binding
 
   @HostBinding('class.vertical') public orientationVertical = true;
   @HostBinding('class.horizontal') public orientationHorizontal = false;
@@ -38,17 +37,20 @@ export class FsAddressRegionCountryComponent implements OnInit {
   @Output() public regionChange = new EventEmitter<any>();
 
   public countries = Countries;
+  public regionCountries;
 
   public ngOnInit() {
     this._initConfig();
   }
 
   public changeCountry() {
-    this.countryChange.emit(this.country);
-  }
+    this.regionCountries = this.country ? [this.country] : null;
+    if (!this.country) {
+      this.region = null;
+    }
 
-  public get regionCountries() {
-    return this.countries.map((country) => country.code);
+    this.regionChange.emit(this.region);
+    this.countryChange.emit(this.country);
   }
 
   public changeRegion() {

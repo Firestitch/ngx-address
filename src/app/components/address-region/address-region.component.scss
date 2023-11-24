@@ -1,0 +1,7 @@
+.country-region {
+  display: inline-flex;
+
+  span:not(:last-child):after {
+    content: ',\00a0';
+  }
+}

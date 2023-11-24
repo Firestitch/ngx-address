@@ -40,6 +40,7 @@ export const Countries: IAddressCountry[] = [
   { code: 'CM', name: 'Cameroon' },
   {
     code: 'CA', name: 'Canada',
+    regionLabel: 'Province',
     regions: [
       { code: 'AB', name: 'Alberta' },
       { code: 'BC', name: 'British Columbia' },
@@ -244,7 +245,9 @@ export const Countries: IAddressCountry[] = [
   { code: 'AE', name: 'United Arab Emirates' },
   { code: 'GB', name: 'United Kingdom' },
   {
-    code: 'US', name: 'United States',
+    code: 'US',
+    name: 'United States',
+    regionLabel: 'State',
     regions: [
       { code: 'AK', name: 'Alaska' },
       { code: 'AL', name: 'Alabama' },

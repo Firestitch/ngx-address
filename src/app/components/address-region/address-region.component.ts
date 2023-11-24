@@ -4,12 +4,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlContainer, NgForm, NgModel } from '@angular/forms';
@@ -24,7 +22,6 @@ import { map, takeUntil } from 'rxjs/operators';
 
 import { Countries } from '../../consts';
 import { Country } from '../../enums/country.enum';
-import { searchCountryRegions } from '../../helpers';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
 import { IAddressRegion } from '../../interfaces/address-region.interface';
 
@@ -42,82 +39,75 @@ import { IAddressRegion } from '../../interfaces/address-region.interface';
     },
   ],
 })
-export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
+export class FsAddressRegionComponent implements OnInit, OnDestroy {
 
-  @Input() public region: string;
+  @ViewChild(FsAutocompleteComponent, { read: NgModel, static: true })
+  public autocompleteModel: NgModel;
+
+  @Input() public set region(regionCode: string) {
+    const region = this.addressCountries
+      .reduce((accum, addressCountry) => {
+        return [
+          ...accum,
+          ...(addressCountry.regions || [])
+            .filter((addressRegion) => (
+              addressRegion.code === regionCode &&
+              (!this.country || this.country === addressCountry.code)),
+            ),
+        ];
+      }, [])[0];
+
+    this.regionModel = regionCode ? (region ? region : {
+      name: regionCode,
+    }) : null;
+  }
+
+  public get region() {
+    return this.regionModel?.code;
+  }
+
   @Input() public disabled = false;
+  @Input() public country: Country | string;
   @Input() public label;
   @Input() public required = false;
   @Input() public regionCountryOrder = [Country.Canada, Country.UnitedStates];
-  @Input() public set countries(countries: string[]) {
-    this._countries = countries;
-    if (this._countries.length === 1) {
-      this.country = this._countries[0];
-    }
+  @Input() public set countries(countryCodes: (string | Country)[]) {
+    countryCodes = countryCodes || [Country.Canada, Country.UnitedStates];
+    this._countries = countryCodes
+      .map((countryCode: string) => {
+        return Countries.find((country) => country.code === countryCode);
+      });
+
+    this.updateCountryRegionLabels();
+  }
+
+  public get addressCountries() {
+    return this._countries;
   }
 
   @Output() public regionChange = new EventEmitter<string>();
 
-  @Input('country')
-  public set country(value) {
-    this._country = value;
-    this.updateCountryRegionLabels();
-  }
-
-  public get country(): string {
-    return this._country;
-  }
-
-  public model;
-  public controlName = `region_${guid('xxxxxx')}`;
-  public regionLabel;
-  public canadaCountryItem: IAddressCountry;
-  public usCountryItem: IAddressCountry;
-  public canadaRegions: IAddressRegion[];
-  public usRegions: IAddressRegion[];
-  public canadaRegionsIsFirst = false;
+  public regionModel: IAddressRegion;
+  public controlName = `region${guid('xxxxxx')}`;
+  public regionLabel: string;
   public countryEnum = Country;
 
-  @ViewChild(FsAutocompleteComponent, { read: NgModel, static: true })
-  private _autocompleteModel: NgModel;
-
-  private _country;
-  private _countries: string[];
+  private _countries: IAddressCountry[] = [];
   private _destroy$ = new Subject<void>();
 
-  constructor(private _cdRef: ChangeDetectorRef) { }
+  constructor(
+    private _cdRef: ChangeDetectorRef,
+  ) {
+    this.countries = [Country.Canada, Country.UnitedStates];
+  }
 
   public ngOnInit() {
-    this._detectCountriesOrder();
-    this._initCanadaItems();
-    this._initUsItems();
     this.updateCountryRegionLabels();
     this._listenControlStateChanges();
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-    if (changes.region && !!this.region) {
-      const country: IAddressCountry = this._countries
-        .filter((code) => code === this.country)
-        .map((code) => Countries.find((c) => c.code === code))
-        .pop();
-
-      if (country?.regions) {
-        this.model = country.regions.find((region) => {
-          return region.code === this.region;
-        });
-      }
-
-      if (!this.model) {
-        const region = country?.regions.find((r) => this.region === r.code);
-        const name = region?.name || this.region;
-        this.model = { name, code: this.region };
-      }
-    }
-
-    if (changes.country && !this._country) {
-      this.model = null;
-    }
+  public clear() {
+    this.regionModel = null;
   }
 
   public ngOnDestroy(): void {
@@ -126,52 +116,43 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public fetch = (keyword: string) => {
-    return of(keyword)
+    keyword = keyword.toLowerCase();
+
+    return of(null)
       .pipe(
-        map((kw) => {
-          const canadaMatches = searchCountryRegions(kw, this.canadaRegions);
-          const usMatches = searchCountryRegions(kw, this.usRegions);
+        map(() => {
+          const regions: IAddressRegion[] = this._countries
+            .reduce((accum, country) => {
+              const countryRegions = (country.regions || [])
+                .filter((region) => {
+                  const regionName = region.name.toLowerCase().trim();
 
-          switch (this._country) {
-            case Country.Canada: {
-              return [
-                ...canadaMatches,
-                ...usMatches,
-              ];
-            }
-
-            case Country.UnitedStates: {
-              return [
-                ...usMatches,
-                ...canadaMatches,
-              ];
-            }
-
-            default: {
-              if (this.canadaRegionsIsFirst) {
-                return [
-                  ...canadaMatches,
-                  ...usMatches,
-                ];
-              }
+                  return regionName.indexOf(keyword) !== -1;
+                });
 
               return [
-                ...usMatches,
-                ...canadaMatches,
+                ...accum,
+                ...countryRegions
+                  .map((countryRegion) => {
+                    return {
+                      ...countryRegion,
+                      country: country.name,
+                    };
+                  }),
               ];
+            }, []);
 
-            }
-          }
+          return regions;
         }),
       );
   };
 
   public displayWith = (data) => {
-    return data.name;
+    return data?.name;
   };
 
   public selectUserOption(keyword) {
-    this.model = {
+    this.regionModel = {
       code: keyword,
       name: keyword,
     };
@@ -180,7 +161,7 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public regionChanged() {
-    this.regionChange.emit(this.model?.code);
+    this.regionChange.emit(this.regionModel?.code);
   }
 
   public justUseShow = (keyword) => {
@@ -188,47 +169,21 @@ export class FsAddressRegionComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   public updateCountryRegionLabels() {
-    if (this.label) {
-      this.regionLabel = this.label;
-
-    } else {
-      this.regionLabel = this._country === Country.Canada
-        ? 'Province'
-        : this._country === Country.UnitedStates ? 'State' : 'Province/State';
-    }
-  }
-
-  private _initCanadaItems(): void {
-    this.canadaCountryItem = Countries
-      .find((country) => {
-        return country.code === Country.Canada;
-      });
-
-    this.canadaRegions = this.canadaCountryItem?.regions;
-    this.canadaRegions.forEach((region) => {
-      region.country = this.canadaCountryItem.code;
-    });
-  }
-
-  private _initUsItems(): void {
-    this.usCountryItem = Countries
-      .find((country) => {
-        return country.code === Country.UnitedStates;
-      });
-
-    this.usRegions = this.usCountryItem?.regions;
-    this.usRegions.forEach((region) => {
-      region.country = this.usCountryItem.code;
-    });
-  }
-
-  private _detectCountriesOrder() {
-    this.canadaRegionsIsFirst = this.regionCountryOrder.indexOf(Country.Canada) === 0;
+    this.regionLabel = this.label ? this.label : Object.keys(
+      this._countries
+        .reduce((accum, country) => {
+          return {
+            ...accum,
+            [country.regionLabel || 'Province']: true,
+          };
+        }, {}),
+    )
+      .join('/');
   }
 
   // we need this to get updated ng-(invalid/dirty) classes
   private _listenControlStateChanges(): void {
-    this._autocompleteModel
+    this.autocompleteModel
       .control
       .statusChanges
       .pipe(

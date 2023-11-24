@@ -2,27 +2,20 @@
     [fetch]="fetch"
     [displayWith]="displayWith"
     [fetchOnFocus]="true"
-    [(ngModel)]="model"
+    [(ngModel)]="regionModel"
     (ngModelChange)="regionChanged()"
     [placeholder]="regionLabel"
     [disabled]="disabled"
     [fsFormRequired]="required"
     [name]="controlName">
   <ng-template fsAutocompleteTemplate let-data="data">
-    <span>{{ data.name }}</span>
-    <ng-container *ngIf="!country || country !== data.country">
-      <ng-container [ngSwitch]="data.country">
-        <ng-container *ngSwitchCase="countryEnum.Canada"><!--
-          -->, {{ canadaCountryItem.name }}
-        </ng-container>
-        <ng-container *ngSwitchCase="countryEnum.UnitedStates"><!--
-          -->, {{ usCountryItem.name }}
-        </ng-container>
+    <span class="country-region">
+      <span>{{ data.name }}</span>
+      <ng-container *ngIf="!regionModel && addressCountries.length > 1">
+        <span>{{data.country}}</span>
       </ng-container>
-    </ng-container>
+    </span>
   </ng-template>
-
-
   <ng-template
       fsAutocompleteStatic
       let-keyword

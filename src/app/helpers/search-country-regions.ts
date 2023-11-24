@@ -1,5 +1,5 @@
-import { IAddressRegion } from '../interfaces/address-region.interface';
 import { IAddressCountry } from '../interfaces/address-country.interface';
+import { IAddressRegion } from '../interfaces/address-region.interface';
 
 
 export function searchCountryRegions(
@@ -16,8 +16,8 @@ export function searchCountryRegions(
 
     if (index > -1) {
       matches.push({
-        index: index,
-        region: region,
+        index,
+        region,
       });
     }
   });
@@ -27,9 +27,10 @@ export function searchCountryRegions(
       return -1;
     } else if (a.index > b.index) {
       return 1;
-    } else {
-      return 0;
     }
+
+    return 0;
+
   });
 
   if (limit) {
