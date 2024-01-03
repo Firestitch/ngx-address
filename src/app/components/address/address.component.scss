@@ -79,3 +79,9 @@ mat-label::after {
     }
   }
 }
+
+@media (max-width: 599px) {
+  .city-region-zip-country {
+    flex-direction: column;
+  }
+}

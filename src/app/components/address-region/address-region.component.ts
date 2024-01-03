@@ -57,9 +57,7 @@ export class FsAddressRegionComponent implements OnInit, OnDestroy {
         ];
       }, [])[0];
 
-    this.regionModel = regionCode ? (region ? region : {
-      name: regionCode,
-    }) : null;
+    this.regionModel = (region ? region : (regionCode ? { name: regionCode } : null));
   }
 
   public get region() {

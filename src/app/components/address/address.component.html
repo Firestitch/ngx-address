@@ -76,7 +76,7 @@
     autocomplete="off">
 </mat-form-field>
 
-<div class="city-region-zip-country" fxLayout.lt-sm="column">
+<div class="city-region-zip-country">
   <div class="city">
     <mat-form-field *ngIf="config.city.visible!==false">
       <mat-label>{{config.city.placeholder || 'City'}}</mat-label>
@@ -107,19 +107,6 @@
     </fs-address-region>
   </div>
 
-  <div class="country">
-    <fs-address-country
-      *ngIf="config.country.visible!==false"
-      [disabled]="config.country.disabled"
-      [required]="config.country.required"
-      [placeholder]="config.country.placeholder"
-      [excludeCountries]="excludeCountries"
-      [(ngModel)]="address.country"
-      (selectionChange)="changeCountry()"
-      [name]="controlNames.addressCountry">
-    </fs-address-country>
-  </div>
-
   <div class="zip">
     <mat-form-field
       *ngIf="config.zip.visible!==false">
@@ -137,6 +124,18 @@
     </mat-form-field>
   </div>
 
+  <div class="country">
+    <fs-address-country
+      *ngIf="config.country.visible!==false"
+      [disabled]="config.country.disabled"
+      [required]="config.country.required"
+      [placeholder]="config.country.placeholder"
+      [excludeCountries]="excludeCountries"
+      [(ngModel)]="address.country"
+      (selectionChange)="changeCountry()"
+      [name]="controlNames.addressCountry">
+    </fs-address-country>
+  </div>
 </div>
 
 <div class="map-container" *ngIf="mapConfig.showMap">

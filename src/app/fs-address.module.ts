@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { FsAddressCountriesModule } from './fs-address-countries.module';
+
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,18 +9,19 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FsMapModule } from '@firestitch/map';
-
-import { FsDialogModule } from '@firestitch/dialog';
-import { FsFormModule } from '@firestitch/form';
 
 import { FsClearModule } from '@firestitch/clear';
+import { FsDialogModule } from '@firestitch/dialog';
+import { FsFormModule } from '@firestitch/form';
+import { FsMapModule } from '@firestitch/map';
+
 import { FsAddressAutocompleteComponent } from './components/address-autocomplete/address-autocomplete.component';
 import { FsAddressDialogComponent } from './components/address-dialog/address-dialog.component';
 import { FsAddressFormatComponent } from './components/address-format/address-format.component';
 import { FsAddressPickerComponent } from './components/address-picker/address-picker.component';
 import { FsAddressSearchComponent } from './components/address-search/address-search.component';
 import { FsAddressComponent } from './components/address/address.component';
+import { FsAddressCountriesModule } from './fs-address-countries.module';
 import { FsAddressCountryModule } from './fs-address-country.module';
 import { FsAddressRegionModule } from './fs-address-region.module';
 
@@ -37,8 +37,6 @@ import { FsAddressRegionModule } from './fs-address-region.module';
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
-
-    FlexLayoutModule,
 
     FsFormModule,
     FsAddressCountriesModule,
@@ -62,7 +60,7 @@ import { FsAddressRegionModule } from './fs-address-region.module';
     FsAddressSearchComponent,
     FsAddressDialogComponent,
     FsAddressAutocompleteComponent,
-  ]
+  ],
 })
 export class FsAddressModule {
   static forRoot(): ModuleWithProviders<FsAddressModule> {
