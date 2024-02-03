@@ -1,7 +1,12 @@
 import { AddressFormat } from './../enums/address-format.enum';
 
 
-export function addressFormat(address, options: { format?: AddressFormat, includeFirst?: number }= {}) {
+export function addressFormat(
+  address,
+  options: {
+    format?: AddressFormat;
+    includeFirst?: number;
+  } = {}): string {
 
   options = {
     format: AddressFormat.OneLine,
@@ -27,11 +32,14 @@ export function addressFormat(address, options: { format?: AddressFormat, includ
   if (addressParts.length) {
     if (options.format === AddressFormat.TwoLine) {
       lines = [[addressParts.shift()]];
-      lines.push(addressParts);
-    } else {
-      lines = addressParts;
     }
+
+    lines.push(addressParts);
   }
 
-  return lines;
+  return lines
+    .map((line) => {
+      return line.join(', ');
+    })
+    .join('\n');
 }

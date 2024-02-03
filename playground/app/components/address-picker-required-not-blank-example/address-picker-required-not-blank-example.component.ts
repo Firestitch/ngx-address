@@ -1,20 +1,16 @@
 import {
   Component,
-  OnInit,
-  ViewChild
 } from '@angular/core';
 
 // Interfaces
-import { AddressFormat, FsAddress, FsAddressConfig, } from '@firestitch/address';
-
-import { FsAddressFormatComponent } from '@firestitch/address';
+import { AddressFormat, FsAddress, FsAddressConfig } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-required-not-blank-example',
   templateUrl: './address-picker-required-not-blank-example.component.html',
-  styles: []
+  styles: [],
 })
-export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
+export class AddressPickerRequiredNotBlankExampleComponent {
 
   public address: FsAddress = {};
   public AddressFormat = AddressFormat;
@@ -24,12 +20,6 @@ export class AddressPickerRequiredNotBlankExampleComponent implements OnInit {
     region: { required: true },
     city: { required: true },
     street: { required: true },
-    zip: { required: true }
+    zip: { required: true },
   };
-
-  @ViewChild('format') format: FsAddressFormatComponent;
-
-  constructor() {}
-
-  public ngOnInit() {}
 }

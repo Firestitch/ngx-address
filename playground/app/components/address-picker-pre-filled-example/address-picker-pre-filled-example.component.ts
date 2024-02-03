@@ -1,24 +1,20 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  OnInit,
-  ViewChild
 } from '@angular/core';
 
-// Interfaces
 import {
-  FsAddress, FsAddressSearchComponent,
-  FsAddressConfig,
   AddressFormat,
+  FsAddress,
+  FsAddressConfig,
 } from '@firestitch/address';
-
-import { FsAddressFormatComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-pre-filled-example',
   templateUrl: './address-picker-pre-filled-example.component.html',
-  styles: []
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddressPickerPreFilledExampleComponent implements OnInit {
+export class AddressPickerPreFilledExampleComponent {
 
   public address: FsAddress = {
     name: 'CN Tower',
@@ -26,15 +22,9 @@ export class AddressPickerPreFilledExampleComponent implements OnInit {
     region: 'ON',
     city: 'Toronto',
     street: '301 Front Street West',
-    zip: 'M5V 2T6'
+    zip: 'M5V 2T6',
   };
 
   public config: FsAddressConfig = { };
   public AddressFormat = AddressFormat;
-
-  @ViewChild('format') format: FsAddressFormatComponent;
-
-  constructor() {}
-
-  public ngOnInit() {}
 }

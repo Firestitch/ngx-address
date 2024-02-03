@@ -1,28 +1,22 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 // Interfaces
 import {
-  FsAddress, FsAddressSearchComponent,
-  FsAddressConfig,
   AddressFormat,
+  FsAddress,
+  FsAddressConfig,
 } from '@firestitch/address';
-
-import {  FsAddressFormatComponent } from '@firestitch/address';
 
 @Component({
   selector: 'address-picker-no-validation-summary-example',
   templateUrl: './address-picker-no-validation-summary-example.component.html',
-  styles: []
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressPickerNoValidationSummaryExampleComponent {
 
   public address: FsAddress = {};
   public AddressFormat = AddressFormat;
   public config: FsAddressConfig = {
-    map: { zoom: 15 }
+    map: { zoom: 15 },
   };
-
-  @ViewChild('format') format: FsAddressFormatComponent;
-
-  constructor() {}
 }

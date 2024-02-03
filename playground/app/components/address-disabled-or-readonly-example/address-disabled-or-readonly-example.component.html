@@ -20,7 +20,7 @@
   </fs-address-picker>
 </form>
 
-<fieldset [hidden]="format.empty" id="bodyPanelDisabledAndReadonly0">
+<fieldset [hidden]="address" id="bodyPanelDisabledAndReadonly0">
   <legend>Selected Address Disabled Style</legend>
-  <fs-address-format #format [address]="address" [format]="AddressFormat.TwoLine" [disabled]="true"></fs-address-format>
+  <fs-address-format [address]="address" [format]="AddressFormat.TwoLine" [disabled]="true"></fs-address-format>
 </fieldset>

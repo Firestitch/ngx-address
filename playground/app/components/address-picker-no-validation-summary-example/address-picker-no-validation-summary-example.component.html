@@ -8,7 +8,7 @@
   </fs-address-picker>
 </form>
 
-<fieldset [hidden]="format.empty">
+<fieldset [hidden]="address">
   <legend>Selected Address</legend>
-  <fs-address-format #format [address]="address" [name]="false" [format]="AddressFormat.Summary"></fs-address-format>
+  <fs-address-format [address]="address" [name]="false" [format]="AddressFormat.Summary"></fs-address-format>
 </fieldset>

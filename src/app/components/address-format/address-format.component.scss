@@ -8,14 +8,6 @@
   }
 }
 
-.part + .part:before {
-  content: ', ';
-}
-
-.part:last-child:after {
-  content: '';
-}
-
 .disabled {
   color:  rgba(0, 0, 0, .38);
 }

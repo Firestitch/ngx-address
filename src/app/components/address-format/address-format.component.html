@@ -1,7 +1,5 @@
-<span *ngIf="!empty" [ngClass]="format" [class.disabled]="disabled">
-  <span *ngFor="let parts of lines; let index = index" class="line-{{index + 1}}">
-    <span *ngFor="let part of parts;" class="part">{{part}}</span>
+<span *ngIf="lines.length" [ngClass]="format" [class.disabled]="disabled">
+  <span *ngFor="let line of lines; let index = index" class="line-{{index + 1}}">
+    {{line}}
   </span>
 </span>
-
-

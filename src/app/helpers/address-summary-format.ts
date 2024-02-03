@@ -5,14 +5,12 @@ export function addressSummaryFormat(address) {
   const addressParts = [];
 
   if (address) {
-
     for ( let i = 0; i < parts.length; i++) {
       const field = parts[i];
       const part = address[field];
 
       if (field === 'name' && part) {
         addressParts.push(part);
-        break;
 
       } else if (part && field !== 'name') {
         addressParts.push(part);
@@ -21,11 +19,9 @@ export function addressSummaryFormat(address) {
         if (nextPart) {
           addressParts.push(nextPart);
         }
-
-        break;
       }
     }
   }
 
-  return addressParts;
+  return addressParts.join(', ');
 }

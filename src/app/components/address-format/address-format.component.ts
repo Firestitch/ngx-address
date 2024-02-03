@@ -1,13 +1,13 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 
-import { FsAddress } from '../../interfaces/address.interface';
 import { AddressFormat } from '../../enums/address-format.enum';
-import { addressOneLineFormat, addressTwoLineFormat, addressSummaryFormat } from '../../helpers';
+import { addressOneLineFormat, addressSummaryFormat, addressTwoLineFormat } from '../../helpers';
+import { FsAddress } from '../../interfaces/address.interface';
 
 
 @Component({
@@ -17,8 +17,6 @@ import { addressOneLineFormat, addressTwoLineFormat, addressSummaryFormat } from
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressFormatComponent implements OnInit {
-
-  private _address: FsAddress = {};
 
   @Input()
   public set address(address) {
@@ -30,16 +28,21 @@ export class FsAddressFormatComponent implements OnInit {
     return this._address;
   }
 
-  @Input() format: AddressFormat = AddressFormat.OneLine;
-  @Input() includeFirst: 0;
-  @Input() disabled = false;
+  @Input() public format: AddressFormat = AddressFormat.OneLine;
+  @Input() public includeFirst: 0;
+  @Input() public disabled = false;
   @Input() public name = true;
 
-  public lines: any[] = [];
-  public empty = false;
+  public lines: string[];
+
+  private _address: FsAddress = {};
 
   public ngOnInit() {
     this._updateView();
+  }
+
+  public get empty() {
+    return !!this.lines?.length;
   }
 
   private _updateView() {
@@ -48,17 +51,21 @@ export class FsAddressFormatComponent implements OnInit {
       name: this.name ? this.address?.name : null,
     };
 
-    if (this.format === AddressFormat.Summary) {
-      const formatted = addressSummaryFormat(address);
-      this.lines = formatted ? [formatted] : [];
-    } else if (this.format === AddressFormat.OneLine) {
-      const formatted = addressOneLineFormat(address, { includeFirst: this.includeFirst });
-      this.lines = formatted ? [formatted] : [];
-    } else if (this.format === AddressFormat.TwoLine) {
-      this.lines = addressTwoLineFormat(address, { includeFirst: this.includeFirst });
+    switch (this.format) {
+      case AddressFormat.Summary: {
+        this.lines = addressSummaryFormat(address).split('\n');
+        break;
+      }
+      case AddressFormat.OneLine: {
+        this.lines = addressOneLineFormat(address, { includeFirst: this.includeFirst }).split('\n');
+        break;
+      }
+      case AddressFormat.TwoLine: {
+        this.lines = addressTwoLineFormat(address, { includeFirst: this.includeFirst }).split('\n');
+        break;
+      }
     }
 
-    this.empty = !this.lines.length;
   }
 
 }
