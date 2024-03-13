@@ -21,16 +21,17 @@ import {
   NgControl,
   NgForm,
   ValidationErrors,
-  Validator
+  Validator,
 } from '@angular/forms';
-
-import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatFormFieldControl } from '@angular/material/form-field';
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatFormFieldControl } from '@angular/material/form-field';
 
 import { guid } from '@firestitch/common';
+import { controlContainerFactory } from '@firestitch/core';
+import { FsMap } from '@firestitch/map';
 
 import { bindCallback, fromEvent, Observable, of, Subject } from 'rxjs';
 import {
@@ -42,8 +43,6 @@ import {
   takeUntil, tap,
 } from 'rxjs/operators';
 
-import { controlContainerFactory } from '@firestitch/core';
-import { FsMap } from '@firestitch/map';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
@@ -69,11 +68,11 @@ import { FsAddress } from '../../interfaces/address.interface';
       provide: ControlContainer,
       useFactory: controlContainerFactory,
       deps: [[new Optional(), NgForm]],
-    }
+    },
   ],
 })
 export class FsAddressAutocompleteComponent
-  implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validator {
+implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validator {
 
   public static nextId = 0;
 
@@ -128,8 +127,8 @@ export class FsAddressAutocompleteComponent
   public predictions: any[] = [];
   public googleAutocompleteService: google.maps.places.AutocompleteService = null;
   public googlePlacesService: google.maps.places.PlacesService = null;
-  public onChange = (data: any) => { };
-  public onTouched = () => { };
+  public onChange: (data: any) => void;
+  public onTouched: () => void;
   public errorState = false;
   public focused = false;
   public stateChanges = new Subject<void>();
@@ -152,7 +151,7 @@ export class FsAddressAutocompleteComponent
     private _elementRef: ElementRef,
     private _cdRef: ChangeDetectorRef,
   ) {
-    if (this.ngControl != null) {
+    if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
   }
@@ -171,7 +170,9 @@ export class FsAddressAutocompleteComponent
   }
 
   @Input()
-  public get disabled(): boolean { return this._disabled; }
+  public get disabled(): boolean {
+    return this._disabled;
+  }
   public set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
     this.stateChanges.next();
@@ -228,7 +229,7 @@ export class FsAddressAutocompleteComponent
   }
 
   public onContainerClick(event: MouseEvent) {
-    if ((event.target as Element).tagName.toLowerCase() != 'input') {
+    if ((event.target as Element).tagName.toLowerCase() !== 'input') {
       this.searchElement.nativeElement.focus();
       this._elementRef.nativeElement.querySelector('input').focus();
     }
@@ -260,7 +261,7 @@ export class FsAddressAutocompleteComponent
     }
 
     if (!this.empty) {
-      parts.forEach(part => {
+      parts.forEach((part) => {
         if (this.config[part] && this.config[part].required && !this.value[part]) {
           requiredField.push([part]);
         }
@@ -370,7 +371,7 @@ export class FsAddressAutocompleteComponent
             ];
 
             this._cdRef.markForCheck();
-          })
+          });
         });
     });
   }
@@ -385,8 +386,8 @@ export class FsAddressAutocompleteComponent
     this.addressChange.emit(address);
   }
 
-  private _placeToAddress(place): Observable<any> {
-    return of(place)
+  private _placeToAddress(data): Observable<any> {
+    return of(data)
       .pipe(
         switchMap((place) => {
           if (!place || !this.googlePlacesService) {
@@ -442,7 +443,7 @@ export class FsAddressAutocompleteComponent
 
           this._cdRef.markForCheck();
         });
-      })
+      });
   }
 
   private _initGoogleMap() {
@@ -453,7 +454,8 @@ export class FsAddressAutocompleteComponent
         )
         .subscribe(() => {
           this.googleAutocompleteService = new google.maps.places.AutocompleteService();
-          this.googlePlacesService = new google.maps.places.PlacesService(this.searchElement.nativeElement);
+          this.googlePlacesService = new google.maps.places
+            .PlacesService(this.searchElement.nativeElement);
         });
     });
   }
@@ -463,7 +465,9 @@ export class FsAddressAutocompleteComponent
     const placesRequest = this.googleAutocompleteService
       .getPlacePredictions(
         { input: text },
-        () => { }
+        () => {
+          //
+        },
       ) as unknown as Promise<{ predictions: google.maps.places.AutocompletePrediction[] }>;
 
     return placesRequest
@@ -471,21 +475,21 @@ export class FsAddressAutocompleteComponent
         return {
           value: text,
           predictions: result?.predictions || [],
-        }
+        };
       })
       .catch(() => {
         return {
           value: text,
           predictions: [],
-        }
+        };
       });
   }
 
   private _getPlaceDetails(
-    place: google.maps.places.PlaceDetailsRequest
-  ): Observable<{ result: google.maps.places.PlaceResult, place: google.maps.places.PlaceDetailsRequest }> {
+    place: google.maps.places.PlaceDetailsRequest,
+  ): Observable<{ result: google.maps.places.PlaceResult; place: google.maps.places.PlaceDetailsRequest }> {
     const getDetailsFactory = bindCallback(
-      this.googlePlacesService.getDetails.bind(this.googlePlacesService)
+      this.googlePlacesService.getDetails.bind(this.googlePlacesService),
     ) as any;
 
     return getDetailsFactory(place)
@@ -493,13 +497,14 @@ export class FsAddressAutocompleteComponent
         map(([result, status]) => {
           if (status !== google.maps.places.PlacesServiceStatus.OK) {
             return null;
-          } else {
-            return {
-              place,
-              result,
-            };
           }
-        })
+
+          return {
+            place,
+            result,
+          };
+
+        }),
       );
   }
 
@@ -512,6 +517,6 @@ export class FsAddressAutocompleteComponent
       .subscribe((origin) => {
         this.focused = !!origin;
         this.stateChanges.next();
-      })
+      });
   }
 }
