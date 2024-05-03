@@ -13,7 +13,7 @@ import {
 import { FsExampleModule } from '@firestitch/example';
 import { FsFormModule } from '@firestitch/form';
 import { FsLabelModule } from '@firestitch/label';
-import { FsMapModule } from '@firestitch/map';
+import { FS_MAP_GOOGLE_MAP_KEY } from '@firestitch/map';
 import { FsMessageModule } from '@firestitch/message';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -52,9 +52,6 @@ import { AppMaterialModule } from './material.module';
     BrowserAnimationsModule,
     FormsModule,
     FsAddressModule,
-    FsMapModule.forRoot({
-      googleMapKey: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE',
-    }),
     FsAddressRegionModule,
     FsAddressRegionCountryModule,
     AppMaterialModule,
@@ -89,7 +86,14 @@ import { AppMaterialModule } from './material.module';
     GeocoderComponent,
   ],
   providers: [
-    { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { float: 'auto' } },
+    {
+      provide: MAT_RIPPLE_GLOBAL_OPTIONS,
+      useValue: { float: 'auto' },
+    },
+    {
+      provide: FS_MAP_GOOGLE_MAP_KEY,
+      useValue: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE',
+    },
   ],
 })
 export class PlaygroundModule {
