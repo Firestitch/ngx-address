@@ -2,7 +2,7 @@
   <fs-address-picker
     [(address)]="address"
     [config]="config"
-    [name]="false"
+    [showName]="false"
     [format]="AddressFormat.Summary"
     #picker>
   </fs-address-picker>
@@ -10,5 +10,5 @@
 
 <fieldset [hidden]="address">
   <legend>Selected Address</legend>
-  <fs-address-format [address]="address" [name]="false" [format]="AddressFormat.Summary"></fs-address-format>
+  <fs-address-format [address]="address" [showName]="false" [format]="AddressFormat.Summary"></fs-address-format>
 </fieldset>

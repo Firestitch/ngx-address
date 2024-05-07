@@ -12,8 +12,8 @@ export class AddressRegionDisabledExampleComponent {
   public country = 'CA';
   public region = 'ON';
   public config: FsAddressRegionConfig = {
-    country: { disabled: true },
-    region: { disabled: true },
+    // country: { disabled: true },
+    // region: { disabled: true },
   };
 
 }

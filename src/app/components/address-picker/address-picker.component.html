@@ -6,9 +6,10 @@
       [format]="config.format"
       [disabled]="config.disabled"
       [readonly]="config.readonly"
-      [name]="name"
+      [showName]="showName"
       (edit)="addressEdit()"
-      (addressChange)="addressChange.emit($event)"
+      (cleared)="addressChanged(null)"
+      (addressChange)="addressChanged($event)"
       (selected)="addressSelected($event)">
     </fs-address-search>
   </div>

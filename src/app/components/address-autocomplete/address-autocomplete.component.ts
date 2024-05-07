@@ -290,6 +290,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
     this.inputAddress = this._defaultInputAddress();
     this.value = createEmptyAddress();
     this.ngControl?.control.setValue(this.value);
+    this.addressChange.emit(null);
     this._clearPredictions();
     setTimeout(() => {
       this.autocompleteTrigger.openPanel();

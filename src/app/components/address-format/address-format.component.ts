@@ -31,7 +31,7 @@ export class FsAddressFormatComponent implements OnInit {
   @Input() public format: AddressFormat = AddressFormat.OneLine;
   @Input() public includeFirst: 0;
   @Input() public disabled = false;
-  @Input() public name = true;
+  @Input() public showName = true;
 
   public lines: string[];
 
@@ -48,7 +48,7 @@ export class FsAddressFormatComponent implements OnInit {
   private _updateView() {
     const address = {
       ...this.address,
-      name: this.name ? this.address?.name : null,
+      name: this.showName ? this.address?.name : null,
     };
 
     switch (this.format) {

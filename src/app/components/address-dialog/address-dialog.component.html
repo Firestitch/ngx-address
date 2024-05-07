@@ -8,16 +8,29 @@
       </fs-address>
     </div>
     <div mat-dialog-actions>
-      <button mat-button type="submit" color="primary" data-cy="dialog-apply">Apply</button>
-      <button
-        mat-button
-        type="button"
-        data-cy="center-address"
-        *ngIf="config.map.showMap && address.lat && address.lng"
-        (click)="recenter()">
-        Center Address
+      <button 
+          mat-button 
+          type="submit" 
+          color="primary" 
+          data-cy="dialog-apply">
+        Apply
       </button>
-      <button mat-button type="button" [mat-dialog-close]="null" data-cy="dialog-cancel">Cancel</button>
+      <ng-container *ngIf="config.map.showMap && address?.lat && address?.lng">
+        <button
+            mat-button
+            type="button"
+            data-cy="center-address"
+            (click)="recenter()">
+          Center Address
+        </button>
+      </ng-container>
+      <button 
+          mat-button 
+          type="button" 
+          [mat-dialog-close]="null" 
+          data-cy="dialog-cancel">
+        Cancel
+      </button>
     </div>
   </fs-dialog>
 </form>

@@ -10,10 +10,11 @@ import {
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
-import { Subject } from 'rxjs';
 
 import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
+
+import { Subject } from 'rxjs';
 
 import { AddressFormat } from '../../enums/address-format.enum';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
@@ -31,7 +32,7 @@ import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-
       provide: ControlContainer,
       useFactory: controlContainerFactory,
       deps: [[new Optional(), NgForm]],
-    }
+    },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -57,7 +58,7 @@ export class FsAddressSearchComponent implements OnDestroy {
     return this._config;
   }
 
-  @Input() public name = true;
+  @Input() public showName = true;
   @Input() public address: FsAddress = {};
   @Input() public format = AddressFormat.TwoLine;
   @Input() public disabled = false;

@@ -11,20 +11,21 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
+
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+
+import { controlContainerFactory } from '@firestitch/core';
 
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { cloneDeep, isObject } from 'lodash-es';
 
-import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
-import { FsAddress, } from '../../interfaces/address.interface';
-
-import { ControlContainer, NgForm } from '@angular/forms';
-import { controlContainerFactory } from '@firestitch/core';
 import { AddressFormat } from '../../enums/address-format.enum';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
+import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
+import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressDialogComponent } from '../address-dialog/address-dialog.component';
 import { FsAddressSearchComponent } from '../address-search/address-search.component';
 import { AddressSearchEditEvent } from '../address-search/address-search.interface';
@@ -35,20 +36,25 @@ import { AddressSearchEditEvent } from '../address-search/address-search.interfa
   templateUrl: './address-picker.component.html',
   styleUrls: ['./address-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: FsAddressPickerComponent,
+    multi: true,
+  }],
   viewProviders: [
     {
       provide: ControlContainer,
       useFactory: controlContainerFactory,
       deps: [[new Optional(), NgForm]],
-    }
+    },
   ],
 })
-export class FsAddressPickerComponent implements OnChanges, OnDestroy {
+export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlValueAccessor {
 
   @ViewChild(FsAddressSearchComponent, { static: true })
   public addressSearch: FsAddressSearchComponent;
 
-  @Input('config') set setConfig(config: FsAddressPickerConfig) {
+  @Input('config') public set setConfig(config: FsAddressPickerConfig) {
     config = cloneDeep(config);
 
     if (!config.format) {
@@ -66,15 +72,15 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     this.config = config;
   }
 
-  @Input('format') set setFormat(value) {
+  @Input('format') public set setFormat(value) {
     this.config.format = value;
   }
 
-  @Input('disabled') set setDisabled(value) {
+  @Input('disabled') public set setDisabled(value) {
     this.config.disabled = value;
   }
 
-  @Input('readonly') set setReadonly(value) {
+  @Input('readonly') public set setReadonly(value) {
     this.config.readonly = value;
   }
 
@@ -82,13 +88,14 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
 
   @Output() public addressChange = new EventEmitter();
 
-  @Input() public name: boolean = true;
+  @Input() public showName: boolean = true;
 
   @ViewChild(FsAddressSearchComponent)
   public search: FsAddressSearchComponent;
 
   public view = 'search';
   public config: FsAddressPickerConfig = {};
+  public onChange: (value) => void;
 
   private _destroy$ = new Subject();
 
@@ -97,14 +104,39 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
     private _cdRef: ChangeDetectorRef,
   ) { }
 
+  public writeValue(obj: any): void {
+    this.address = obj;
+  }
+
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: any): void {
+    //
+  }
+
+  public setDisabledState?(disabled: boolean): void {
+    this.config.disabled = disabled;
+    this._cdRef.markForCheck();
+  }
+
   public ngOnChanges(changes: SimpleChanges) {
     if (
-      changes.address
-      && changes.address.currentValue !== changes.address.previousValue
+      changes.address &&
+      changes.address.currentValue !== changes.address.previousValue
     ) {
       if (!this.address) {
         this.address = createEmptyAddress();
       }
+    }
+  }
+
+  public addressChanged(address) {
+    this.address = address;
+    this.addressChange.emit(address);
+    if(this.onChange) {
+      this.onChange(address);
     }
   }
 
@@ -125,7 +157,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
           }
         });
     } else {
-      this.addressChange.emit(address);
+      this.addressChanged(address);
     }
   }
 
@@ -136,7 +168,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
         address: event.value || this.address,
         config: this.config,
         initial: event.initialChange,
-      }
+      },
     });
 
     dialogRef.afterClosed()
@@ -153,7 +185,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy {
           this.search.autocomplete.value = this.address;
         }
 
-        this.addressChange.emit(this.address);
+        this.addressChanged(this.address);
         this._cdRef.markForCheck();
       });
 

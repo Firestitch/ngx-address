@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
+import { FsAclModule } from '@firestitch/acl';
 import {
   FsAddressModule,
   FsAddressRegionCountryModule,
@@ -56,6 +57,7 @@ import { AppMaterialModule } from './material.module';
     FsAddressRegionCountryModule,
     AppMaterialModule,
     FsLabelModule,
+    FsAclModule,
     FsFormModule,
     RouterModule.forRoot([]),
     FsExampleModule.forRoot(),

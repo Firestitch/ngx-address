@@ -3,7 +3,6 @@
 @import '@firestitch/message/styles';
 @import "@firestitch/drawer/styles";
 @import "@firestitch/form/styles";
-@import "@firestitch/dialog/styles";
 @import '../src/app/styles';
 
 @include fs-drawer(mat.$blue-palette);

@@ -1,6 +1,7 @@
 <form fsForm (fsForm)="submit()">
   <fs-address-picker
-    [(address)]="address"
+    [(ngModel)]="address"
+    name="address"
     [config]="config"
     (addressChange)="changed($event)">
   </fs-address-picker>
