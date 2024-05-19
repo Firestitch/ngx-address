@@ -13,3 +13,14 @@
 mat-form-field {
   width: 100%;
 }
+
+// hack to support outline when control is invalid
+:host(.ng-invalid.ng-dirty) ::ng-deep{
+  .mat-form-field-outline {
+    color: #f44336;
+  }
+
+  .mat-form-field-outline-thick {
+    opacity: 1;
+  }
+}
