@@ -132,6 +132,15 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
     }
   }
 
+  public addressManual(name) {
+    this.open({ 
+      initialChange: false,
+      value: {
+        name,
+      }, 
+    });
+  }
+
   public addressChanged(address) {
     this.address = address;
     this.addressChange.emit(address);

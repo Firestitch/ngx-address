@@ -2,7 +2,7 @@
   "name": "@firestitch/address",
   "title": "Address",
   "description": "@firestitch/address",
-  "version": "14.0.5",
+  "version": "14.0.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-address"
@@ -57,7 +57,7 @@
     "@cypress/schematic": "^1.6.0",
     "@firestitch/acl": "^13.0.1",
     "@firestitch/api": "^12.3.10",
-    "@firestitch/autocomplete": "^12.3.2",
+    "@firestitch/autocomplete": "^13.0.4",
     "@firestitch/autocomplete-chips": "^12.1.0",
     "@firestitch/clear": "^12.3.6",
     "@firestitch/common": "^13.0.0",
@@ -73,7 +73,7 @@
     "@firestitch/iframe": "^12.0.0",
     "@firestitch/label": "^12.0.0",
     "@firestitch/lint": "^14.0.11",
-    "@firestitch/map": "^14.1.0",
+    "@firestitch/map": "^14.2.7",
     "@firestitch/menu": "^12.0.0",
     "@firestitch/message": "^12.3.1",
     "@firestitch/phone": "^12.4.0",

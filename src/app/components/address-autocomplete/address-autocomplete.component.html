@@ -22,7 +22,7 @@
       {{ option.description }}
     </mat-option>
     <div *ngIf="!config.hideEnterManually" class="static-options">
-      <mat-option [value]="{ id: 'manual', name: searchInputValue }">
+      <mat-option [value]="null" (click)="manual(searchInputValue)">
         Enter address manually
       </mat-option>
     </div>

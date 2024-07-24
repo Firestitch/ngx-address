@@ -111,6 +111,9 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   @Output()
   public readonly addressChange = new EventEmitter();
 
+  @Output()
+  public readonly addressManual = new EventEmitter<string>();
+
   @ViewChild('searchInput', { static: true, read: ElementRef })
   public readonly searchElement: ElementRef;
 
@@ -297,6 +300,10 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
     });
   }
 
+  public manual(value): void {
+    this.addressManual.emit(value);
+  }
+
   public reset(): void {
     this.ngControl.reset(createEmptyAddress());
   }
@@ -343,7 +350,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
             return (event.target as HTMLInputElement).value;
           }),
           tap((text) => {
-            if (!!!text) {
+            if (!text) {
               this._clearPredictions();
             }
           }),
@@ -399,7 +406,6 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
             return of({
               ...this.value,
               street: place.name,
-              manual: true,
             });
           }
 
@@ -426,6 +432,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
         map((option) => {
           return option.option.value;
         }),
+        filter((value)=> value !== null),
         switchMap((place) => this._placeToAddress(place)),
         takeUntil(this._destroy$),
       )

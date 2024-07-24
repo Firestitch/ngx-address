@@ -69,6 +69,7 @@ export class FsAddressSearchComponent implements OnDestroy {
   @Output() public addressChange = new EventEmitter();
   @Output() public edit = new EventEmitter();
   @Output() public selected = new EventEmitter();
+  @Output() public readonly addressManual = new EventEmitter<string>();
 
   @ViewChild(FsAddressAutocompleteComponent)
   public autocomplete: FsAddressAutocompleteComponent;
