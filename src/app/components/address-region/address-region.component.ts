@@ -155,6 +155,8 @@ export class FsAddressRegionComponent implements OnInit, OnDestroy {
       name: keyword,
     };
 
+    this.autocompleteModel.control.markAsDirty();
+
     this.regionChange.emit(keyword);
   }
 

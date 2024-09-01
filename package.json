@@ -57,7 +57,7 @@
     "@cypress/schematic": "^1.6.0",
     "@firestitch/acl": "^13.0.1",
     "@firestitch/api": "^12.3.10",
-    "@firestitch/autocomplete": "^13.0.4",
+    "@firestitch/autocomplete": "^13.0.8",
     "@firestitch/autocomplete-chips": "^12.1.0",
     "@firestitch/clear": "^12.3.6",
     "@firestitch/common": "^13.0.0",
