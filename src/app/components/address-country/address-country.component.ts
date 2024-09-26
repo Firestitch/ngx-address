@@ -1,16 +1,16 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  Output,
-  forwardRef,
-  ChangeDetectionStrategy,
   OnChanges,
-  SimpleChanges,
-  ChangeDetectorRef,
   Optional,
+  Output,
+  SimpleChanges,
+  forwardRef,
 } from '@angular/core';
-import { ControlContainer, NgForm, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
 
 import { controlContainerFactory } from '@firestitch/core';
 
@@ -25,11 +25,18 @@ import { searchCountryRegions } from '../../helpers';
   selector: 'fs-address-country',
   templateUrl: './address-country.component.html',
   styleUrls: ['./address-country.component.scss'],
-  providers: [   {
+  providers: [{
     provide: NG_VALUE_ACCESSOR,
     multi: true,
     useExisting: forwardRef(() => FsAddressCountryComponent),
-  } ],
+  }],
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAddressCountryComponent implements OnChanges, ControlValueAccessor {
@@ -50,12 +57,12 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
   @Output() selectionChange = new EventEmitter<any>();
 
   public country;
-  public onChange = (data: any) => {};
-  public onTouched = () => {};
+  public onChange = (data: any) => { };
+  public onTouched = () => { };
 
   private _placeholder: string = null;
 
-  constructor(private _cdRef: ChangeDetectorRef) {}
+  constructor(private _cdRef: ChangeDetectorRef) { }
 
   public fetch = (keyword: string) => {
     return of(keyword)
@@ -63,8 +70,8 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
         map((kw) => {
           return searchCountryRegions(kw, this.countries, 10);
         }),
-      )
-  }
+      );
+  };
 
   public displayWith = (data) => {
     return data.name;
@@ -98,7 +105,7 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
     if (changes.excludeCountries && changes.excludeCountries.currentValue) {
       this.countries = this.countries.filter((country) => {
         return this.excludeCountries.indexOf(country.code) === -1;
-      })
+      });
     }
   }
 }
