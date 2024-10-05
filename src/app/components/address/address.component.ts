@@ -141,7 +141,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this._destory$.next();
+    this._destory$.next(null);
     this._destory$.complete();
   }
 

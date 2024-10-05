@@ -178,7 +178,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   }
   public set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
-    this.stateChanges.next();
+    this.stateChanges.next(null);
   }
 
   @Input()
@@ -187,7 +187,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   }
   public set required(req) {
     this._required = coerceBooleanProperty(req);
-    this.stateChanges.next();
+    this.stateChanges.next(null);
   }
 
   @Input()
@@ -196,7 +196,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   }
   public set placeholder(plh) {
     this._placeholder = plh;
-    this.stateChanges.next();
+    this.stateChanges.next(null);
   }
 
   @HostBinding('class.floating')
@@ -217,7 +217,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   }
 
   public ngOnDestroy() {
-    this._destroy$.next();
+    this._destroy$.next(null);
     this._destroy$.complete();
   }
 
@@ -340,7 +340,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
       fromEvent(this.searchElement.nativeElement, 'keyup')
         .pipe(
           tap(() => {
-            this.stateChanges.next();
+            this.stateChanges.next(null);
           }),
           debounceTime(200),
           filter((event: KeyboardEvent) => {
@@ -524,7 +524,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
       )
       .subscribe((origin) => {
         this.focused = !!origin;
-        this.stateChanges.next();
+        this.stateChanges.next(null);
       });
   }
 }

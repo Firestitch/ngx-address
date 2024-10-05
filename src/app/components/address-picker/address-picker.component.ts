@@ -211,7 +211,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
   }
 
   public ngOnDestroy() {
-    this._destroy$.next();
+    this._destroy$.next(null);
     this._destroy$.complete();
   }
 }
