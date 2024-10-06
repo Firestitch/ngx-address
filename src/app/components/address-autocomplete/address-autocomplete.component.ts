@@ -411,7 +411,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
 
           return this._getPlaceDetails(place);
         }),
-        map((response) => {
+        map((response: any) => {
           let address: FsAddress;
 
           if (response.result) {
