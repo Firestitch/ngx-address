@@ -1,9 +1,11 @@
 <mat-form-field [floatLabel]="empty ? 'auto' : 'always'">
-  <mat-label>{{placeholder}}</mat-label>
+  <mat-label>
+    {{ placeholder }}
+  </mat-label>
   <ng-content></ng-content>
   <input
     matInput
-    type="search"
+    type="text"
     autocomplete="off"
     [(ngModel)]="inputAddress"
     [matAutocomplete]="autocomplete"
@@ -18,14 +20,22 @@
       autoActiveFirstOption
       [class]="'fs-autocomplete-pane'"
       #autocomplete="matAutocomplete">
-    <mat-option *ngFor="let option of predictions" [value]="option">
+    <mat-option
+        *ngFor="let option of predictions"
+        [value]="option">
       {{ option.description }}
     </mat-option>
-    <div *ngIf="!config.hideEnterManually" class="static-options">
-      <mat-option [value]="null" (click)="manual(searchInputValue)">
+    <div
+        *ngIf="!config.hideEnterManually"
+        class="static-options">
+      <mat-option
+          [value]="null"
+          (click)="manual(searchInputValue)">
         Enter address manually
       </mat-option>
     </div>
   </mat-autocomplete>
-  <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
+  <mat-hint *ngIf="config.hint">
+    {{ config.hint }}
+  </mat-hint>
 </mat-form-field>

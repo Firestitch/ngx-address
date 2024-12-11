@@ -1,18 +1,19 @@
 <mat-form-field
     *ngIf="config.name.visible!==false"
     class="name">
-  <mat-label>Location name</mat-label>
+  <mat-label>
+    Location name
+  </mat-label>
   <input
     matInput
     autocomplete="nope"
     [(ngModel)]="address.name"
     [disabled]="config.name.disabled"
     [fsFormRequired]="config.name.required"
-    [name]="controlNames.locationName"    
+    [name]="controlNames.locationName"
     (change)="change($event)"
     autocomplete="off">
 </mat-form-field>
-
 <ng-container *ngIf="config.street.visible!==false">
   <ng-container *ngIf="suggestions; else textStreetField">
     <fs-address-autocomplete
@@ -26,13 +27,14 @@
       [name]="controlNames.street">
     </fs-address-autocomplete>
   </ng-container>
-
   <ng-template #textStreetField>
     <mat-form-field class="street">
-      <mat-label>{{config.street.placeholder || 'Street'}}</mat-label>
+      <mat-label>
+        {{ config.street.placeholder || 'Street' }}
+      </mat-label>
       <input
         matInput
-        type="search"
+        type="text"
         autocomplete="nope"
         [(ngModel)]="address.street"
         [disabled]="config.street.disabled"
@@ -40,17 +42,18 @@
         [name]="controlNames.street"
         (change)="change()"
         autocomplete="off">
-      </mat-form-field>
+    </mat-form-field>
   </ng-template>
 </ng-container>
-
 <mat-form-field
     *ngIf="config.address2.visible"
     class="address2">
-  <mat-label>{{config.address2.placeholder || 'Address 2'}}</mat-label>
+  <mat-label>
+    {{ config.address2.placeholder || 'Address 2' }}
+  </mat-label>
   <input
     matInput
-    type="search"
+    type="text"
     autocomplete="nope"
     [(ngModel)]="address.address2"
     [disabled]="config.address2.disabled"
@@ -59,14 +62,15 @@
     (change)="change($event)"
     autocomplete="off">
 </mat-form-field>
-
 <mat-form-field
     *ngIf="config.address3.visible"
     class="address3">
-  <mat-label>{{config.address3.placeholder || 'Address 3'}}</mat-label>
+  <mat-label>
+    {{ config.address3.placeholder || 'Address 3' }}
+  </mat-label>
   <input
     matInput
-    type="search"
+    type="text"
     autocomplete="nope"
     [(ngModel)]="address.address3"
     [disabled]="config.address3.disabled"
@@ -78,10 +82,12 @@
 <div class="city-region-zip-country">
   <div class="city">
     <mat-form-field *ngIf="config.city.visible!==false">
-      <mat-label>{{config.city.placeholder || 'City'}}</mat-label>
+      <mat-label>
+        {{ config.city.placeholder || 'City' }}
+      </mat-label>
       <input
         matInput
-        type="search"
+        type="text"
         autocomplete="nope"
         [(ngModel)]="address.city"
         [disabled]="config.city.disabled"
@@ -91,7 +97,6 @@
         autocomplete="off">
     </mat-form-field>
   </div>
-
   <div class="region">
     <fs-address-region
       *ngIf="config.region.visible!==false"
@@ -105,14 +110,14 @@
       [regionCountryOrder]="regionCountryOrder">
     </fs-address-region>
   </div>
-
   <div class="zip">
-    <mat-form-field
-      *ngIf="config.zip.visible!==false">
-      <mat-label>{{ zipLabel }}</mat-label>
+    <mat-form-field *ngIf="config.zip.visible!==false">
+      <mat-label>
+        {{ zipLabel }}
+      </mat-label>
       <input
         matInput
-        type="search"
+        type="text"
         autocomplete="nope"
         [(ngModel)]="address.zip"
         [disabled]="config.zip.disabled"
@@ -122,7 +127,6 @@
         autocomplete="off">
     </mat-form-field>
   </div>
-
   <div class="country">
     <fs-address-country
       *ngIf="config.country.visible!==false"
@@ -136,8 +140,9 @@
     </fs-address-country>
   </div>
 </div>
-
-<div class="map-container" *ngIf="mapConfig.showMap">
+<div
+    class="map-container"
+    *ngIf="mapConfig.showMap">
   <fs-map
       [height]="'300px'"
       [width]="'100%'"
@@ -153,9 +158,14 @@
       [lng]="mapConfig.marker.coords.longitude">
     </fs-map-marker>
   </fs-map>
-
-  <div class="address-incomplete" *ngIf="!address.lat && !address.lng">
-    <div *ngIf="!isSearched">Please populate the address above to locate it on the map</div>
-    <div *ngIf="isSearched">Could not find address "{{ searchedAddress }}"</div>
+  <div
+      class="address-incomplete"
+      *ngIf="!address.lat && !address.lng">
+    <div *ngIf="!isSearched">
+      Please populate the address above to locate it on the map
+    </div>
+    <div *ngIf="isSearched">
+      Could not find address "{{ searchedAddress }}"
+    </div>
   </div>
 </div>

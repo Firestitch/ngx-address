@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
-import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
+
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { FsAclModule } from '@firestitch/acl';
 import {
@@ -89,8 +90,8 @@ import { AppMaterialModule } from './material.module';
   ],
   providers: [
     {
-      provide: MAT_RIPPLE_GLOBAL_OPTIONS,
-      useValue: { float: 'auto' },
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { floatLabel: 'auto', appearance: 'outline' },
     },
     {
       provide: FS_MAP_GOOGLE_MAP_KEY,
