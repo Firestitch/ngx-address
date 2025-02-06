@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 // Interfaces
@@ -10,11 +10,10 @@ import {
   FsAddress,
   FsAddressFormatComponent,
   FsAddressPickerComponent,
-  FsAddressPickerConfig
+  FsAddressPickerConfig,
 } from '@firestitch/address';
 import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
-
 
 
 @Component({
@@ -26,7 +25,7 @@ import { FsMessage } from '@firestitch/message';
 export class AddressPickerComponent {
 
   public view = '';
-  public address: FsAddress;
+  public address: FsAddress = { address2: 'address2', address3: 'address3' };
   public config: FsAddressPickerConfig = {
     label: 'Location',
     hint: 'Hint Hint Hint Hint Hint...',
@@ -39,7 +38,7 @@ export class AddressPickerComponent {
     city: { visible: true, required: true, disabled: false },
     region: { visible: true, required: true, disabled: false },
     zip: { visible: true, required: false, disabled: false },
-    country: { visible: true, required: true, disabled: false }
+    country: { visible: true, required: true, disabled: false },
   };
 
   @ViewChild(FsAddressFormatComponent)

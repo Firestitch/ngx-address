@@ -8,5 +8,7 @@ export function addressIsEmpty(value: FsAddress): boolean {
       && !value.region
       && !value.zip
       && !value.country
-    )
+      && !value.address2
+      && !value.address3
+    );
 }
