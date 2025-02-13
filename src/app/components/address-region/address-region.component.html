@@ -8,11 +8,17 @@
     [disabled]="disabled"
     [fsFormRequired]="required"
     [name]="controlName">
-  <ng-template fsAutocompleteTemplate let-data="data">
+  <ng-template
+      fsAutocompleteTemplate
+      let-data="data">
     <span class="country-region">
-      <span>{{ data.name }}</span>
+      <span>
+        {{ data.name }}
+      </span>
       <ng-container *ngIf="!regionModel && addressCountries.length > 1">
-        <span>{{data.country}}</span>
+        <span>
+          {{ data.country }}
+        </span>
       </ng-container>
     </span>
   </ng-template>
@@ -23,7 +29,5 @@
       [show]="justUseShow">
     Just Use "{{ keyword }}"
   </ng-template>
-
   <ng-template fsAutocompleteNoResults></ng-template>
-
 </fs-autocomplete>
