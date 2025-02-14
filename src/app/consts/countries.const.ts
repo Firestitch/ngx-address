@@ -301,6 +301,7 @@ export const Countries: IAddressCountry[] = [
       { code: 'VI', name: 'Virgin Islands' },
       { code: 'VT', name: 'Vermont' },
       { code: 'WA', name: 'Washington' },
+      { code: 'DC', name: 'Washington (District of Columbia)' },
       { code: 'WI', name: 'Wisconsin' },
       { code: 'WV', name: 'West Virginia' },
       { code: 'WY', name: 'Wyoming' },
