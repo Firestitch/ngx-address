@@ -133,11 +133,11 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
   }
 
   public addressManual(name) {
-    this.open({ 
+    this.open({
       initialChange: false,
       value: {
-        name,
-      }, 
+        street: name,
+      },
     });
   }
 

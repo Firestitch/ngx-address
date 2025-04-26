@@ -18,7 +18,7 @@ import { of } from 'rxjs';
 })
 export class FsAddressDialogComponent {
 
-  @ViewChild(FsAddressComponent) 
+  @ViewChild(FsAddressComponent)
   public addressComponent: FsAddressComponent;
 
   public address: FsAddress;

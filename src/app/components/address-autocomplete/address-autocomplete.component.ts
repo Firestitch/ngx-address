@@ -26,14 +26,19 @@ import {
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  MatOption
+} from '@angular/material/autocomplete';
 import { MatFormFieldControl } from '@angular/material/form-field';
 
 import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 import { FsMap } from '@firestitch/map';
 
-import { bindCallback, fromEvent, Observable, of, Subject } from 'rxjs';
+import { fromEvent, Observable, of, Subject } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -47,9 +52,10 @@ import { AddressFormat } from '../../enums/address-format.enum';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { extractUnit } from '../../helpers/extract-unit';
-import { googleDetailsToAddress } from '../../helpers/google-details-to-address';
+import { googlePlaceToFsAddress } from '../../helpers/google-place-to-address';
 import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
+import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
 
 @Component({
@@ -127,9 +133,8 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   public id = `fs-address-autocomplete-${FsAddressAutocompleteComponent.nextId++}`;
 
   public inputAddress: FsAddress = this._defaultInputAddress();
-  public predictions: any[] = [];
-  public googleAutocompleteService: google.maps.places.AutocompleteService = null;
-  public googlePlacesService: google.maps.places.PlacesService = null;
+  public googleSuggestions: google.maps.places.AutocompleteSuggestion[] = [];
+  public googlePlace: google.maps.places.Place = null;
   public onChange: (data: any) => void;
   public onTouched: () => void;
   public errorState = false;
@@ -300,18 +305,12 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
     });
   }
 
-  public manual(value): void {
+  public manual(value: string): void {
     this.addressManual.emit(value);
   }
 
   public reset(): void {
     this.ngControl.reset(createEmptyAddress());
-  }
-
-  public autocompletePanelClosed(): void {
-    if (this.empty && !!this.inputAddress) {
-      this.inputAddress = null;
-    }
   }
 
   // Search input can't be null. We implemented required validation to show asterisk if needed
@@ -328,11 +327,11 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
         .pipe(
           filter((event: KeyboardEvent) => event.code === 'Tab'),
           map(() => this.autocompleteTrigger.activeOption?.value),
-          filter((place) => !!place && this.predictions.length !== 0),
+          filter((place) => !!place && this.googleSuggestions.length !== 0),
           switchMap((place) => this._placeToAddress(place)),
           takeUntil(this._destroy$),
         )
-        .subscribe((address: any) => {
+        .subscribe((address: FsAddress) => {
           this._selectAddress(address);
           this._clearPredictions();
         });
@@ -368,14 +367,14 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
           }),
           distinctUntilChanged(),
           switchMap((text: string) => {
-            return this._getPlacePredictions(text);
+            return this._getPlaceSuggestions(text);
           }),
           takeUntil(this._destroy$),
         )
-        .subscribe((response: any) => {
+        .subscribe((suggestions: google.maps.places.AutocompleteSuggestion[]) => {
           this._ngZone.run(() => {
-            this.predictions = [
-              ...response.predictions,
+            this.googleSuggestions = [
+              ...suggestions,
             ];
 
             this._cdRef.markForCheck();
@@ -385,7 +384,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   }
 
   private _clearPredictions() {
-    this.predictions = [];
+    this.googleSuggestions = [];
     this._cdRef.markForCheck();
   }
 
@@ -394,34 +393,37 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
     this.addressChange.emit(address);
   }
 
-  private _placeToAddress(data): Observable<any> {
-    return of(data)
+  private _placeToAddress(suggestion: google.maps.places.AutocompleteSuggestion): Observable<FsAddress> {
+    if (!suggestion || !this.googlePlace) {
+      return of(null);
+    }
+
+    const place = suggestion.placePrediction.toPlace();
+    const fetchFieldsRequestOptions: google.maps.places.FetchFieldsRequest = {
+      fields: [
+        'displayName',
+        'location',
+        'addressComponents',
+        'formattedAddress',
+      ],
+    };
+
+    // TODO
+    // if (place && !place.place_id) {
+    //   return of({
+    //     ...this.value,
+    //     street: place.name,
+    //   });
+    // }
+
+    return fromPromise(place.fetchFields(fetchFieldsRequestOptions))
       .pipe(
-        switchMap((place) => {
-          if (!place || !this.googlePlacesService) {
-            return of(null);
+        map(({ place }: {place: google.maps.places.Place}): FsAddress => {
+          if (!place) {
+            return {};
           }
 
-          if (place && !place.place_id) {
-            return of({
-              ...this.value,
-              street: place.name,
-            });
-          }
-
-          return this._getPlaceDetails(place);
-        }),
-        map((response: any) => {
-          let address: FsAddress;
-
-          if (response.result) {
-            address = googleDetailsToAddress(response.result, this.config);
-            address.description = response.place.description;
-          } else {
-            address = response;
-          }
-
-          return address;
+          return googlePlaceToFsAddress(place, this.config);
         }),
       );
   }
@@ -429,14 +431,24 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   private _listenAutocompleteSelection(): void {
     this.autoCompleteRef.optionSelected
       .pipe(
-        map((option) => {
-          return option.option.value;
+        map((event: MatAutocompleteSelectedEvent) => event.option),
+        // used to get the value from input when "manual" option selected
+        filter((option: MatOption<{ manual: boolean, value: string} | google.maps.places.AutocompleteSuggestion>) => {
+          if (option.value instanceof google.maps.places.AutocompleteSuggestion) {
+            return true;
+          }
+
+          this.manual(option.value.value);
+
+          return false;
         }),
-        filter((value)=> value !== null),
-        switchMap((place) => this._placeToAddress(place)),
+        map((option) => {
+          return option.value;
+        }),
+        switchMap((value: google.maps.places.AutocompleteSuggestion) => this._placeToAddress(value)),
         takeUntil(this._destroy$),
       )
-      .subscribe((address) => {
+      .subscribe((address: FsAddress) => {
         this._ngZone.run(() => {
           this.searchElement.nativeElement.blur();
           this.value = address;
@@ -461,59 +473,24 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
           takeUntil(this._destroy$),
         )
         .subscribe(() => {
-          this.googleAutocompleteService = new google.maps.places.AutocompleteService();
-          this.googlePlacesService = new google.maps.places
-            .PlacesService(this.searchElement.nativeElement);
+          this.googlePlace = new google.maps.places.Place({ id: '1', });
         });
     });
   }
 
-  private _getPlacePredictions(address: string) {
+  private _getPlaceSuggestions(address: string): Promise<google.maps.places.AutocompleteSuggestion[]> {
     const { text } = extractUnit(address);
-    const placesRequest = this.googleAutocompleteService
-      .getPlacePredictions(
-        { input: text },
-        () => {
-          //
-        },
-      ) as unknown as Promise<{ predictions: google.maps.places.AutocompletePrediction[] }>;
+    const placesRequest = google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
+      { input: text }
+    );
 
     return placesRequest
       .then((result) => {
-        return {
-          value: text,
-          predictions: result?.predictions || [],
-        };
+        return result.suggestions;
       })
       .catch(() => {
-        return {
-          value: text,
-          predictions: [],
-        };
+        return [];
       });
-  }
-
-  private _getPlaceDetails(
-    place: google.maps.places.PlaceDetailsRequest,
-  ): Observable<{ result: google.maps.places.PlaceResult; place: google.maps.places.PlaceDetailsRequest }> {
-    const getDetailsFactory = bindCallback(
-      this.googlePlacesService.getDetails.bind(this.googlePlacesService),
-    ) as any;
-
-    return getDetailsFactory(place)
-      .pipe(
-        map(([result, status]) => {
-          if (status !== google.maps.places.PlacesServiceStatus.OK) {
-            return null;
-          }
-
-          return {
-            place,
-            result,
-          };
-
-        }),
-      );
   }
 
   private _registerFocusMonitor(): void {

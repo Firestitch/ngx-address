@@ -75,7 +75,7 @@
     "@firestitch/iframe": "^18.0.0",
     "@firestitch/label": "^18.0.15",
     "@firestitch/lint": "^18.0.19",
-    "@firestitch/map": "^18.0.0",
+    "@firestitch/map": "^18.0.1",
     "@firestitch/menu": "^18.0.5",
     "@firestitch/message": "^18.0.2",
     "@firestitch/phone": "^18.0.1",

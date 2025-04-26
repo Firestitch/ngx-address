@@ -13,29 +13,33 @@
     [disabled]="disabled"
     [fsClear]="showClear && !empty && !disabled && !readonly"
     (cleared)="clear()"
-    #searchInput>
+    #searchInput="ngModel">
   <mat-autocomplete
       [displayWith]="displayWith"
-      (closed)="autocompletePanelClosed()"
       autoActiveFirstOption
       [class]="'fs-autocomplete-pane'"
       #autocomplete="matAutocomplete">
-    <mat-option
-        *ngFor="let option of predictions"
-        [value]="option">
-      {{ option.description }}
-    </mat-option>
-    <div
-        *ngIf="!config.hideEnterManually"
-        class="static-options">
+    @for (option of googleSuggestions; track option) {
       <mat-option
-          [value]="null"
-          (click)="manual(searchInputValue)">
-        Enter address manually
+        [value]="option">
+        {{ option.placePrediction.text.text }}
       </mat-option>
-    </div>
+    }
+
+    @if (!config.hideEnterManually) {
+      <div
+        class="static-options">
+        <mat-option
+          [value]="{ manual: true, value: searchInput.value}">
+          Enter address manually
+        </mat-option>
+      </div>
+    }
   </mat-autocomplete>
-  <mat-hint *ngIf="config.hint">
-    {{ config.hint }}
-  </mat-hint>
+
+  @if (config.hint) {
+    <mat-hint>
+      {{ config.hint }}
+    </mat-hint>
+  }
 </mat-form-field>
