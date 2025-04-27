@@ -2,18 +2,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   HostBinding,
+  inject,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
   Optional,
   Output,
   Self,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   ControlContainer,
@@ -45,8 +47,9 @@ import {
   filter,
   map,
   switchMap,
-  takeUntil, tap,
+  tap,
 } from 'rxjs/operators';
+import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
 import { AddressFormat } from '../../enums/address-format.enum';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
@@ -55,7 +58,6 @@ import { extractUnit } from '../../helpers/extract-unit';
 import { googlePlaceToFsAddress } from '../../helpers/google-place-to-address';
 import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
-import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
 
 @Component({
@@ -78,7 +80,7 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
   ],
 })
 export class FsAddressAutocompleteComponent
-implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validator {
+implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validator {
 
   public static nextId = 0;
 
@@ -149,7 +151,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
   private _required = false;
   private _placeholder: string;
 
-  private _destroy$ = new Subject<void>();
+  private _destroyRef = inject(DestroyRef);
 
   constructor(
     @Optional() @Self() public ngControl: NgControl,
@@ -171,10 +173,6 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
 
   public get value(): FsAddress {
     return this._address;
-  }
-
-  public get searchInputValue(): string {
-    return this.searchElement.nativeElement.value;
   }
 
   @Input()
@@ -219,11 +217,6 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
     this._listenAutocompleteSelection();
     this._registerFocusMonitor();
     this.ngControl.control.setValidators([this.validate.bind(this)]);
-  }
-
-  public ngOnDestroy() {
-    this._destroy$.next(null);
-    this._destroy$.complete();
   }
 
   public writeValue(value: FsAddress | null) {
@@ -329,7 +322,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
           map(() => this.autocompleteTrigger.activeOption?.value),
           filter((place) => !!place && this.googleSuggestions.length !== 0),
           switchMap((place) => this._placeToAddress(place)),
-          takeUntil(this._destroy$),
+          takeUntilDestroyed(this._destroyRef),
         )
         .subscribe((address: FsAddress) => {
           this._selectAddress(address);
@@ -369,7 +362,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
           switchMap((text: string) => {
             return this._getPlaceSuggestions(text);
           }),
-          takeUntil(this._destroy$),
+          takeUntilDestroyed(this._destroyRef),
         )
         .subscribe((suggestions: google.maps.places.AutocompleteSuggestion[]) => {
           this._ngZone.run(() => {
@@ -446,7 +439,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
           return option.value;
         }),
         switchMap((value: google.maps.places.AutocompleteSuggestion) => this._placeToAddress(value)),
-        takeUntil(this._destroy$),
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe((address: FsAddress) => {
         this._ngZone.run(() => {
@@ -470,10 +463,10 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
     this._ngZone.runOutsideAngular(() => {
       this._map.loaded$
         .pipe(
-          takeUntil(this._destroy$),
+          takeUntilDestroyed(this._destroyRef),
         )
         .subscribe(() => {
-          this.googlePlace = new google.maps.places.Place({ id: '1', });
+          this.googlePlace = new google.maps.places.Place({ id: this.id, });
         });
     });
   }
@@ -497,7 +490,7 @@ implements OnInit, OnDestroy, MatFormFieldControl<FsAddress>, ControlValueAccess
     this._fm.monitor(this._elementRef, true)
       .pipe(
         filter(() => !this.disabled),
-        takeUntil(this._destroy$),
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe((origin) => {
         this.focused = !!origin;
