@@ -15,7 +15,6 @@ import {
   Self,
   ViewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   ControlContainer,
@@ -32,7 +31,7 @@ import {
   MatAutocomplete,
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
-  MatOption
+  MatOption,
 } from '@angular/material/autocomplete';
 import { MatFormFieldControl } from '@angular/material/form-field';
 
@@ -40,7 +39,7 @@ import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 import { FsMap } from '@firestitch/map';
 
-import { fromEvent, Observable, of, Subject } from 'rxjs';
+import { from, fromEvent, Observable, of, Subject } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -49,7 +48,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs/operators';
-import { fromPromise } from 'rxjs/internal/observable/innerFrom';
+
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { AddressFormat } from '../../enums/address-format.enum';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
@@ -255,7 +255,7 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
   public validate(control: AbstractControl): ValidationErrors | null {
     const validationErrors: ValidationErrors = {};
     const requiredField = [];
-    const parts = ['name', 'street', 'city', 'region', 'zip', 'country'];
+    const parts = ['name', 'street', 'city', 'region', 'zip', 'country', 'lat', 'lng'];
 
     if (this.required && this.empty) {
       validationErrors.required = true;
@@ -401,15 +401,7 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
       ],
     };
 
-    // TODO
-    // if (place && !place.place_id) {
-    //   return of({
-    //     ...this.value,
-    //     street: place.name,
-    //   });
-    // }
-
-    return fromPromise(place.fetchFields(fetchFieldsRequestOptions))
+    return from(place.fetchFields(fetchFieldsRequestOptions))
       .pipe(
         map(({ place }: {place: google.maps.places.Place}): FsAddress => {
           if (!place) {
@@ -466,7 +458,7 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
           takeUntilDestroyed(this._destroyRef),
         )
         .subscribe(() => {
-          this.googlePlace = new google.maps.places.Place({ id: this.id, });
+          this.googlePlace = new google.maps.places.Place({ id: this.id });
         });
     });
   }
@@ -474,7 +466,7 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
   private _getPlaceSuggestions(address: string): Promise<google.maps.places.AutocompleteSuggestion[]> {
     const { text } = extractUnit(address);
     const placesRequest = google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
-      { input: text }
+      { input: text },
     );
 
     return placesRequest
