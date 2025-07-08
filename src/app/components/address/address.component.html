@@ -140,6 +140,36 @@
     </fs-address-country>
   </div>
 </div>
+@if (config.lat.visible === true && config.lng.visible === true) {
+  <div class="lat-lng">
+    <mat-form-field>
+      <mat-label>
+        Latitude
+      </mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="address.lat"
+        [disabled]="config.lat.disabled"
+        [fsFormRequired]="config.lat.required"
+        [name]="controlNames.lat"
+        (change)="change($event)">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        Longitude
+      </mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="address.lng"
+        [disabled]="config.lng.disabled"
+        [fsFormRequired]="config.lng.required"
+        [name]="controlNames.lng"
+        (change)="change($event)">
+    </mat-form-field>
+  </div>
+}
 <div
     class="map-container"
     *ngIf="mapConfig.showMap">

@@ -61,7 +61,6 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
       config.format = AddressFormat.TwoLine;
     }
 
-    config.search = true;
     if (!isObject(config.map)) {
       config.map = { showMap: false };
     }
@@ -171,14 +170,15 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
   }
 
   public open(event: AddressSearchEditEvent): MatDialogRef<FsAddressDialogComponent> {
-    const dialogRef = this._dialog.open(FsAddressDialogComponent, {
-      width: '700px',
-      data: {
-        address: event.value || this.address,
-        config: this.config,
-        initial: event.initialChange,
-      },
-    });
+    const dialogRef = this._dialog
+      .open(FsAddressDialogComponent, {
+        width: '700px',
+        data: {
+          address: event.value || this.address,
+          config: this.config,
+          initial: event.initialChange,
+        },
+      });
 
     dialogRef.afterClosed()
       .pipe(

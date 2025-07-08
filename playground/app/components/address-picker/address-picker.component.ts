@@ -12,14 +12,12 @@ import {
   FsAddressPickerComponent,
   FsAddressPickerConfig,
 } from '@firestitch/address';
-import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
 
 
 @Component({
   selector: 'address-picker',
-  templateUrl: 'address-picker.component.html',
-  styles: [],
+  templateUrl: './address-picker.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressPickerComponent {
@@ -39,6 +37,8 @@ export class AddressPickerComponent {
     region: { visible: true, required: true, disabled: false },
     zip: { visible: true, required: false, disabled: false },
     country: { visible: true, required: true, disabled: false },
+    lat: { visible: true, required: true, disabled: false },
+    lng: { visible: true, required: true, disabled: false },
   };
 
   @ViewChild(FsAddressFormatComponent)
@@ -48,8 +48,7 @@ export class AddressPickerComponent {
   public addressPicker: FsAddressPickerComponent;
 
   constructor(
-    private example: FsExampleComponent,
-    private message: FsMessage,
+    private _message: FsMessage,
   ) {
   }
 
@@ -58,6 +57,6 @@ export class AddressPickerComponent {
   }
 
   public submit() {
-    this.message.success('Saved');
+    this._message.success('Saved');
   }
 }

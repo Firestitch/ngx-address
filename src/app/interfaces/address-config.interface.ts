@@ -1,6 +1,7 @@
-import { FsAddressMapConfig } from './address-map-config.interface';
-import { FsAddressCollapseButtonConfig } from './address-collapse-button-config.interface';
 import { AddressFormat } from '../enums/address-format.enum';
+
+import { FsAddressCollapseButtonConfig } from './address-collapse-button-config.interface';
+import { FsAddressMapConfig } from './address-map-config.interface';
 
 export interface FsAddressFieldSetting {
   disabled?: boolean,

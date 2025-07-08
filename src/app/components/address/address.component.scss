@@ -48,6 +48,15 @@ mat-label::after {
   display: block;
 }
 
+.lat-lng {
+  display: flex;
+  gap: 5px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
 .city-region-zip-country {
   display: flex;
   flex-wrap: wrap;

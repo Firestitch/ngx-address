@@ -55,7 +55,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public suggestions = false;
 
   @Input('config') public set setConfig(config: FsAddressConfig) {
-
     config.search = config.search === undefined ? false : config.search;
 
     if (!isObject(config.map)) {
@@ -76,6 +75,8 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     city: `city_${guid('xxxxxxxx')}`,
     addressCountry: `address_country_${guid('xxxxxxxx')}`,
     zip: `zip_${guid('xxxxxxxx')}`,
+    lat: `lat_${guid('xxxxxxxx')}`,
+    lng: `lng_${guid('xxxxxxxx')}`,
   };
 
   public config: FsAddressConfig = {};
@@ -178,7 +179,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public changeRegion() {
-    if (!!this.address.region) {
+    if (this.address.region) {
       const regionCountry = this.countries.find((country) => {
         return country.regions
           && country.regions.find((region) => this.address.region === region.code);
@@ -193,7 +194,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public change(event?) {
-
     if (event) {
       event.stopPropagation();
     }
@@ -264,12 +264,14 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       address3: { required: false, visible: false },
       city: { required: false, visible: true },
       street: { required: false, visible: true },
-      zip: { required: false, visible: true }, ...this.config,
+      zip: { required: false, visible: true }, 
+      lat: { required: false, visible: false },
+      lng: { required: false, visible: false },
+      ...this.config,
     };
   }
 
   private _initMap() {
-
     this.mapConfig = {
       center: {
         latitude: this.address.lat || 9999,
@@ -305,15 +307,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
         }
       });
     }
-
-    let isEmpty = true;
-    Object.keys(this.address).forEach((objectKey) => {
-      if (this.address[objectKey]) {
-        isEmpty = false;
-
-        return;
-      }
-    });
   }
 
   private _initZipAndStateLabels() {
@@ -322,7 +315,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   private _updateCountryRegionLabels() {
     if (this.address.country) {
-      this.zipLabel = this.address.country === Country.UnitedStates
+      this.zipLabel = this.address.country === String(Country.UnitedStates)
         ? 'ZIP Code'
         : 'Postal Code';
     } else {
