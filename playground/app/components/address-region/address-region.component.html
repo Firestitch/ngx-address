@@ -1,11 +1,20 @@
-<form>
+<form fsForm>
+  <fs-address-country
+    [(ngModel)]="country"
+    name="country">
+  </fs-address-country>
   <fs-address-region
     [countries]="countries"
     [(region)]="region">
   </fs-address-region>
 </form>
-
-<fieldset *ngIf="region">
-  <legend>Selected</legend>
+<fieldset>
+  <legend>
+    Selected country
+  </legend>
+  {{ country }}
+  <legend>
+    Selected region
+  </legend>
   {{ region }}
 </fieldset>

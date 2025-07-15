@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
 
+import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 
 import { of } from 'rxjs';
@@ -46,10 +47,12 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
   @Input() public excludeCountries: string[];
   @Input() public countries = Countries;
   @Input() public label = 'Country';
+  
 
   @Output() public selectionChange = new EventEmitter<any>();
 
   public country;
+  public name = `addressCountry${guid()}`;
   public onChange: (data: any) => void;
   public onTouched: () => void;
 
@@ -65,17 +68,13 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
   };
 
   public writeValue(data: any): void {
-    if (data) {
-      this.country = this.countries.find((country) => country.code === data);
-      this._cdRef.markForCheck();
-    } else {
-      this.country = data;
-    }
+    this.country = this.countries
+      .find((country) => country.code === data);
+    this._cdRef.markForCheck();
   }
 
   public changed(value) {
     const code = value?.code;
-
     this.onChange(code);
     this.selectionChange.emit(code);
   }

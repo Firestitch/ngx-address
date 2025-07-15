@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 // Interfaces
-import { FsAddressRegionConfig, Country } from '@firestitch/address';
+import { Country, FsAddressRegionConfig } from '@firestitch/address';
 
 
 @Component({
   selector: 'address-region-required-example',
-  templateUrl: 'address-region-required-example.component.html',
-  styles: []
+  templateUrl: './address-region-required-example.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressRegionRequiredExampleComponent {
 
@@ -16,11 +16,11 @@ export class AddressRegionRequiredExampleComponent {
   public config: FsAddressRegionConfig = {
     country: {
       required: true,
-      list: [ Country.Canada, Country.UnitedStates ]
+      list: [Country.Canada, Country.UnitedStates],
     },
     region: {
-      required: true
-    }
+      required: true,
+    },
   };
 
   constructor() {

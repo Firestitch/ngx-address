@@ -12,5 +12,6 @@ export class AddressRegionComponent {
 
   public countries = [Country.Canada];
   public region = 'ON';
+  public country = Country.UnitedStates;
 
 }

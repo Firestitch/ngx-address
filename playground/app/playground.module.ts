@@ -8,6 +8,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { FsAclModule } from '@firestitch/acl';
 import {
+  FsAddressCountryModule,
   FsAddressModule,
   FsAddressRegionCountryModule,
   FsAddressRegionModule,
@@ -59,6 +60,7 @@ import { AppMaterialModule } from './material.module';
     AppMaterialModule,
     FsLabelModule,
     FsAclModule,
+    FsAddressCountryModule,
     FsFormModule,
     RouterModule.forRoot([]),
     FsExampleModule.forRoot(),
