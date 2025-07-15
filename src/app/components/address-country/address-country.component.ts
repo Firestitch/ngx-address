@@ -41,26 +41,17 @@ import { searchCountryRegions } from '../../helpers';
 })
 export class FsAddressCountryComponent implements OnChanges, ControlValueAccessor {
 
-  @Input() disabled = false;
-  @Input() required = false;
-  @Input() excludeCountries: string[];
-  @Input() countries = Countries;
-  @Input()
-  public set placeholder(value) {
-    this._placeholder = value || 'Country';
-  }
+  @Input() public disabled = false;
+  @Input() public required = false;
+  @Input() public excludeCountries: string[];
+  @Input() public countries = Countries;
+  @Input() public label = 'Country';
 
-  public get placeholder(): string {
-    return this._placeholder;
-  }
-
-  @Output() selectionChange = new EventEmitter<any>();
+  @Output() public selectionChange = new EventEmitter<any>();
 
   public country;
-  public onChange = (data: any) => { };
-  public onTouched = () => { };
-
-  private _placeholder: string = null;
+  public onChange: (data: any) => void;
+  public onTouched: () => void;
 
   constructor(private _cdRef: ChangeDetectorRef) { }
 
@@ -71,10 +62,6 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
           return searchCountryRegions(kw, this.countries, 10);
         }),
       );
-  };
-
-  public displayWith = (data) => {
-    return data.name;
   };
 
   public writeValue(data: any): void {

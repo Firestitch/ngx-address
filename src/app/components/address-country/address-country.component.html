@@ -1,14 +1,17 @@
-<fs-autocomplete
+<fs-autocomplete-chips
     [fetch]="fetch"
-    [displayWith]="displayWith"
     [fetchOnFocus]="true"
     [(ngModel)]="country"
+    [size]="'small'"
     (ngModelChange)="changed($event)"
-    [placeholder]="placeholder"
+    [label]="label"
+    [multiple]="false"
     [disabled]="disabled"
     [fsFormRequired]="required"
     name="country">
-  <ng-template fsAutocompleteTemplate let-data="data">
-    {{ data.name }}
+  <ng-template
+      fsAutocompleteChipsTemplate
+      let-object="object">
+    {{ object.name }}
   </ng-template>
-</fs-autocomplete>
+</fs-autocomplete-chips>

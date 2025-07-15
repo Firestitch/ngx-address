@@ -4,7 +4,7 @@
       *ngIf="config.country.visible!==false"
       [disabled]="config.country.disabled"
       [required]="config.country.required"
-      [placeholder]="config.country.placeholder"
+      [label]="config.country.placeholder"
       [countries]="countries"
       [(ngModel)]="country"
       (selectionChange)="changeCountry()"
@@ -13,13 +13,13 @@
   </div>
   <div class="region">
     <fs-address-region
-        [(region)]="region"
-        [country]="country"
-        (regionChange)="changeRegion()"
-        [countries]="regionCountries"
-        [disabled]="config.region.disabled"
-        [required]="config.region.required"
-        name="region">
+      [(region)]="region"
+      [country]="country"
+      (regionChange)="changeRegion()"
+      [countries]="regionCountries"
+      [disabled]="config.region.disabled"
+      [required]="config.region.required"
+      name="region">
     </fs-address-region>
   </div>
 </div>

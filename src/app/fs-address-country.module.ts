@@ -1,11 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FsAddressCountriesModule } from './fs-address-countries.module';
 
+
+import { FsAutocompleteChipsModule } from '@firestitch/autocomplete-chips';
 import { FsFormModule } from '@firestitch/form';
-import { FsAutocompleteModule } from '@firestitch/autocomplete';
+
 import { FsAddressCountryComponent } from './components/address-country/address-country.component';
+import { FsAddressCountriesModule } from './fs-address-countries.module';
 
 
 @NgModule({
@@ -14,13 +16,13 @@ import { FsAddressCountryComponent } from './components/address-country/address-
     FormsModule,
     FsFormModule,
     FsAddressCountriesModule,
-    FsAutocompleteModule,
+    FsAutocompleteChipsModule,
   ],
   declarations: [
-    FsAddressCountryComponent
+    FsAddressCountryComponent,
   ],
   exports: [
-    FsAddressCountryComponent
-  ]
+    FsAddressCountryComponent,
+  ],
 })
 export class FsAddressCountryModule {}
