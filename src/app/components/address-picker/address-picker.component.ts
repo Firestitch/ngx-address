@@ -111,7 +111,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: any): void {
+  public registerOnTouched(): void {
     //
   }
 
@@ -131,12 +131,10 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
     }
   }
 
-  public addressManual(name) {
+  public addressManual() {
     this.open({
       initialChange: false,
-      value: {
-        street: name,
-      },
+      value: {},
     });
   }
 

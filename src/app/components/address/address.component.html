@@ -15,35 +15,21 @@
     autocomplete="off">
 </mat-form-field>
 <ng-container *ngIf="config.street.visible!==false">
-  <ng-container *ngIf="suggestions; else textStreetField">
-    <fs-address-autocomplete
-      [config]="config"
-      [(ngModel)]="address"
-      (ngModelChange)="change()"
+  <mat-form-field class="street">
+    <mat-label>
+      {{ config.street.placeholder || 'Street' }}
+    </mat-label>
+    <input
+      matInput
+      type="text"
+      autocomplete="nope"
+      [(ngModel)]="address.street"
       [disabled]="config.street.disabled"
-      [suggestions]="suggestions"
-      [showClear]="false"
-      [placeholder]="config.street.placeholder || 'Street'"
-      [name]="controlNames.street">
-    </fs-address-autocomplete>
-  </ng-container>
-  <ng-template #textStreetField>
-    <mat-form-field class="street">
-      <mat-label>
-        {{ config.street.placeholder || 'Street' }}
-      </mat-label>
-      <input
-        matInput
-        type="text"
-        autocomplete="nope"
-        [(ngModel)]="address.street"
-        [disabled]="config.street.disabled"
-        [fsFormRequired]="config.street.required"
-        [name]="controlNames.street"
-        (change)="change()"
-        autocomplete="off">
-    </mat-form-field>
-  </ng-template>
+      [fsFormRequired]="config.street.required"
+      [name]="controlNames.street"
+      (change)="change()"
+      autocomplete="off">
+  </mat-form-field>
 </ng-container>
 <mat-form-field
     *ngIf="config.address2.visible"

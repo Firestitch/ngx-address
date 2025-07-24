@@ -52,7 +52,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public address: FsAddress;
   @Input() public excludeCountries: string[];
   @Input() public regionCountryOrder = [Country.Canada, Country.UnitedStates];
-  @Input() public suggestions = false;
 
   @Input('config') public set setConfig(config: FsAddressConfig) {
     config.search = config.search === undefined ? false : config.search;
@@ -96,29 +95,6 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
     this._initCountries();
     this._initZipAndStateLabels();
     this._initCollapseBtn();
-
-    // // Example ready event. Allow to use google object and map instance
-    // if (this.agmMap) {
-    //   this.agmMap
-    //     .mapReady
-    //     .pipe(
-    //       takeUntil(this._destory$)
-    //     )
-    //     .subscribe(() => {
-
-    //       this.agmMap.triggerResize();
-
-    //       if (this.address.name ||
-    //         this.address.country ||
-    //         this.address.region ||
-    //         this.address.city ||
-    //         this.address.zip) {
-    //           this.address.lat = 9999;
-    //           this.address.lng = 9999;
-    //           this.change();
-    //       }
-    //     });
-    //   }
   }
 
   public get regionCountries() {
