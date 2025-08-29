@@ -9,7 +9,9 @@ import {
 } from '@angular/core';
 
 import { Countries } from '../../consts';
+import { IAddressCountry } from '../../interfaces';
 import { FsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
+import { IAddressRegion } from '../../interfaces/address-region.interface';
 
 
 @Component({
@@ -49,12 +51,22 @@ export class FsAddressRegionCountryComponent implements OnInit {
       this.region = null;
     }
 
+    //if region is not in the list of regions for the country, set region to null
+    if (this.country && this.region) {
+      const selectedCountry = this.countries.find(
+        (country: IAddressCountry) => country.code === this.country,
+      );
+      if (!selectedCountry?.regions.some((region: IAddressRegion) => region.code === this.region)){
+        this.region = null;
+      }
+    }
+
     this.regionChange.emit(this.region);
     this.countryChange.emit(this.country);
   }
 
   public changeRegion() {
-    if (!!this.region) {
+    if (this.region) {
       const regionCountry = this.countries.find((country) => {
         return country.regions
           && country.regions.find((region) => this.region === region.code);
