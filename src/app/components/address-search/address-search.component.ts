@@ -95,10 +95,6 @@ export class FsAddressSearchComponent implements OnDestroy {
     this.autocomplete.clear();
   }
 
-  public resetAutocomplete(): void {
-    this.autocomplete.reset();
-  }
-
   public editClick(): void {
     if (this.editable) {
       this.edit.emit();

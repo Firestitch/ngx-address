@@ -308,7 +308,7 @@ export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
       show: true,
       title: 'Collapse Address Editor',
       color: 'primary',
-      theme: 'mat-raised-button', ...this.config.collapseButton,
+      theme: 'mat-flat-button', ...this.config.collapseButton,
     };
   }
 }

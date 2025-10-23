@@ -5,22 +5,20 @@ import {
   DestroyRef,
   ElementRef,
   EventEmitter,
+  forwardRef,
   HostBinding,
   inject,
   Input,
   NgZone,
   OnInit,
-  Optional,
   Output,
-  Self,
   ViewChild,
 } from '@angular/core';
 import {
   AbstractControl,
-  ControlContainer,
   ControlValueAccessor,
-  NgControl,
-  NgForm,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
 } from '@angular/forms';
@@ -33,13 +31,11 @@ import {
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete';
-import { MatFormFieldControl } from '@angular/material/form-field';
 
 import { guid } from '@firestitch/common';
-import { controlContainerFactory } from '@firestitch/core';
 import { FsMap } from '@firestitch/map';
 
-import { from, fromEvent, Observable, of, Subject } from 'rxjs';
+import { from, fromEvent, Observable, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -64,23 +60,21 @@ import { FsAddress } from '../../interfaces/address.interface';
   selector: 'fs-address-autocomplete',
   templateUrl: './address-autocomplete.component.html',
   styleUrls: ['./address-autocomplete.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
-      provide: MatFormFieldControl,
-      useExisting: FsAddressAutocompleteComponent,
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FsAddressAutocompleteComponent),
+      multi: true,
     },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [
     {
-      provide: ControlContainer,
-      useFactory: controlContainerFactory,
-      deps: [[new Optional(), NgForm]],
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => FsAddressAutocompleteComponent),
+      multi: true,
     },
   ],
 })
-export class FsAddressAutocompleteComponent
-implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validator {
+export class FsAddressAutocompleteComponent implements OnInit, ControlValueAccessor, Validator {
 
   public static nextId = 0;
 
@@ -139,9 +133,7 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
   public googlePlace: google.maps.places.Place = null;
   public onChange: (data: any) => void;
   public onTouched: () => void;
-  public errorState = false;
   public focused = false;
-  public stateChanges = new Subject<void>();
   public readonly autocompleteName = `search-${guid('xxxxxxxx')}`;
 
   private _config: FsAddressConfig = {};
@@ -154,16 +146,12 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
   private _destroyRef = inject(DestroyRef);
 
   constructor(
-    @Optional() @Self() public ngControl: NgControl,
     private _map: FsMap,
     private _ngZone: NgZone,
     private _fm: FocusMonitor,
     private _elementRef: ElementRef,
     private _cdRef: ChangeDetectorRef,
   ) {
-    if (this.ngControl) {
-      this.ngControl.valueAccessor = this;
-    }
   }
 
   public set value(value: FsAddress) {
@@ -179,18 +167,18 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
   public get disabled(): boolean {
     return this._disabled;
   }
+
   public set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
-    this.stateChanges.next(null);
   }
 
   @Input()
   public get required() {
     return this._required;
   }
+
   public set required(req) {
     this._required = coerceBooleanProperty(req);
-    this.stateChanges.next(null);
   }
 
   @Input()
@@ -199,7 +187,6 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
   }
   public set placeholder(plh) {
     this._placeholder = plh;
-    this.stateChanges.next(null);
   }
 
   @HostBinding('class.floating')
@@ -216,17 +203,12 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
     this._listenUserTyping();
     this._listenAutocompleteSelection();
     this._registerFocusMonitor();
-    this.ngControl.control.setValidators([this.validate.bind(this)]);
   }
 
   public writeValue(value: FsAddress | null) {
     this._address = value;
     this.inputAddress = value;
     this._cdRef.markForCheck();
-  }
-
-  public setDescribedByIds(ids: string[]) {
-    // TODO
   }
 
   public onContainerClick(event: MouseEvent) {
@@ -290,7 +272,6 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
   public clear(): void {
     this.inputAddress = this._defaultInputAddress();
     this.value = createEmptyAddress();
-    this.ngControl?.control.setValue(this.value);
     this.addressChange.emit(null);
     this._clearPredictions();
     setTimeout(() => {
@@ -300,10 +281,6 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
 
   public manual(value: string): void {
     this.addressManual.emit(value);
-  }
-
-  public reset(): void {
-    this.ngControl.reset(createEmptyAddress());
   }
 
   // Search input can't be null. We implemented required validation to show asterisk if needed
@@ -331,9 +308,6 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
 
       fromEvent(this.searchElement.nativeElement, 'keyup')
         .pipe(
-          tap(() => {
-            this.stateChanges.next(null);
-          }),
           debounceTime(200),
           filter((event: KeyboardEvent) => {
             return event.code !== 'Enter' && event.code !== 'Tab';
@@ -486,7 +460,6 @@ implements OnInit, MatFormFieldControl<FsAddress>, ControlValueAccessor, Validat
       )
       .subscribe((origin) => {
         this.focused = !!origin;
-        this.stateChanges.next(null);
       });
   }
 }

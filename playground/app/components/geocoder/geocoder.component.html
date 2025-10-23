@@ -1,8 +1,13 @@
-
-<button mat-raised-button color="primary" (click)="lookup()" id="geoCoder0Button">Lookup</button> 
-
-
+<button
+    mat-flat-button
+    color="primary"
+    (click)="lookup()"
+    id="geoCoder0Button">
+  Lookup
+</button>
 <fieldset *ngIf="results">
-  <legend>Results</legend>
-  {{results|json}}
+  <legend>
+    Results
+  </legend>
+  {{ results|json }}
 </fieldset>
