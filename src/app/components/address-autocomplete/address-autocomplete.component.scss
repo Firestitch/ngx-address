@@ -6,12 +6,14 @@
   border-top: 1px solid #e0e0e0;
 }
 
-.clear {
-  cursor: pointer;
-}
-
 mat-form-field {
   width: 100%;
+}
+
+mat-option ::ng-deep {
+  mat-pseudo-checkbox {
+    display: none;
+  }
 }
 
 // hack to support outline when control is invalid

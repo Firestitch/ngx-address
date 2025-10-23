@@ -20,23 +20,18 @@
       [class]="'fs-autocomplete-pane'"
       #autocomplete="matAutocomplete">
     @for (option of googleSuggestions; track option) {
-      <mat-option
-        [value]="option">
+      <mat-option [value]="option">
         {{ option.placePrediction.text.text }}
       </mat-option>
     }
-
     @if (!config.hideEnterManually) {
-      <div
-        class="static-options">
-        <mat-option
-          [value]="{ manual: true, value: searchInput.value}">
+      <div class="static-options">
+        <mat-option [value]="{ manual: true, value: searchInput.value }">
           Enter address manually
         </mat-option>
       </div>
     }
   </mat-autocomplete>
-
   @if (config.hint) {
     <mat-hint>
       {{ config.hint }}
