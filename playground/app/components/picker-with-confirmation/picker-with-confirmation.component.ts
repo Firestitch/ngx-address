@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 
 // Interfaces
 import {
@@ -36,6 +32,9 @@ import { FsAddressFormatComponent as FsAddressFormatComponent_1 } from '../../..
     ],
 })
 export class PickerWithConfirmationComponent {
+  private example = inject(FsExampleComponent);
+  private message = inject(FsMessage);
+
 
   public view = '';
   public address: FsAddress = {};
@@ -60,9 +59,6 @@ export class PickerWithConfirmationComponent {
 
   @ViewChild(FsAddressPickerComponent)
   public addressPicker: FsAddressPickerComponent;
-
-  constructor(private example: FsExampleComponent, private message: FsMessage) {
-  }
 
   public changed(address) {
     this.address = address;

@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 
 // Interfaces
 import {
@@ -34,6 +30,8 @@ import { FsAddressFormatComponent as FsAddressFormatComponent_1 } from '../../..
     ],
 })
 export class AddressPickerComponent {
+  private _message = inject(FsMessage);
+
 
   public view = '';
   public address: FsAddress = { address2: 'address2', address3: 'address3' };
@@ -59,11 +57,6 @@ export class AddressPickerComponent {
 
   @ViewChild(FsAddressPickerComponent)
   public addressPicker: FsAddressPickerComponent;
-
-  constructor(
-    private _message: FsMessage,
-  ) {
-  }
 
   public changed(address) {
     this.address = address;

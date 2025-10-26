@@ -1,16 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Optional,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Optional, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -52,6 +40,9 @@ import { AddressSearchEditEvent } from '../address-search/address-search.interfa
     imports: [FsAddressSearchComponent],
 })
 export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlValueAccessor {
+  private _dialog = inject(MatDialog);
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @ViewChild(FsAddressSearchComponent, { static: true })
   public addressSearch: FsAddressSearchComponent;
@@ -99,11 +90,6 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
   public onChange: (value) => void;
 
   private _destroy$ = new Subject();
-
-  constructor(
-    private _dialog: MatDialog,
-    private _cdRef: ChangeDetectorRef,
-  ) { }
 
   public writeValue(obj: any): void {
     this.address = obj;

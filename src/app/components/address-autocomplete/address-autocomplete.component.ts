@@ -86,6 +86,12 @@ import { MatOption as MatOption_1 } from '@angular/material/core';
     ],
 })
 export class FsAddressAutocompleteComponent implements OnInit, ControlValueAccessor, Validator {
+  private _map = inject(FsMap);
+  private _ngZone = inject(NgZone);
+  private _fm = inject(FocusMonitor);
+  private _elementRef = inject(ElementRef);
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   public static nextId = 0;
 
@@ -155,15 +161,6 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   private _placeholder: string;
 
   private _destroyRef = inject(DestroyRef);
-
-  constructor(
-    private _map: FsMap,
-    private _ngZone: NgZone,
-    private _fm: FocusMonitor,
-    private _elementRef: ElementRef,
-    private _cdRef: ChangeDetectorRef,
-  ) {
-  }
 
   public set value(value: FsAddress) {
     this._address = value;

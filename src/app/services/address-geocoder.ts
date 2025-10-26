@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { FsMap } from '@firestitch/map';
 
@@ -10,10 +10,8 @@ import { delay } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class FsAddressGeocoder {
+  private _map = inject(FsMap);
 
-  constructor(
-    private _map: FsMap,
-  ) {}
 
   public lookup(address: string): Observable<google.maps.GeocoderResult[]> {
     return new Observable((observer) => {

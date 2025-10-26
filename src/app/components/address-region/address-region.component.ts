@@ -1,15 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, inject } from '@angular/core';
 import { ControlContainer, NgForm, NgModel, FormsModule } from '@angular/forms';
 
 
@@ -47,6 +36,8 @@ import { FsFormModule } from '@firestitch/form';
     ],
 })
 export class FsAddressRegionComponent implements OnInit, OnDestroy {
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @ViewChild(FsAutocompleteComponent, { read: NgModel, static: true })
   public autocompleteModel: NgModel;
@@ -100,9 +91,7 @@ export class FsAddressRegionComponent implements OnInit, OnDestroy {
   private _countries: IAddressCountry[] = [];
   private _destroy$ = new Subject<void>();
 
-  constructor(
-    private _cdRef: ChangeDetectorRef,
-  ) {
+  constructor() {
     this.countries = [Country.Canada, Country.UnitedStates];
   }
 

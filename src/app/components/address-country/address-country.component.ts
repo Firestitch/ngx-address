@@ -1,15 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Optional,
-  Output,
-  SimpleChanges,
-  forwardRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Optional, Output, SimpleChanges, forwardRef, inject } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm, FormsModule } from '@angular/forms';
 
 import { guid } from '@firestitch/common';
@@ -49,6 +38,8 @@ import { FsFormModule } from '@firestitch/form';
     ],
 })
 export class FsAddressCountryComponent implements OnChanges, ControlValueAccessor {
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @Input() public disabled = false;
   @Input() public required = false;
@@ -63,8 +54,6 @@ export class FsAddressCountryComponent implements OnChanges, ControlValueAccesso
   public name = `addressCountry${guid()}`;
   public onChange: (data: any) => void;
   public onTouched: () => void;
-
-  constructor(private _cdRef: ChangeDetectorRef) { }
 
   public fetch = (keyword: string) => {
     return of(keyword)

@@ -1,9 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Inject,
-  ViewChild
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { FsAddress } from '../../interfaces/address.interface';
@@ -35,6 +30,9 @@ import { MatButton } from '@angular/material/button';
     ],
 })
 export class FsAddressDialogComponent {
+  private _dialogRef = inject<MatDialogRef<FsAddressDialogComponent>>(MatDialogRef);
+  private _data = inject(MAT_DIALOG_DATA);
+
 
   @ViewChild(FsAddressComponent)
   public addressComponent: FsAddressComponent;
@@ -42,9 +40,9 @@ export class FsAddressDialogComponent {
   public address: FsAddress;
   public config;
 
-  constructor(
-    private _dialogRef: MatDialogRef<FsAddressDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private _data) {
+  constructor() {
+      const _data = this._data;
+
       this.address = _data.address;
       this.config = _data.config;
   }
