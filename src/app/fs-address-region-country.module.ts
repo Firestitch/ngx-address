@@ -13,21 +13,19 @@ import { FsAddressCountryModule } from './fs-address-country.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    FsFormModule,
-    MatInputModule,
-    MatSelectModule,
-    FsAddressCountriesModule,
-    FsAddressRegionModule,
-    FsAddressCountryModule
-  ],
-  declarations: [
-    FsAddressRegionCountryComponent
-  ],
-  exports: [
-    FsAddressRegionCountryComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        FsFormModule,
+        MatInputModule,
+        MatSelectModule,
+        FsAddressCountriesModule,
+        FsAddressRegionModule,
+        FsAddressCountryModule,
+        FsAddressRegionCountryComponent
+    ],
+    exports: [
+        FsAddressRegionCountryComponent
+    ]
 })
 export class FsAddressRegionCountryModule {}

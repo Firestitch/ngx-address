@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 
 // Interfaces
 import { FsAddress, FsAddressConfig, FsAddressFormatConfig } from '@firestitch/address';
+import { FsAddressComponent } from '../../../../src/app/components/address/address.component';
+import { FsAddressFormatComponent } from '../../../../src/app/components/address-format/address-format.component';
 
 
 @Component({
-  selector: 'full-address-example',
-  templateUrl: 'full-address-example.component.html'
+    selector: 'full-address-example',
+    templateUrl: 'full-address-example.component.html',
+    standalone: true,
+    imports: [FsAddressComponent, FsAddressFormatComponent]
 })
 export class FullAddressExampleComponent {
 

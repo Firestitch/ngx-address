@@ -26,40 +26,36 @@ import { FsAddressRegionModule } from './fs-address-region.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDialogModule,
-
-    FsFormModule,
-    FsAddressCountriesModule,
-    FsDialogModule,
-    FsAddressRegionModule,
-    FsAddressCountryModule,
-    FsMapModule,
-    FsClearModule,
-  ],
-  exports: [
-    FsAddressComponent,
-    FsAddressFormatComponent,
-    FsAddressPickerComponent,
-    FsAddressSearchComponent,
-    FsAddressAutocompleteComponent,
-  ],
-  declarations: [
-    FsAddressComponent,
-    FsAddressFormatComponent,
-    FsAddressPickerComponent,
-    FsAddressSearchComponent,
-    FsAddressDialogComponent,
-    FsAddressAutocompleteComponent,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatAutocompleteModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        MatDialogModule,
+        FsFormModule,
+        FsAddressCountriesModule,
+        FsDialogModule,
+        FsAddressRegionModule,
+        FsAddressCountryModule,
+        FsMapModule,
+        FsClearModule,
+        FsAddressComponent,
+        FsAddressFormatComponent,
+        FsAddressPickerComponent,
+        FsAddressSearchComponent,
+        FsAddressDialogComponent,
+        FsAddressAutocompleteComponent,
+    ],
+    exports: [
+        FsAddressComponent,
+        FsAddressFormatComponent,
+        FsAddressPickerComponent,
+        FsAddressSearchComponent,
+        FsAddressAutocompleteComponent,
+    ],
 })
 export class FsAddressModule {
   public static forRoot(): ModuleWithProviders<FsAddressModule> {

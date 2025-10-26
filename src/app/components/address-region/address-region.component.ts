@@ -10,10 +10,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ControlContainer, NgForm, NgModel } from '@angular/forms';
+import { ControlContainer, NgForm, NgModel, FormsModule } from '@angular/forms';
 
 
-import { FsAutocompleteComponent } from '@firestitch/autocomplete';
+import { FsAutocompleteComponent, FsAutocompleteModule } from '@firestitch/autocomplete';
 import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
 
@@ -24,20 +24,27 @@ import { Countries } from '../../consts';
 import { Country } from '../../enums/country.enum';
 import { IAddressCountry } from '../../interfaces/address-country.interface';
 import { IAddressRegion } from '../../interfaces/address-region.interface';
+import { FsFormModule } from '@firestitch/form';
 
 
 @Component({
-  selector: 'fs-address-region',
-  templateUrl: './address-region.component.html',
-  styleUrls: ['./address-region.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useFactory: controlContainerFactory,
-      deps: [[new Optional(), NgForm]],
-    },
-  ],
+    selector: 'fs-address-region',
+    templateUrl: './address-region.component.html',
+    styleUrls: ['./address-region.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    viewProviders: [
+        {
+            provide: ControlContainer,
+            useFactory: controlContainerFactory,
+            deps: [[new Optional(), NgForm]],
+        },
+    ],
+    standalone: true,
+    imports: [
+        FsAutocompleteModule,
+        FormsModule,
+        FsFormModule,
+    ],
 })
 export class FsAddressRegionComponent implements OnInit, OnDestroy {
 

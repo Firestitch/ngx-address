@@ -13,12 +13,25 @@ import {
   FsAddressPickerConfig,
 } from '@firestitch/address';
 import { FsMessage } from '@firestitch/message';
+import { FormsModule } from '@angular/forms';
+import { FsFormModule } from '@firestitch/form';
+import { FsAddressPickerComponent as FsAddressPickerComponent_1 } from '../../../../src/app/components/address-picker/address-picker.component';
+import { MatButton } from '@angular/material/button';
+import { FsAddressFormatComponent as FsAddressFormatComponent_1 } from '../../../../src/app/components/address-format/address-format.component';
 
 
 @Component({
-  selector: 'address-picker',
-  templateUrl: './address-picker.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'address-picker',
+    templateUrl: './address-picker.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        FsFormModule,
+        FsAddressPickerComponent_1,
+        MatButton,
+        FsAddressFormatComponent_1,
+    ],
 })
 export class AddressPickerComponent {
 

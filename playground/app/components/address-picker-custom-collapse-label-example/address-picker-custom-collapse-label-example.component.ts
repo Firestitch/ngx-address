@@ -7,12 +7,21 @@ import {
   FsAddress,
   FsAddressConfig,
 } from '@firestitch/address';
+import { FormsModule } from '@angular/forms';
+import { FsAddressPickerComponent } from '../../../../src/app/components/address-picker/address-picker.component';
+import { FsAddressFormatComponent } from '../../../../src/app/components/address-format/address-format.component';
 
 
 @Component({
-  selector: 'address-picker-custom-collapse-label-example',
-  templateUrl: './address-picker-custom-collapse-label-example.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'address-picker-custom-collapse-label-example',
+    templateUrl: './address-picker-custom-collapse-label-example.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        FsAddressPickerComponent,
+        FsAddressFormatComponent,
+    ],
 })
 export class AddressPickerCustomCollapseLabelComponent {
 

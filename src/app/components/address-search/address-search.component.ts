@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ControlContainer, NgForm } from '@angular/forms';
+import { ControlContainer, NgForm, FormsModule } from '@angular/forms';
 
 
 import { guid } from '@firestitch/common';
@@ -21,20 +21,31 @@ import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { FsAddressPickerConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressAutocompleteComponent } from '../address-autocomplete/address-autocomplete.component';
+import { FsFormModule } from '@firestitch/form';
+import { NgClass } from '@angular/common';
+import { FsAddressFormatComponent } from '../address-format/address-format.component';
 
 
 @Component({
-  selector: 'fs-address-search',
-  templateUrl: './address-search.component.html',
-  styleUrls: ['./address-search.component.scss'],
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useFactory: controlContainerFactory,
-      deps: [[new Optional(), NgForm]],
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-address-search',
+    templateUrl: './address-search.component.html',
+    styleUrls: ['./address-search.component.scss'],
+    viewProviders: [
+        {
+            provide: ControlContainer,
+            useFactory: controlContainerFactory,
+            deps: [[new Optional(), NgForm]],
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsAddressAutocompleteComponent,
+        FormsModule,
+        FsFormModule,
+        NgClass,
+        FsAddressFormatComponent,
+    ],
 })
 export class FsAddressSearchComponent implements OnDestroy {
 

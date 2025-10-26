@@ -32,22 +32,24 @@ import { AddressSearchEditEvent } from '../address-search/address-search.interfa
 
 
 @Component({
-  selector: 'fs-address-picker',
-  templateUrl: './address-picker.component.html',
-  styleUrls: ['./address-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: FsAddressPickerComponent,
-    multi: true,
-  }],
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useFactory: controlContainerFactory,
-      deps: [[new Optional(), NgForm]],
-    },
-  ],
+    selector: 'fs-address-picker',
+    templateUrl: './address-picker.component.html',
+    styleUrls: ['./address-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: FsAddressPickerComponent,
+            multi: true,
+        }],
+    viewProviders: [
+        {
+            provide: ControlContainer,
+            useFactory: controlContainerFactory,
+            deps: [[new Optional(), NgForm]],
+        },
+    ],
+    standalone: true,
+    imports: [FsAddressSearchComponent],
 })
 export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlValueAccessor {
 

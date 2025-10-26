@@ -4,17 +4,35 @@ import {
   Inject,
   ViewChild
 } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressComponent } from '../../components/address/address.component';
 import { of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { FsFormModule } from '@firestitch/form';
+import { FsDialogModule } from '@firestitch/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FsAddressComponent as FsAddressComponent_1 } from '../address/address.component';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  templateUrl: './address-dialog.component.html',
-  styleUrls: ['./address-dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './address-dialog.component.html',
+    styleUrls: ['./address-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        FsFormModule,
+        FsDialogModule,
+        CdkScrollable,
+        MatDialogContent,
+        FsAddressComponent_1,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+    ],
 })
 export class FsAddressDialogComponent {
 

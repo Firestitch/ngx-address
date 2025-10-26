@@ -9,12 +9,17 @@ import {
   FsAddressConfig,
   FsAddressFormatConfig
 } from '@firestitch/address';
+import { FsAddressPickerComponent } from '../../../../src/app/components/address-picker/address-picker.component';
+import { FsAddressFormatComponent } from '../../../../src/app/components/address-format/address-format.component';
+import { JsonPipe } from '@angular/common';
 
 
 @Component({
-  selector: 'address-picker-map-required-example',
-  templateUrl: './address-picker-map-required-example.component.html',
-  styles: []
+    selector: 'address-picker-map-required-example',
+    templateUrl: './address-picker-map-required-example.component.html',
+    styles: [],
+    standalone: true,
+    imports: [FsAddressPickerComponent, FsAddressFormatComponent, JsonPipe]
 })
 export class AddressPickerMapRequiredExampleComponent implements OnInit {
 

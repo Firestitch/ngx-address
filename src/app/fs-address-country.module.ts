@@ -11,18 +11,16 @@ import { FsAddressCountriesModule } from './fs-address-countries.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    FsFormModule,
-    FsAddressCountriesModule,
-    FsAutocompleteChipsModule,
-  ],
-  declarations: [
-    FsAddressCountryComponent,
-  ],
-  exports: [
-    FsAddressCountryComponent,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        FsFormModule,
+        FsAddressCountriesModule,
+        FsAutocompleteChipsModule,
+        FsAddressCountryComponent,
+    ],
+    exports: [
+        FsAddressCountryComponent,
+    ],
 })
 export class FsAddressCountryModule {}

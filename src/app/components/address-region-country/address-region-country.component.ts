@@ -12,13 +12,24 @@ import { Countries } from '../../consts';
 import { IAddressCountry } from '../../interfaces';
 import { FsAddressRegionConfig } from '../../interfaces/address-region-config.interface';
 import { IAddressRegion } from '../../interfaces/address-region.interface';
+import { FsAddressCountryComponent } from '../address-country/address-country.component';
+import { FormsModule } from '@angular/forms';
+import { FsFormModule } from '@firestitch/form';
+import { FsAddressRegionComponent } from '../address-region/address-region.component';
 
 
 @Component({
-  selector: 'fs-address-region-country',
-  templateUrl: './address-region-country.component.html',
-  styleUrls: ['./address-region-country.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-address-region-country',
+    templateUrl: './address-region-country.component.html',
+    styleUrls: ['./address-region-country.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsAddressCountryComponent,
+        FormsModule,
+        FsFormModule,
+        FsAddressRegionComponent,
+    ],
 })
 export class FsAddressRegionCountryComponent implements OnInit {
 

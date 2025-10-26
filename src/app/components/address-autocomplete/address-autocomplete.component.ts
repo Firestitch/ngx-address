@@ -14,14 +14,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors,
-  Validator,
-} from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, FormsModule } from '@angular/forms';
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -54,25 +47,43 @@ import { extractUnit } from '../../helpers/extract-unit';
 import { googlePlaceToFsAddress } from '../../helpers/google-place-to-address';
 import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
+import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FsFormModule } from '@firestitch/form';
+import { FsClearModule } from '@firestitch/clear';
+import { MatOption as MatOption_1 } from '@angular/material/core';
 
 
 @Component({
-  selector: 'fs-address-autocomplete',
-  templateUrl: './address-autocomplete.component.html',
-  styleUrls: ['./address-autocomplete.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FsAddressAutocompleteComponent),
-      multi: true,
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => FsAddressAutocompleteComponent),
-      multi: true,
-    },
-  ],
+    selector: 'fs-address-autocomplete',
+    templateUrl: './address-autocomplete.component.html',
+    styleUrls: ['./address-autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => FsAddressAutocompleteComponent),
+            multi: true,
+        },
+        {
+            provide: NG_VALIDATORS,
+            useExisting: forwardRef(() => FsAddressAutocompleteComponent),
+            multi: true,
+        },
+    ],
+    standalone: true,
+    imports: [
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FormsModule,
+        MatAutocompleteTrigger,
+        FsFormModule,
+        FsClearModule,
+        MatAutocomplete,
+        MatOption_1,
+        MatHint,
+    ],
 })
 export class FsAddressAutocompleteComponent implements OnInit, ControlValueAccessor, Validator {
 

@@ -10,11 +10,11 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ControlContainer, NgForm } from '@angular/forms';
+import { ControlContainer, NgForm, FormsModule } from '@angular/forms';
 
 import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
-import { FsMapComponent } from '@firestitch/map';
+import { FsMapComponent, FsMapModule } from '@firestitch/map';
 
 import { Subject } from 'rxjs';
 
@@ -26,20 +26,35 @@ import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddressMapConfig } from '../../interfaces/address-map-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
 import { FsAddressRegionComponent } from '../address-region/address-region.component';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FsFormModule } from '@firestitch/form';
+import { FsAddressCountryComponent } from '../address-country/address-country.component';
 
 
 @Component({
-  selector: 'fs-address',
-  templateUrl: './address.component.html',
-  styleUrls: ['./address.component.scss'],
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useFactory: controlContainerFactory,
-      deps: [[new Optional(), NgForm]],
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-address',
+    templateUrl: './address.component.html',
+    styleUrls: ['./address.component.scss'],
+    viewProviders: [
+        {
+            provide: ControlContainer,
+            useFactory: controlContainerFactory,
+            deps: [[new Optional(), NgForm]],
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FormsModule,
+        FsFormModule,
+        FsAddressRegionComponent,
+        FsAddressCountryComponent,
+        FsMapModule,
+    ],
 })
 export class FsAddressComponent implements OnInit, OnChanges, OnDestroy {
 

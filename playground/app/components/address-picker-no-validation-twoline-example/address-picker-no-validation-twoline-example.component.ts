@@ -8,12 +8,21 @@ import {
   FsAddress,
   FsAddressConfig,
 } from '@firestitch/address';
+import { FormsModule } from '@angular/forms';
+import { FsAddressPickerComponent } from '../../../../src/app/components/address-picker/address-picker.component';
+import { FsAddressFormatComponent } from '../../../../src/app/components/address-format/address-format.component';
 
 
 @Component({
-  selector: 'address-picker-no-validation-twoline-example',
-  templateUrl: './address-picker-no-validation-twoline-example.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'address-picker-no-validation-twoline-example',
+    templateUrl: './address-picker-no-validation-twoline-example.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        FsAddressPickerComponent,
+        FsAddressFormatComponent,
+    ],
 })
 export class AddressPickerNoValidationTwolineExampleComponent {
 

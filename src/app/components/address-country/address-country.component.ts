@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   forwardRef,
 } from '@angular/core';
-import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
+import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm, FormsModule } from '@angular/forms';
 
 import { guid } from '@firestitch/common';
 import { controlContainerFactory } from '@firestitch/core';
@@ -20,25 +20,33 @@ import { map } from 'rxjs/operators';
 
 import { Countries } from '../../consts/countries.const';
 import { searchCountryRegions } from '../../helpers';
+import { FsAutocompleteChipsModule } from '@firestitch/autocomplete-chips';
+import { FsFormModule } from '@firestitch/form';
 
 
 @Component({
-  selector: 'fs-address-country',
-  templateUrl: './address-country.component.html',
-  styleUrls: ['./address-country.component.scss'],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    multi: true,
-    useExisting: forwardRef(() => FsAddressCountryComponent),
-  }],
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useFactory: controlContainerFactory,
-      deps: [[new Optional(), NgForm]],
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-address-country',
+    templateUrl: './address-country.component.html',
+    styleUrls: ['./address-country.component.scss'],
+    providers: [{
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: forwardRef(() => FsAddressCountryComponent),
+        }],
+    viewProviders: [
+        {
+            provide: ControlContainer,
+            useFactory: controlContainerFactory,
+            deps: [[new Optional(), NgForm]],
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsAutocompleteChipsModule,
+        FormsModule,
+        FsFormModule,
+    ],
 })
 export class FsAddressCountryComponent implements OnChanges, ControlValueAccessor {
 

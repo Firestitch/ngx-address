@@ -14,13 +14,26 @@ import {
 } from '@firestitch/address';
 import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
+import { FormsModule } from '@angular/forms';
+import { FsFormModule } from '@firestitch/form';
+import { FsAddressPickerComponent as FsAddressPickerComponent_1 } from '../../../../src/app/components/address-picker/address-picker.component';
+import { MatButton } from '@angular/material/button';
+import { FsAddressFormatComponent as FsAddressFormatComponent_1 } from '../../../../src/app/components/address-format/address-format.component';
 
 
 @Component({
-  selector: 'picker-with-confirmation',
-  templateUrl: './picker-with-confirmation.component.html',
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'picker-with-confirmation',
+    templateUrl: './picker-with-confirmation.component.html',
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        FsFormModule,
+        FsAddressPickerComponent_1,
+        MatButton,
+        FsAddressFormatComponent_1,
+    ],
 })
 export class PickerWithConfirmationComponent {
 

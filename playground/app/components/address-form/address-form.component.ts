@@ -2,12 +2,16 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 // Interfaces
 import { FsAddressConfig } from '@firestitch/address';
+import { FormsModule } from '@angular/forms';
+import { FsAddressComponent } from '../../../../src/app/components/address/address.component';
 
 
 @Component({
-  selector: 'address-form',
-  templateUrl: './address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'address-form',
+    templateUrl: './address-form.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [FormsModule, FsAddressComponent],
 })
 export class AddressFormComponent {
 

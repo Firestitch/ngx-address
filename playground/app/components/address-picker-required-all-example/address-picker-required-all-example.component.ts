@@ -13,11 +13,16 @@ import {
 
 // Others
 import { FsAddressPickerComponent } from '@firestitch/address';
+import { FsAddressPickerComponent as FsAddressPickerComponent_1 } from '../../../../src/app/components/address-picker/address-picker.component';
+import { FsAddressFormatComponent } from '../../../../src/app/components/address-format/address-format.component';
+import { JsonPipe } from '@angular/common';
 
 
 @Component({
-  selector: 'address-picker-required-all-example',
-  templateUrl: './address-picker-required-all-example.component.html',  styles: []
+    selector: 'address-picker-required-all-example',
+    templateUrl: './address-picker-required-all-example.component.html', styles: [],
+    standalone: true,
+    imports: [FsAddressPickerComponent_1, FsAddressFormatComponent, JsonPipe]
 })
 export class AddressPickerRequiredAllExampleComponent implements OnInit {
 

@@ -5,13 +5,22 @@ import {
 } from '@angular/core';
 
 import { FsAddressGeocoder } from 'src/app/services/address-geocoder';
+import { MatButton } from '@angular/material/button';
+import { FsFormModule } from '@firestitch/form';
+import { JsonPipe } from '@angular/common';
 
 
 @Component({
-  selector: 'app-geocoder',
-  templateUrl: 'geocoder.component.html',
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-geocoder',
+    templateUrl: 'geocoder.component.html',
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatButton,
+        FsFormModule,
+        JsonPipe,
+    ],
 })
 export class GeocoderComponent {
 
