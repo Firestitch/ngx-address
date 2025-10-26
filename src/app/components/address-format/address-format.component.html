@@ -1,5 +1,9 @@
-<span *ngIf="lines.length" [ngClass]="format" [class.disabled]="disabled">
-  <span *ngFor="let line of lines; let index = index" class="line-{{index + 1}}">
-    {{line}}
+@if (lines.length) {
+  <span [ngClass]="format" [class.disabled]="disabled">
+    @for (line of lines; track line; let index = $index) {
+      <span class="line-{{index + 1}}">
+        {{line}}
+      </span>
+    }
   </span>
-</span>
+}

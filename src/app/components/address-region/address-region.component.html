@@ -1,32 +1,32 @@
 <fs-autocomplete
-    [fetch]="fetch"
-    [displayWith]="displayWith"
-    [fetchOnFocus]="true"
-    [(ngModel)]="regionModel"
-    (ngModelChange)="regionChanged()"
-    [placeholder]="regionLabel"
-    [disabled]="disabled"
-    [fsFormRequired]="required"
-    [name]="controlName">
+  [fetch]="fetch"
+  [displayWith]="displayWith"
+  [fetchOnFocus]="true"
+  [(ngModel)]="regionModel"
+  (ngModelChange)="regionChanged()"
+  [placeholder]="regionLabel"
+  [disabled]="disabled"
+  [fsFormRequired]="required"
+  [name]="controlName">
   <ng-template
-      fsAutocompleteTemplate
-      let-data="data">
+    fsAutocompleteTemplate
+    let-data="data">
     <span class="country-region">
       <span>
         {{ data.name }}
       </span>
-      <ng-container *ngIf="!regionModel && addressCountries.length > 1">
+      @if (!regionModel && addressCountries.length > 1) {
         <span>
           {{ data.country }}
         </span>
-      </ng-container>
+      }
     </span>
   </ng-template>
   <ng-template
-      fsAutocompleteStatic
-      let-keyword
-      (selected)="selectUserOption($event)"
-      [show]="justUseShow">
+    fsAutocompleteStatic
+    let-keyword
+    (selected)="selectUserOption($event)"
+    [show]="justUseShow">
     Just Use "{{ keyword }}"
   </ng-template>
   <ng-template fsAutocompleteNoResults></ng-template>

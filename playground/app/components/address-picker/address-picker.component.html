@@ -1,6 +1,6 @@
 <form
-    fsForm
-    (fsForm)="submit()">
+  fsForm
+  (fsForm)="submit()">
   <fs-address-picker
     [(ngModel)]="address"
     name="address"
@@ -8,18 +8,19 @@
     (addressChange)="changed($event)">
   </fs-address-picker>
   <button
-      mat-flat-button
-      type="submit"
-      color="primary"
-      id="saveBtn0">
+    mat-flat-button
+    type="submit"
+    color="primary"
+    id="saveBtn0">
     Save
   </button>
 </form>
-<fieldset
-    *ngIf="address?.country"
+@if (address?.country) {
+  <fieldset
     id="selectedAddrField0">
-  <legend>
-    Selected Address
-  </legend>
-  <fs-address-format [address]="address"></fs-address-format>
-</fieldset>
+    <legend>
+      Selected Address
+    </legend>
+    <fs-address-format [address]="address"></fs-address-format>
+  </fieldset>
+}

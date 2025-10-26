@@ -6,9 +6,11 @@
     id="bodyAddressRegion2">
   </fs-address-region-country>
 </form>
-<fieldset *ngIf="country || region">
-  <legend>
-    Selected
-  </legend>
-  {{ country }}, {{ region }}
-</fieldset>
+@if (country || region) {
+  <fieldset>
+    <legend>
+      Selected
+    </legend>
+    {{ country }}, {{ region }}
+  </fieldset>
+}

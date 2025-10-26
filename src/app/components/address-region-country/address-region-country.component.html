@@ -1,15 +1,16 @@
 <div class="region-country">
   <div class="country">
-    <fs-address-country
-      *ngIf="config.country.visible!==false"
-      [disabled]="config.country.disabled"
-      [required]="config.country.required"
-      [label]="config.country.placeholder"
-      [countries]="countries"
-      [(ngModel)]="country"
-      (selectionChange)="changeCountry()"
-      name="country">
-    </fs-address-country>
+    @if (config.country.visible!==false) {
+      <fs-address-country
+        [disabled]="config.country.disabled"
+        [required]="config.country.required"
+        [label]="config.country.placeholder"
+        [countries]="countries"
+        [(ngModel)]="country"
+        (selectionChange)="changeCountry()"
+        name="country">
+      </fs-address-country>
+    }
   </div>
   <div class="region">
     <fs-address-region
