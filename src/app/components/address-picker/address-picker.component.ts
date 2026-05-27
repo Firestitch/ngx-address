@@ -20,29 +20,26 @@ import { AddressSearchEditEvent } from '../address-search/address-search.interfa
 
 
 @Component({
-    selector: 'fs-address-picker',
-    templateUrl: './address-picker.component.html',
-    styleUrls: ['./address-picker.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: FsAddressPickerComponent,
-            multi: true,
-        }],
-    viewProviders: [
-        {
-            provide: ControlContainer,
-            useFactory: controlContainerFactory,
-            deps: [[new Optional(), NgForm]],
-        },
-    ],
-    standalone: true,
-    imports: [FsAddressSearchComponent],
+  selector: 'fs-address-picker',
+  templateUrl: './address-picker.component.html',
+  styleUrls: ['./address-picker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: FsAddressPickerComponent,
+    multi: true,
+  }],
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    },
+  ],
+  standalone: true,
+  imports: [FsAddressSearchComponent],
 })
 export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlValueAccessor {
-  private _dialog = inject(MatDialog);
-  private _cdRef = inject(ChangeDetectorRef);
-
 
   @ViewChild(FsAddressSearchComponent, { static: true })
   public addressSearch: FsAddressSearchComponent;
@@ -77,6 +74,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
   }
 
   @Input() public address: FsAddress;
+  @Output() public formFieldClass: string;
 
   @Output() public addressChange = new EventEmitter();
 
@@ -90,6 +88,8 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
   public onChange: (value) => void;
 
   private _destroy$ = new Subject();
+  private _dialog = inject(MatDialog);
+  private _cdRef = inject(ChangeDetectorRef);
 
   public writeValue(obj: any): void {
     this.address = obj;

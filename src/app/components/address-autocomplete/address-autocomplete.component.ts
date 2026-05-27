@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,7 +15,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, FormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -24,8 +25,13 @@ import {
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete';
+import { MatOption as MatOption_1 } from '@angular/material/core';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
+import { FsClearModule } from '@firestitch/clear';
 import { guid } from '@firestitch/common';
+import { FsFormModule } from '@firestitch/form';
 import { FsMap } from '@firestitch/map';
 
 import { from, fromEvent, Observable, of } from 'rxjs';
@@ -47,51 +53,41 @@ import { extractUnit } from '../../helpers/extract-unit';
 import { googlePlaceToFsAddress } from '../../helpers/google-place-to-address';
 import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
-import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { FsFormModule } from '@firestitch/form';
-import { FsClearModule } from '@firestitch/clear';
-import { MatOption as MatOption_1 } from '@angular/material/core';
 
 
 @Component({
-    selector: 'fs-address-autocomplete',
-    templateUrl: './address-autocomplete.component.html',
-    styleUrls: ['./address-autocomplete.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => FsAddressAutocompleteComponent),
-            multi: true,
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => FsAddressAutocompleteComponent),
-            multi: true,
-        },
-    ],
-    standalone: true,
-    imports: [
-        MatFormField,
-        MatLabel,
-        MatInput,
-        FormsModule,
-        MatAutocompleteTrigger,
-        FsFormModule,
-        FsClearModule,
-        MatAutocomplete,
-        MatOption_1,
-        MatHint,
-    ],
+  selector: 'fs-address-autocomplete',
+  templateUrl: './address-autocomplete.component.html',
+  styleUrls: ['./address-autocomplete.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FsAddressAutocompleteComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => FsAddressAutocompleteComponent),
+      multi: true,
+    },
+  ],
+  standalone: true,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    MatAutocompleteTrigger,
+    FsFormModule,
+    FsClearModule,
+    MatAutocomplete,
+    MatOption_1,
+    MatHint,
+    NgClass,
+  ],
 })
 export class FsAddressAutocompleteComponent implements OnInit, ControlValueAccessor, Validator {
-  private _map = inject(FsMap);
-  private _ngZone = inject(NgZone);
-  private _fm = inject(FocusMonitor);
-  private _elementRef = inject(ElementRef);
-  private _cdRef = inject(ChangeDetectorRef);
-
 
   public static nextId = 0;
 
@@ -103,6 +99,8 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
 
   @Input()
   public showClear = true;
+
+  @Input() public formFieldClass: string;
 
   @Input()
   public suggestions = false;
@@ -159,7 +157,11 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   private _disabled = false;
   private _required = false;
   private _placeholder: string;
-
+  private _map = inject(FsMap);
+  private _ngZone = inject(NgZone);
+  private _fm = inject(FocusMonitor);
+  private _elementRef = inject(ElementRef);
+  private _cdRef = inject(ChangeDetectorRef);
   private _destroyRef = inject(DestroyRef);
 
   public set value(value: FsAddress) {
@@ -242,7 +244,7 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
     }
   };
 
-  public validate(control: AbstractControl): ValidationErrors | null {
+  public validate(): ValidationErrors | null {
     const validationErrors: ValidationErrors = {};
     const requiredField = [];
     const parts = ['name', 'street', 'city', 'region', 'zip', 'country', 'lat', 'lng'];
@@ -373,7 +375,7 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
       return of(null);
     }
 
-    const place = suggestion.placePrediction.toPlace();
+    const suggesionPlace = suggestion.placePrediction.toPlace();
     const fetchFieldsRequestOptions: google.maps.places.FetchFieldsRequest = {
       fields: [
         'displayName',
@@ -383,7 +385,7 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
       ],
     };
 
-    return from(place.fetchFields(fetchFieldsRequestOptions))
+    return from(suggesionPlace.fetchFields(fetchFieldsRequestOptions))
       .pipe(
         map(({ place }: {place: google.maps.places.Place}): FsAddress => {
           if (!place) {

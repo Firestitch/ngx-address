@@ -1,4 +1,6 @@
-<mat-form-field [floatLabel]="empty ? 'auto' : 'always'">
+<mat-form-field
+    [floatLabel]="empty ? 'auto' : 'always'"
+    [ngClass]="formFieldClass">
   <mat-label>
     {{ placeholder }}
   </mat-label>
