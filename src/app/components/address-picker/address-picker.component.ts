@@ -74,7 +74,7 @@ export class FsAddressPickerComponent implements OnChanges, OnDestroy, ControlVa
   }
 
   @Input() public address: FsAddress;
-  @Output() public formFieldClass: string;
+  @Input() public formFieldClass: string;
 
   @Output() public addressChange = new EventEmitter();
 
