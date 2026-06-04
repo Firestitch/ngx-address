@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,16 +9,15 @@ import {
 import { AddressFormat } from '../../enums/address-format.enum';
 import { addressOneLineFormat, addressSummaryFormat, addressTwoLineFormat } from '../../helpers';
 import { FsAddress } from '../../interfaces/address.interface';
-import { NgClass } from '@angular/common';
 
 
 @Component({
-    selector: 'fs-address-format',
-    templateUrl: './address-format.component.html',
-    styleUrls: ['./address-format.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgClass],
+  selector: 'fs-address-format',
+  templateUrl: './address-format.component.html',
+  styleUrls: ['./address-format.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass],
 })
 export class FsAddressFormatComponent implements OnInit {
 

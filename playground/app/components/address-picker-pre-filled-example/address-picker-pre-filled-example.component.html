@@ -6,8 +6,12 @@
     #picker>
   </fs-address-picker>
 </form>
-
 <fieldset [hidden]="address">
-  <legend>Selected Address</legend>
-  <fs-address-format [address]="address" [format]="AddressFormat.TwoLine"></fs-address-format>
+  <legend>
+    Selected Address
+  </legend>
+  <fs-address-format
+    [address]="address"
+    [format]="AddressFormat.TwoLine">
+  </fs-address-format>
 </fieldset>

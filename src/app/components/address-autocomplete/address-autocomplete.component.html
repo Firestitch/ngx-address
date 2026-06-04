@@ -10,6 +10,7 @@
     type="text"
     autocomplete="off"
     [(ngModel)]="inputAddress"
+    [errorStateMatcher]="errorStateMatcher"
     [matAutocomplete]="autocomplete"
     [name]="autocompleteName"
     [disabled]="disabled"

@@ -9,13 +9,15 @@ import {
   forwardRef,
   HostBinding,
   inject,
+  Injector,
   Input,
   NgZone,
   OnInit,
+  Optional,
   Output,
   ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
+import { ControlContainer, ControlValueAccessor, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, NgForm, ValidationErrors, Validator } from '@angular/forms';
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -25,19 +27,19 @@ import {
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete';
-import { MatOption as MatOption_1 } from '@angular/material/core';
+import { ErrorStateMatcher, MatOption as MatOption_1 } from '@angular/material/core';
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
 import { FsClearModule } from '@firestitch/clear';
 import { guid } from '@firestitch/common';
+import { controlContainerFactory } from '@firestitch/core';
 import { FsFormModule } from '@firestitch/form';
 import { FsMap } from '@firestitch/map';
 
 import { from, fromEvent, Observable, of } from 'rxjs';
 import {
   debounceTime,
-  distinctUntilChanged,
   filter,
   map,
   switchMap,
@@ -60,6 +62,13 @@ import { FsAddress } from '../../interfaces/address.interface';
   templateUrl: './address-autocomplete.component.html',
   styleUrls: ['./address-autocomplete.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useFactory: controlContainerFactory,
+      deps: [[new Optional(), NgForm]],
+    },
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -85,6 +94,7 @@ import { FsAddress } from '../../interfaces/address.interface';
     MatOption_1,
     MatHint,
     NgClass,
+    FsFormModule,
   ],
 })
 export class FsAddressAutocompleteComponent implements OnInit, ControlValueAccessor, Validator {
@@ -151,9 +161,23 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   public focused = false;
   public readonly autocompleteName = `search-${guid('xxxxxxxx')}`;
 
+  // The inner matInput has no validators of its own — the required/address validation
+  // lives on the outer control (the ngModel bound to <fs-address-autocomplete>). This
+  // matcher mirrors FsForm's global rule (invalid && touched && dirty) but reads the
+  // outer control, so the mat-form-field paints its error state like every other field.
+  public readonly errorStateMatcher: ErrorStateMatcher = {
+    isErrorState: () => {
+      const control = this._hostNgControl;
+
+      return !!(control && control.invalid && control.touched && control.dirty);
+    },
+  };
+
   private _config: FsAddressConfig = {};
   private _address: FsAddress = {};
   private _searchText = '';
+  private _lastSearchText: string;
+  private _optionSelected = false;
   private _disabled = false;
   private _required = false;
   private _placeholder: string;
@@ -163,6 +187,8 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   private _elementRef = inject(ElementRef);
   private _cdRef = inject(ChangeDetectorRef);
   private _destroyRef = inject(DestroyRef);
+  private _injector = inject(Injector);
+  private _ngControl: NgControl | null = null;
 
   public set value(value: FsAddress) {
     this._address = value;
@@ -208,10 +234,22 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
     return addressIsEmpty(this.value);
   }
 
+  // Lazily resolve the outer control (the ngModel applied to this component's host).
+  // It isn't available at construction (would create an NG_VALUE_ACCESSOR DI cycle),
+  // so we look it up on demand and cache once found.
+  private get _hostNgControl(): NgControl | null {
+    if (!this._ngControl) {
+      this._ngControl = this._injector.get(NgControl, null, { self: true, optional: true });
+    }
+
+    return this._ngControl;
+  }
+
   public ngOnInit() {
     this._initGoogleMap();
     this._listenUserTyping();
     this._listenAutocompleteSelection();
+    this._listenPanelClose();
     this._registerFocusMonitor();
   }
 
@@ -244,10 +282,18 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
     }
   };
 
+  // public validateIT = () => {
+  //   const validationErrors = this.validate();
+
+  //   if(validationErrors.invalid) {
+  //     throw new Error(validationErrors.invalid);
+  //   }
+  // };
+
   public validate(): ValidationErrors | null {
     const validationErrors: ValidationErrors = {};
     const requiredField = [];
-    const parts = ['name', 'street', 'city', 'region', 'zip', 'country', 'lat', 'lng'];
+    const parts = ['name', 'street', 'city', 'address2', 'address3', 'region', 'zip', 'country', 'lat', 'lng'];
 
     if (this.required && this.empty) {
       validationErrors.required = true;
@@ -283,8 +329,11 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
     this.inputAddress = this._defaultInputAddress();
     this.value = createEmptyAddress();
     this.addressChange.emit(null);
+    // Reset the dedupe tracker so retyping the just-cleared text searches again.
+    this._lastSearchText = undefined;
     this._clearPredictions();
     setTimeout(() => {
+      this.searchElement.nativeElement.focus();
       this.autocompleteTrigger.openPanel();
     });
   }
@@ -308,6 +357,10 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
           filter((event: KeyboardEvent) => event.code === 'Tab'),
           map(() => this.autocompleteTrigger.activeOption?.value),
           filter((place) => !!place && this.googleSuggestions.length !== 0),
+          // Tab-select doesn't go through the panel's optionSelected, so flag it
+          // here too — otherwise the panel-close handler would treat it as "no
+          // selection" and clear the address being committed.
+          tap(() => this._optionSelected = true),
           switchMap((place) => this._placeToAddress(place)),
           takeUntilDestroyed(this._destroyRef),
         )
@@ -342,7 +395,11 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
               this._selectAddress(this._address);
             }
           }),
-          distinctUntilChanged(),
+          // Dedupe consecutive identical searches, but track the value ourselves
+          // (rather than distinctUntilChanged) so it can be reset when the input is
+          // cleared on blur — otherwise retyping the same text wouldn't search.
+          filter((text) => text !== this._lastSearchText),
+          tap((text) => this._lastSearchText = text),
           switchMap((text: string) => {
             return this._getPlaceSuggestions(text);
           }),
@@ -470,6 +527,43 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
       )
       .subscribe((origin) => {
         this.focused = !!origin;
+
+        // Mark the outer control as touched on blur so its error state activates
+        // like a regular form field once the user leaves an invalid field.
+        if (!origin) {
+          this.onTouched?.();
+        }
       });
+  }
+
+  // The autocomplete closes after a pick (preceded by optionSelected) or when the
+  // user leaves the field. If no option was chosen this session, the typed text
+  // never resolved to an address — reset the input to the committed value (which
+  // clears it when empty) so we don't leave orphaned search text behind.
+  private _listenPanelClose(): void {
+    this.autoCompleteRef.optionSelected
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(() => this._optionSelected = true);
+
+    this.autoCompleteRef.closed
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(() => {
+        const optionSelected = this._optionSelected;
+        this._optionSelected = false;
+
+        if (!optionSelected) {
+          this._resetInputToValue();
+        }
+      });
+  }
+
+  // Sync the input display back to the committed address: show it when one exists,
+  // clear it otherwise. Also drops stale predictions and resets the search tracker
+  // so refocusing and retyping the same text searches fresh.
+  private _resetInputToValue(): void {
+    this._lastSearchText = undefined;
+    this.inputAddress = this.empty ? this._defaultInputAddress() : this.value;
+    this._clearPredictions();
+    this._cdRef.markForCheck();
   }
 }
