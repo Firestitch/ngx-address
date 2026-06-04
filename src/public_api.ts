@@ -34,6 +34,7 @@ export {
   FsAddressConfig,
   FsAddressPickerConfig,
   FsAddressFieldSetting,
+  FsAddressGoogleConfig,
   IFsAddressConfig,
   IFsAddressFieldSetting,
   AddressPickerConfig,

@@ -3,6 +3,7 @@ export * from './address-form';
 export * from './address-picker';
 export * from './address-picker-custom-collapse-btn-example';
 export * from './address-picker-custom-collapse-label-example';
+export * from './address-picker-google-config-example';
 export * from './address-picker-map-required-example';
 export * from './address-picker-no-validation-summary-example';
 export * from './address-picker-no-validation-twoline-example';

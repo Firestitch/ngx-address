@@ -506,8 +506,14 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
 
   private _getPlaceSuggestions(address: string): Promise<google.maps.places.AutocompleteSuggestion[]> {
     const { text } = extractUnit(address);
+    const request: google.maps.places.AutocompleteRequest = {
+      // Caller-supplied Places options (types, region, location bias, etc).
+      // Spread first so `input` always wins and can't be overridden.
+      ...this.config?.googleConfig?.autocomplete,
+      input: text,
+    };
     const placesRequest = google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
-      { input: text },
+      request,
     );
 
     return placesRequest

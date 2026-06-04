@@ -1,0 +1,50 @@
+<p>
+  Type any
+  <a
+      href="https://developers.google.com/maps/documentation/javascript/reference/autocomplete-data#AutocompleteRequest"
+      target="_blank">Google Places Autocomplete</a>
+  options as JSON. When valid, they're passed into the address picker and merged
+  into every Places search request (the <code>input</code> is always set by the
+  picker). Try <code>includedPrimaryTypes</code>, <code>includedRegionCodes</code>,
+  <code>locationBias</code>, <code>locationRestriction</code>,
+  <code>region</code> or <code>language</code>.
+</p>
+
+<mat-form-field>
+  <mat-label>Google Places config (JSON)</mat-label>
+  <textarea
+      matInput
+      rows="8"
+      name="googleConfig"
+      [(ngModel)]="json"
+      (ngModelChange)="jsonChanged()"
+      data-cy="google-config-json"></textarea>
+  @if (jsonError) {
+    <mat-hint class="error">Invalid JSON: {{ jsonError }}</mat-hint>
+  } @else {
+    <mat-hint>Valid — applied to the search below</mat-hint>
+  }
+</mat-form-field>
+
+<form
+    fsForm
+    (fsForm)="submit()">
+  <fs-address-picker
+      name="address"
+      [(ngModel)]="address"
+      [config]="config"
+      (addressChange)="changed($event)">
+  </fs-address-picker>
+</form>
+
+@if (address?.country) {
+  <fieldset>
+    <legend>Selected Address</legend>
+    <fs-address-format [address]="address"></fs-address-format>
+  </fieldset>
+}
+
+<fieldset>
+  <legend>Applied config.googleConfig.autocomplete</legend>
+  {{ config.googleConfig?.autocomplete | json }}
+</fieldset>

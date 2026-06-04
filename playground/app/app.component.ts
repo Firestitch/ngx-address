@@ -4,6 +4,7 @@ import { FsExampleModule } from '@firestitch/example';
 import { AddressPickerComponent } from './components/address-picker/address-picker.component';
 import { AddressFormComponent } from './components/address-form/address-form.component';
 import { AddressPickerPreFilledExampleComponent } from './components/address-picker-pre-filled-example/address-picker-pre-filled-example.component';
+import { AddressPickerGoogleConfigExampleComponent } from './components/address-picker-google-config-example/address-picker-google-config-example.component';
 import { FormatExampleComponent } from './components/format-example/format-example.component';
 import { AddressDisabledOrReadonlyExampleComponent } from './components/address-disabled-or-readonly-example/address-disabled-or-readonly-example.component';
 import { AddressRegionNoValidationExampleComponent } from './components/address-region-no-validation-example/address-region-no-validation-example.component';
@@ -16,7 +17,7 @@ import { GeocoderComponent } from './components/geocoder/geocoder.component';
     selector: 'app-root',
     templateUrl: 'app.component.html',
     standalone: true,
-    imports: [FsExampleModule, AddressPickerComponent, AddressFormComponent, AddressPickerPreFilledExampleComponent, FormatExampleComponent, AddressDisabledOrReadonlyExampleComponent, AddressRegionNoValidationExampleComponent, AddressRegionPrefilledExampleComponent, AddressRegionComponent, GeocoderComponent]
+    imports: [FsExampleModule, AddressPickerComponent, AddressFormComponent, AddressPickerPreFilledExampleComponent, AddressPickerGoogleConfigExampleComponent, FormatExampleComponent, AddressDisabledOrReadonlyExampleComponent, AddressRegionNoValidationExampleComponent, AddressRegionPrefilledExampleComponent, AddressRegionComponent, GeocoderComponent]
 })
 export class AppComponent {
   public config = environment;

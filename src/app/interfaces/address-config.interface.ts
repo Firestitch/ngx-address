@@ -11,6 +11,21 @@ export interface FsAddressFieldSetting {
   list?: string[],
 }
 
+export interface FsAddressGoogleConfig {
+  /**
+   * Extra options merged into every
+   * google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions()
+   * call that powers the address search. Use this to constrain or bias the
+   * Places search — e.g. `includedPrimaryTypes`, `includedRegionCodes`,
+   * `locationBias`, `locationRestriction`, `region`, `language`, `origin`.
+   *
+   * `input` is always supplied by the component and cannot be overridden.
+   *
+   * @example { includedPrimaryTypes: ['pharmacy'] }
+   */
+  autocomplete?: Omit<google.maps.places.AutocompleteRequest, 'input'>;
+}
+
 export interface FsAddressConfig {
   label?: string;
   hint?: string;
@@ -28,6 +43,7 @@ export interface FsAddressConfig {
   lng?: FsAddressFieldSetting,
   search?: boolean;
   hideEnterManually?: boolean;
+  googleConfig?: FsAddressGoogleConfig;
 }
 
 export interface FsAddressPickerConfig extends FsAddressConfig {
