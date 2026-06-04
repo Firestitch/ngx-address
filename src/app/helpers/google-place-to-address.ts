@@ -11,6 +11,7 @@ export function googlePlaceToFsAddress(
 
   let countryLongName: string, regionLongName: string, streetShortName: string;
 
+  address.id = result.id;
   address.lat = result.location.lat();
   address.lng = result.location.lng();
   address.description = result.formattedAddress;

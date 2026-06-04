@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
@@ -8,12 +8,8 @@ import { MatInput } from '@angular/material/input';
 import {
   AddressFormat,
   FsAddress,
-  FsAddressFormatComponent,
-  FsAddressPickerComponent,
   FsAddressPickerConfig,
 } from '@firestitch/address';
-import { FsFormModule } from '@firestitch/form';
-import { FsMessage } from '@firestitch/message';
 
 import { FsAddressFormatComponent as FsAddressFormatComponent_1 } from '../../../../src/app/components/address-format/address-format.component';
 import { FsAddressPickerComponent as FsAddressPickerComponent_1 } from '../../../../src/app/components/address-picker/address-picker.component';
@@ -31,7 +27,6 @@ import { FsAddressPickerComponent as FsAddressPickerComponent_1 } from '../../..
     MatLabel,
     MatHint,
     MatInput,
-    FsFormModule,
     FsAddressPickerComponent_1,
     FsAddressFormatComponent_1,
   ],
@@ -64,8 +59,6 @@ export class AddressPickerGoogleConfigExampleComponent {
     country: { visible: true },
   };
 
-  private _message = inject(FsMessage);
-
   constructor() {
     // Apply the pre-filled JSON on load.
     this.jsonChanged();
@@ -95,10 +88,6 @@ export class AddressPickerGoogleConfigExampleComponent {
 
   public changed(address: FsAddress): void {
     this.address = address;
-  }
-
-  public submit(): void {
-    this._message.success('Saved');
   }
 
   private _applyAutocomplete(autocomplete: Record<string, unknown> | undefined): void {

@@ -1,25 +1,19 @@
-<form
-    fsForm
-    (fsForm)="submit()">
-  <fs-address-picker
-    [(ngModel)]="address"
-    name="address"
-    [config]="config"
-    (addressChange)="changed($event)">
-  </fs-address-picker>
-  <button
-      mat-flat-button
-      type="submit"
-      color="primary"
-      id="saveBtn0">
-    Save
-  </button>
-</form>
+<fs-address-picker
+  [(ngModel)]="address"
+  name="address"
+  [config]="config"
+  (addressChange)="changed($event)">
+</fs-address-picker>
 @if (address?.country) {
   <fieldset id="selectedAddrField0">
     <legend>
       Selected Address
     </legend>
     <fs-address-format [address]="address"></fs-address-format>
+  </fieldset>
+
+  <fieldset>
+    <legend>Returned address object (note <code>id</code> = Google Place ID)</legend>
+    <pre data-cy="address-json">{{ address | json }}</pre>
   </fieldset>
 }

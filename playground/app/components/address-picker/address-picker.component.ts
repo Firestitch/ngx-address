@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 
 // Interfaces
 import { FormsModule } from '@angular/forms';
-
-import { MatButton } from '@angular/material/button';
 
 import {
   AddressFormat,
@@ -12,8 +11,6 @@ import {
   FsAddressPickerComponent,
   FsAddressPickerConfig,
 } from '@firestitch/address';
-import { FsFormModule } from '@firestitch/form';
-import { FsMessage } from '@firestitch/message';
 
 import { FsAddressFormatComponent as FsAddressFormatComponent_1 } from '../../../../src/app/components/address-format/address-format.component';
 import { FsAddressPickerComponent as FsAddressPickerComponent_1 } from '../../../../src/app/components/address-picker/address-picker.component';
@@ -26,9 +23,8 @@ import { FsAddressPickerComponent as FsAddressPickerComponent_1 } from '../../..
   standalone: true,
   imports: [
     FormsModule,
-    FsFormModule,
+    JsonPipe,
     FsAddressPickerComponent_1,
-    MatButton,
     FsAddressFormatComponent_1,
   ],
 })
@@ -66,14 +62,8 @@ export class AddressPickerComponent {
 
   @ViewChild(FsAddressPickerComponent)
   public addressPicker: FsAddressPickerComponent;
-  
-  private _message = inject(FsMessage);
 
   public changed(address) {
     this.address = address;
-  }
-
-  public submit() {
-    this._message.success('Saved');
   }
 }

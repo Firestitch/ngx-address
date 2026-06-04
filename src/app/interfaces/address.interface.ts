@@ -1,4 +1,5 @@
 export interface FsAddress {
+  id?: string | number;
   name?: string;
   description?: string;
   country?: string;

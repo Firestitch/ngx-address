@@ -3,6 +3,7 @@ import { FsAddress } from '../interfaces/address.interface';
 
 export function createEmptyAddress(): FsAddress {
   return {
+    id: null,
     name: '',
     description: '',
     country: '',
