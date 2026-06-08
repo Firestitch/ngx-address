@@ -24,7 +24,7 @@
       #autocomplete="matAutocomplete">
     @for (option of googleSuggestions; track option) {
       <mat-option [value]="option">
-        {{ option.placePrediction.text.text }}
+        {{ option.description }}
       </mat-option>
     }
     @if (!config.hideEnterManually) {

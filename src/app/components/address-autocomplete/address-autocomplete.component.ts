@@ -39,6 +39,7 @@ import { FsMap } from '@firestitch/map';
 
 import { from, fromEvent, Observable, of } from 'rxjs';
 import {
+  catchError,
   debounceTime,
   filter,
   map,
@@ -52,9 +53,23 @@ import { AddressFormat } from '../../enums/address-format.enum';
 import { addressIsEmpty } from '../../helpers/address-is-empty';
 import { createEmptyAddress } from '../../helpers/create-empty-address';
 import { extractUnit } from '../../helpers/extract-unit';
+import { googleLegacyPlaceToFsAddress } from '../../helpers/google-legacy-place-to-address';
 import { googlePlaceToFsAddress } from '../../helpers/google-place-to-address';
 import { FsAddressConfig } from '../../interfaces/address-config.interface';
 import { FsAddress } from '../../interfaces/address.interface';
+
+
+/**
+ * A single, API-agnostic autocomplete option. Both the new
+ * (`AutocompleteSuggestion`) and the legacy (`AutocompleteService`) paths are
+ * normalized to this shape so the template and selection handlers never have to
+ * know which Google API produced it. `resolve()` lazily fetches the full place
+ * details and maps them to an FsAddress only once the option is actually picked.
+ */
+interface FsAddressSuggestion {
+  description: string;
+  resolve: () => Observable<FsAddress>;
+}
 
 
 @Component({
@@ -154,8 +169,7 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   public id = `fs-address-autocomplete-${FsAddressAutocompleteComponent.nextId++}`;
 
   public inputAddress: FsAddress = this._defaultInputAddress();
-  public googleSuggestions: google.maps.places.AutocompleteSuggestion[] = [];
-  public googlePlace: google.maps.places.Place = null;
+  public googleSuggestions: FsAddressSuggestion[] = [];
   public onChange: (data: any) => void;
   public onTouched: () => void;
   public focused = false;
@@ -181,6 +195,11 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   private _disabled = false;
   private _required = false;
   private _placeholder: string;
+  private _mapLoaded = false;
+  // Lazily-created legacy services (only used when no googleConfig.autocomplete
+  // filter is set). PlacesService needs a DOM node to attribute results to.
+  private _legacyAutocompleteService: google.maps.places.AutocompleteService;
+  private _legacyPlacesService: google.maps.places.PlacesService;
   private _map = inject(FsMap);
   private _ngZone = inject(NgZone);
   private _fm = inject(FocusMonitor);
@@ -356,12 +375,12 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
         .pipe(
           filter((event: KeyboardEvent) => event.code === 'Tab'),
           map(() => this.autocompleteTrigger.activeOption?.value),
-          filter((place) => !!place && this.googleSuggestions.length !== 0),
+          filter((value) => !!value && !value.manual && this.googleSuggestions.length !== 0),
           // Tab-select doesn't go through the panel's optionSelected, so flag it
           // here too — otherwise the panel-close handler would treat it as "no
           // selection" and clear the address being committed.
           tap(() => this._optionSelected = true),
-          switchMap((place) => this._placeToAddress(place)),
+          switchMap((suggestion: FsAddressSuggestion) => suggestion.resolve()),
           takeUntilDestroyed(this._destroyRef),
         )
         .subscribe((address: FsAddress) => {
@@ -405,7 +424,7 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
           }),
           takeUntilDestroyed(this._destroyRef),
         )
-        .subscribe((suggestions: google.maps.places.AutocompleteSuggestion[]) => {
+        .subscribe((suggestions: FsAddressSuggestion[]) => {
           this._ngZone.run(() => {
             this.googleSuggestions = [
               ...suggestions,
@@ -427,51 +446,26 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
     this.addressChange.emit(address);
   }
 
-  private _placeToAddress(suggestion: google.maps.places.AutocompleteSuggestion): Observable<FsAddress> {
-    if (!suggestion || !this.googlePlace) {
-      return of(null);
-    }
-
-    const suggesionPlace = suggestion.placePrediction.toPlace();
-    const fetchFieldsRequestOptions: google.maps.places.FetchFieldsRequest = {
-      fields: [
-        'displayName',
-        'location',
-        'addressComponents',
-        'formattedAddress',
-      ],
-    };
-
-    return from(suggesionPlace.fetchFields(fetchFieldsRequestOptions))
-      .pipe(
-        map(({ place }: {place: google.maps.places.Place}): FsAddress => {
-          if (!place) {
-            return {};
-          }
-
-          return googlePlaceToFsAddress(place, this.config);
-        }),
-      );
-  }
-
   private _listenAutocompleteSelection(): void {
     this.autoCompleteRef.optionSelected
       .pipe(
         map((event: MatAutocompleteSelectedEvent) => event.option),
         // used to get the value from input when "manual" option selected
-        filter((option: MatOption<{ manual: boolean, value: string} | google.maps.places.AutocompleteSuggestion>) => {
-          if (option.value instanceof google.maps.places.AutocompleteSuggestion) {
-            return true;
+        filter((option: MatOption<{ manual: boolean, value: string } | FsAddressSuggestion>) => {
+          const value = option.value as { manual?: boolean, value?: string };
+
+          // The "Enter address manually" option carries `{ manual: true }`;
+          // everything else is a normalized address suggestion.
+          if (value?.manual) {
+            this.manual(value.value);
+
+            return false;
           }
 
-          this.manual(option.value.value);
-
-          return false;
+          return true;
         }),
-        map((option) => {
-          return option.value;
-        }),
-        switchMap((value: google.maps.places.AutocompleteSuggestion) => this._placeToAddress(value)),
+        map((option) => option.value as FsAddressSuggestion),
+        switchMap((suggestion: FsAddressSuggestion) => suggestion.resolve()),
         takeUntilDestroyed(this._destroyRef),
       )
       .subscribe((address: FsAddress) => {
@@ -499,30 +493,198 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
           takeUntilDestroyed(this._destroyRef),
         )
         .subscribe(() => {
-          this.googlePlace = new google.maps.places.Place({ id: this.id });
+          this._mapLoaded = true;
         });
     });
   }
 
-  private _getPlaceSuggestions(address: string): Promise<google.maps.places.AutocompleteSuggestion[]> {
+  /**
+   * Hybrid API selection. The NEW Places API (`AutocompleteSuggestion`) is only
+   * used when a `googleConfig.autocomplete` filter is configured — that's the
+   * only thing the legacy API can't do (e.g. `includedPrimaryTypes: ['pharmacy']`),
+   * and it requires "Places API (New)" to be enabled on the key. Everything else
+   * goes through the LEGACY `AutocompleteService`, which works on keys that only
+   * have the classic "Places API" enabled — no Google Cloud changes required.
+   */
+  private _useNewPlacesApi(): boolean {
+    return !!this.config?.googleConfig?.autocomplete;
+  }
+
+  private _getPlaceSuggestions(address: string): Promise<FsAddressSuggestion[]> {
+    if (!this._mapLoaded) {
+      return Promise.resolve([]);
+    }
+
     const { text } = extractUnit(address);
+
+    return this._useNewPlacesApi()
+      ? this._fetchSuggestionsNew(text)
+      : this._fetchSuggestionsLegacy(text);
+  }
+
+  // --- NEW Places API (AutocompleteSuggestion) -----------------------------
+
+  private _fetchSuggestionsNew(text: string): Promise<FsAddressSuggestion[]> {
     const request: google.maps.places.AutocompleteRequest = {
       // Caller-supplied Places options (types, region, location bias, etc).
       // Spread first so `input` always wins and can't be overridden.
       ...this.config?.googleConfig?.autocomplete,
       input: text,
     };
-    const placesRequest = google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
-      request,
-    );
 
-    return placesRequest
-      .then((result) => {
-        return result.suggestions;
-      })
-      .catch(() => {
+    return google.maps.places.AutocompleteSuggestion
+      .fetchAutocompleteSuggestions(request)
+      .then((result) => result.suggestions.map((suggestion): FsAddressSuggestion => ({
+        description: suggestion.placePrediction.text.text,
+        resolve: () => this._resolveNewSuggestion(suggestion),
+      })))
+      .catch((error) => {
+        this._logNewPlacesApiError('fetch autocomplete suggestions', error);
+
         return [];
       });
+  }
+
+  private _resolveNewSuggestion(
+    suggestion: google.maps.places.AutocompleteSuggestion,
+  ): Observable<FsAddress> {
+    const place = suggestion.placePrediction.toPlace();
+    const fetchFieldsRequestOptions: google.maps.places.FetchFieldsRequest = {
+      fields: [
+        'displayName',
+        'location',
+        'addressComponents',
+        'formattedAddress',
+      ],
+    };
+
+    return from(place.fetchFields(fetchFieldsRequestOptions))
+      .pipe(
+        map(({ place: fetched }: { place: google.maps.places.Place }): FsAddress => {
+          if (!fetched) {
+            return {};
+          }
+
+          return googlePlaceToFsAddress(fetched, this.config);
+        }),
+        catchError((error) => {
+          this._logNewPlacesApiError('fetch place details', error);
+
+          return of<FsAddress>({});
+        }),
+      );
+  }
+
+  /**
+   * Air out exactly why the NEW Places API call failed. The most common cause is
+   * the key/project not having "Places API (New)" enabled (Google returns a
+   * PERMISSION_DENIED / REQUEST_DENIED style error) — having the legacy "Places
+   * API" enabled is NOT sufficient. This is logged loudly so the failure is
+   * obvious in the console instead of silently showing an empty dropdown.
+   */
+  private _logNewPlacesApiError(stage: string, error: unknown): void {
+    const message =
+      (error as { message?: string })?.message ?? String(error);
+    const denied =
+      /permission|denied|not authorized|REQUEST_DENIED|ApiNotActivated|ApiTargetBlocked|not have permission/i
+        .test(message);
+
+    const lines = [
+      `[fs-address] Google Places autocomplete failed (${stage}) using the NEW Places API ` +
+        '(AutocompleteSuggestion / Place — places.googleapis.com).',
+      'This API path is active because a `googleConfig.autocomplete` filter ' +
+        '(e.g. includedPrimaryTypes: ["pharmacy"]) is configured, which the legacy ' +
+        'Places API cannot do.',
+    ];
+
+    if (denied) {
+      lines.push(
+        '>>> The request was DENIED by Google. Most likely "Places API (New)" is NOT ' +
+          'enabled for this API key / project (the legacy "Places API" being enabled is ' +
+          'NOT enough), or the key\'s API/HTTP-referrer restrictions exclude it. ' +
+          'Fix: enable "Places API (New)" in Google Cloud Console for this key — or ' +
+          'remove the googleConfig.autocomplete filter to fall back to the legacy API.',
+      );
+    }
+
+    lines.push(`Original error: ${message}`);
+
+    console.error(lines.join('\n'), error);
+  }
+
+  // --- LEGACY Places API (AutocompleteService / PlacesService) --------------
+
+  private _fetchSuggestionsLegacy(text: string): Promise<FsAddressSuggestion[]> {
+    if (!this._legacyAutocompleteService) {
+      this._legacyAutocompleteService = new google.maps.places.AutocompleteService();
+    }
+
+    return new Promise((resolve) => {
+      this._legacyAutocompleteService.getPlacePredictions(
+        { input: text },
+        (predictions, status) => {
+          if (
+            status !== google.maps.places.PlacesServiceStatus.OK ||
+            !predictions
+          ) {
+            // ZERO_RESULTS just means "no matches" — not a failure worth logging.
+            if (status !== google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+              console.error(
+                '[fs-address] Google Places autocomplete failed using the LEGACY Places ' +
+                  `API (AutocompleteService.getPlacePredictions). Status: ${status}. ` +
+                  'If this is REQUEST_DENIED, the key is missing the classic "Places API", ' +
+                  'or has HTTP-referrer / billing restrictions blocking it.',
+              );
+            }
+
+            resolve([]);
+
+            return;
+          }
+
+          resolve(predictions.map((prediction): FsAddressSuggestion => ({
+            description: prediction.description,
+            resolve: () => this._resolveLegacyPrediction(prediction.place_id),
+          })));
+        },
+      );
+    });
+  }
+
+  private _resolveLegacyPrediction(placeId: string): Observable<FsAddress> {
+    if (!this._legacyPlacesService) {
+      this._legacyPlacesService = new google.maps.places.PlacesService(
+        document.createElement('div'),
+      );
+    }
+
+    return new Observable<FsAddress>((observer) => {
+      this._legacyPlacesService.getDetails(
+        {
+          placeId,
+          fields: [
+            'name',
+            'geometry',
+            'address_components',
+            'formatted_address',
+            'place_id',
+          ],
+        },
+        (result, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+            observer.next(googleLegacyPlaceToFsAddress(result, this.config));
+          } else {
+            console.error(
+              '[fs-address] Failed to fetch place details using the LEGACY Places API ' +
+                `(PlacesService.getDetails). Status: ${status}.`,
+            );
+            observer.next({});
+          }
+
+          observer.complete();
+        },
+      );
+    });
   }
 
   private _registerFocusMonitor(): void {
