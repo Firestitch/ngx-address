@@ -1,7 +1,7 @@
 .country-region {
-  display: inline-flex;
-
+  // Normal inline flow so "Province, Country" wraps gracefully in the narrow
+  // (half-width) autocomplete panel instead of orphaning the comma (TU-T9080).
   span:not(:last-child):after {
-    content: ',\00a0';
+    content: ', ';
   }
 }

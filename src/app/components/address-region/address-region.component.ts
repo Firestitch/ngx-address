@@ -124,10 +124,6 @@ export class FsAddressRegionComponent implements OnInit, OnDestroy {
                   return regionName.indexOf(keyword) !== -1;
                 });
 
-              if (countryRegions.length ) {
-                console.log(country, keyword, countryRegions);
-              }
-
               return [
                 ...accum,
                 ...countryRegions
@@ -139,7 +135,6 @@ export class FsAddressRegionComponent implements OnInit, OnDestroy {
                   }),
               ];
             }, []);
-          console.log(regions, keyword);
 
           return regions;
         }),

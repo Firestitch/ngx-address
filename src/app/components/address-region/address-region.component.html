@@ -12,14 +12,9 @@
     fsAutocompleteTemplate
     let-data="data">
     <span class="country-region">
-      <span>
-        {{ data.name }}
-      </span>
-      @if (!regionModel && addressCountries.length > 1) {
-        <span>
-          {{ data.country }}
-        </span>
-      }
+      <!-- spans kept whitespace-tight: the ", " separator comes only from the CSS
+           :after, so no stray space renders before the comma (TU-T9080) -->
+      <span>{{ data.name }}</span>@if (!regionModel && addressCountries.length > 1) {<span>{{ data.country }}</span>}
     </span>
   </ng-template>
   <ng-template
