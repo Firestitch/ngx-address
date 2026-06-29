@@ -66,6 +66,11 @@ mat-label::after {
   .zip,
   .country {
     flex: 1 0 50%;
+    // min-width:0 lets the item shrink to its 50% basis regardless of content.
+    // Without it (default min-width:auto + flex-shrink:0), a selected region's
+    // min-content width can exceed 50% and tip the row to wrap — the "middle
+    // zone" flip where City/Region stack only once a province is picked (TU-T9080).
+    min-width: 0;
   }
 
 
