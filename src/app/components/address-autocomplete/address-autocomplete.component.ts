@@ -191,6 +191,13 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   private _address: FsAddress = {};
   private _searchText = '';
   private _lastSearchText: string;
+  // The input text that produced the currently-displayed non-empty suggestions.
+  // Used to keep those suggestions on screen when a longer query returns nothing
+  // (Google's autocomplete returns ZERO_RESULTS once the input diverges from any
+  // indexed place). We only retain them while the user keeps typing forward — i.e.
+  // the current input still starts with this text — so backspacing to unrelated
+  // text clears them instead of showing stale predictions.
+  private _suggestionsSearchText: string;
   private _optionSelected = false;
   private _disabled = false;
   private _required = false;
@@ -293,7 +300,15 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
     this.onTouched = fn;
   }
 
-  public displayWith = (value: FsAddress) => {
+  public displayWith = (value: FsAddress | string) => {
+    // A string is in-progress typed/pasted text — return it verbatim so Material
+    // keeps it on screen. Returning undefined here makes Material treat the input
+    // as empty and wipe the characters on every re-render (e.g. as suggestions
+    // load), which is why typing appeared to erase itself.
+    if (typeof value === 'string') {
+      return value;
+    }
+
     if (value && typeof value === 'object') {
       return this.value?.street;
     } else if (!this.empty) {
@@ -388,13 +403,14 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
           this._clearPredictions();
         });
 
-      fromEvent(this.searchElement.nativeElement, 'keyup')
+      // Listen to `input` rather than `keyup` so mouse/context-menu paste, cut,
+      // and autofill all trigger a search — none of those fire a keyup. `input`
+      // also never fires for Enter/Tab/arrow navigation, so the old key filter
+      // (which keyup needed) is no longer necessary.
+      fromEvent(this.searchElement.nativeElement, 'input')
         .pipe(
           debounceTime(200),
-          filter((event: KeyboardEvent) => {
-            return event.code !== 'Enter' && event.code !== 'Tab';
-          }),
-          map((event: KeyboardEvent) => {
+          map((event: Event) => {
             return (event.target as HTMLInputElement).value;
           }),
           tap((text) => {
@@ -420,15 +436,33 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
           filter((text) => text !== this._lastSearchText),
           tap((text) => this._lastSearchText = text),
           switchMap((text: string) => {
-            return this._getPlaceSuggestions(text);
+            // Pair the result with the exact query that produced it. switchMap
+            // cancels stale requests, but _searchText tracks the latest keystroke
+            // and can move on before this resolves — so we can't read it below.
+            return from(this._getPlaceSuggestions(text))
+              .pipe(map((suggestions) => ({ text, suggestions })));
           }),
           takeUntilDestroyed(this._destroyRef),
         )
-        .subscribe((suggestions: FsAddressSuggestion[]) => {
+        .subscribe(({ text, suggestions }) => {
           this._ngZone.run(() => {
-            this.googleSuggestions = [
-              ...suggestions,
-            ];
+            if (suggestions.length) {
+              // Fresh matches: show them and remember the text that produced them.
+              this.googleSuggestions = [...suggestions];
+              this._suggestionsSearchText = text;
+            } else if (
+              this._suggestionsSearchText &&
+              text.startsWith(this._suggestionsSearchText)
+            ) {
+              // No matches, but the user only typed further past a query that did
+              // match (e.g. added a unit or extra detail Google doesn't index).
+              // Keep the last good suggestions on screen instead of blanking out.
+            } else {
+              // No matches and the input no longer extends the last matching query
+              // (e.g. backspaced to unrelated text) — the stale list is irrelevant.
+              this.googleSuggestions = [];
+              this._suggestionsSearchText = undefined;
+            }
 
             this._cdRef.markForCheck();
           });
@@ -438,6 +472,7 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
 
   private _clearPredictions() {
     this.googleSuggestions = [];
+    this._suggestionsSearchText = undefined;
     this._cdRef.markForCheck();
   }
 
