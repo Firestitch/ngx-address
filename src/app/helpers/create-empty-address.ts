@@ -15,5 +15,6 @@ export function createEmptyAddress(): FsAddress {
     zip: '',
     lat: null,
     lng: null,
+    timezone: null,
   };
 }

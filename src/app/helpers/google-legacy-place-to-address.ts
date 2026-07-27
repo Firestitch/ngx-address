@@ -10,6 +10,11 @@ import { FsAddress } from '../interfaces/address.interface';
  * This mirrors `googlePlaceToFsAddress` (which handles the NEW `Place` shape),
  * but reads the legacy snake_case fields — `place_id`, `address_components`
  * with `long_name`/`short_name`, `geometry.location`, `formatted_address`.
+ *
+ * `timezone` is deliberately NOT set here. The legacy result carries only
+ * `utc_offset_minutes` — a bare offset for *today*, which cannot express a zone
+ * across a DST boundary. Deriving a zone from it would be silently wrong for
+ * half the year, so the field is left blank and the server resolves it instead.
  */
 export function googleLegacyPlaceToFsAddress(
   result: google.maps.places.PlaceResult,

@@ -54,6 +54,11 @@ export class FsAddressRegionCountryComponent implements OnInit {
 
   public ngOnInit() {
     this._initConfig();
+
+    // Scope the region list to the country that came in as an input. Without
+    // this the regions only narrow once the country field is touched, so a
+    // pre-selected country still offers every other country's regions.
+    this.regionCountries = this.country ? [this.country] : null;
   }
 
   public changeCountry() {

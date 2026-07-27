@@ -4,7 +4,7 @@
       <fs-address-country
         [disabled]="config.country.disabled"
         [required]="config.country.required"
-        [label]="config.country.placeholder"
+        [label]="config.country.placeholder || 'Country'"
         [countries]="countries"
         [(ngModel)]="country"
         (selectionChange)="changeCountry()"

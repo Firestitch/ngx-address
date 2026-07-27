@@ -37,7 +37,7 @@ import { controlContainerFactory } from '@firestitch/core';
 import { FsFormModule } from '@firestitch/form';
 import { FsMap } from '@firestitch/map';
 
-import { from, fromEvent, Observable, of } from 'rxjs';
+import { from, fromEvent, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -203,10 +203,18 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   private _required = false;
   private _placeholder: string;
   private _mapLoaded = false;
-  // Lazily-created legacy services (only used when no googleConfig.autocomplete
-  // filter is set). PlacesService needs a DOM node to attribute results to.
+  // Lazily-created legacy services, used once the key proves it can't reach the
+  // NEW Places API. PlacesService needs a DOM node to attribute results to.
   private _legacyAutocompleteService: google.maps.places.AutocompleteService;
   private _legacyPlacesService: google.maps.places.PlacesService;
+  // Runtime capability probe for the NEW Places API: set the first time Google
+  // denies a call, which is the signal that "Places API (New)" isn't enabled on this
+  // key. Sticky, so the rejected request happens once per component rather than on
+  // every keystroke.
+  private _useLegacyPlacesApi = false;
+  // `timeZone` bills at a higher Place Details SKU than the other fields, so a key
+  // can reach the new API and still be refused this one field. Also sticky.
+  private _timeZoneFieldAvailable = true;
   private _map = inject(FsMap);
   private _ngZone = inject(NgZone);
   private _fm = inject(FocusMonitor);
@@ -534,17 +542,15 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
   }
 
   /**
-   * Hybrid API selection. The NEW Places API (`AutocompleteSuggestion`) is only
-   * used when a `googleConfig.autocomplete` filter is configured — that's the
-   * only thing the legacy API can't do (e.g. `includedPrimaryTypes: ['pharmacy']`),
-   * and it requires "Places API (New)" to be enabled on the key. Everything else
-   * goes through the LEGACY `AutocompleteService`, which works on keys that only
-   * have the classic "Places API" enabled — no Google Cloud changes required.
+   * The NEW Places API is the default — it is the only path that can apply
+   * `googleConfig.autocomplete` filters and the only one that returns a `timeZone`.
+   *
+   * Which API actually gets used is decided by the KEY, not by config: the first
+   * request goes to the new API, and if Google denies it (i.e. "Places API (New)"
+   * isn't enabled on the key) the component falls back to the legacy
+   * `AutocompleteService` and stays there. Address picking keeps working on old
+   * keys — only the extra functionality is lost.
    */
-  private _useNewPlacesApi(): boolean {
-    return !!this.config?.googleConfig?.autocomplete;
-  }
-
   private _getPlaceSuggestions(address: string): Promise<FsAddressSuggestion[]> {
     if (!this._mapLoaded) {
       return Promise.resolve([]);
@@ -552,9 +558,9 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
 
     const { text } = extractUnit(address);
 
-    return this._useNewPlacesApi()
-      ? this._fetchSuggestionsNew(text)
-      : this._fetchSuggestionsLegacy(text);
+    return this._useLegacyPlacesApi
+      ? this._fetchSuggestionsLegacy(text)
+      : this._fetchSuggestionsNew(text);
   }
 
   // --- NEW Places API (AutocompleteSuggestion) -----------------------------
@@ -574,9 +580,18 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
         resolve: () => this._resolveNewSuggestion(suggestion),
       })))
       .catch((error) => {
-        this._logNewPlacesApiError('fetch autocomplete suggestions', error);
+        if (!this._isPermissionDenied(error)) {
+          this._logNewPlacesApiError('fetch autocomplete suggestions', error);
 
-        return [];
+          return [];
+        }
+
+        // The key can't reach the new API. Degrade to the legacy one and serve this
+        // same keystroke from it, so the user never sees an empty dropdown.
+        this._useLegacyPlacesApi = true;
+        this._logNewPlacesApiFallback(error);
+
+        return this._fetchSuggestionsLegacy(text);
       });
   }
 
@@ -584,23 +599,26 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
     suggestion: google.maps.places.AutocompleteSuggestion,
   ): Observable<FsAddress> {
     const place = suggestion.placePrediction.toPlace();
-    const fetchFieldsRequestOptions: google.maps.places.FetchFieldsRequest = {
-      fields: [
-        'displayName',
-        'location',
-        'addressComponents',
-        'formattedAddress',
-      ],
-    };
 
-    return from(place.fetchFields(fetchFieldsRequestOptions))
+    return this._fetchNewPlaceFields(place, this._timeZoneFieldAvailable)
       .pipe(
-        map(({ place: fetched }: { place: google.maps.places.Place }): FsAddress => {
-          if (!fetched) {
-            return {};
+        catchError((error) => {
+          // `timeZone` bills at a higher SKU than the rest of the fields, so a key
+          // can be allowed the details call and still be refused this one field.
+          // Drop it and retry rather than handing back an empty address.
+          if (this._timeZoneFieldAvailable && this._isPermissionDenied(error)) {
+            this._timeZoneFieldAvailable = false;
+
+            console.warn(
+              '[fs-address] Google refused the `timeZone` Place field (billed at the ' +
+                'Place Details Pro SKU). Retrying without it — `address.timezone` will ' +
+                'be empty.',
+            );
+
+            return this._fetchNewPlaceFields(place, false);
           }
 
-          return googlePlaceToFsAddress(fetched, this.config);
+          return throwError(() => error);
         }),
         catchError((error) => {
           this._logNewPlacesApiError('fetch place details', error);
@@ -610,41 +628,94 @@ export class FsAddressAutocompleteComponent implements OnInit, ControlValueAcces
       );
   }
 
-  /**
-   * Air out exactly why the NEW Places API call failed. The most common cause is
-   * the key/project not having "Places API (New)" enabled (Google returns a
-   * PERMISSION_DENIED / REQUEST_DENIED style error) — having the legacy "Places
-   * API" enabled is NOT sufficient. This is logged loudly so the failure is
-   * obvious in the console instead of silently showing an empty dropdown.
-   */
-  private _logNewPlacesApiError(stage: string, error: unknown): void {
-    const message =
-      (error as { message?: string })?.message ?? String(error);
-    const denied =
-      /permission|denied|not authorized|REQUEST_DENIED|ApiNotActivated|ApiTargetBlocked|not have permission/i
-        .test(message);
-
-    const lines = [
-      `[fs-address] Google Places autocomplete failed (${stage}) using the NEW Places API ` +
-        '(AutocompleteSuggestion / Place — places.googleapis.com).',
-      'This API path is active because a `googleConfig.autocomplete` filter ' +
-        '(e.g. includedPrimaryTypes: ["pharmacy"]) is configured, which the legacy ' +
-        'Places API cannot do.',
+  private _fetchNewPlaceFields(
+    place: google.maps.places.Place,
+    includeTimeZone: boolean,
+  ): Observable<FsAddress> {
+    const fields = [
+      'displayName',
+      'location',
+      'addressComponents',
+      'formattedAddress',
     ];
 
-    if (denied) {
+    if (includeTimeZone) {
+      // IANA zone for the place. Only ever available here — the legacy path below
+      // has no equivalent field.
+      fields.push('timeZone');
+    }
+
+    return from(place.fetchFields({ fields }))
+      .pipe(
+        map(({ place: fetched }: { place: google.maps.places.Place }): FsAddress => {
+          if (!fetched) {
+            return {};
+          }
+
+          return googlePlaceToFsAddress(fetched, this.config);
+        }),
+      );
+  }
+
+  /**
+   * Whether Google refused the request because the key isn't provisioned for it —
+   * as opposed to it being malformed or the network being down. This is what drives
+   * the fallback to the legacy API, so it has to distinguish "your key can't do
+   * this" from every other failure. The wire format varies (REQUEST_DENIED,
+   * PERMISSION_DENIED, ApiNotActivated…), so match on the message.
+   */
+  private _isPermissionDenied(error: unknown): boolean {
+    const message = (error as { message?: string })?.message ?? String(error);
+
+    return /permission|denied|not authorized|REQUEST_DENIED|ApiNotActivated|ApiTargetBlocked/i
+      .test(message);
+  }
+
+  /**
+   * Not a failure — the component degraded to the legacy API and address search
+   * still works. Logged at warn because the lost functionality is otherwise
+   * invisible: the only symptom is an empty `timezone` and, if one was configured,
+   * an unapplied autocomplete filter.
+   */
+  private _logNewPlacesApiFallback(error: unknown): void {
+    const message = (error as { message?: string })?.message ?? String(error);
+
+    const lines = [
+      '[fs-address] "Places API (New)" is not enabled for this API key, so fs-address ' +
+        'fell back to the LEGACY Places API. Address search still works. What is lost ' +
+        'is `address.timezone` — the legacy API returns only a bare UTC offset, which ' +
+        'cannot express DST, so the field is left empty rather than filled in wrong.',
+    ];
+
+    if (this.config?.googleConfig?.autocomplete) {
       lines.push(
-        '>>> The request was DENIED by Google. Most likely "Places API (New)" is NOT ' +
-          'enabled for this API key / project (the legacy "Places API" being enabled is ' +
-          'NOT enough), or the key\'s API/HTTP-referrer restrictions exclude it. ' +
-          'Fix: enable "Places API (New)" in Google Cloud Console for this key — or ' +
-          'remove the googleConfig.autocomplete filter to fall back to the legacy API.',
+        '>>> A `googleConfig.autocomplete` filter (e.g. includedPrimaryTypes: ' +
+          '["pharmacy"]) is configured and CANNOT be applied on the legacy API — the ' +
+          'suggestions being shown are UNFILTERED. If that filter is a correctness ' +
+          'requirement, enable "Places API (New)" in Google Cloud Console for this key.',
       );
     }
 
     lines.push(`Original error: ${message}`);
 
-    console.error(lines.join('\n'), error);
+    console.warn(lines.join('\n'));
+  }
+
+  /**
+   * A NEW Places API failure that is NOT a provisioning problem — a malformed
+   * request, a bad filter, a network error. There is no fallback that would behave
+   * any better, so surface it instead of silently showing an empty dropdown.
+   */
+  private _logNewPlacesApiError(stage: string, error: unknown): void {
+    const message = (error as { message?: string })?.message ?? String(error);
+
+    console.error(
+      `[fs-address] Google Places request failed (${stage}) using the NEW Places API ` +
+        '(AutocompleteSuggestion / Place — places.googleapis.com). This was not a ' +
+        'permissions error, so falling back to the legacy API would fail the same way.\n' +
+        `Original error: ${message}`,
+      error,
+    );
   }
 
   // --- LEGACY Places API (AutocompleteService / PlacesService) --------------

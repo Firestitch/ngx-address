@@ -3,6 +3,14 @@ import { FsAddressConfig } from '../interfaces/address-config.interface';
 import { FsAddress } from '../interfaces/address.interface';
 
 
+/**
+ * `Place.timeZone` is a newer Places field carrying the IANA identifier. The
+ * @types/google.maps version resolved here (3.58) predates it and declares only
+ * `utcOffsetMinutes`, so it is typed narrowly at the read rather than forcing a
+ * types bump on every consumer of this library.
+ */
+type PlaceWithTimeZone = google.maps.places.Place & { timeZone?: { id?: string } };
+
 export function googlePlaceToFsAddress(
   result: google.maps.places.Place,
   _config: FsAddressConfig,
@@ -14,6 +22,7 @@ export function googlePlaceToFsAddress(
   address.lat = result.location.lat();
   address.lng = result.location.lng();
   address.description = result.formattedAddress;
+  address.timezone = (result as PlaceWithTimeZone).timeZone?.id;
 
   // Finding different parts of address
   result.addressComponents.forEach((item) => {

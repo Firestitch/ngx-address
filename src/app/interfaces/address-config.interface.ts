@@ -21,6 +21,10 @@ export interface FsAddressGoogleConfig {
    *
    * `input` is always supplied by the component and cannot be overridden.
    *
+   * Requires "Places API (New)" on the API key. If the key doesn't have it the
+   * component falls back to the legacy Places API, which cannot filter — the
+   * suggestions come back unfiltered and a warning is logged.
+   *
    * @example { includedPrimaryTypes: ['pharmacy'] }
    */
   autocomplete?: Omit<google.maps.places.AutocompleteRequest, 'input'>;
