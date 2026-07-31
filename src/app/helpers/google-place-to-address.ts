@@ -1,4 +1,5 @@
 import { createEmptyAddress } from './create-empty-address';
+import { CityAddressComponentTypes } from '../consts/city-address-component-types.const';
 import { FsAddressConfig } from '../interfaces/address-config.interface';
 import { FsAddress } from '../interfaces/address.interface';
 
@@ -34,14 +35,21 @@ export function googlePlaceToFsAddress(
       address.region = item.shortText;
     }
 
-    if (item.types.some(type => type === 'locality' || type === 'political')) {
-      address.city = item.longText;
-    }
-
     if (item.types.some(type => type === 'postal_code')) {
       address.zip = item.longText;
     }
   });
+
+  // Resolved outside the loop above on purpose: assigning the city per-component
+  // lets the LAST match win, and Google tags the country `political` too, so the
+  // country overwrites the real city. Take the first city-bearing type instead.
+  const cityComponent = CityAddressComponentTypes
+    .map(cityType => result.addressComponents.find(el => el.types.some(type => type === cityType)))
+    .find(Boolean);
+
+  if (cityComponent) {
+    address.city = cityComponent.longText;
+  }
 
   // Address.Street consists from number and street
   const streetNumber = result.addressComponents
